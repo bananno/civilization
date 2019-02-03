@@ -6,7 +6,7 @@ const Player = require('../models/player');
 router.get('/', getHomePage);
 router.post('/endTurn', endTurn);
 
-function authenticate(req, res, next, callback) {
+function withCurrentGame(req, res, next, callback) {
   Game.findById(req.session.gameId, (error, game) => {
     if (error) {
       return next(error);
@@ -21,7 +21,7 @@ function authenticate(req, res, next, callback) {
 }
 
 function getHomePage(req, res, next) {
-  authenticate(req, res, next, (game) => {
+  withCurrentGame(req, res, next, (game) => {
     Player.find({ game: game }, (error, players) => {
       if (error) {
         return next(error);
@@ -36,7 +36,7 @@ function getHomePage(req, res, next) {
 }
 
 function endTurn(req, res, next) {
-  authenticate(req, res, next, (game) => {
+  withCurrentGame(req, res, next, (game) => {
     let gameData = {
       turn: game.turn + 1
     };
