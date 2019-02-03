@@ -3,7 +3,7 @@ const router = express.Router();
 const Game = require('../models/game');
 
 router.get('/loadGame', loadGameGet);
-router.post('/loadGame', loadGamePost);
+router.get('/loadGame/:gameId', loadGamePost);
 router.get('/newGame', newGameGet);
 router.post('/newGame', newGamePost);
 
@@ -20,7 +20,8 @@ function loadGameGet(req, res, next) {
 }
 
 function loadGamePost(req, res, next) {
-
+  req.session.gameId = req.params.gameId;
+  res.redirect('/');
 }
 
 function newGameGet(req, res, next) {
