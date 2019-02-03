@@ -10,13 +10,16 @@ function withCurrentGame(req, res, next, callback) {
   Game.findById(req.session.gameId, (error, game) => {
     if (error) {
       return next(error);
-    } else {
-      if (game == null) {
-        res.redirect('/loadGame');
-      } else {
-        callback(game);
-      }
     }
+    if (game == null) {
+      return res.redirect('/loadGame');
+    }
+    Player.find({ game: game }, (error, players) => {
+      if (error) {
+        return next(error);
+      }
+      callback(game, players);
+    });
   });
 }
 
