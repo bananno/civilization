@@ -10,8 +10,7 @@ function authenticate(req, res, next, callback) {
       return next(error);
     } else {
       if (game == null) {
-        console.log('No game found.');
-        res.redirect('login');
+        res.redirect('/loadGame');
       } else {
         callback(game);
       }
@@ -21,13 +20,9 @@ function authenticate(req, res, next, callback) {
 
 function getHomePage(req, res, next) {
   authenticate(req, res, next, (game) => {
-    if (game) {
-      res.render('index', {
-        game: game,
-      });
-    } else {
-      res.redirect('/loadGame');
-    }
+    res.render('index', {
+      game: game,
+    });
   });
 }
 
