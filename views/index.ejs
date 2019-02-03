@@ -49,16 +49,38 @@
         }
 
         units.forEach(unit => {
-            map[unit.location[0]][unit.location[1]].unit = true;
+            let [i, j] = unit.location;
+            map[i][j].unit = true;
+
+            for (i1 = i - 1; i1 <= i + 1; i1++) {
+                if (i1 < 0) {
+                    continue;
+                }
+                if (i1 >= 10) {
+                    break;
+                }
+                for (j1 = j - 1; j1 <= j + 1; j1++) {
+                    if (j1 < 0) {
+                        continue;
+                    }
+                    if (j1 >= 10) {
+                        break;
+                    }
+                    map[i1][j1].lit = true;
+                }
+            }
         });
     %>
 
-    <table border="1">
+    <table>
         <% map.forEach(row => { %>
             <tr>
                 <% row.forEach(cell => { %>
                     <%
                         let className = 'map-cell';
+                        if (cell.lit) {
+                            className += ' lit';
+                        }
                     %>
                     <td class="<%= className %>">
                         <% if (cell.unit) { %>

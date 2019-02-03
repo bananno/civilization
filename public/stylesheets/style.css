@@ -3,6 +3,10 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+table {
+  border-collapse: collapse;
+}
+
 a {
   color: #00B7FF;
 }
@@ -12,4 +16,9 @@ a {
   width: 30px;
   height: 30px;
   text-align: center;
+  background-color: #0b5b24;
+}
+
+.map-cell.lit {
+  background-color: #2aba57;
 }
