@@ -11,6 +11,9 @@ var UnitSchema = new mongoose.Schema({
     ref: 'Player',
     required: true,
   },
+  tile: {
+    type: Array,
+  },
 });
 
 var Unit = mongoose.model('Unit', UnitSchema);
