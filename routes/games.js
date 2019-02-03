@@ -5,6 +5,7 @@ const Game = require('../models/game');
 router.get('/loadGame', loadGameGet);
 router.get('/loadGame/:gameId', loadGamePost);
 router.get('/newGame', newGameGet);
+router.get('/exitGame', exitGame);
 router.post('/newGame', newGamePost);
 
 function loadGameGet(req, res, next) {
@@ -26,6 +27,18 @@ function loadGamePost(req, res, next) {
 
 function newGameGet(req, res, next) {
   res.render('newGame', { });
+}
+
+function exitGame(req, res, next) {
+  if (req.session) {
+    req.session.destroy((error) => {
+      if (error) {
+        next(error);
+      } else {
+        res.redirect('/loadGame');
+      }
+    });
+  }
 }
 
 function newGamePost(req, res, next) {

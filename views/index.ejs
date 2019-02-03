@@ -6,8 +6,15 @@
 </head>
 <body>
     <h1>Civilization</h1>
-    <p>Current game = <%= game.name %></p>
-    <p>Turn number = <%= game.turn %></p>
+
+    <p>
+        Current game = <%= game.name %>
+        (<a href="/exitGame">load different game</a>)
+    </p>
+
+    <p>
+        Turn number = <%= game.turn %>
+    </p>
 
     <form action="/endTurn" method="POST">
         <button type="submit">end turn</button>
