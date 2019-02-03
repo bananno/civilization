@@ -21,7 +21,13 @@ function authenticate(req, res, next, callback) {
 
 function getHomePage(req, res, next) {
   authenticate(req, res, next, (game) => {
-    res.render('index', { title: 'Express' });
+    if (game) {
+      res.render('index', {
+        game: game,
+      });
+    } else {
+      res.redirect('/loadGame');
+    }
   });
 }
 
