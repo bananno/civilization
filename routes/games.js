@@ -31,7 +31,14 @@ function loadGamePost(req, res, next) {
 }
 
 function newGameGet(req, res, next) {
-  res.render('newGame', { });
+  Game.find({ }, function (error, games) {
+    if (error) {
+      return res.send({ message: 'ERROR: ' + error });
+    }
+    res.render('newGame', {
+      numberOfGames: games.length
+    });
+  });
 }
 
 function exitGame(req, res, next) {

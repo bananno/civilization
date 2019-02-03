@@ -16,7 +16,7 @@
     <form action="/newGame" method="POST">
         <p>
             <b>Name:</b>
-            <input type="text" name="name">
+            <input type="text" name="name" value="Game <%= numberOfGames + 1 %>">
         </p>
 
         <% for (let i = 0; i < 2; i++) { %>
