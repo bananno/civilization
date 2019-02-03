@@ -20,30 +20,30 @@ function withCurrentGame(req, res, next, callback) {
       if (error) {
         return next(error);
       }
-      callback(game, players);
+      callback({
+        game: game,
+        players: players,
+      });
     });
   });
 }
 
 function getHomePage(req, res, next) {
-  withCurrentGame(req, res, next, (game, players) => {
-    res.render('index', {
-      game: game,
-      players: players,
-    });
+  withCurrentGame(req, res, next, (data) => {
+    res.render('index', data);
   });
 }
 
 function endTurn(req, res, next) {
-  withCurrentGame(req, res, next, (game, players) => {
+  withCurrentGame(req, res, next, (data) => {
     let gameData = {};
-    if (game.nextPlayer < players.length - 1) {
+    if (data.game.nextPlayer < data.players.length - 1) {
       gameData.nextPlayer = game.nextPlayer + 1;
     } else {
       gameData.nextPlayer = 0;
       gameData.turn = game.turn + 1;
     }
-    game.update(gameData, (error, game) => {
+    data.game.update(gameData, (error, game) => {
       if (error) {
         next(error);
       } else {
