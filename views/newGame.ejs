@@ -18,9 +18,6 @@
             <b>Name:</b>
             <input type="text" name="name">
         </p>
-        <p>
-            <button type="submit">submit</button>
-        </p>
 
         <% for (let i = 0; i < 2; i++) { %>
             <h3>Player <%= i + 1 %>:</h3>
@@ -30,6 +27,10 @@
                 <input type="text" name="playername_<%= i %>" value="Player <%= i + 1%>">
             </p>
         <% } %>
+
+        <p>
+            <button type="submit">submit</button>
+        </p>
     </form>
 </body>
 </html>
