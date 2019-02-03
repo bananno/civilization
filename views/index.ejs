@@ -9,6 +9,8 @@
         return unit.player != currentTurnPlayerId;
     });
 
+    let activeUnit = currentTurnUnits[0];
+
     let map = [];
 
     for (let i = 0; i < 10; i++) {
@@ -23,6 +25,7 @@
     currentTurnUnits.forEach(unit => {
         let [i, j] = unit.location;
         map[i][j].unit = true;
+        map[i][j].unitId = unit._id;
 
         for (i1 = i - 1; i1 <= i + 1; i1++) {
             if (i1 < 0) {
@@ -46,6 +49,7 @@
     rivalUnits.forEach(unit => {
         let [i, j] = unit.location;
         map[i][j].rivalUnit = true;
+        map[i][j].unitId = unit._id;
     });
 %>
 
@@ -102,10 +106,10 @@
                     %>
                     <td class="<%= className %>">
                         <% if (cell.unit) { %>
-                            **
+                            <span class="unit" unit-id="<%= cell.unitId %>">**</span>
                         <% } %>
                         <% if (cell.rivalUnit) { %>
-                            *
+                            <span class="unit rival" unit-id="<%= cell.unitId %>">*</span>
                         <% } %>
                     </td>
                 <% }); %>
@@ -124,5 +128,10 @@
             </li>
         <% }); %>
     </ul>
+
+    <script>
+        $('.unit').removeClass('active');
+        $('.unit[unit-id="<%= activeUnit._id %>"]').addClass('active');
+    </script>
 </body>
 </html>

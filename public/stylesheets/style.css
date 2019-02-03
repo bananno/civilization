@@ -22,3 +22,7 @@ a {
 .map-cell.lit {
   background-color: #2aba57;
 }
+
+.unit.active {
+  color: red;
+}
