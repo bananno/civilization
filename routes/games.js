@@ -55,12 +55,30 @@ function newGamePost(req, res, next) {
     return res.send({ message: 'All fields are required.' });
   }
 
-  Game.create(gameData, function (error, game) {
+  Game.create(gameData, (error, game) => {
     if (error) {
       res.send({ message: 'ERROR: ' + error });
     } else {
       req.session.gameId = game._id;
-      res.redirect('/');
+
+      var playerData1 = {
+        game: game,
+        name: req.body.playername_1.trim() || 'Player 1',
+      };
+
+      var playerData2 = {
+        game: game,
+        name: req.body.playername_2.trim() || 'Player 2',
+      };
+
+      Player.create(playerData1, (error1, player1) => {
+        Player.create(playerData2, (error2, player2) => {
+          if (error1 || error2) {
+            return res.send({ message: 'ERROR: ' + (error1 || error2) });
+          }
+          res.redirect('/');
+        });
+      });
     }
   });
 }
