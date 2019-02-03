@@ -6,6 +6,15 @@ var GameSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  turn: {
+    type: Number,
+    default: 0,
+  },
+  nextPlayer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Player',
+    required: true,
+  },
 });
 
 GameSchema.statics.authenticate = (username, callback) => {
