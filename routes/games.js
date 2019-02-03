@@ -2,9 +2,19 @@ const express = require('express');
 const router = express.Router();
 const Game = require('../models/game');
 
-router.post('/newgame', newgame);
+router.get('/chooseGame', getChooseGame);
+router.post('/loadGame', postLoadGame);
+router.post('/newGame', postNewGame);
 
-function newgame(req, res, next) {
+function getChooseGame(req, res, next) {
+  res.render('chooseGame', { });
+}
+
+function postLoadGame(req, res, next) {
+
+}
+
+function postNewGame(req, res, next) {
   var gameData = {
     name: req.body.name || '',
   };
