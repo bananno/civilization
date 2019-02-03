@@ -44,10 +44,10 @@ function endTurn(req, res, next) {
   withCurrentGame(req, res, next, (data) => {
     let gameData = {};
     if (data.game.nextPlayer < data.players.length - 1) {
-      gameData.nextPlayer = game.nextPlayer + 1;
+      gameData.nextPlayer = data.game.nextPlayer + 1;
     } else {
       gameData.nextPlayer = 0;
-      gameData.turn = game.turn + 1;
+      gameData.turn = data.game.turn + 1;
     }
     data.game.update(gameData, (error, game) => {
       if (error) {
