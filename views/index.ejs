@@ -57,7 +57,10 @@
         <% map.forEach(row => { %>
             <tr>
                 <% row.forEach(cell => { %>
-                    <td style="width: 20px; height: 20px;">
+                    <%
+                        let className = 'map-cell';
+                    %>
+                    <td class="<%= className %>">
                         <% if (cell.unit) { %>
                             *
                         <% } %>
