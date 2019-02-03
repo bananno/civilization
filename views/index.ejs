@@ -42,7 +42,11 @@
             <tr>
                 <% for (let j = 0; j < 10; j++) { %>
                     <td style="width: 20px; height: 20px;">
-                        &#160;
+                        <% units.forEach(unit => { %>
+                            <% if (unit.location[0] === i && unit.location[1] === j) { %>
+                                *
+                            <% } %>
+                        <% }); %>
                     </td>
                 <% } %>
             </tr>
