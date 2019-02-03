@@ -63,12 +63,12 @@ function newGamePost(req, res, next) {
 
       var playerData1 = {
         game: game,
-        name: req.body.playername_1.trim() || 'Player 1',
+        name: req.body.playername_0.trim() || 'Player 1',
       };
 
       var playerData2 = {
         game: game,
-        name: req.body.playername_2.trim() || 'Player 2',
+        name: req.body.playername_1.trim() || 'Player 2',
       };
 
       Player.create(playerData1, (error1, player1) => {
