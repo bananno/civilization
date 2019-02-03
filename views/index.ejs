@@ -1,3 +1,45 @@
+<%
+    let map = [];
+    for (let i = 0; i < 10; i++) {
+        map[i] = [];
+        for (let j = 0; j < 10; j++) {
+            map[i][j] = {
+                unit: false,
+            };
+        }
+    }
+
+    units.forEach(unit => {
+        let [i, j] = unit.location;
+        let isTurn = '' + unit.player === '' + players[game.nextPlayer]._id;
+
+        if (!isTurn) {
+            map[i][j].rivalUnit = true;
+            return;
+        }
+
+        map[i][j].unit = true;
+
+        for (i1 = i - 1; i1 <= i + 1; i1++) {
+            if (i1 < 0) {
+                continue;
+            }
+            if (i1 >= 10) {
+                break;
+            }
+            for (j1 = j - 1; j1 <= j + 1; j1++) {
+                if (j1 < 0) {
+                    continue;
+                }
+                if (j1 >= 10) {
+                    break;
+                }
+                map[i1][j1].lit = true;
+            }
+        }
+    });
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,48 +78,6 @@
     </form>
 
     <h2>Map</h2>
-
-    <%
-        let map = [];
-        for (let i = 0; i < 10; i++) {
-            map[i] = [];
-            for (let j = 0; j < 10; j++) {
-                map[i][j] = {
-                    unit: false,
-                };
-            }
-        }
-
-        units.forEach(unit => {
-            let [i, j] = unit.location;
-            let isTurn = '' + unit.player === '' + players[game.nextPlayer]._id;
-
-            if (!isTurn) {
-                map[i][j].rivalUnit = true;
-                return;
-            }
-
-            map[i][j].unit = true;
-
-            for (i1 = i - 1; i1 <= i + 1; i1++) {
-                if (i1 < 0) {
-                    continue;
-                }
-                if (i1 >= 10) {
-                    break;
-                }
-                for (j1 = j - 1; j1 <= j + 1; j1++) {
-                    if (j1 < 0) {
-                        continue;
-                    }
-                    if (j1 >= 10) {
-                        break;
-                    }
-                    map[i1][j1].lit = true;
-                }
-            }
-        });
-    %>
 
     <table>
         <% map.forEach(row => { %>
