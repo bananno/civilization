@@ -1,5 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+
+const Game = require('../models/game');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
