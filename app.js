@@ -1,17 +1,35 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
-var indexRouter = require('./routes/index');
-var gamesRouter = require('./routes/games');
+mongoose.connect('mongodb://localhost/civilization');
+const db = mongoose.connection;
 
-var app = express();
+const indexRouter = require('./routes/index');
+const gamesRouter = require('./routes/games');
 
-// view engine setup
+const app = express();
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: false,
+  store: new MongoStore({
+    mongooseConnection: db
+  })
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
