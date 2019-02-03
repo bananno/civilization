@@ -1,9 +1,33 @@
 const express = require('express');
 const router = express.Router();
+const Game = require('../models/game');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.get('/', getHomePage);
+router.get('/chooseGame', chooseGame);
+
+function authenticate(req, res, next, callback) {
+  Game.findById(req.session.gameId, (error, game) => {
+    if (error) {
+      return next(error);
+    } else {
+      if (game == null) {
+        console.log('No game found.');
+        res.redirect('login');
+      } else {
+        callback(game);
+      }
+    }
+  });
+}
+
+function getHomePage(req, res, next) {
+  authenticate(req, res, next, (game) => {
+    res.render('index', { title: 'Express' });
+  });
+}
+
+function chooseGame(req, res, next) {
+  res.render('chooseGame', { });
+}
 
 module.exports = router;
