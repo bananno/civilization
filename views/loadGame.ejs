@@ -7,10 +7,16 @@
 <body>
     <h1>Load Game</h1>
 
-    <% games.forEach(game => { %>
-        <p>
-            <a href="/loadGame/<%= game._id %>"><%= game.name %></a>
-        </p>
-    <% }); %>
+    <p>
+        or <a href="/newGame">start new game</a>
+    </p>
+
+    <h2>Select game:</h2>
+
+    <ul>
+        <% games.forEach(game => { %>
+            <li><a href="/loadGame/<%= game._id %>"><%= game.name %></a></li>
+        <% }); %>
+    </ul>
 </body>
 </html>
