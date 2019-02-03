@@ -3,6 +3,7 @@ const router = express.Router();
 const Game = require('../models/game');
 
 router.get('/', getHomePage);
+router.post('/endTurn', endTurn);
 
 function authenticate(req, res, next, callback) {
   Game.findById(req.session.gameId, (error, game) => {
@@ -23,6 +24,21 @@ function getHomePage(req, res, next) {
     res.render('index', {
       game: game,
     });
+  });
+}
+
+function endTurn(req, res, next) {
+  authenticate(req, res, next, (game) => {
+    let gameData = {
+      turn: game.turn + 1
+    };
+    game.update(gameData, (error, game) => {
+      if (error) {
+        next(error);
+      } else {
+        res.redirect('/');
+      }
+    })
   });
 }
 

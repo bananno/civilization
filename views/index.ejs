@@ -8,5 +8,9 @@
     <h1>Civilization</h1>
     <p>Current game = <%= game.name %></p>
     <p>Turn number = <%= game.turn %></p>
+
+    <form action="/endTurn" method="POST">
+        <button type="submit">end turn</button>
+    </form>
 </body>
 </html>
