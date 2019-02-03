@@ -24,16 +24,10 @@ function withCurrentGame(req, res, next, callback) {
 }
 
 function getHomePage(req, res, next) {
-  withCurrentGame(req, res, next, (game) => {
-    Player.find({ game: game }, (error, players) => {
-      if (error) {
-        return next(error);
-      }
-      console.log(players)
-      res.render('index', {
-        game: game,
-        players: players,
-      });
+  withCurrentGame(req, res, next, (game, players) => {
+    res.render('index', {
+      game: game,
+      players: players,
     });
   });
 }
