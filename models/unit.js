@@ -11,7 +11,7 @@ var UnitSchema = new mongoose.Schema({
     ref: 'Player',
     required: true,
   },
-  tile: {
+  location: {
     type: Array,
   },
 });

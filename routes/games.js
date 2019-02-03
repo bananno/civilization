@@ -92,13 +92,13 @@ function newGamePost(req, res, next) {
           var tempUnit1 = {
             game: game,
             player: player1,
-            tile: [3, 2],
+            location: [3, 2],
           };
 
           var tempUnit2 = {
             game: game,
             player: player2,
-            name: [6, 7],
+            location: [6, 7],
           };
 
           Unit.create(tempUnit1, (error, unit1) => {

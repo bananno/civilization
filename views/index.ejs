@@ -48,5 +48,17 @@
             </tr>
         <% } %>
     </table>
+
+    <p>
+        <b>Units:</b>
+    </p>
+
+    <ul>
+        <% units.forEach((unit, i) => { %>
+            <li>
+                <%= unit.location %>
+            </li>
+        <% }); %>
+    </ul>
 </body>
 </html>
