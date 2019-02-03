@@ -9,6 +9,10 @@ var PlayerSchema = new mongoose.Schema({
   name: {
     type: String,
   },
+  turn: {
+    type: Number,
+    default: 0,
+  },
 });
 
 var Player = mongoose.model('Player', PlayerSchema);
