@@ -33,10 +33,14 @@ function getHomePage(req, res, next) {
 }
 
 function endTurn(req, res, next) {
-  withCurrentGame(req, res, next, (game) => {
-    let gameData = {
-      turn: game.turn + 1
-    };
+  withCurrentGame(req, res, next, (game, players) => {
+    let gameData = {};
+    if (game.nextPlayer < players.length - 1) {
+      gameData.nextPlayer = game.nextPlayer + 1;
+    } else {
+      gameData.nextPlayer = 0;
+      gameData.turn = game.turn + 1;
+    }
     game.update(gameData, (error, game) => {
       if (error) {
         next(error);
