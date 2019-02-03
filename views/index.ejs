@@ -37,20 +37,34 @@
 
     <h2>Map</h2>
 
+    <%
+        let map = [];
+        for (let i = 0; i < 10; i++) {
+            map[i] = [];
+            for (let j = 0; j < 10; j++) {
+                map[i][j] = {
+                    unit: false,
+                };
+            }
+        }
+
+        units.forEach(unit => {
+            map[unit.location[0]][unit.location[1]].unit = true;
+        });
+    %>
+
     <table border="1">
-        <% for (let i = 0; i < 10; i++) { %>
+        <% map.forEach(row => { %>
             <tr>
-                <% for (let j = 0; j < 10; j++) { %>
+                <% row.forEach(cell => { %>
                     <td style="width: 20px; height: 20px;">
-                        <% units.forEach(unit => { %>
-                            <% if (unit.location[0] === i && unit.location[1] === j) { %>
-                                *
-                            <% } %>
-                        <% }); %>
+                        <% if (cell.unit) { %>
+                            *
+                        <% } %>
                     </td>
-                <% } %>
+                <% }); %>
             </tr>
-        <% } %>
+        <% }); %>
     </table>
 
     <p>
