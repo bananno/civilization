@@ -19,5 +19,15 @@
     <form action="/endTurn" method="POST">
         <button type="submit">end turn</button>
     </form>
+
+    <p>
+        <b>Players:</b>
+    </p>
+
+    <ul>
+        <% players.forEach(player => { %>
+            <li><%= player.name %></li>
+        <% }); %>
+    </ul>
 </body>
 </html>

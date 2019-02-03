@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Game = require('../models/game');
+const Player = require('../models/player');
 
 router.get('/', getHomePage);
 router.post('/endTurn', endTurn);
@@ -21,8 +22,15 @@ function authenticate(req, res, next, callback) {
 
 function getHomePage(req, res, next) {
   authenticate(req, res, next, (game) => {
-    res.render('index', {
-      game: game,
+    Player.find({ game: game }, (error, players) => {
+      if (error) {
+        return next(error);
+      }
+      console.log(players)
+      res.render('index', {
+        game: game,
+        players: players,
+      });
     });
   });
 }
