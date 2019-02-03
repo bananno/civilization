@@ -20,9 +20,15 @@ function withCurrentGame(req, res, next, callback) {
       if (error) {
         return next(error);
       }
-      callback({
-        game: game,
-        players: players,
+      Unit.find({ game: game }, (error, units) => {
+        if (error) {
+          return next(error);
+        }
+        callback({
+          game: game,
+          players: players,
+          units: units,
+        });
       });
     });
   });
