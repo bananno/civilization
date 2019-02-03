@@ -50,6 +50,13 @@
 
         units.forEach(unit => {
             let [i, j] = unit.location;
+            let isTurn = '' + unit.player === '' + players[game.nextPlayer]._id;
+
+            if (!isTurn) {
+                map[i][j].rivalUnit = true;
+                return;
+            }
+
             map[i][j].unit = true;
 
             for (i1 = i - 1; i1 <= i + 1; i1++) {
@@ -84,6 +91,9 @@
                     %>
                     <td class="<%= className %>">
                         <% if (cell.unit) { %>
+                            **
+                        <% } %>
+                        <% if (cell.rivalUnit) { %>
                             *
                         <% } %>
                     </td>
