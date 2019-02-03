@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+
 const Game = require('../models/game');
 const Player = require('../models/player');
+const Unit = require('../models/unit');
 
 router.get('/newGame', newGameGet);
 router.post('/newGame', newGamePost);
@@ -78,12 +80,39 @@ function newGamePost(req, res, next) {
         name: req.body.playername_1.trim() || 'Player 2',
       };
 
-      Player.create(playerData1, (error1, player1) => {
-        Player.create(playerData2, (error2, player2) => {
-          if (error1 || error2) {
-            return res.send({ message: 'ERROR: ' + (error1 || error2) });
+      Player.create(playerData1, (error, player1) => {
+        if (error) {
+          return next(error);
+        }
+        Player.create(playerData2, (error, player2) => {
+          if (error) {
+            return next(error);
           }
-          res.redirect('/');
+
+          var tempUnit1 = {
+            game: game,
+            player: player1,
+            tile: [3, 2],
+          };
+
+          var tempUnit2 = {
+            game: game,
+            player: player2,
+            name: [6, 7],
+          };
+
+          Unit.create(tempUnit1, (error, unit1) => {
+            if (error) {
+              return next(error);
+            }
+            Unit.create(tempUnit2, (error, unit2) => {
+              if (error) {
+                return next(error);
+              }
+
+              res.redirect('/');
+            });
+          });
         });
       });
     }
