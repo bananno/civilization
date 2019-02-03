@@ -11,9 +11,8 @@ var GameSchema = new mongoose.Schema({
     default: 0,
   },
   nextPlayer: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Player',
-    required: true,
+    type: Number,
+    default: 0,
   },
 });
 
