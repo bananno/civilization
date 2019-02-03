@@ -1,5 +1,16 @@
 <%
+    let currentTurnPlayerId = '' + players[game.nextPlayer]._id;
+
+    let currentTurnUnits = units.filter(unit => {
+        return unit.player == currentTurnPlayerId;
+    });
+
+    let rivalUnits = units.filter(unit => {
+        return unit.player != currentTurnPlayerId;
+    });
+
     let map = [];
+
     for (let i = 0; i < 10; i++) {
         map[i] = [];
         for (let j = 0; j < 10; j++) {
@@ -9,15 +20,8 @@
         }
     }
 
-    units.forEach(unit => {
+    currentTurnUnits.forEach(unit => {
         let [i, j] = unit.location;
-        let isTurn = '' + unit.player === '' + players[game.nextPlayer]._id;
-
-        if (!isTurn) {
-            map[i][j].rivalUnit = true;
-            return;
-        }
-
         map[i][j].unit = true;
 
         for (i1 = i - 1; i1 <= i + 1; i1++) {
@@ -37,6 +41,11 @@
                 map[i1][j1].lit = true;
             }
         }
+    });
+
+    rivalUnits.forEach(unit => {
+        let [i, j] = unit.location;
+        map[i][j].rivalUnit = true;
     });
 %>
 
