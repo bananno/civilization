@@ -15,9 +15,9 @@
 
     let map = [];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < game.mapSize[0]; i++) {
         map[i] = [];
-        for (let j = 0; j < 10; j++) {
+        for (let j = 0; j < game.mapSize[1]; j++) {
             map[i][j] = {
                 unit: false,
                 moves: [],
@@ -57,15 +57,15 @@
             if (i1 < 0) {
                 continue;
             }
-            if (i1 == 10) {
+            if (i1 == game.mapSize[0]) {
                 break;
             }
             for (j2 = j - 1; j2 <= j + 1; j2++) {
                 let j1 = j2;
                 if (j1 < 0) {
-                    j1 = 9;
+                    j1 = game.mapSize[1] - 1;
                 }
-                if (j1 == 10) {
+                if (j1 == game.mapSize[1]) {
                     j1 = 0;
                 }
                 map[i1][j1].lit = true;
