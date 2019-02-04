@@ -39,6 +39,7 @@ const routeFiles = [
   'games',
   'newGame',
   'moveUnit',
+  'foundCity',
 ];
 
 routeFiles.forEach(filename => {
