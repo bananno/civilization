@@ -16,17 +16,5 @@ var GameSchema = new mongoose.Schema({
   },
 });
 
-GameSchema.statics.authenticate = (username, callback) => {
-  Game.findOne({ username: username }, (error, game) => {
-    if (error) {
-      return callback(error)
-    } else if (!user) {
-      let newError = new Error('Game not found.');
-      newError.status = 401;
-      return callback(newError);
-    }
-  });
-};
-
 var Game = mongoose.model('Game', GameSchema);
 module.exports = Game;
