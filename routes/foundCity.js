@@ -44,7 +44,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
           if (col < 0) {
             col = 9;
           } else if (col > 9) {
-            col = 9;
+            col = 0;
           }
 
           let tile = data.tiles.filter(tile => {
