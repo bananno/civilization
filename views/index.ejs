@@ -163,11 +163,32 @@
     </table>
 
     <% currentTurnUnits.forEach(unit => { %>
+        <%
+            let type = unit.unitType.name;
+            let disabled = unit.movesRemaining == 0;
+            let foundCity = type == 'settler';
+        %>
         <div class="infobox" unit-id="<%= unit._id %>">
             <div class="close">X</div>
             <div>
                 <b>type:</b>
                 <%= unit.unitType.name %>
+            </div>
+            <div>
+                <b>moves:</b>
+                <%= unit.movesRemaining %>
+            </div>
+            <div>
+                <b>actions:</b>
+                <% if (foundCity) { %>
+                    <form>
+                        <% if (unit.movesRemaining) { %>
+                            <button>found city</button>
+                        <% } else { %>
+                            <button disabled="<%= true %>">found city</button>
+                        <% } %>
+                    </form>
+                <% } %>
             </div>
         </div>
     <% }); %>
