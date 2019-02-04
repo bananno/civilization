@@ -9,7 +9,9 @@
         return unit.player != currentTurnPlayerId;
     });
 
-    let activeUnit = currentTurnUnits[0];
+    let activeUnit = currentTurnUnits.filter(unit => {
+        return unit.movesRemaining > 0;
+    })[0];
 
     let map = [];
 
@@ -173,7 +175,7 @@
         $('form.move-unit[unit-id="' + id + '"]').show();
     }
 
-    setActiveUnit('<%= activeUnit._id %>');
+    setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
 
     $('.unit.turn').toArray().forEach(unit => {
         let $unit = $(unit);
