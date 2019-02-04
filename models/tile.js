@@ -17,6 +17,12 @@ var TileSchema = new mongoose.Schema({
     ref: 'Player',
     required: true,
   }],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Player',
+    required: false,
+    default: null,
+  },
 });
 
 var Tile = mongoose.model('Tile', TileSchema);
