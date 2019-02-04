@@ -165,7 +165,7 @@
     <% currentTurnUnits.forEach(unit => { %>
         <%
             let type = unit.unitType.name;
-            let disabled = unit.movesRemaining == 0;
+            let disableButton = unit.movesRemaining == 0 ? 'disabled="true"' : '';
             let foundCity = type == 'settler';
         %>
         <div class="infobox" unit-id="<%= unit._id %>">
@@ -182,11 +182,7 @@
                 <b>actions:</b>
                 <% if (foundCity) { %>
                     <form>
-                        <% if (unit.movesRemaining) { %>
-                            <button>found city</button>
-                        <% } else { %>
-                            <button disabled="<%= true %>">found city</button>
-                        <% } %>
+                        <button <%= disableButton %>>found city</button>
                     </form>
                 <% } %>
             </div>
