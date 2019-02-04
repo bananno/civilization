@@ -53,9 +53,9 @@ router.post('/foundCity/:unitId', (req, res, next) => {
           let isCityCol = col1 >= startColCity && col1 <= endColCity;
           let col = col1;
           if (col < 0) {
-            col = numMapCols - 1;
+            col += numMapCols;
           } else if (col > numMapCols - 1) {
-            col = 0;
+            col -= numMapCols;
           }
 
           let tile = data.tiles.filter(tile => {
