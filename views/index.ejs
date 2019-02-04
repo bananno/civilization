@@ -42,6 +42,10 @@
                     break;
                 }
                 map[i1][j1].lit = true;
+                if ((i1 === i || j1 === j) && (i1 != i || j1 != j)) {
+                    map[i1][j1].move = true;
+                    map[i1][j1].movePath = '/moveUnit/' + activeUnit._id + '/' + i1 + '/' + j1;
+                }
             }
         }
     });
@@ -110,6 +114,11 @@
                         <% } %>
                         <% if (cell.rivalUnit) { %>
                             <span class="unit rival" unit-id="<%= cell.unitId %>">*</span>
+                        <% } %>
+                        <% if (cell.move) { %>
+                            <form action="<%= cell.movePath %>" method="post">
+                                <button type="submit"> </button>
+                            </form>
                         <% } %>
                     </td>
                 <% }); %>
