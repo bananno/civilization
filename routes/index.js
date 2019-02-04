@@ -147,7 +147,7 @@ function moveUnit(req, res, next) {
         let tileData = {
           discovered: tileList[i].discovered
         };
-        tileData.discovered.push(data.player);
+        tileData.discovered.push(unit.player);
         tileList[i].update(tileData, (error, tile) => {
           if (error) {
             return next(error);
