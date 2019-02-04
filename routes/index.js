@@ -44,15 +44,22 @@ function getHomePage(req, res, next) {
 function endTurn(req, res, next) {
   withCurrentGame(req, res, next, (data) => {
     let gameData = {};
+    let resetMoves = false;
     if (data.game.nextPlayer < data.players.length - 1) {
       gameData.nextPlayer = data.game.nextPlayer + 1;
     } else {
       gameData.nextPlayer = 0;
       gameData.turn = data.game.turn + 1;
+      resetMoves = true;
     }
     data.game.update(gameData, (error, game) => {
       if (error) {
-        next(error);
+        return next(error);
+      }
+      if (resetMoves) {
+        Unit.updateMany(data.units, { movesRemaining: 1 }, (error, units) => {
+          res.redirect('/');
+        });
       } else {
         res.redirect('/');
       }
