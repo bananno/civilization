@@ -5,6 +5,7 @@ const Game = require('../models/game');
 const Player = require('../models/player');
 const Tile = require('../models/tile');
 const Unit = require('../models/unit');
+const unitTypes = require('../models/unitTypes');
 
 router.post('/newGame', (req, res, next) => {
   var gameData = {
@@ -54,12 +55,14 @@ router.post('/newGame', (req, res, next) => {
             game: game,
             player: player,
             location: tempUnitLocations[tempUnitLocationCount],
+            unitType: unitTypes[0],
           };
 
           var tempUnit2 = {
             game: game,
             player: player,
             location: tempUnitLocations[tempUnitLocationCount + 1],
+            unitType: unitTypes[1],
           };
 
           tempUnitLocationCount += 2;
