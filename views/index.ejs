@@ -23,20 +23,24 @@
                 moves: [],
                 lit: false,
                 discovered: false,
+                player: null,
                 owned: false,
-                rivalOwned: false,
             };
         }
     }
+
+    let playerNums = {};
+    players.forEach((player, i) => {
+        playerNums[player._id] = i;
+    });
 
     tiles.forEach(tile => {
         map[tile.row] = map[tile.row] || [];
         map[tile.row][tile.column].tile = tile;
 
-        if (tile.owner == currentTurnPlayerId) {
-            map[tile.row][tile.column].owned = true;
-        } else if (tile.owner) {
-            map[tile.row][tile.column].rivalOwned = true;
+        if (tile.owner) {
+            map[tile.row][tile.column].player = playerNums[tile.owner] + 1;
+            map[tile.row][tile.column].owned = tile.owner == currentTurnPlayerId;
         }
 
         if (tile.discovered.indexOf(currentTurnPlayerId) >= 0) {
@@ -143,10 +147,8 @@
                 <% row.forEach(cell => { %>
                     <%
                         let className = 'map-cell';
-                        if (cell.owned) {
-                            className += ' owned';
-                        } else if (cell.rivalOwned) {
-                            className += ' rivalOwned';
+                        if (cell.player) {
+                            className += ' player' + cell.player;
                         }
                         if (cell.lit || cell.owned) {
                             className += ' lit';
@@ -169,6 +171,7 @@
                                 </form>
                             <% }); %>
                         <% } %>
+                        <%= cell.player %>
                     </td>
                 <% }); %>
             </tr>

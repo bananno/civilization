@@ -30,16 +30,20 @@ a {
   background-color: #2aba57;
 }
 
-.map-cell.owned {
-  background-color: #6683dd;
+.map-cell.player1.discovered {
+  background-color: #19248c;
 }
 
-.map-cell.rivalOwned.lit {
-  background-color: #ff7777;
+.map-cell.player1.lit {
+  background-color: #757fe5;
 }
 
-.map-cell.rivalOwned.discovered {
+.map-cell.player2.discovered {
   background-color: #872424;
+}
+
+.map-cell.player2.lit {
+  background-color: #ff7777;
 }
 
 .unit.active {
