@@ -75,19 +75,37 @@ function moveUnit(req, res, next) {
       let oldCol = unit.location[1];
       let unitData = {};
 
-      let wrapColumn = (oldCol == 0 && newCol == 9) || (oldCol == 9 && newCol == 0);
+      let legalMove = (() => {
+        if (newRow < 0 || newCol >= 10) {
+          return false;
+        }
 
-      if ((newRow == oldRow && (Math.abs(oldCol - newCol) == 1) || wrapColumn)
-          || (newCol == oldCol && Math.abs(oldRow - newRow) == 1)) {
+        if (newRow != oldRow && newCol != oldCol) {
+          return false;
+        }
+
+        let wrapColumn = (oldCol == 0 && newCol == 9) || (oldCol == 9 && newCol == 0);
+        let oneColAway = Math.abs(oldCol - newCol) == 1 || wrapColumn;
+        let oneRowAway = Math.abs(oldRow - newRow) == 1;
+
+        if (!(oneColAway || wrapColumn) && !oneRowAway) {
+          return false;
+        }
 
         let unitsInNewSpace = data.units.filter(otherUnit => {
           return otherUnit.location[0] == newRow
             && otherUnit.location[1] == newCol;
         });
 
-        if (unitsInNewSpace.length == 0) {
-          unitData.location = [newRow, newCol];
+        if (unitsInNewSpace.length) {
+          return false;
         }
+
+        return true;
+      })();
+
+      if (legalMove) {
+        unitData.location = [newRow, newCol];
       }
 
       unit.update(unitData, (error, unit) => {
