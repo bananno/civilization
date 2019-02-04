@@ -21,6 +21,8 @@
             map[i][j] = {
                 unit: false,
                 moves: [],
+                lit: false,
+                discovered: false,
             };
         }
     }
@@ -28,6 +30,10 @@
     tiles.forEach(tile => {
         map[tile.row] = map[tile.row] || [];
         map[tile.row][tile.column].tile = tile;
+
+        if (tile.discovered.indexOf(currentTurnPlayerId) >= 0) {
+            map[tile.row][tile.column].discovered = true;
+        }
     });
 
     currentTurnUnits.forEach(unit => {
