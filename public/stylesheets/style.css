@@ -30,6 +30,18 @@ a {
   background-color: #2aba57;
 }
 
+.map-cell.owned {
+  background-color: #6683dd;
+}
+
+.map-cell.rivalOwned.lit {
+  background-color: #ff7777;
+}
+
+.map-cell.rivalOwned.discovered {
+  background-color: #872424;
+}
+
 .unit.active {
   color: red;
 }

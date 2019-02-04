@@ -23,6 +23,8 @@
                 moves: [],
                 lit: false,
                 discovered: false,
+                owned: false,
+                rivalOwned: false,
             };
         }
     }
@@ -30,6 +32,12 @@
     tiles.forEach(tile => {
         map[tile.row] = map[tile.row] || [];
         map[tile.row][tile.column].tile = tile;
+
+        if (tile.owner == currentTurnPlayerId) {
+            map[tile.row][tile.column].owned = true;
+        } else if (tile.owner) {
+            map[tile.row][tile.column].rivalOwned = true;
+        }
 
         if (tile.discovered.indexOf(currentTurnPlayerId) >= 0) {
             map[tile.row][tile.column].discovered = true;
@@ -135,7 +143,12 @@
                 <% row.forEach(cell => { %>
                     <%
                         let className = 'map-cell';
-                        if (cell.lit) {
+                        if (cell.owned) {
+                            className += ' owned';
+                        } else if (cell.rivalOwned) {
+                            className += ' rivalOwned';
+                        }
+                        if (cell.lit || cell.owned) {
                             className += ' lit';
                         } else if (cell.discovered) {
                             className += ' discovered';
