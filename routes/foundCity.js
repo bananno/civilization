@@ -16,10 +16,46 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return res.redirect('/');
     }
 
+    let cityLocation = unit.location;
+
     Unit.deleteOne(unit, error => {
       if (error) {
         return next(error);
       }
+
+      let startRow = cityLocation[0] - 1;
+      let endRow = cityLocation[0] + 1;
+      let startCol = cityLocation[1] - 1;
+      let endCol = cityLocation[1] + 1;
+
+      if (startRow < 0) {
+        startRow = 0;
+      }
+      if (endRow > 9) {
+        endRow = 9;
+      }
+
+      let cityTiles = [];
+
+      for (let row = startRow; row <= endRow; row++) {
+        for (let col1 = startCol; col1 <= endCol; col1++) {
+          let col = col1;
+          if (col < 0) {
+            col = 9;
+          } else if (col > 9) {
+            col = 9;
+          }
+
+          let tile = data.tiles.filter(tile => {
+            return tile.row == row && tile.column == col;
+          })[0];
+
+          if (tile && tile.owner == null) {
+            cityTiles.push(tile);
+          }
+        }
+      }
+
       return res.redirect('/');
     });
   });
