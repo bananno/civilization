@@ -112,11 +112,9 @@
                     <td class="<%= className %>">
                         <% if (cell.unit) { %>
                             <span class="unit" unit-id="<%= cell.unitId %>">**</span>
-                        <% } %>
-                        <% if (cell.rivalUnit) { %>
+                        <% } else if (cell.rivalUnit) { %>
                             <span class="unit rival" unit-id="<%= cell.unitId %>">*</span>
-                        <% } %>
-                        <% if (cell.move) { %>
+                        <% } else if (cell.move) { %>
                             <form action="<%= cell.movePath %>" method="post">
                                 <button type="submit"> </button>
                             </form>
