@@ -154,6 +154,7 @@
     <table border="1">
         <tr>
             <th>player</th>
+            <th>unit type</th>
             <th>location</th>
             <th>click to activate</th>
             <th>moves remaining</th>
@@ -164,6 +165,9 @@
                     <tr>
                         <td>
                             <%= player.name %>
+                        </td>
+                        <td>
+                            <%= unit.unitType.name %>
                         </td>
                         <td>
                             <%= unit.location %>
