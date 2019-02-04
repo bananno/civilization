@@ -82,6 +82,15 @@
     <link rel="stylesheet" href="/stylesheets/style.css"/>
     <script src="/vendor/jquery-3.3.1.min.js"></script>
     <script src="/javascripts/main.js"></script>
+    <script>
+        let units = [];
+
+        <% units.forEach(unit => { %>
+            units['<%= unit._id %>'] = {
+                name: '<%= unit.unitType.name %>',
+            };
+        <% }); %>
+    </script>
 </head>
 <body>
     <h1>Civilization</h1>
@@ -151,6 +160,10 @@
 
     <div id="selected-unit" style="border: 1px solid black">
         <div class="close">X</div>
+        <div class="type">
+            <b>type:</b>
+            <span></span>
+        </div>
     </div>
 
     <h3>Units:</h3>
@@ -196,7 +209,13 @@
         $('.unit[unit-id="' + id + '"]').addClass('active');
         $('form.move-unit').hide();
         $('form.move-unit[unit-id="' + id + '"]').show();
-        $('#selected-unit').toggle(id && id != 'null');
+
+        if (id && id != null) {
+            $('#selected-unit').show();
+            $('#selected-unit .type span').text(units[id].name);
+        } else {
+            $('#selected-unit').hide();
+        }
     }
 
     setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
