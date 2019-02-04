@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
 
+const Unit = require('../models/unit');
+
 router.post('/foundCity/:unitId', (req, res, next) => {
   let unitId = req.params.unitId;
   getData(req, res, next, (data) => {
@@ -14,7 +16,12 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    return res.redirect('/');
+    Unit.deleteOne(unit, error => {
+      if (error) {
+        return next(error);
+      }
+      return res.redirect('/');
+    });
   });
 });
 
