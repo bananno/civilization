@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Game = require('../models/game');
 const Player = require('../models/player');
+const Tile = require('../models/tile');
 const Unit = require('../models/unit');
 
 router.get('/', getHomePage);
@@ -21,14 +22,20 @@ function withCurrentGame(req, res, next, callback) {
       if (error) {
         return next(error);
       }
-      Unit.find({ game: game }, (error, units) => {
+      Tile.find({ game: game }, (error, tiles) => {
         if (error) {
           return next(error);
         }
-        callback({
-          game: game,
-          players: players,
-          units: units,
+        Unit.find({ game: game }, (error, units) => {
+          if (error) {
+            return next(error);
+          }
+          callback({
+            game: game,
+            players: players,
+            tiles: tiles,
+            units: units,
+          });
         });
       });
     });
