@@ -10,7 +10,7 @@ const unitTypes = require('../models/unitTypes');
 router.post('/newGame', (req, res, next) => {
   var gameData = {
     name: req.body.name || '',
-    mapSize: [10, 10],
+    mapSize: [parseInt(req.body.rows), parseInt(req.body.columns)],
   };
 
   if (gameData.name.length === 0) {
