@@ -141,10 +141,19 @@ function moveUnit(req, res, next) {
       });
 
       const updateTile = (i) => {
-        if (i <= tileList.length) {
+        if (i >= tileList.length) {
           return res.redirect('/');
         }
-        updateTile(i + 1);
+        let tileData = {
+          discovered: tileList[i].discovered
+        };
+        tileData.discovered.push(data.player);
+        tileList[i].update(tileData, (error, tile) => {
+          if (error) {
+            return next(error);
+          }
+          updateTile(i + 1);
+        });
       }
 
       unit.update(unitData, (error, unit) => {
