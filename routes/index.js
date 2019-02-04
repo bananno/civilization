@@ -65,10 +65,6 @@ function moveUnit(req, res, next) {
   let newRow = parseInt(req.params.row);
   let newCol = parseInt(req.params.col);
 
-  console.log('unitId = ' + unitId);
-  console.log('row = ' + newRow);
-  console.log('col = ' + newCol);
-
   withCurrentGame(req, res, next, (data) => {
     Unit.findById(unitId, (error, unit) => {
       if (error) {
@@ -81,7 +77,7 @@ function moveUnit(req, res, next) {
 
       if ((newRow == oldRow && Math.abs(oldCol - newCol) == 1)
           || (newCol == oldCol && Math.abs(oldRow - newRow) == 1)) {
-        unitData.location = [newRow, oldRow];
+        unitData.location = [newRow, newCol];
       }
 
       unit.update(unitData, (error, unit) => {
