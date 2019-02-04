@@ -7,6 +7,9 @@ const Unit = require('../models/unit');
 router.post('/foundCity/:unitId', (req, res, next) => {
   let unitId = req.params.unitId;
   getData(req, res, next, (data) => {
+    let numMapRows = data.game.mapSize[0];
+    let numMapCols = data.game.mapSize[1];
+
     let unit = data.units.filter(unit => {
       return unit._id == unitId;
     })[0];
@@ -32,8 +35,8 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       if (startRow < 0) {
         startRow = 0;
       }
-      if (endRow > 9) {
-        endRow = 9;
+      if (endRow > numMapCols - 1) {
+        endRow = numMapCols - 1;
       }
 
       let cityTiles = [];
@@ -42,8 +45,8 @@ router.post('/foundCity/:unitId', (req, res, next) => {
         for (let col1 = startCol; col1 <= endCol; col1++) {
           let col = col1;
           if (col < 0) {
-            col = 9;
-          } else if (col > 9) {
+            col = numMapCols - 1;
+          } else if (col > numMapCols - 1) {
             col = 0;
           }
 
