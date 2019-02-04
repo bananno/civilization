@@ -14,7 +14,10 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return unit._id == unitId;
     })[0];
 
-    if (unit.unitType.name != 'settler' || unit.movesRemaining == 0) {
+    let turnPlayerId = data.players[data.game.nextPlayer]._id;
+
+    if (unit.unitType.name != 'settler' || unit.movesRemaining == 0
+        || '' + unit.player != '' + turnPlayerId) {
       console.log('invalid unit action');
       return res.redirect('/');
     }
