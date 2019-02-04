@@ -139,6 +139,7 @@
             <th>player</th>
             <th>location</th>
             <th>click to activate</th>
+            <th>moves remaining</th>
         </tr>
         <% players.forEach(player => { %>
             <% units.forEach((unit, i) => { %>
@@ -154,6 +155,9 @@
                             <% if (player._id == currentTurnPlayerId) { %>
                                 <span onClick="setActiveUnit('<%= unit._id %>')">activate</span>
                             <% } %>
+                        </td>
+                        <td>
+                            <%= unit.movesRemaining %>
                         </td>
                     </tr>
                 <% } %>
