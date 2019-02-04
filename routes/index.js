@@ -77,7 +77,15 @@ function moveUnit(req, res, next) {
 
       if ((newRow == oldRow && Math.abs(oldCol - newCol) == 1)
           || (newCol == oldCol && Math.abs(oldRow - newRow) == 1)) {
-        unitData.location = [newRow, newCol];
+
+        let unitsInNewSpace = data.units.filter(otherUnit => {
+          return otherUnit.location[0] == newRow
+            && otherUnit.location[1] == newCol;
+        });
+
+        if (unitsInNewSpace.length == 0) {
+          unitData.location = [newRow, newCol];
+        }
       }
 
       unit.update(unitData, (error, unit) => {
