@@ -15,14 +15,7 @@ var GameSchema = new mongoose.Schema({
     default: 0,
   },
   mapSize: {
-    rows: {
-      type: Number,
-      default: 10,
-    },
-    columns: {
-      type: Number,
-      default: 10,
-    },
+    type: Array,
   },
 });
 
