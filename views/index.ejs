@@ -58,6 +58,10 @@
                 }
                 map[i1][j1].lit = true;
 
+                if (unit.movesRemaining == 0) {
+                    continue;
+                }
+
                 if ((i1 === i || j1 === j) && (i1 != i || j1 != j)) {
                     map[i1][j1].moves.push({
                         unitId: unit._id,
