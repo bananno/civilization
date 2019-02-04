@@ -181,7 +181,7 @@
             <div>
                 <b>actions:</b>
                 <% if (foundCity) { %>
-                    <form>
+                    <form action="/foundCity/<%= unit._id %>" method="post">
                         <button <%= disableButton %>>found city</button>
                     </form>
                 <% } %>
