@@ -3,6 +3,7 @@ const router = express.Router();
 const getData = require('./getData');
 
 const Unit = require('../models/unit');
+const City = require('../models/city');
 
 router.post('/foundCity/:unitId', (req, res, next) => {
   let unitId = req.params.unitId;
@@ -22,82 +23,90 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    let cityLocation = unit.location;
-    let cityOwner = unit.player;
+    let cityData = {
+      game: data.game,
+      player: unit.player,
+      location: unit.location,
+    };
 
-    Unit.deleteOne(unit, error => {
+    City.create(cityData, (error, city) => {
       if (error) {
         return next(error);
       }
 
-      let cityTiles = [];
-
-      let startRowCity = cityLocation[0] - 1;
-      let endRowCity = cityLocation[0] + 1;
-      let startColCity = cityLocation[1] - 1;
-      let endColCity = cityLocation[1] + 1;
-
-      let startRow = startRowCity - 1;
-      let endRow = endRowCity + 1;
-      let startCol = startColCity - 1;
-      let endCol = endColCity + 1;
-
-      for (let row = startRow; row <= endRow; row++) {
-        if (row < 0) {
-          continue;
-        }
-        if (row >= numMapCols) {
-          break;
+      Unit.deleteOne(unit, error => {
+        if (error) {
+          return next(error);
         }
 
-        let isCityRow = row >= startRowCity && row <= endRowCity;
+        let cityTiles = [];
 
-        for (let col1 = startCol; col1 <= endCol; col1++) {
-          let isCityCol = col1 >= startColCity && col1 <= endColCity;
-          let col = col1;
-          if (col < 0) {
-            col += numMapCols;
-          } else if (col > numMapCols - 1) {
-            col -= numMapCols;
+        let startRowCity = city.location[0] - 1;
+        let endRowCity = city.location[0] + 1;
+        let startColCity = city.location[1] - 1;
+        let endColCity = city.location[1] + 1;
+
+        let startRow = startRowCity - 1;
+        let endRow = endRowCity + 1;
+        let startCol = startColCity - 1;
+        let endCol = endColCity + 1;
+
+        for (let row = startRow; row <= endRow; row++) {
+          if (row < 0) {
+            continue;
+          }
+          if (row >= numMapCols) {
+            break;
           }
 
-          let tile = data.tiles.filter(tile => {
-            return tile.row == row && tile.column == col;
-          })[0];
+          let isCityRow = row >= startRowCity && row <= endRowCity;
 
-          if (tile) {
-            let tileObj = {
-              tile: tile,
-              update: {}
-            };
-
-            tileObj.update.discovered = tile.discovered;
-            tileObj.update.discovered.push(cityOwner);
-
-            if (isCityRow && isCityCol) {
-              if (tile.owner == null) {
-                tileObj.update.owner = cityOwner;
-              }
+          for (let col1 = startCol; col1 <= endCol; col1++) {
+            let isCityCol = col1 >= startColCity && col1 <= endColCity;
+            let col = col1;
+            if (col < 0) {
+              col += numMapCols;
+            } else if (col > numMapCols - 1) {
+              col -= numMapCols;
             }
 
-            cityTiles.push(tileObj);
+            let tile = data.tiles.filter(tile => {
+              return tile.row == row && tile.column == col;
+            })[0];
+
+            if (tile) {
+              let tileObj = {
+                tile: tile,
+                update: {}
+              };
+
+              tileObj.update.discovered = tile.discovered;
+              tileObj.update.discovered.push(city.player);
+
+              if (isCityRow && isCityCol) {
+                if (tile.owner == null) {
+                  tileObj.update.owner = city.player;
+                }
+              }
+
+              cityTiles.push(tileObj);
+            }
           }
         }
-      }
 
-      const claimTile = (i) => {
-        if (i >= cityTiles.length) {
-          return res.redirect('/');
-        }
-        cityTiles[i].tile.update(cityTiles[i].update, (error, tile) => {
-          if (error) {
-            return next(error);
+        const claimTile = (i) => {
+          if (i >= cityTiles.length) {
+            return res.redirect('/');
           }
-          claimTile(i + 1);
-        });
-      }
-
-      claimTile(0);
+          cityTiles[i].tile.update(cityTiles[i].update, (error, tile) => {
+            if (error) {
+              return next(error);
+            }
+            claimTile(i + 1);
+          });
+        }
+        claimTile(0);
+      });
     });
   });
 });
