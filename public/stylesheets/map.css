@@ -1,0 +1,35 @@
+
+.map-cell {
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+
+.map-cell.dark {
+  background-color: #03210c;
+}
+
+.map-cell.discovered {
+  background-color: #0b5b24;
+}
+
+.map-cell.lit {
+  background-color: #2aba57;
+}
+
+.map-cell.player1.discovered {
+  background-color: #19248c;
+}
+
+.map-cell.player1.lit {
+  background-color: #757fe5;
+}
+
+.map-cell.player2.discovered {
+  background-color: #872424;
+}
+
+.map-cell.player2.lit {
+  background-color: #ff7777;
+}
