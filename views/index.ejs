@@ -132,17 +132,34 @@
         <% }); %>
     </table>
 
-    <p>
-        <b>Units:</b>
-    </p>
+    <h3>Units:</h3>
 
-    <ul>
-        <% units.forEach((unit, i) => { %>
-            <li>
-                <%= unit.location %>
-            </li>
-        <% }); %>
-    </ul>
+    <table border="1">
+        <tr>
+            <th>player</th>
+            <th>location</th>
+            <th>click to activate</th>
+        </tr>
+        <% players.forEach(player => { %>
+            <% units.forEach((unit, i) => { %>
+                <% if (unit.player == '' + player._id) { %>
+                    <tr>
+                        <td>
+                            <%= player.name %>
+                        </td>
+                        <td>
+                            <%= unit.location %>
+                        </td>
+                        <td>
+                            <% if (player._id == currentTurnPlayerId) { %>
+                                <span onClick="setActiveUnit('<%= unit._id %>')">activate</span>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% } %>
+            <% }); %>
+    <% }); %>
+    </table>
 
 <script>
     function setActiveUnit(id) {
