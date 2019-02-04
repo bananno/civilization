@@ -14,10 +14,14 @@ var UnitSchema = new mongoose.Schema({
   location: {
     type: Array,
   },
+  unitType: {
+    type: Number,
+    default: 0,
+  },
   movesRemaining: {
     type: Number,
     default: 1,
-  }
+  },
 });
 
 var Unit = mongoose.model('Unit', UnitSchema);
