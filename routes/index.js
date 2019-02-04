@@ -76,6 +76,10 @@ function moveUnit(req, res, next) {
       let unitData = {};
 
       let legalMove = (() => {
+        if (unit.movesRemaining == 0) {
+          return false;
+        }
+
         if (newRow < 0 || newCol >= 10) {
           return false;
         }
@@ -106,6 +110,7 @@ function moveUnit(req, res, next) {
 
       if (legalMove) {
         unitData.location = [newRow, newCol];
+        unitData.movesRemaining = unit.movesRemaining - 1;
       }
 
       unit.update(unitData, (error, unit) => {
