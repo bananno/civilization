@@ -12,6 +12,11 @@ var TileSchema = new mongoose.Schema({
   column: {
     type: Number,
   },
+  discovered: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Player',
+    required: true,
+  }],
 });
 
 var Tile = mongoose.model('Tile', TileSchema);
