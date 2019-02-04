@@ -75,7 +75,9 @@ function moveUnit(req, res, next) {
       let oldCol = unit.location[1];
       let unitData = {};
 
-      if ((newRow == oldRow && Math.abs(oldCol - newCol) == 1)
+      let wrapColumn = (oldCol == 0 && newCol == 9) || (oldCol == 9 && newCol == 0);
+
+      if ((newRow == oldRow && (Math.abs(oldCol - newCol) == 1) || wrapColumn)
           || (newCol == oldCol && Math.abs(oldRow - newRow) == 1)) {
 
         let unitsInNewSpace = data.units.filter(otherUnit => {
