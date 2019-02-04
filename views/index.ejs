@@ -162,13 +162,15 @@
         <% }); %>
     </table>
 
-    <div id="selected-unit" style="border: 1px solid black">
-        <div class="close">X</div>
-        <div class="type">
-            <b>type:</b>
-            <span></span>
+    <% currentTurnUnits.forEach(unit => { %>
+        <div class="infobox" unit-id="<%= unit._id %>">
+            <div class="close">X</div>
+            <div>
+                <b>type:</b>
+                <%= unit.unitType.name %>
+            </div>
         </div>
-    </div>
+    <% }); %>
 
     <h3>Units:</h3>
 
@@ -214,12 +216,8 @@
         $('form.move-unit').hide();
         $('form.move-unit[unit-id="' + id + '"]').show();
 
-        if (id && id != null) {
-            $('#selected-unit').show();
-            $('#selected-unit .type span').text(units[id].name);
-        } else {
-            $('#selected-unit').hide();
-        }
+        $('.infobox').hide();
+        $('.infobox[unit-id="' + id + '"]').show();
     }
 
     setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
@@ -231,7 +229,7 @@
         });
     });
 
-    $('#selected-unit .close').click(() => {
+    $('.infobox .close').click(() => {
         setActiveUnit(null);
     });
 </script>
