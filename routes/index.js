@@ -134,11 +134,24 @@ function moveUnit(req, res, next) {
         unitData.movesRemaining = unit.movesRemaining - 1;
       }
 
+      let tileList = [];
+
+      data.tiles.forEach(tile => {
+        tileList.push(tile);
+      });
+
+      const updateTile = (i) => {
+        if (i <= tileList.length) {
+          return res.redirect('/');
+        }
+        updateTile(i + 1);
+      }
+
       unit.update(unitData, (error, unit) => {
         if (error) {
           return next(error);
         }
-        res.redirect('/');
+        updateTile(0);
       });
     });
   });
