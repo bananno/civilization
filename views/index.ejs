@@ -40,7 +40,17 @@
 
         if (tile.owner) {
             map[tile.row][tile.column].player = playerNums[tile.owner] + 1;
-            map[tile.row][tile.column].owned = tile.owner == currentTurnPlayerId;
+            if (tile.owner == currentTurnPlayerId) {
+                map[tile.row][tile.column].owned = true;
+
+                for (let i = tile.row - 1; i <= tile.row + 1; i++) {
+                    for (let j = tile.column - 1; j <= tile.column + 1; j++) {
+                        if (map[i] && map[i][j]) {
+                            map[i][j].lit = true;
+                        }
+                    }
+                }
+            }
         }
 
         if (tile.discovered.indexOf(currentTurnPlayerId) >= 0) {
