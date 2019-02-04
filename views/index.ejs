@@ -110,19 +110,12 @@
 <html>
 <head>
     <title>Civilization</title>
+
     <link rel="stylesheet" href="/stylesheets/style.css"/>
     <link rel="stylesheet" href="/stylesheets/map.css"/>
+
     <script src="/vendor/jquery-3.3.1.min.js"></script>
     <script src="/javascripts/main.js"></script>
-    <script>
-        let units = [];
-
-        <% units.forEach(unit => { %>
-            units['<%= unit._id %>'] = {
-                name: '<%= unit.unitType.name %>',
-            };
-        <% }); %>
-    </script>
 </head>
 <body>
     <h1>Civilization</h1>
