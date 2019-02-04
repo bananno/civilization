@@ -25,6 +25,19 @@ router.post('/newGame', (req, res, next) => {
       const tempUnitLocations = [[3, 2], [2, 6], [6, 7], [7, 5]];
       let tempUnitLocationCount = 0;
 
+      let tileList = [];
+
+      for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+          let tileData = {
+            game: game,
+            row: i,
+            column: j,
+          };
+          tileList.push(tileData);
+        }
+      }
+
       const createPlayer = (i) => {
         var playerData = {
           game: game,
@@ -62,29 +75,22 @@ router.post('/newGame', (req, res, next) => {
               if (i < numPlayers - 1) {
                 createPlayer(i + 1);
               } else {
-                createTile(0, 0);
+                createTile(0);
               }
             });
           });
         });
       };
 
-      const createTile = (row, col) => {
-        if (row == 10) {
+      const createTile = (i) => {
+        if (i >= tileList.length) {
           res.redirect('/');
-        } else if (col == 10) {
-          createTile(row + 1, 0);
         } else {
-          let tileData = {
-            game: game,
-            row: row,
-            column: col,
-          };
-          Tile.create(tileData, (error, tile) => {
+          Tile.create(tileList[i], (error, tile) => {
             if (error) {
               return next(error);
             }
-            createTile(row, col + 1);
+            createTile(i + 1);
           });
         }
       }
