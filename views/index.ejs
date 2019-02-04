@@ -124,6 +124,10 @@
                         let className = 'map-cell';
                         if (cell.lit) {
                             className += ' lit';
+                        } else if (cell.discovered) {
+                            className += ' discovered';
+                        } else {
+                            className += ' dark';
                         }
                     %>
                     <td class="<%= className %>">

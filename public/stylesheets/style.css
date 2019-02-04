@@ -16,7 +16,14 @@ a {
   width: 30px;
   height: 30px;
   text-align: center;
-  background-color: #0b5b24;
+}
+
+.map-cell.dark {
+  background-color: #03210c;
+}
+
+.map-cell.discovered {
+  background-color: #2aba57;
 }
 
 .map-cell.lit {
