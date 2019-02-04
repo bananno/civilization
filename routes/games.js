@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Game = require('../models/game');
 const Player = require('../models/player');
+const Tile = require('../models/tile');
 const Unit = require('../models/unit');
 
 router.get('/newGame', newGameGet);
