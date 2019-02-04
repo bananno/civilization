@@ -47,7 +47,7 @@
 
                 if ((i1 === i || j1 === j) && (i1 != i || j1 != j)) {
                     map[i1][j1].moves.push({
-                        unit: unit._id,
+                        unitId: unit._id,
                         path: '/moveUnit/' + unit._id + '/' + i1 + '/' + j1,
                     });
                 }
@@ -120,7 +120,8 @@
                             <span class="unit rival" unit-id="<%= cell.unitId %>">*</span>
                         <% } else { %>
                             <% cell.moves.forEach(move => { %>
-                                <form action="<%= move.path %>" method="post">
+                                <form action="<%= move.path %>" method="post" class="move-unit"
+                                    unit-id="<%= move.unitId %>">
                                     <button type="submit"> </button>
                                 </form>
                             <% }); %>
@@ -147,6 +148,8 @@
     function setActiveUnit(id) {
         $('.unit').removeClass('active');
         $('.unit[unit-id="' + id + '"]').addClass('active');
+        $('form.move-unit').hide();
+        $('form.move-unit[unit-id="' + id + '"]').show();
     }
 
     setActiveUnit('<%= activeUnit._id %>');
