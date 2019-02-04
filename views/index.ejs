@@ -19,6 +19,7 @@
         map[i] = [];
         for (let j = 0; j < game.mapSize[1]; j++) {
             map[i][j] = {
+                city: false,
                 unit: false,
                 moves: [],
                 lit: false,
@@ -32,6 +33,10 @@
     let playerNums = {};
     players.forEach((player, i) => {
         playerNums[player._id] = i;
+    });
+
+    cities.forEach(city => {
+        map[city.location[0]][city.location[1]].city = true;
     });
 
     tiles.forEach(tile => {
@@ -169,6 +174,9 @@
                         }
                     %>
                     <td class="<%= className %>">
+                        <% if (cell.city) { %>
+                            &#9733;
+                        <% } %>
                         <% if (cell.unit) { %>
                             <span class="unit turn" unit-id="<%= cell.unitId %>">**</span>
                         <% } else if (cell.rivalUnit) { %>
