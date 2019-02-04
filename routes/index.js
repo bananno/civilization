@@ -13,7 +13,7 @@ router.post('/endTurn', endTurn);
 
 function getHomePage(req, res, next) {
   getData(req, res, next, (data) => {
-    res.render('game', data);
+    res.render('game/index', data);
   });
 }
 
