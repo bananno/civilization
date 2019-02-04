@@ -57,9 +57,16 @@ function endTurn(req, res, next) {
         return next(error);
       }
       if (resetMoves) {
-        Unit.updateMany(data.units, { movesRemaining: 1 }, (error, units) => {
-          res.redirect('/');
-        });
+        // refactor later
+        let tempUpdate = (i) => {
+          if (i >= data.units.length) {
+            return res.redirect('/');
+          }
+          data.units[i].update({ movesRemaining: 1 }, (error, unit) => {
+            tempUpdate(i + 1);
+          });
+        };
+        tempUpdate(0);
       } else {
         res.redirect('/');
       }
