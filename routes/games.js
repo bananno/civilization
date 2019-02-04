@@ -89,28 +89,50 @@ function newGamePost(req, res, next) {
             return next(error);
           }
 
-          var tempUnit1 = {
+          var tempUnit1a = {
             game: game,
             player: player1,
             location: [3, 2],
           };
 
-          var tempUnit2 = {
+          var tempUnit1b = {
+            game: game,
+            player: player1,
+            location: [2, 6],
+          };
+
+          var tempUnit2a = {
             game: game,
             player: player2,
             location: [6, 7],
           };
 
-          Unit.create(tempUnit1, (error, unit1) => {
+          var tempUnit2b = {
+            game: game,
+            player: player2,
+            location: [7, 5],
+          };
+
+          Unit.create(tempUnit1a, (error, unit1) => {
             if (error) {
               return next(error);
             }
-            Unit.create(tempUnit2, (error, unit2) => {
+            Unit.create(tempUnit2a, (error, unit2) => {
               if (error) {
                 return next(error);
               }
+              Unit.create(tempUnit1b, (error, unit1) => {
+                if (error) {
+                  return next(error);
+                }
+                Unit.create(tempUnit2b, (error, unit2) => {
+                  if (error) {
+                    return next(error);
+                  }
 
-              res.redirect('/');
+                  res.redirect('/');
+                });
+              });
             });
           });
         });
