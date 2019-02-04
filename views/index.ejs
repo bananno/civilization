@@ -25,6 +25,11 @@
         }
     }
 
+    tiles.forEach(tile => {
+        map[tile.row] = map[tile.row] || [];
+        map[tile.row][tile.column].tile = tile;
+    });
+
     currentTurnUnits.forEach(unit => {
         let [i, j] = unit.location;
         map[i][j].unit = true;
@@ -164,7 +169,7 @@
                     </tr>
                 <% } %>
             <% }); %>
-    <% }); %>
+        <% }); %>
     </table>
 
 <script>
