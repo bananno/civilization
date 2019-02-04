@@ -129,16 +129,30 @@ function moveUnit(req, res, next) {
         return true;
       })();
 
+      let tileList = [];
+
       if (legalMove) {
         unitData.location = [newRow, newCol];
         unitData.movesRemaining = unit.movesRemaining - 1;
+
+        let newTiles = [];
+
+        if (newRow != oldRow) {
+          let temp = newRow  + (newRow > oldRow ? 1 : -1);
+          if (temp >= 0 && temp < 10) {
+            newTiles = [[temp, newCol - 1], [temp, newCol], [temp, newCol + 1]];
+          }
+        }
+
+        newTiles.forEach(coords => {
+          let tile = data.tiles.filter(tile => {
+            return tile.row == coords[0] && tile.column == coords[1];
+          })[0];
+          if (tile) {
+            tileList.push(tile);
+          }
+        });
       }
-
-      let tileList = [];
-
-      data.tiles.forEach(tile => {
-        tileList.push(tile);
-      });
 
       const updateTile = (i) => {
         if (i >= tileList.length) {
