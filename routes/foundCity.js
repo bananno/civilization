@@ -17,6 +17,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
     }
 
     let cityLocation = unit.location;
+    let cityOwner = unit.player;
 
     Unit.deleteOne(unit, error => {
       if (error) {
@@ -56,7 +57,19 @@ router.post('/foundCity/:unitId', (req, res, next) => {
         }
       }
 
-      return res.redirect('/');
+      const claimTile = (i) => {
+        if (i >= cityTiles.length) {
+          return res.redirect('/');
+        }
+        cityTiles[i].update({ owner: cityOwner }, (error, tile) => {
+          if (error) {
+            return next(error);
+          }
+          claimTile(i + 1);
+        });
+      }
+
+      claimTile(0);
     });
   });
 });
