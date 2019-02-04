@@ -33,6 +33,7 @@ router.post('/newGame', (req, res, next) => {
             game: game,
             row: i,
             column: j,
+            discovered: [],
           };
           tileList.push(tileData);
         }
@@ -62,6 +63,9 @@ router.post('/newGame', (req, res, next) => {
           };
 
           tempUnitLocationCount += 2;
+
+          tileList = setTilesDiscovered(tileList, tempUnit1, player);
+          tileList = setTilesDiscovered(tileList, tempUnit2, player);
 
           Unit.create(tempUnit1, (error, unit1) => {
             if (error) {
@@ -99,5 +103,33 @@ router.post('/newGame', (req, res, next) => {
     }
   });
 });
+
+function setTilesDiscovered(tileList, unit, player) {
+  let startRow = unit.location[0] - 1;
+  let endRow = unit.location[0] + 1;
+  let startCol = unit.location[1] - 1;
+  let endCol = unit.location[1] + 1;
+
+  for (let row = startRow; row <= endRow; row++) {
+    if (row < 0) {
+      continue;
+    }
+    if (row == 10) {
+      break;
+    }
+    for (let tempCol = startCol; tempCol <= endCol; tempCol++) {
+      let col = tempCol;
+      if (col < 0) {
+        col = 9;
+      } else if (col == 10) {
+        col = 0;
+      }
+
+      console.log(player.name + ' discovered: ' + row + ', ' + col);
+    }
+  }
+
+  return tileList;
+}
 
 module.exports = router;
