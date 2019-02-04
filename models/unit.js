@@ -15,8 +15,9 @@ var UnitSchema = new mongoose.Schema({
     type: Array,
   },
   unitType: {
-    type: Number,
-    default: 0,
+    name: {
+      type: String,
+    },
   },
   movesRemaining: {
     type: Number,
