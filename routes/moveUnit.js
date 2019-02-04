@@ -8,6 +8,9 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
   let newCol = parseInt(req.params.col);
 
   getData(req, res, next, (data) => {
+    let numMapRows = data.game.mapSize[0];
+    let numMapCols = data.game.mapSize[1];
+
     let unit = data.units.filter(unit => {
       return unit._id == unitId;
     })[0];
@@ -21,7 +24,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
         return false;
       }
 
-      if (newRow < 0 || newCol >= 10) {
+      if (newRow < 0 || newRow >= numMapRows) {
         return false;
       }
 
@@ -29,7 +32,8 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
         return false;
       }
 
-      let wrapColumn = (oldCol == 0 && newCol == 9) || (oldCol == 9 && newCol == 0);
+      let wrapColumn = (oldCol == 0 && newCol == numMapCols - 1)
+        || (oldCol == numMapCols - 1 && newCol == 0);
       let oneColAway = Math.abs(oldCol - newCol) == 1 || wrapColumn;
       let oneRowAway = Math.abs(oldRow - newRow) == 1;
 
@@ -55,7 +59,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       unitData.location = [newRow, newCol];
       unitData.movesRemaining = unit.movesRemaining - 1;
 
-      let newTiles = getNewlyDiscoveredTiles(oldRow, oldCol, newRow, newCol);
+      let newTiles = getNewlyDiscoveredTiles(data.game.mapSize, oldRow, oldCol, newRow, newCol);
 
       newTiles.forEach(coords => {
         let tile = data.tiles.filter(tile => {
@@ -92,10 +96,13 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
   });
 });
 
-function getNewlyDiscoveredTiles(oldRow, oldCol, newRow, newCol) {
+function getNewlyDiscoveredTiles(mapSize, oldRow, oldCol, newRow, newCol) {
+  let numMapRows = mapSize[0];
+  let numMapCols = mapSize[1];
+
   if (newRow != oldRow) {
     let tempRow = newRow + (newRow > oldRow ? 1 : -1);
-    if (tempRow < 0 || tempRow >= 10) {
+    if (tempRow < 0 || tempRow >= numMapRows) {
       return [];
     }
     return [[tempRow, newCol - 1], [tempRow, newCol], [tempRow, newCol + 1]];
@@ -104,8 +111,8 @@ function getNewlyDiscoveredTiles(oldRow, oldCol, newRow, newCol) {
   if (newCol != oldCol) {
     let tempCol = newCol + (newCol > oldCol ? 1 : -1);
     if (tempCol < 0) {
-      tempCol = 9;
-    } else if (tempCol > 9) {
+      tempCol = numMapCols - 1;
+    } else if (tempCol == numMapCols) {
       tempCol = 0;
     }
     return [[newRow - 1, tempCol], [newRow, tempCol], [newRow + 1, tempCol]];
