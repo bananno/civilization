@@ -112,12 +112,22 @@ function newGamePost(req, res, next) {
               if (i < numPlayers - 1) {
                 createPlayer(i + 1);
               } else {
-                res.redirect('/');
+                createTile(0, 0);
               }
             });
           });
         });
       };
+
+      const createTile = (row, col) => {
+        if (row == 10) {
+          res.redirect('/');
+        } else if (col == 10) {
+          createTile(row + 1, 0);
+        } else {
+          createTile(row, col + 1);
+        }
+      }
 
       createPlayer(0);
     }
