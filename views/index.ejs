@@ -149,6 +149,10 @@
         <% }); %>
     </table>
 
+    <div id="selected-unit" style="border: 1px solid black">
+        <div class="close">X</div>
+    </div>
+
     <h3>Units:</h3>
 
     <table border="1">
@@ -192,6 +196,7 @@
         $('.unit[unit-id="' + id + '"]').addClass('active');
         $('form.move-unit').hide();
         $('form.move-unit[unit-id="' + id + '"]').show();
+        $('#selected-unit').toggle(id && id != 'null');
     }
 
     setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
@@ -201,6 +206,10 @@
         $unit.click(() => {
             setActiveUnit($unit.attr('unit-id'));
         });
+    });
+
+    $('#selected-unit .close').click(() => {
+        setActiveUnit(null);
     });
 </script>
 </body>
