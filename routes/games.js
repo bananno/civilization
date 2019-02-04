@@ -71,73 +71,55 @@ function newGamePost(req, res, next) {
     } else {
       req.session.gameId = game._id;
 
-      var playerData1 = {
-        game: game,
-        name: req.body.playername_0.trim() || 'Player 1',
-      };
+      const numPlayers = 2;
+      const tempUnitLocations = [[3, 2], [2, 6], [6, 7], [7, 5]];
+      let tempUnitLocationCount = 0;
 
-      var playerData2 = {
-        game: game,
-        name: req.body.playername_1.trim() || 'Player 2',
-      };
+      const createPlayer = (i) => {
+        var playerData = {
+          game: game,
+          name: req.body['playername_' + i].trim() || 'Player ' + (i + 1),
+        };
 
-      Player.create(playerData1, (error, player1) => {
-        if (error) {
-          return next(error);
-        }
-        Player.create(playerData2, (error, player2) => {
+        Player.create(playerData, (error, player) => {
           if (error) {
             return next(error);
           }
 
-          var tempUnit1a = {
+          var tempUnit1 = {
             game: game,
-            player: player1,
-            location: [3, 2],
+            player: player,
+            location: tempUnitLocations[tempUnitLocationCount],
           };
 
-          var tempUnit1b = {
+          var tempUnit2 = {
             game: game,
-            player: player1,
-            location: [2, 6],
+            player: player,
+            location: tempUnitLocations[tempUnitLocationCount + 1],
           };
 
-          var tempUnit2a = {
-            game: game,
-            player: player2,
-            location: [6, 7],
-          };
+          tempUnitLocationCount += 2;
 
-          var tempUnit2b = {
-            game: game,
-            player: player2,
-            location: [7, 5],
-          };
-
-          Unit.create(tempUnit1a, (error, unit1) => {
+          Unit.create(tempUnit1, (error, unit1) => {
             if (error) {
               return next(error);
             }
-            Unit.create(tempUnit2a, (error, unit2) => {
+            Unit.create(tempUnit2, (error, unit2) => {
               if (error) {
                 return next(error);
               }
-              Unit.create(tempUnit1b, (error, unit1) => {
-                if (error) {
-                  return next(error);
-                }
-                Unit.create(tempUnit2b, (error, unit2) => {
-                  if (error) {
-                    return next(error);
-                  }
 
-                  res.redirect('/');
-                });
-              });
+              if (i < numPlayers - 1) {
+                createPlayer(i + 1);
+              } else {
+                res.redirect('/');
+              }
             });
           });
         });
-      });
+      };
+
+      createPlayer(0);
     }
   });
 }
