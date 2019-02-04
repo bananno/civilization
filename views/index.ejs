@@ -18,6 +18,7 @@
         for (let j = 0; j < 10; j++) {
             map[i][j] = {
                 unit: false,
+                moves: [],
             };
         }
     }
@@ -43,9 +44,12 @@
                     j1 = 0;
                 }
                 map[i1][j1].lit = true;
+
                 if ((i1 === i || j1 === j) && (i1 != i || j1 != j)) {
-                    map[i1][j1].move = true;
-                    map[i1][j1].movePath = '/moveUnit/' + unit._id + '/' + i1 + '/' + j1;
+                    map[i1][j1].moves.push({
+                        unit: unit._id,
+                        path: '/moveUnit/' + unit._id + '/' + i1 + '/' + j1,
+                    });
                 }
             }
         }
@@ -114,10 +118,12 @@
                             <span class="unit turn" unit-id="<%= cell.unitId %>">**</span>
                         <% } else if (cell.rivalUnit) { %>
                             <span class="unit rival" unit-id="<%= cell.unitId %>">*</span>
-                        <% } else if (cell.move) { %>
-                            <form action="<%= cell.movePath %>" method="post">
-                                <button type="submit"> </button>
-                            </form>
+                        <% } else { %>
+                            <% cell.moves.forEach(move => { %>
+                                <form action="<%= move.path %>" method="post">
+                                    <button type="submit"> </button>
+                                </form>
+                            <% }); %>
                         <% } %>
                     </td>
                 <% }); %>
