@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const getData = require('./getData');
+
 const Game = require('../models/game');
 const Player = require('../models/player');
 const Tile = require('../models/tile');
@@ -10,46 +12,14 @@ router.get('/', getHomePage);
 router.post('/endTurn', endTurn);
 router.post('/moveUnit/:unitId/:row/:col', moveUnit);
 
-function withCurrentGame(req, res, next, callback) {
-  Game.findById(req.session.gameId, (error, game) => {
-    if (error) {
-      return next(error);
-    }
-    if (game == null) {
-      return res.redirect('/loadGame');
-    }
-    Player.find({ game: game }, (error, players) => {
-      if (error) {
-        return next(error);
-      }
-      Tile.find({ game: game }, (error, tiles) => {
-        if (error) {
-          return next(error);
-        }
-        Unit.find({ game: game }, (error, units) => {
-          if (error) {
-            return next(error);
-          }
-          callback({
-            game: game,
-            players: players,
-            tiles: tiles,
-            units: units,
-          });
-        });
-      });
-    });
-  });
-}
-
 function getHomePage(req, res, next) {
-  withCurrentGame(req, res, next, (data) => {
+  getData(req, res, next, (data) => {
     res.render('index', data);
   });
 }
 
 function endTurn(req, res, next) {
-  withCurrentGame(req, res, next, (data) => {
+  getData(req, res, next, (data) => {
     let gameData = {};
     let resetMoves = false;
     if (data.game.nextPlayer < data.players.length - 1) {
@@ -86,7 +56,7 @@ function moveUnit(req, res, next) {
   let newRow = parseInt(req.params.row);
   let newCol = parseInt(req.params.col);
 
-  withCurrentGame(req, res, next, (data) => {
+  getData(req, res, next, (data) => {
     Unit.findById(unitId, (error, unit) => {
       if (error) {
         return next(error);
