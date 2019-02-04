@@ -125,7 +125,17 @@ function newGamePost(req, res, next) {
         } else if (col == 10) {
           createTile(row + 1, 0);
         } else {
-          createTile(row, col + 1);
+          let tileData = {
+            game: game,
+            row: row,
+            column: col,
+          };
+          Tile.create(tileData, (error, tile) => {
+            if (error) {
+              return next(error);
+            }
+            createTile(row, col + 1);
+          });
         }
       }
 
