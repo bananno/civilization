@@ -11,11 +11,6 @@ const MongoStore = require('connect-mongo')(session);
 mongoose.connect('mongodb://localhost/civilization');
 const db = mongoose.connection;
 
-const indexRouter = require('./routes/index');
-const gamesRouter = require('./routes/games');
-const newGameRouter = require('./routes/newGame');
-const moveUnitRouter = require('./routes/moveUnit');
-
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -39,10 +34,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/', gamesRouter);
-app.use('/', newGameRouter);
-app.use('/', moveUnitRouter);
+const routeFiles = [
+  'index',
+  'games',
+  'newGame',
+  'moveUnit',
+];
+
+routeFiles.forEach(filename => {
+  const router = require('./routes/' + filename);
+  app.use('/', router);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
