@@ -55,14 +55,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       unitData.location = [newRow, newCol];
       unitData.movesRemaining = unit.movesRemaining - 1;
 
-      let newTiles = [];
-
-      if (newRow != oldRow) {
-        let temp = newRow  + (newRow > oldRow ? 1 : -1);
-        if (temp >= 0 && temp < 10) {
-          newTiles = [[temp, newCol - 1], [temp, newCol], [temp, newCol + 1]];
-        }
-      }
+      let newTiles = getNewlyDiscoveredTiles(oldRow, oldCol, newRow, newCol);
 
       newTiles.forEach(coords => {
         let tile = data.tiles.filter(tile => {
@@ -98,5 +91,15 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
     });
   });
 });
+
+function getNewlyDiscoveredTiles(oldRow, oldCol, newRow, newCol) {
+  if (newRow != oldRow) {
+    let temp = newRow  + (newRow > oldRow ? 1 : -1);
+    if (temp >= 0 && temp < 10) {
+      return [[temp, newCol - 1], [temp, newCol], [temp, newCol + 1]];
+    }
+  }
+  return [];
+}
 
 module.exports = router;
