@@ -27,22 +27,30 @@ router.post('/foundCity/:unitId', (req, res, next) => {
         return next(error);
       }
 
-      let startRow = cityLocation[0] - 1;
-      let endRow = cityLocation[0] + 1;
-      let startCol = cityLocation[1] - 1;
-      let endCol = cityLocation[1] + 1;
-
-      if (startRow < 0) {
-        startRow = 0;
-      }
-      if (endRow > numMapCols - 1) {
-        endRow = numMapCols - 1;
-      }
-
       let cityTiles = [];
 
+      let startRowCity = cityLocation[0] - 1;
+      let endRowCity = cityLocation[0] + 1;
+      let startColCity = cityLocation[1] - 1;
+      let endColCity = cityLocation[1] + 1;
+
+      let startRow = startRowCity - 1;
+      let endRow = endRowCity + 1;
+      let startCol = startColCity - 1;
+      let endCol = endColCity + 1;
+
       for (let row = startRow; row <= endRow; row++) {
+        if (row < 0) {
+          continue;
+        }
+        if (row >= numMapCols) {
+          break;
+        }
+
+        let isCityRow = row >= startRowCity && row <= endRowCity;
+
         for (let col1 = startCol; col1 <= endCol; col1++) {
+          let isCityCol = col1 >= startColCity && col1 <= endColCity;
           let col = col1;
           if (col < 0) {
             col = numMapCols - 1;
@@ -54,8 +62,22 @@ router.post('/foundCity/:unitId', (req, res, next) => {
             return tile.row == row && tile.column == col;
           })[0];
 
-          if (tile && tile.owner == null) {
-            cityTiles.push(tile);
+          if (tile) {
+            let tileObj = {
+              tile: tile,
+              update: {}
+            };
+
+            tileObj.update.discovered = tile.discovered;
+            tileObj.update.discovered.push(cityOwner);
+
+            if (isCityRow && isCityCol) {
+              if (tile.owner == null) {
+                tileObj.update.owner = cityOwner;
+              }
+            }
+
+            cityTiles.push(tileObj);
           }
         }
       }
@@ -64,7 +86,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
         if (i >= cityTiles.length) {
           return res.redirect('/');
         }
-        cityTiles[i].update({ owner: cityOwner }, (error, tile) => {
+        cityTiles[i].tile.update(cityTiles[i].update, (error, tile) => {
           if (error) {
             return next(error);
           }
