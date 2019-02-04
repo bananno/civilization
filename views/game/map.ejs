@@ -1,0 +1,39 @@
+
+<table>
+    <% map.forEach(row => { %>
+        <tr>
+            <% row.forEach(cell => { %>
+                <%
+                    let className = 'map-cell';
+                    if (cell.player) {
+                        className += ' player' + cell.player;
+                    }
+                    if (cell.lit || cell.owned) {
+                        className += ' lit';
+                    } else if (cell.discovered) {
+                        className += ' discovered';
+                    } else {
+                        className += ' dark';
+                    }
+                %>
+                <td class="<%= className %>">
+                    <% if (cell.city) { %>
+                        &#9733;
+                    <% } %>
+                    <% if (cell.unit) { %>
+                        <span class="unit turn" unit-id="<%= cell.unitId %>">**</span>
+                    <% } else if (cell.rivalUnit) { %>
+                        <span class="unit rival" unit-id="<%= cell.unitId %>">*</span>
+                    <% } else { %>
+                        <% cell.moves.forEach(move => { %>
+                            <form action="<%= move.path %>" method="post" class="move-unit"
+                                unit-id="<%= move.unitId %>">
+                                <button type="submit"> </button>
+                            </form>
+                        <% }); %>
+                    <% } %>
+                </td>
+            <% }); %>
+        </tr>
+    <% }); %>
+</table>
