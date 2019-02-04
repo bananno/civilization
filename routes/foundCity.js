@@ -9,6 +9,11 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return unit._id == unitId;
     })[0];
 
+    if (unit.unitType.name != 'settler' || unit.movesRemaining == 0) {
+      console.log('invalid unit action');
+      return res.redirect('/');
+    }
+
     return res.redirect('/');
   });
 });
