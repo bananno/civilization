@@ -94,11 +94,23 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
 
 function getNewlyDiscoveredTiles(oldRow, oldCol, newRow, newCol) {
   if (newRow != oldRow) {
-    let temp = newRow  + (newRow > oldRow ? 1 : -1);
-    if (temp >= 0 && temp < 10) {
-      return [[temp, newCol - 1], [temp, newCol], [temp, newCol + 1]];
+    let tempRow = newRow + (newRow > oldRow ? 1 : -1);
+    if (tempRow < 0 || tempRow >= 10) {
+      return [];
     }
+    return [[tempRow, newCol - 1], [tempRow, newCol], [tempRow, newCol + 1]];
   }
+
+  if (newCol != oldCol) {
+    let tempCol = newCol + (newCol > oldCol ? 1 : -1);
+    if (tempCol < 0) {
+      tempCol = 9;
+    } else if (tempCol > 9) {
+      tempCol = 0;
+    }
+    return [[newRow - 1, tempCol], [newRow, tempCol], [newRow + 1, tempCol]];
+  }
+
   return [];
 }
 
