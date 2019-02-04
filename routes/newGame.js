@@ -22,7 +22,7 @@ router.post('/newGame', (req, res, next) => {
       req.session.gameId = game._id;
 
       const numPlayers = 2;
-      const tempUnitLocations = [[3, 2], [2, 6], [6, 7], [7, 5]];
+      const tempUnitLocations = [[3, 0], [2, 6], [6, 9], [9, 5]];
       let tempUnitLocationCount = 0;
 
       let tileList = [];
@@ -109,27 +109,35 @@ function setTilesDiscovered(tileList, unit, player) {
   let endRow = unit.location[0] + 1;
   let startCol = unit.location[1] - 1;
   let endCol = unit.location[1] + 1;
+  let wrapColumn = false;
 
-  for (let row = startRow; row <= endRow; row++) {
-    if (row < 0) {
-      continue;
-    }
-    if (row == 10) {
-      break;
-    }
-    for (let tempCol = startCol; tempCol <= endCol; tempCol++) {
-      let col = tempCol;
-      if (col < 0) {
-        col = 9;
-      } else if (col == 10) {
-        col = 0;
-      }
-
-      console.log(player.name + ' discovered: ' + row + ', ' + col);
-    }
+  if (startCol < 0) {
+    wrapColumn = true;
+    startCol = 10 + startCol;
+  } else if (endCol > 9) {
+    wrapColumn = true;
+    endCol = endCol - 10;
   }
 
-  return tileList;
+  return tileList.map(tile => {
+    if (tile.row < startRow || tile.row > endRow) {
+      return tile;
+    }
+
+    if (wrapColumn) {
+      if (tile.column < startCol && tile.column > endCol) {
+        return tile;
+      }
+    } else {
+      if (tile.column < startCol || tile.column > endCol) {
+        return tile;
+      }
+    }
+
+    tile.discovered.push(player);
+
+    return tile;
+  });
 }
 
 module.exports = router;
