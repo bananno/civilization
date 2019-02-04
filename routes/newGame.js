@@ -10,6 +10,7 @@ const unitTypes = require('../models/unitTypes');
 router.post('/newGame', (req, res, next) => {
   var gameData = {
     name: req.body.name || '',
+    mapSize: [10, 10],
   };
 
   if (gameData.name.length === 0) {
@@ -28,8 +29,8 @@ router.post('/newGame', (req, res, next) => {
 
       let tileList = [];
 
-      for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
+      for (let i = 0; i < game.mapSize[0]; i++) {
+        for (let j = 0; j < game.mapSize[1]; j++) {
           let tileData = {
             game: game,
             row: i,
@@ -67,8 +68,8 @@ router.post('/newGame', (req, res, next) => {
 
           tempUnitLocationCount += 2;
 
-          tileList = setTilesDiscovered(tileList, tempUnit1, player);
-          tileList = setTilesDiscovered(tileList, tempUnit2, player);
+          tileList = setTilesDiscovered(game, tileList, tempUnit1, player);
+          tileList = setTilesDiscovered(game, tileList, tempUnit2, player);
 
           Unit.create(tempUnit1, (error, unit1) => {
             if (error) {
@@ -107,7 +108,8 @@ router.post('/newGame', (req, res, next) => {
   });
 });
 
-function setTilesDiscovered(tileList, unit, player) {
+function setTilesDiscovered(game, tileList, unit, player) {
+  let numMapCols = game.mapSize[1];
   let startRow = unit.location[0] - 1;
   let endRow = unit.location[0] + 1;
   let startCol = unit.location[1] - 1;
@@ -116,10 +118,10 @@ function setTilesDiscovered(tileList, unit, player) {
 
   if (startCol < 0) {
     wrapColumn = true;
-    startCol = 10 + startCol;
-  } else if (endCol > 9) {
+    startCol = numMapCols + startCol;
+  } else if (endCol > numMapCols - 1) {
     wrapColumn = true;
-    endCol = endCol - 10;
+    endCol = endCol - numMapCols;
   }
 
   return tileList.map(tile => {
