@@ -31,15 +31,16 @@
             if (i1 < 0) {
                 continue;
             }
-            if (i1 >= 10) {
+            if (i1 == 10) {
                 break;
             }
-            for (j1 = j - 1; j1 <= j + 1; j1++) {
+            for (j2 = j - 1; j2 <= j + 1; j2++) {
+                let j1 = j2;
                 if (j1 < 0) {
-                    continue;
+                    j1 = 9;
                 }
-                if (j1 >= 10) {
-                    break;
+                if (j1 == 10) {
+                    j1 = 0;
                 }
                 map[i1][j1].lit = true;
                 if ((i1 === i || j1 === j) && (i1 != i || j1 != j)) {
