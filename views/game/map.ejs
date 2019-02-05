@@ -1,3 +1,30 @@
+<%
+    let showTestMap = false;
+%>
+
+<style>
+<% if (showTestMap) { %>
+    .map-cell.boardnum-1 {
+      border: 1px solid gray;
+    }
+    .map-cell.boardnum-0,
+    .map-cell.boardnum-2 {
+      border: 1px solid pink;
+    }
+    .map-cell.off-screen.boardnum-1 {
+      border-color: white;
+    }
+    .map-cell.off-screen.boardnum-0,
+    .map-cell.off-screen.boardnum-2 {
+      border-color: red;
+    }
+<% } else { %>
+    .map-cell.off-screen {
+      display: none;
+    }
+<% } %>
+</style>
+
 <div id="map">
     <table>
         <% map.forEach((row, r) => { %>
