@@ -1,0 +1,30 @@
+
+<h1>Civilization</h1>
+
+<p>
+    Current game = <%= game.name %>
+    (<a href="/exitGame">load different game</a>)
+</p>
+
+<p>
+    Turn number = <%= game.turn %>
+</p>
+
+<p>
+    <b>Players:</b>
+</p>
+
+<ul>
+    <% players.forEach((player, i) => { %>
+        <li>
+            <%= player.name %>
+            <% if (game.nextPlayer === i) { %>
+                (TURN)
+            <% }%>
+        </li>
+    <% }); %>
+</ul>
+
+<form action="/endTurn" method="POST">
+    <button type="submit">end turn for <%= players[game.nextPlayer].name %></button>
+</form>
