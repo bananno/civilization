@@ -7,6 +7,10 @@
   display: none;
 }
 
+.map-cell.off-screen {
+  display: none;
+}
+
 .map-cell {
   border: 1px solid black;
   width: 30px;

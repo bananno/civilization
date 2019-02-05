@@ -40,6 +40,9 @@
     </div>
     <script>
         let mapCenter = [<%= mapCenter[0] %>, <%= mapCenter[1] %>];
+        let numRows = <%= game.mapSize[0] %>;
+        let numCols = <%= game.mapSize[1] %>;
+
         setupActiveUnitSelection();
         setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
     </script>

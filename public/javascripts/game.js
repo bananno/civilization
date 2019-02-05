@@ -31,6 +31,7 @@ function setActiveUnit(id) {
 
 function centerMap() {
   $('.map-row').hide();
+  $('.map-cell').addClass('off-screen');
 
   let startRow = mapCenter[0] - 5;
   if (startRow < 0) {
@@ -38,7 +39,24 @@ function centerMap() {
   }
   let endRow = startRow + 10;
 
+  let startCol = mapCenter[1] - 5;
+  let endCol = startCol + 10;
+
   for (let r = startRow; r <= endRow; r++) {
     $('.map-row').filter('[row="' + r + '"]').show();
+    for (let c = startCol; c <= endCol; c++) {
+
+      let selector = '.map-cell';
+
+      if (c < 0) {
+        selector += '.boardnum-0[column="' + (c + numCols) + '"]';
+      } else if (c >= numCols) {
+        selector += '.boardnum-2[column="' + (c - numCols) + '"]';
+      } else {
+        selector += '.boardnum-1[column="' + c + '"]';
+      }
+
+      $(selector).removeClass('off-screen');
+    }
   }
 }
