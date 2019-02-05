@@ -1,0 +1,91 @@
+<%
+    for (let i = 0; i < game.mapSize[0]; i++) {
+        map[i] = [];
+        for (let j = 0; j < game.mapSize[1]; j++) {
+            map[i][j] = {
+                city: false,
+                unit: false,
+                moves: [],
+                lit: false,
+                discovered: false,
+                player: null,
+                owned: false,
+            };
+        }
+    }
+
+    let playerNums = {};
+    players.forEach((player, i) => {
+        playerNums[player._id] = i;
+    });
+
+    cities.forEach(city => {
+        map[city.location[0]][city.location[1]].city = true;
+    });
+
+    tiles.forEach(tile => {
+        map[tile.row] = map[tile.row] || [];
+        map[tile.row][tile.column].tile = tile;
+
+        if (tile.owner) {
+            map[tile.row][tile.column].player = playerNums[tile.owner] + 1;
+            if (tile.owner == currentTurnPlayerId) {
+                map[tile.row][tile.column].owned = true;
+
+                for (let i = tile.row - 1; i <= tile.row + 1; i++) {
+                    for (let j = tile.column - 1; j <= tile.column + 1; j++) {
+                        if (map[i] && map[i][j]) {
+                            map[i][j].lit = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (tile.discovered.indexOf(currentTurnPlayerId) >= 0) {
+            map[tile.row][tile.column].discovered = true;
+        }
+    });
+
+    currentTurnUnits.forEach(unit => {
+        let [i, j] = unit.location;
+        map[i][j].unit = true;
+        map[i][j].unitId = unit._id;
+
+        for (i1 = i - 1; i1 <= i + 1; i1++) {
+            if (i1 < 0) {
+                continue;
+            }
+            if (i1 == game.mapSize[0]) {
+                break;
+            }
+            for (j2 = j - 1; j2 <= j + 1; j2++) {
+                let j1 = j2;
+                if (j1 < 0) {
+                    j1 = game.mapSize[1] - 1;
+                }
+                if (j1 == game.mapSize[1]) {
+                    j1 = 0;
+                }
+                map[i1][j1].lit = true;
+
+                if (unit.movesRemaining == 0) {
+                    continue;
+                }
+
+                if ((i1 === i || j1 === j) && (i1 != i || j1 != j)) {
+                    map[i1][j1].moves.push({
+                        unitId: unit._id,
+                        path: '/moveUnit/' + unit._id + '/' + i1 + '/' + j1,
+                    });
+                }
+            }
+        }
+    });
+
+    rivalUnits.forEach(unit => {
+        let [i, j] = unit.location;
+        map[i][j].rivalUnit = true;
+        map[i][j].unitId = unit._id;
+    });
+%>
