@@ -118,8 +118,12 @@
     <script src="/javascripts/game.js"></script>
 </head>
 <body>
-    <% include ./header %>
-    <% include ./map %>
+    <div id="game-sidebar">
+        <% include ./header %>
+    </div>
+    <div id="game-map">
+        <% include ./map %>
+    </div>
 
     <% currentTurnUnits.forEach(unit => { %>
         <%

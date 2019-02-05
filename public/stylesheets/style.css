@@ -26,25 +26,16 @@ a {
   padding: 10px;
 }
 
-#game-header {
-  background-color: black;
-  color: white;
-  height: 10%;
-}
-
-#game-header ul {
-  list-style: none;
-}
-
-#game-header li {
+#game-sidebar, #game-map {
   display: inline-block;
-  margin: 5px;
+  height: 100%;
+  vertical-align: top;
 }
 
-#players-box {
-  display: none;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: white;
+#game-sidebar {
+  width: 18%;
+}
+
+#game-map {
+  width: 80%;
 }
