@@ -14,6 +14,8 @@
     })[0];
 
     let map = [];
+
+    let mapCenter = currentTurnUnits[0].location;
 %>
 
 <% include ./variables %>
@@ -37,6 +39,7 @@
         <% include ./map %>
     </div>
     <script>
+        let mapCenter = [<%= mapCenter[0] %>, <%= mapCenter[1] %>];
         setupActiveUnitSelection();
         setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
     </script>
