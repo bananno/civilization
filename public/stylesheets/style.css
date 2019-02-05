@@ -33,9 +33,24 @@ a {
 }
 
 #game-sidebar {
-  width: 18%;
+  width: 15%;
+  padding: 25px;
 }
 
 #game-map {
   width: 80%;
+}
+
+#game-sidebar h1 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#game-sidebar h2 {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+#game-sidebar .info {
+  margin: 10px;
 }

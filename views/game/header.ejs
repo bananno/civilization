@@ -1,27 +1,22 @@
 
-<div id="game-header">
-    <ul>
-        <li>Civilization</li>
-        <li>Turn: <%= game.turn %></li>
-        <li><%= game.name %></li>
-        <li><a href="/exitGame">load different game</a></li>
-        <li onClick="showPlayersList(true)">players</li>
-    </ul>
+<h1>Civilization</h1>
 
+<div class="info">
     <form action="/endTurn" method="POST">
         <button type="submit">end turn for <%= players[game.nextPlayer].name %></button>
     </form>
 </div>
 
-<div id="players-box">
-    <div class="close" onClick="showPlayersList(false)">
-        X
-    </div>
+<div class="info">
+    <%= game.name %>
+</div>
 
-    <p>
-        <b>Players:</b>
-    </p>
+<div class="info">
+    Turn: <%= game.turn %>
+</div>
 
+<div class="info">
+    <h2>Players</h2>
     <ul>
         <% players.forEach((player, i) => { %>
             <li>
@@ -32,4 +27,8 @@
             </li>
         <% }); %>
     </ul>
+</div>
+
+<div class="info">
+    <a href="/exitGame">load different game</a>
 </div>
