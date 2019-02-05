@@ -5,18 +5,21 @@
 <style>
 <% if (showTestMap) { %>
     .map-cell.boardnum-1 {
-      border: 1px solid gray;
+      border: 1px solid white;
     }
     .map-cell.boardnum-0,
     .map-cell.boardnum-2 {
-      border: 1px solid pink;
+      border: 1px solid red;
     }
     .map-cell.off-screen.boardnum-1 {
-      border-color: white;
+      border-color: #555;
     }
     .map-cell.off-screen.boardnum-0,
     .map-cell.off-screen.boardnum-2 {
-      border-color: red;
+      border-color: pink;
+    }
+    .map-cell.center {
+      border-color: blue;
     }
 <% } else { %>
     .map-cell.off-screen {

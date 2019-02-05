@@ -26,6 +26,10 @@ function setActiveUnit(id) {
   $('.active-unit').hide();
   $('.active-unit[unit-id="' + id + '"]').show();
 
+  if (id && id.length & id != 'null') {
+    mapCenter = units[id].location.concat();
+  }
+
   centerMap();
 }
 
@@ -59,4 +63,7 @@ function centerMap() {
       $(selector).removeClass('off-screen');
     }
   }
+
+  $('.map-cell').removeClass('center');
+  $('.map-cell[row="' + mapCenter[0] + '"][column="' + mapCenter[1] + '"]').addClass('center');
 }

@@ -39,6 +39,15 @@
         <% include ./map %>
     </div>
     <script>
+        let units = [];
+
+        <% units.forEach(unit => { %>
+            units['<%= unit._id %>'] = {
+                name: '<%= unit.unitType.name %>',
+                location: [<%= unit.location[0] %>, <%= unit.location[1] %>],
+            };
+        <% }); %>
+
         let mapCenter = [<%= mapCenter[0] %>, <%= mapCenter[1] %>];
         let numRows = <%= game.mapSize[0] %>;
         let numCols = <%= game.mapSize[1] %>;
