@@ -125,73 +125,7 @@
         <% include ./map %>
     </div>
 
-    <% currentTurnUnits.forEach(unit => { %>
-        <%
-            let type = unit.unitType.name;
-            let disableButton = unit.movesRemaining == 0 ? 'disabled="true"' : '';
-            let foundCity = type == 'settler';
-        %>
-        <div class="infobox" unit-id="<%= unit._id %>">
-            <div class="close">X</div>
-            <div>
-                <b>type:</b>
-                <%= unit.unitType.name %>
-            </div>
-            <div>
-                <b>moves:</b>
-                <%= unit.movesRemaining %>
-            </div>
-            <div>
-                <b>actions:</b>
-                <% if (foundCity) { %>
-                    <form action="/foundCity/<%= unit._id %>" method="post">
-                        <button <%= disableButton %>>found city</button>
-                    </form>
-                <% } %>
-            </div>
-        </div>
-    <% }); %>
-
-    <h3>Units:</h3>
-
-    <table border="1">
-        <tr>
-            <th>player</th>
-            <th>unit type</th>
-            <th>location</th>
-            <th>click to activate</th>
-            <th>moves remaining</th>
-        </tr>
-        <% players.forEach(player => { %>
-            <% units.forEach((unit, i) => { %>
-                <% if (unit.player == '' + player._id) { %>
-                    <tr>
-                        <td>
-                            <%= player.name %>
-                        </td>
-                        <td>
-                            <%= unit.unitType.name %>
-                        </td>
-                        <td>
-                            <%= unit.location %>
-                        </td>
-                        <td>
-                            <% if (player._id == currentTurnPlayerId) { %>
-                                <span onClick="setActiveUnit('<%= unit._id %>')">activate</span>
-                            <% } %>
-                        </td>
-                        <td>
-                            <%= unit.movesRemaining %>
-                        </td>
-                    </tr>
-                <% } %>
-            <% }); %>
-        <% }); %>
-    </table>
-
 <script>
-
-
     setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
 
     $('.unit.turn').toArray().forEach(unit => {

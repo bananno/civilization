@@ -30,5 +30,42 @@
 </div>
 
 <div class="info">
+    <% currentTurnUnits.forEach(unit => { %>
+        <p onClick="setActiveUnit('<%= unit._id %>')">
+            <%= unit.unitType.name %>
+            <br/>
+            <%= unit.movesRemaining %> moves remaining
+        </p>
+    <% }); %>
+</div>
+
+<div class="info">
     <a href="/exitGame">load different game</a>
 </div>
+
+<% currentTurnUnits.forEach(unit => { %>
+    <%
+        let type = unit.unitType.name;
+        let disableButton = unit.movesRemaining == 0 ? 'disabled="true"' : '';
+        let foundCity = type == 'settler';
+    %>
+    <div class="active-unit" unit-id="<%= unit._id %>">
+        <div class="close">X</div>
+        <div>
+            <b>type:</b>
+            <%= unit.unitType.name %>
+        </div>
+        <div>
+            <b>moves:</b>
+            <%= unit.movesRemaining %>
+        </div>
+        <div>
+            <b>actions:</b>
+            <% if (foundCity) { %>
+                <form action="/foundCity/<%= unit._id %>" method="post">
+                    <button <%= disableButton %>>found city</button>
+                </form>
+            <% } %>
+        </div>
+    </div>
+<% }); %>
