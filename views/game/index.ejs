@@ -124,20 +124,9 @@
     <div id="game-map">
         <% include ./map %>
     </div>
-
-<script>
-    setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
-
-    $('.unit.turn').toArray().forEach(unit => {
-        let $unit = $(unit);
-        $unit.click(() => {
-            setActiveUnit($unit.attr('unit-id'));
-        });
-    });
-
-    $('.infobox .close').click(() => {
-        setActiveUnit(null);
-    });
-</script>
+    <script>
+        setupActiveUnitSelection();
+        setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
+    </script>
 </body>
 </html>
