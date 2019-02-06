@@ -1,11 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const Game = require('../models/game');
+const getData = require('./getData');
 
+router.get('/', getHomePage);
 router.get('/newGame', newGameGet);
 router.get('/loadGame', loadGameGet);
 router.get('/loadGame/:gameId', loadGamePost);
 router.get('/exitGame', exitGame);
+
+function getHomePage(req, res, next) {
+  getData(req, res, next, (data) => {
+    res.render('game/index', data);
+  });
+}
 
 function loadGameGet(req, res, next) {
   Game.find({ }, function (error, games) {

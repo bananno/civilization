@@ -1,23 +1,8 @@
 const express = require('express');
 const router = express.Router();
-
 const getData = require('./getData');
 
-const Game = require('../models/game');
-const Player = require('../models/player');
-const Tile = require('../models/tile');
-const Unit = require('../models/unit');
-
-router.get('/', getHomePage);
-router.post('/endTurn', endTurn);
-
-function getHomePage(req, res, next) {
-  getData(req, res, next, (data) => {
-    res.render('game/index', data);
-  });
-}
-
-function endTurn(req, res, next) {
+router.post('/endTurn', (req, res, next) => {
   getData(req, res, next, (data) => {
     let gameData = {};
     let resetMoves = false;
@@ -48,6 +33,6 @@ function endTurn(req, res, next) {
       }
     })
   });
-}
+});
 
 module.exports = router;
