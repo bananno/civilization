@@ -25,7 +25,7 @@ function setupActiveUnitSelection() {
     let $unit = $(unit);
     let unitId = $unit.attr('unit-id');
     $unit.click(() => {
-      setActiveUnit($unit.attr('unit-id'));
+      setActiveUnit(unitId);
     });
   });
 
@@ -56,6 +56,12 @@ function setActiveCity(id) {
 
   $('.info.city[city-id="' + id + '"]').show();
   $('.map-city[city-id="' + id + '"]').addClass('active');
+
+  if (id && id.length && id != 'null') {
+    mapCenter = cities[id].location.concat();
+  }
+
+  centerMap();
 }
 
 function setActiveUnit(id) {

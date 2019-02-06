@@ -55,11 +55,18 @@
         let colRadius = 10;
 
         let units = [];
+        let cities = [];
 
         <% units.forEach(unit => { %>
             units['<%= unit._id %>'] = {
                 name: '<%= unit.unitType.name %>',
                 location: [<%= unit.location[0] %>, <%= unit.location[1] %>],
+            };
+        <% }); %>
+
+        <% cities.forEach(city => { %>
+            cities['<%= city._id %>'] = {
+                location: [<%= city.location[0] %>, <%= city.location[1] %>],
             };
         <% }); %>
 
