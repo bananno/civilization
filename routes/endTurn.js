@@ -63,7 +63,6 @@ function endRound(res, data) {
     let foodPerTurn = calculateCityFood(city, data.buildingTypes);
     let foodEatenPerTurn = city.population * 2;
     let foodSurplus = foodPerTurn - foodEatenPerTurn;
-    cityData.food = city.food + foodSurplus;
 
     cityData.projectProgress = city.projectProgress;
     cityData.projectProgress[category][index] += productionPerTurn;
@@ -76,9 +75,14 @@ function endRound(res, data) {
 
     if (category == 'unit') {
       productionNeeded = data.unitTypes[index].cost;
+      if (data.unitTypes[index].name == 'settler' && foodSurplus > 0) {
+        foodSurplus = 0;
+      }
     } else if (category == 'building') {
       productionNeeded = data.buildingTypes[index].cost;
     }
+
+    cityData.food = city.food + foodSurplus;
 
     const completeUpdate = () => {
       city.update(cityData, error => {
