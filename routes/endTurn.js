@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
+const createUnit = require('./createUnit');
 
 router.post('/endTurn', (req, res, next) => {
   getData(req, res, next, (data) => {
@@ -51,13 +52,15 @@ function endRound(res, data) {
     if (i >= data.cities.length) {
       return goToNext();
     }
+
+    let city = data.cities[i];
     let cityData = {};
 
-    let category = data.cities[i].project.category;
-    let index = data.cities[i].project.index;
-    let productionPerTurn = calculateCityProduction(data.cities[i], data.buildingTypes);
+    let category = city.project.category;
+    let index = city.project.index;
+    let productionPerTurn = calculateCityProduction(city, data.buildingTypes);
 
-    cityData.projectProgress = data.cities[i].projectProgress;
+    cityData.projectProgress = city.projectProgress;
     cityData.projectProgress[category][index] += productionPerTurn;
 
     let productionSoFar = cityData.projectProgress[category][index];
@@ -69,20 +72,38 @@ function endRound(res, data) {
       productionNeeded = data.buildingTypes[index].cost;
     }
 
-    if (productionSoFar >= productionNeeded && category == 'building') {
+    const completeUpdate = () => {
+      city.update(cityData, error => {
+        if (error) {
+          return next(error);
+        }
+        updateCity(i + 1);
+      });
+    };
+
+    if (productionSoFar >= productionNeeded) {
       cityData.productionRollover = productionSoFar - productionNeeded;
       cityData.projectProgress[category][index] = 0;
-      cityData.buildings = data.cities[i].buildings;
-      cityData.buildings.push(index);
       cityData.project = {
         category: null,
         index: null,
       };
+
+      if (category == 'building') {
+        cityData.buildings = data.cities[i].buildings;
+        cityData.buildings.push(index);
+      } else if (category == 'unit') {
+        let unitData = {
+          game: city.game,
+          player: city.player,
+          location: city.location.concat(),
+          unitTypeIndex: index,
+        };
+        return createUnit(unitData, completeUpdate);
+      }
     }
 
-    data.cities[i].update(cityData, (error, city) => {
-      updateCity(i + 1);
-    });
+    completeUpdate();
   }
 
   // increment gold for all players
