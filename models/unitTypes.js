@@ -11,7 +11,7 @@ const unitTypes = [
     cost: 25,
   },
   {
-    name: 'settler',
+    name: 'worker',
     moves: 2,
     cost: 70,
   },
