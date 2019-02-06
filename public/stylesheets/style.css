@@ -46,6 +46,14 @@ a {
   margin: 10px;
 }
 
+.info.city {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: white;
+  width: 250px;
+}
+
 .info.city,
 .info.unit {
   display: none;
