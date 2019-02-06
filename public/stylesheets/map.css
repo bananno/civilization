@@ -1,6 +1,6 @@
 
 #map table {
-  width: 100%;
+  /*width: 100%;*/
 }
 
 .map-row {
@@ -40,4 +40,19 @@
 
 .map-cell.player2.lit {
   background-color: #ff7777;
+}
+
+.map-cell {
+  height: 50px;
+  width: 50px;
+}
+
+.map-cell .unit {
+  height: 45px;
+  width: 45px;
+  cursor: pointer;
+}
+
+.map-cell .unit img {
+  height: 45px;
 }
