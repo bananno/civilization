@@ -1,4 +1,10 @@
 
+document.onkeypress = (e) => {
+  if (e.key == 'Enter') {
+    $('form#end-turn').submit();
+  }
+};
+
 function setupActiveUnitSelection() {
   $('.unit.turn').toArray().forEach(unit => {
     let $unit = $(unit);
