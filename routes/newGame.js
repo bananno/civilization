@@ -6,6 +6,7 @@ const Player = require('../models/player');
 const Tile = require('../models/tile');
 const Unit = require('../models/unit');
 const unitTypes = require('../models/unitTypes');
+const createUnit = require('./createUnit');
 
 router.post('/newGame', (req, res, next) => {
   var gameData = {
@@ -56,18 +57,14 @@ router.post('/newGame', (req, res, next) => {
             game: game,
             player: player,
             location: tempUnitLocations[tempUnitLocationCount],
-            unitType: unitTypes[0],
-            moves: unitTypes[0].moves,
-            movesRemaining: unitTypes[0].moves,
+            unitTypeIndex: 0,
           };
 
           var tempUnit2 = {
             game: game,
             player: player,
             location: tempUnitLocations[tempUnitLocationCount + 1],
-            unitType: unitTypes[1],
-            moves: unitTypes[1].moves,
-            movesRemaining: unitTypes[1].moves,
+            unitTypeIndex: 1,
           };
 
           tempUnitLocationCount += 2;
@@ -75,15 +72,8 @@ router.post('/newGame', (req, res, next) => {
           tileList = setTilesDiscovered(game, tileList, tempUnit1, player);
           tileList = setTilesDiscovered(game, tileList, tempUnit2, player);
 
-          Unit.create(tempUnit1, (error, unit1) => {
-            if (error) {
-              return next(error);
-            }
-            Unit.create(tempUnit2, (error, unit2) => {
-              if (error) {
-                return next(error);
-              }
-
+          createUnit(tempUnit1, () => {
+            createUnit(tempUnit2, () => {
               if (i < numPlayers - 1) {
                 createPlayer(i + 1);
               } else {
