@@ -48,6 +48,14 @@ router.post('/endTurn', (req, res, next) => {
           return updatePlayer(0);
         }
         let cityData = {};
+
+        let category = data.cities[i].project.category;
+        let index = data.cities[i].project.index;
+        let productionPerTurn = calculateCityProduction(data.cities[i], data.buildingTypes);
+
+        cityData.projectProgress = data.cities[i].projectProgress;
+        cityData.projectProgress[category][index] += productionPerTurn;
+
         data.cities[i].update(cityData, (error, city) => {
           updateCity(i + 1);
         });
@@ -69,7 +77,7 @@ router.post('/endTurn', (req, res, next) => {
       };
 
       updateUnit(0);
-    })
+    });
   });
 });
 
@@ -84,6 +92,16 @@ function allCitiesHaveProject(player, cities) {
     }
   }
   return true;
+}
+
+function calculateCityProduction(city, buildingTypes) {
+  let production = 0;
+
+  city.buildings.forEach(i => {
+    production += buildingTypes[i].production;
+  });
+
+  return production;
 }
 
 module.exports = router;
