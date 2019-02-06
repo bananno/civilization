@@ -110,18 +110,21 @@ router.post('/newGame', (req, res, next) => {
 
 function setTilesDiscovered(game, tileList, unit, player) {
   let numMapCols = game.mapSize[1];
-  let startRow = unit.location[0] - 1;
-  let endRow = unit.location[0] + 1;
-  let startCol = unit.location[1] - 1;
-  let endCol = unit.location[1] + 1;
-  let wrapColumn = false;
+  let startRow = unit.location[0] - 2;
+  let endRow = unit.location[0] + 2;
+  let startCol = unit.location[1] - 2;
+  let endCol = unit.location[1] + 2;
 
-  if (startCol < 0) {
-    wrapColumn = true;
-    startCol = numMapCols + startCol;
-  } else if (endCol > numMapCols - 1) {
-    wrapColumn = true;
-    endCol = endCol - numMapCols;
+  let columns = [];
+
+  for (let c = startCol; c <= endCol; c++) {
+    if (c < 0) {
+      columns.push(c + numMapCols);
+    } else if (c >= numMapCols) {
+      columns.push(c - numMapCols);
+    } else {
+      columns.push(c);
+    }
   }
 
   return tileList.map(tile => {
@@ -129,14 +132,8 @@ function setTilesDiscovered(game, tileList, unit, player) {
       return tile;
     }
 
-    if (wrapColumn) {
-      if (tile.column < startCol && tile.column > endCol) {
-        return tile;
-      }
-    } else {
-      if (tile.column < startCol || tile.column > endCol) {
-        return tile;
-      }
+    if (columns.indexOf(tile.column) < 0) {
+      return tile;
     }
 
     tile.discovered.push(player);
