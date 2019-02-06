@@ -38,10 +38,15 @@ function getData(req, res, next, callback) {
             });
 
             cities.forEach(city => {
+              let cityProduction = 0;
               city.buildings.forEach(i => {
                 let building = buildingTypes[i];
                 goldPerTurn[city.player] += building.gold;
+                cityProduction += building.production;
               });
+              if (city.project.category == 'gold') {
+                goldPerTurn[city.player] += Math.floor(cityProduction / 2);
+              }
             });
 
             callback({
