@@ -85,11 +85,21 @@
         <div>
             change construction:
             <ul>
-                <% unitTypes.forEach(unitType => { %>
-                    <li><%= unitType.name %></li>
+                <% unitTypes.forEach((unitType, i) => { %>
+                    <%
+                        let path = '/changeProject/' + city._id + '/unit/' + i;
+                    %>
+                    <li>
+                        <a href="<%= path %>"><%= unitType.name %></a>
+                    </li>
                 <% }); %>
-                <% buildingTypes.forEach(buildingType => { %>
-                    <li><%= buildingType.name %></li>
+                <% buildingTypes.forEach((buildingType, i) => { %>
+                    <%
+                        let path = '/changeProject/:cityId/building/' + i;
+                    %>
+                    <li>
+                        <a href="<%= path %>"><%= buildingType.name %></a>
+                    </li>
                 <% }); %>
             </ul>
         </div>
