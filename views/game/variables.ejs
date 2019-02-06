@@ -75,36 +75,37 @@
                     continue;
                 }
 
-                let isAdjacentTile = (() => {
+                let moveDirection = (() => {
                     if (col == c) {
-                        return Math.abs(row - r) == 1;
+                        if (r == row + 1) {
+                            return 'down';
+                        }
+                        if (r == row - 1) {
+                            return 'up';
+                        }
+                        return false;
                     }
 
                     if (row != r) {
                         return false;
                     }
 
-                    if ((c == game.mapSize[1] - 1 && col == 0)
-                            || (col == game.mapSize[1] - 1 && c == 0)) {
-                        return true;
+                    if (c == col -1 || (c == game.mapSize[1] - 1 && col == 0)) {
+                        return 'left';
                     }
 
-                    return Math.abs(col - c) == 1;
+                    if (c == col + 1 || (col == game.mapSize[1] - 1 && c == 0)) {
+                        return 'right';
+                    }
+
+                    return false;
                 })();
 
-                if (isAdjacentTile) {
-                    let direction = 'right';
-                    if (r < row) {
-                        direction = 'up';
-                    } else if (r > row) {
-                        direction = 'down';
-                    } else if (c < col) {
-                        direction = 'left';
-                    }
+                if (moveDirection) {
                     map[r][c].moves.push({
                         unitId: unit._id,
                         path: '/moveUnit/' + unit._id + '/' + r + '/' + c,
-                        direction: direction,
+                        direction: moveDirection,
                     });
                 }
             }
