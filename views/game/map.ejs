@@ -28,6 +28,12 @@
 <% } %>
 </style>
 
+<script>
+    function rightClickForm(form) {
+        $(form).submit();
+    }
+</script>
+
 <div id="map">
     <table>
         <% map.forEach((row, r) => { %>
@@ -66,8 +72,8 @@
                             <% } else { %>
                                 <% cell.moves.forEach(move => { %>
                                     <form action="<%= move.path %>" method="post" class="move-unit"
-                                        unit-id="<%= move.unitId %>">
-                                        <button type="submit"> </button>
+                                        unit-id="<%= move.unitId %>"
+                                        onContextMenu="rightClickForm(this); return false">
                                     </form>
                                 <% }); %>
                             <% } %>
