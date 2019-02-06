@@ -66,7 +66,7 @@
                 if (c < 0) {
                     c += game.mapSize[1];
                 } else if (c >= game.mapSize[1]) {
-                    c += game.mapSize[1];
+                    c -= game.mapSize[1];
                 }
 
                 map[r][c].lit = true;
