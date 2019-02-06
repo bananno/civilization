@@ -22,76 +22,78 @@ router.post('/endTurn', (req, res, next) => {
 
     data.game.update(gameData, (error, game) => {
       if (error) {
-        return next(error);
+        next(error);
+      } else if (endOfRound) {
+        endRound(res, data);
+      } else {
+        res.redirect('/');
       }
-
-      if (!endOfRound) {
-        return res.redirect('/');
-      }
-
-      // reset moves for all units
-      const updateUnit = (i) => {
-        if (i >= data.units.length) {
-          return goToNext();
-        }
-        let unitData = {
-          movesRemaining: data.units[i].moves,
-        };
-        data.units[i].update(unitData, (error, unit) => {
-          updateUnit(i + 1);
-        });
-      };
-
-      // increment project progress for all cities
-      const updateCity = (i) => {
-        if (i >= data.cities.length) {
-          return goToNext();
-        }
-        let cityData = {};
-
-        let category = data.cities[i].project.category;
-        let index = data.cities[i].project.index;
-        let productionPerTurn = calculateCityProduction(data.cities[i], data.buildingTypes);
-
-        cityData.projectProgress = data.cities[i].projectProgress;
-        cityData.projectProgress[category][index] += productionPerTurn;
-
-        data.cities[i].update(cityData, (error, city) => {
-          updateCity(i + 1);
-        });
-      }
-
-      // increment gold for all players
-      const updatePlayer = (i) => {
-        if (i >= data.players.length) {
-          return goToNext();
-        }
-        let currentGold = data.players[i].gold;
-        let goldPerTurn = data.goldPerTurn[data.players[i]._id];
-        let playerData = {
-          gold: currentGold + goldPerTurn
-        };
-        data.players[i].update(playerData, (error, player) => {
-          updatePlayer(i + 1);
-        });
-      };
-
-      const functionList = [updateUnit, updateCity, updatePlayer];
-      let count = 0;
-
-      const goToNext = () => {
-        if (count < functionList.length) {
-          functionList[count](0);
-          count += 1;
-        } else {
-          res.redirect('/');
-        }
-      };
-
-      goToNext();
     });
   });
 });
+
+function endRound(res, data) {
+  // reset moves for all units
+  const updateUnit = (i) => {
+    if (i >= data.units.length) {
+      return goToNext();
+    }
+    let unitData = {
+      movesRemaining: data.units[i].moves,
+    };
+    data.units[i].update(unitData, (error, unit) => {
+      updateUnit(i + 1);
+    });
+  };
+
+  // increment project progress for all cities
+  const updateCity = (i) => {
+    if (i >= data.cities.length) {
+      return goToNext();
+    }
+    let cityData = {};
+
+    let category = data.cities[i].project.category;
+    let index = data.cities[i].project.index;
+    let productionPerTurn = calculateCityProduction(data.cities[i], data.buildingTypes);
+
+    cityData.projectProgress = data.cities[i].projectProgress;
+    cityData.projectProgress[category][index] += productionPerTurn;
+
+    data.cities[i].update(cityData, (error, city) => {
+      updateCity(i + 1);
+    });
+  }
+
+  // increment gold for all players
+  const updatePlayer = (i) => {
+    if (i >= data.players.length) {
+      return goToNext();
+    }
+    let currentGold = data.players[i].gold;
+    let goldPerTurn = data.goldPerTurn[data.players[i]._id];
+    let playerData = {
+      gold: currentGold + goldPerTurn
+    };
+    data.players[i].update(playerData, (error, player) => {
+      updatePlayer(i + 1);
+    });
+  };
+
+  const functionList = [updateUnit, updateCity, updatePlayer];
+  let count = 0;
+
+  const goToNext = () => {
+    if (count < functionList.length) {
+      functionList[count](0);
+      count += 1;
+    } else {
+      res.redirect('/');
+    }
+  };
+
+  goToNext();
+}
 
 function allCitiesHaveProject(player, cities) {
   for (let i = 0; i < cities.length; i++) {
