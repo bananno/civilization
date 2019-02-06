@@ -58,6 +58,12 @@ a {
   cursor: pointer;
 }
 
+.info.city div {
+  margin-bottom: 10px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid black;
+}
+
 .info.city ul {
   margin-left: 20px;
 }

@@ -54,10 +54,22 @@
 
 <% currentTurnCities.forEach(city => { %>
     <%
+        let cityGold = 0;
+        let cityProduction = 0;
+        city.buildings.forEach(i => {
+            cityGold += buildingTypes[i].gold;
+            cityProduction += buildingTypes[i].production;
+        });
     %>
     <div class="info city" city-id="<%= city._id %>">
         <div class="close">X</div>
         <div>city</div>
+        <div>
+            gold: <%= cityGold %>
+            <br/>
+            production: <%= cityProduction %>
+            <br/>
+        </div>
         <div>
             buildings:
             <ul>
