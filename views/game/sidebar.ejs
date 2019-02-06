@@ -30,6 +30,10 @@
 </div>
 
 <div class="info">
+    Gold: <%= players[game.nextPlayer].gold %>
+</div>
+
+<div class="info">
     <% currentTurnUnits.forEach(unit => { %>
         <p onClick="setActiveUnit('<%= unit._id %>')">
             <%= unit.unitType.name %>
