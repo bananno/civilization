@@ -59,8 +59,7 @@
 <% currentTurnUnits.forEach(unit => { %>
     <%
         let type = unit.unitType.name;
-        let disableButton = unit.movesRemaining == 0 ? 'disabled="true"' : '';
-        let foundCity = type == 'settler';
+        let disableActions = unit.movesRemaining == 0 ? 'disabled="true"' : '';
     %>
     <div class="info unit" unit-id="<%= unit._id %>">
         <div class="close">X</div>
@@ -74,9 +73,13 @@
         </div>
         <div>
             <b>actions:</b>
-            <% if (foundCity) { %>
+            <% if (type == 'settler') { %>
                 <form action="/foundCity/<%= unit._id %>" method="post">
-                    <button <%= disableButton %>>found city</button>
+                    <button <%= disableActions %>>found city</button>
+                </form>
+            <% } else if (type == 'worker') { %>
+                <form action="/improveLand/<%= unit._id %>/farm" method="post">
+                    <button <%= disableActions %>>build farm</button>
                 </form>
             <% } %>
         </div>
