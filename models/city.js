@@ -28,7 +28,11 @@ var CitySchema = new mongoose.Schema({
   projectProgress: {
     unit: [],
     building: [],
-  }
+  },
+  productionRollover: {
+    type: Number,
+    default: 0,
+  },
 });
 
 var City = mongoose.model('City', CitySchema);

@@ -60,6 +60,26 @@ function endRound(res, data) {
     cityData.projectProgress = data.cities[i].projectProgress;
     cityData.projectProgress[category][index] += productionPerTurn;
 
+    let productionSoFar = cityData.projectProgress[category][index];
+    let productionNeeded = 0;
+
+    if (category == 'unit') {
+      productionNeeded = data.unitTypes[index].cost;
+    } else if (category == 'building') {
+      productionNeeded = data.buildingTypes[index].cost;
+    }
+
+    if (productionSoFar >= productionNeeded && category == 'building') {
+      cityData.productionRollover = productionSoFar - productionNeeded;
+      cityData.projectProgress[category][index] = 0;
+      cityData.buildings = data.cities[i].buildings;
+      cityData.buildings.push(index);
+      cityData.project = {
+        category: null,
+        index: null,
+      };
+    }
+
     data.cities[i].update(cityData, (error, city) => {
       updateCity(i + 1);
     });
