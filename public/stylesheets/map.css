@@ -64,3 +64,8 @@
 .map-cell.discovered .rival.unit {
   display: none;
 }
+
+.map-cell .unit.active {
+  background-image: url(/images/spinning.gif);
+  background-size: 45px;
+}
