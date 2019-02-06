@@ -5,22 +5,22 @@ const getData = require('./getData');
 router.post('/endTurn', (req, res, next) => {
   getData(req, res, next, (data) => {
     let gameData = {};
-    let resetMoves = false;
+    let endOfRound = false;
     if (data.game.nextPlayer < data.players.length - 1) {
       gameData.nextPlayer = data.game.nextPlayer + 1;
     } else {
       gameData.nextPlayer = 0;
       gameData.turn = data.game.turn + 1;
-      resetMoves = true;
+      endOfRound = true;
     }
     data.game.update(gameData, (error, game) => {
       if (error) {
         return next(error);
       }
-      if (resetMoves) {
+      if (endOfRound) {
         const updateUnit = (i) => {
           if (i >= data.units.length) {
-            return res.redirect('/');
+            return updatePlayer(0);
           }
           let unitData = {
             movesRemaining: data.units[i].moves,
@@ -29,6 +29,21 @@ router.post('/endTurn', (req, res, next) => {
             updateUnit(i + 1);
           });
         };
+
+        const updatePlayer = (i) => {
+          if (i >= data.players.length) {
+            return res.redirect('/');
+          }
+          let currentGold = data.players[i].gold;
+          let goldPerTurn = data.goldPerTurn[data.players[i]._id];
+          let playerData = {
+            gold: currentGold + goldPerTurn
+          };
+          data.players[i].update(playerData, (error, player) => {
+            updatePlayer(i + 1);
+          });
+        };
+
         updateUnit(0);
       } else {
         res.redirect('/');
