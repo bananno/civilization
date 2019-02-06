@@ -29,7 +29,7 @@ function setActiveUnit(id) {
   $('.active-unit').hide();
   $('.active-unit[unit-id="' + id + '"]').show();
 
-  if (id && id.length & id != 'null') {
+  if (id && id.length && id != 'null') {
     mapCenter = units[id].location.concat();
   }
 
