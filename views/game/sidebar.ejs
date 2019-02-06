@@ -30,8 +30,12 @@
 </div>
 
 <div class="info">
-    Gold: <%= players[game.nextPlayer].gold %>
-    (<%= (goldPerTurn < 0 ? '-' : '+') + goldPerTurn %>)
+    <%
+        let currentGold = players[game.nextPlayer].gold;
+        let income = goldPerTurn[players[game.nextPlayer]._id];
+    %>
+    Gold: <%= currentGold %>
+    (<%= (income < 0 ? '-' : '+') + income %>)
 </div>
 
 <div class="info">
