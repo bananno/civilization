@@ -18,6 +18,10 @@ var CitySchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
+  food: {
+    type: Number,
+    default: 0,
+  },
   buildings: {
     type: Array,
   },

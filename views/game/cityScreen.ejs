@@ -8,6 +8,12 @@
         cityFood += buildingTypes[i].food;
         cityProduction += buildingTypes[i].production;
     });
+
+    const growthRate = [0, 15, 22, 30, 40, 51, 63, 76, 90, 105, 121, 138, 155, 174, 194, 214, 235,
+        258, 280, 304, 329, 354, 380, 407, 435, 464, 493, 523, 554, 585, 617, 650, 684, 719, 754,
+        790, 826, 863, 901, 940, 979];
+
+    let foodNeededForGrowth = growthRate[city.population];
 %>
 
 <div class="info city" city-id="<%= city._id %>">
@@ -15,6 +21,9 @@
     <div>city</div>
     <div>
         population: <%= city.population %><br/>
+        (<%= city.food %> / <%= foodNeededForGrowth %>)
+    </div>
+    <div>
         gold: <%= cityGold %><br/>
         food: <%= cityFood %><br/>
         production: <%= cityProduction %><br/>
