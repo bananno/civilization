@@ -6,6 +6,12 @@ router.post('/endTurn', (req, res, next) => {
   getData(req, res, next, (data) => {
     let gameData = {};
     let endOfRound = false;
+
+    if (!allCitiesHaveProject(data.players[data.game.nextPlayer], data.cities)) {
+      console.log('All cities must have a project to end turn.');
+      return res.redirect('/');
+    }
+
     if (data.game.nextPlayer < data.players.length - 1) {
       gameData.nextPlayer = data.game.nextPlayer + 1;
     } else {
@@ -13,6 +19,7 @@ router.post('/endTurn', (req, res, next) => {
       gameData.turn = data.game.turn + 1;
       endOfRound = true;
     }
+
     data.game.update(gameData, (error, game) => {
       if (error) {
         return next(error);
@@ -51,5 +58,18 @@ router.post('/endTurn', (req, res, next) => {
     })
   });
 });
+
+function allCitiesHaveProject(player, cities) {
+  for (let i = 0; i < cities.length; i++) {
+    if (cities[i].player != player._id) {
+      continue;
+    }
+    if (cities[i].project == null || cities[i].project.category == null
+        || cities[i].project.category == '') {
+      return false;
+    }
+  }
+  return true;
+}
 
 module.exports = router;
