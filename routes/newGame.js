@@ -57,6 +57,8 @@ router.post('/newGame', (req, res, next) => {
             player: player,
             location: tempUnitLocations[tempUnitLocationCount],
             unitType: unitTypes[0],
+            moves: unitTypes[0].moves,
+            movesRemaining: unitTypes[0].moves,
           };
 
           var tempUnit2 = {
@@ -64,6 +66,8 @@ router.post('/newGame', (req, res, next) => {
             player: player,
             location: tempUnitLocations[tempUnitLocationCount + 1],
             unitType: unitTypes[1],
+            moves: unitTypes[1].moves,
+            movesRemaining: unitTypes[1].moves,
           };
 
           tempUnitLocationCount += 2;
