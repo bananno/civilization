@@ -1,9 +1,11 @@
 <%
     let cityGold = 0;
+    let cityFood = 0;
     let cityProduction = 0;
 
     city.buildings.forEach(i => {
         cityGold += buildingTypes[i].gold;
+        cityFood += buildingTypes[i].food;
         cityProduction += buildingTypes[i].production;
     });
 %>
@@ -14,6 +16,7 @@
     <div>
         population: <%= city.population %><br/>
         gold: <%= cityGold %><br/>
+        food: <%= cityFood %><br/>
         production: <%= cityProduction %><br/>
     </div>
     <div>
