@@ -57,3 +57,7 @@ a {
 .info .close:hover {
   cursor: pointer;
 }
+
+.info.city ul {
+  margin-left: 20px;
+}

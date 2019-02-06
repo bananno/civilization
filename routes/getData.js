@@ -4,6 +4,7 @@ const Tile = require('../models/tile');
 const City = require('../models/city');
 const Unit = require('../models/unit');
 const buildingTypes = require('../models/buildingTypes');
+const unitTypes = require('../models/unitTypes');
 
 function getData(req, res, next, callback) {
   Game.findById(req.session.gameId, (error, game) => {
@@ -50,6 +51,7 @@ function getData(req, res, next, callback) {
               cities: cities,
               units: units,
               buildingTypes: buildingTypes,
+              unitTypes: unitTypes,
               goldPerTurn: goldPerTurn,
             });
           });

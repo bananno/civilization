@@ -66,6 +66,21 @@
                 <% }); %>
             </ul>
         </div>
+        <div>
+            current construction:
+            ______
+        </div>
+        <div>
+            change construction:
+            <ul>
+                <% unitTypes.forEach(unitType => { %>
+                    <li><%= unitType.name %></li>
+                <% }); %>
+                <% buildingTypes.forEach(buildingType => { %>
+                    <li><%= buildingType.name %></li>
+                <% }); %>
+            </ul>
+        </div>
     </div>
 <% }); %>
 
