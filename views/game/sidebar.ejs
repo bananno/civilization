@@ -81,16 +81,28 @@
         <div>
             <%
                 let currentProject = '_______';
+                let productionTotal = 0;
+                let progress = 0;
+                let turnsToFinish = 0;
+
                 if (city.project) {
                     if (city.project.category == 'unit') {
                         currentProject = unitTypes[city.project.index].name;
+                        productionTotal = unitTypes[city.project.index].cost;
                     } else if (city.project.category == 'building') {
                         currentProject = buildingTypes[city.project.index].name;
+                        productionTotal = buildingTypes[city.project.index].cost;
                     }
+                    turnsToFinish = Math.ceil((productionTotal - progress) / cityProduction);
                 }
             %>
             current construction:
             <%= currentProject %>
+            <% if (productionTotal) { %>
+                (<%= progress %> / <%= productionTotal %>)
+                <br/>
+                <%= turnsToFinish %> turns to finish
+            <% } %>
         </div>
         <div>
             change construction:
