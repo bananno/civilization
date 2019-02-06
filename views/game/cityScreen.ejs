@@ -69,6 +69,9 @@
         <ul>
             <% unitTypes.forEach((unitType, i) => { %>
                 <%
+                    if (city.population == 1 && unitType.name == 'settler') {
+                        return;
+                    }
                     let path = '/changeProject/' + city._id + '/unit/' + i;
                 %>
                 <li>

@@ -19,6 +19,11 @@ router.get('/changeProject/:cityId/:project/:index', (req, res, next) => {
       return res.redirect('/');
     }
 
+    if (city.population == 1 && project == 'unit' && data.unitTypes[index].name == 'settler') {
+      console.log('Cannot train settlers in city with population of 1.');
+      return res.redirect('/');
+    }
+
     let cityData = {
       project: {
         category: project,
