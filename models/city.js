@@ -14,6 +14,10 @@ var CitySchema = new mongoose.Schema({
   location: {
     type: Array,
   },
+  population: {
+    type: Number,
+    default: 1,
+  },
   buildings: {
     type: Array,
   },
