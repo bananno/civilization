@@ -2,7 +2,10 @@
 function setupActiveUnitSelection() {
   $('.unit.turn').toArray().forEach(unit => {
     let $unit = $(unit);
+    let unitId = $unit.attr('unit-id');
+    console.log(unitId);
     $unit.click(() => {
+      console.log('click');
       setActiveUnit($unit.attr('unit-id'));
     });
   });

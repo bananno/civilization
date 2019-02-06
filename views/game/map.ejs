@@ -54,9 +54,9 @@
                             <% if (cell.city) { %>
                                 &#9733;
                             <% } %>
-                            <% if (cell.unit || cell.rivalUnit) { %>
+                            <% if (cell.myUnit || cell.rivalUnit) { %>
                                 <%
-                                    let unitClass = 'unit ' + cell.unit ? 'turn' : 'rival';
+                                    let unitClass = 'unit ' + (cell.myUnit ? 'turn' : 'rival');
                                     let unit = unitsById[cell.unitId];
                                     let unitImage = unit.unitType.name;
                                 %>

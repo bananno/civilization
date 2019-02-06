@@ -4,7 +4,8 @@
         for (let j = 0; j < game.mapSize[1]; j++) {
             map[i][j] = {
                 city: false,
-                unit: null,
+                myUnit: false,
+                rivalUnit: false,
                 moves: [],
                 lit: false,
                 discovered: false,
@@ -49,7 +50,7 @@
 
     currentTurnUnits.forEach(unit => {
         let [i, j] = unit.location;
-        map[i][j].unit = unit;
+        map[i][j].myUnit = true;
         map[i][j].unitId = unit._id;
 
         for (i1 = i - 1; i1 <= i + 1; i1++) {
