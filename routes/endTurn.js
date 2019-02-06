@@ -47,7 +47,7 @@ function endRound(res, data) {
     });
   };
 
-  // increment project progress for all cities
+  // increment project & growth progress for all cities
   const updateCity = (i) => {
     if (i >= data.cities.length) {
       return goToNext();
@@ -59,6 +59,11 @@ function endRound(res, data) {
     let category = city.project.category;
     let index = city.project.index;
     let productionPerTurn = calculateCityProduction(city, data.buildingTypes);
+
+    let foodPerTurn = calculateCityFood(city, data.buildingTypes);
+    let foodEatenPerTurn = city.population * 2;
+    let foodSurplus = foodPerTurn - foodEatenPerTurn;
+    cityData.food = city.food + foodSurplus;
 
     cityData.projectProgress = city.projectProgress;
     cityData.projectProgress[category][index] += productionPerTurn;
@@ -160,6 +165,16 @@ function calculateCityProduction(city, buildingTypes) {
   });
 
   return production;
+}
+
+function calculateCityFood(city, buildingTypes) {
+  let food = 0;
+
+  city.buildings.forEach(i => {
+    food += buildingTypes[i].food;
+  });
+
+  return food;
 }
 
 module.exports = router;
