@@ -18,16 +18,18 @@ router.post('/endTurn', (req, res, next) => {
         return next(error);
       }
       if (resetMoves) {
-        // refactor later
-        let tempUpdate = (i) => {
+        const updateUnit = (i) => {
           if (i >= data.units.length) {
             return res.redirect('/');
           }
-          data.units[i].update({ movesRemaining: 1 }, (error, unit) => {
-            tempUpdate(i + 1);
+          let unitData = {
+            movesRemaining: data.units[i].moves,
+          };
+          data.units[i].update(unitData, (error, unit) => {
+            updateUnit(i + 1);
           });
         };
-        tempUpdate(0);
+        updateUnit(0);
       } else {
         res.redirect('/');
       }
