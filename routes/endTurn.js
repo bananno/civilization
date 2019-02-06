@@ -62,6 +62,9 @@ function endRound(res, data) {
 
     cityData.projectProgress = city.projectProgress;
     cityData.projectProgress[category][index] += productionPerTurn;
+    cityData.projectProgress[category][index] += city.productionRollover;
+
+    cityData.productionRollover = 0;
 
     let productionSoFar = cityData.projectProgress[category][index];
     let productionNeeded = 0;
