@@ -46,6 +46,7 @@ a {
   margin: 10px;
 }
 
+.active-city,
 .active-unit {
   border: 2px solid black;
   margin-top: 10px;

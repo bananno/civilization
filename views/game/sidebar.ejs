@@ -47,6 +47,15 @@
     <a href="/exitGame">load different game</a>
 </div>
 
+<% currentTurnCities.forEach(city => { %>
+    <%
+    %>
+    <div class="active-city" city-id="<%= city._id %>">
+        <div class="close">X</div>
+        <div>city</div>
+    </div>
+<% }); %>
+
 <% currentTurnUnits.forEach(unit => { %>
     <%
         let type = unit.unitType.name;

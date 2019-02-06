@@ -5,9 +5,15 @@
         return unit.player == currentTurnPlayerId;
     });
 
+    let currentTurnCities = units.filter(city => {
+        return city.player == currentTurnPlayerId;
+    });
+
     let rivalUnits = units.filter(unit => {
         return unit.player != currentTurnPlayerId;
     });
+
+    let activeCity = null;
 
     let activeUnit = currentTurnUnits.filter(unit => {
         return unit.movesRemaining > 0;
@@ -62,6 +68,7 @@
         let numCols = <%= game.mapSize[1] %>;
 
         setupActiveUnitSelection();
+        setActiveCity('<%= activeCity ? activeCity._id : null %>');
         setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
     </script>
 </body>

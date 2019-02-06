@@ -23,6 +23,11 @@ function showPlayersList(show) {
   $('#players-box').toggle(show);
 }
 
+function setActiveCity(id) {
+  $('.active-city').hide();
+  $('.active-city[city-id="' + id + '"]').show();
+}
+
 function setActiveUnit(id) {
   $('.unit').removeClass('active');
   $('.unit[unit-id="' + id + '"]').addClass('active');
