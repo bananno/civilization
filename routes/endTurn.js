@@ -61,7 +61,7 @@ router.post('/endTurn', (req, res, next) => {
 
 function allCitiesHaveProject(player, cities) {
   for (let i = 0; i < cities.length; i++) {
-    if (cities[i].player != player._id) {
+    if ('' + cities[i].player != '' + player._id) {
       continue;
     }
     if (cities[i].project == null || cities[i].project.category == null
