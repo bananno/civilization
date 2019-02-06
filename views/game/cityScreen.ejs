@@ -1,0 +1,74 @@
+<%
+    let cityGold = 0;
+    let cityProduction = 0;
+    city.buildings.forEach(i => {
+        cityGold += buildingTypes[i].gold;
+        cityProduction += buildingTypes[i].production;
+    });
+%>
+
+<div class="info city" city-id="<%= city._id %>">
+    <div class="close">X</div>
+    <div>city</div>
+    <div>
+        gold: <%= cityGold %>
+        <br/>
+        production: <%= cityProduction %>
+        <br/>
+    </div>
+    <div>
+        buildings:
+        <ul>
+            <% city.buildings.forEach(i => { %>
+                <li><%= buildingTypes[i].name %></li>
+            <% }); %>
+        </ul>
+    </div>
+    <div>
+        <%
+            let currentProject = '_______';
+            let productionTotal = 0;
+            let progress = 0;
+            let turnsToFinish = 0;
+
+            if (city.project) {
+                if (city.project.category == 'unit') {
+                    currentProject = unitTypes[city.project.index].name;
+                    productionTotal = unitTypes[city.project.index].cost;
+                } else if (city.project.category == 'building') {
+                    currentProject = buildingTypes[city.project.index].name;
+                    productionTotal = buildingTypes[city.project.index].cost;
+                }
+                turnsToFinish = Math.ceil((productionTotal - progress) / cityProduction);
+            }
+        %>
+        current construction:
+        <%= currentProject %>
+        <% if (productionTotal) { %>
+            (<%= progress %> / <%= productionTotal %>)
+            <br/>
+            <%= turnsToFinish %> turns to finish
+        <% } %>
+    </div>
+    <div>
+        change construction:
+        <ul>
+            <% unitTypes.forEach((unitType, i) => { %>
+                <%
+                    let path = '/changeProject/' + city._id + '/unit/' + i;
+                %>
+                <li>
+                    <a href="<%= path %>"><%= unitType.name %></a>
+                </li>
+            <% }); %>
+            <% buildingTypes.forEach((buildingType, i) => { %>
+                <%
+                    let path = '/changeProject/' + city._id + '/building/' + i;
+                %>
+                <li>
+                    <a href="<%= path %>"><%= buildingType.name %></a>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+</div>
