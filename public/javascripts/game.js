@@ -16,16 +16,6 @@ document.onkeydown = (e) => {
       mapCenter[1] += 1;
     }
 
-    if (mapCenter[0] < 0 || mapCenter[0] >= numRows) {
-      return;
-    }
-
-    if (mapCenter[1] >= numCols) {
-      mapCenter[1] -= numCols;
-    } else if (mapCenter[1] < 0) {
-      mapCenter[1] += numCols;
-    }
-
     centerMap();
   }
 };
@@ -83,6 +73,18 @@ function setActiveUnit(id) {
 }
 
 function centerMap() {
+  if (mapCenter[0] < rowRadius) {
+    mapCenter[0] = rowRadius;
+  } else if (mapCenter[0] + rowRadius >= numRows) {
+    mapCenter[0] = numRows - rowRadius - 1;
+  }
+
+  if (mapCenter[1] >= numCols) {
+    mapCenter[1] -= numCols;
+  } else if (mapCenter[1] < 0) {
+    mapCenter[1] += numCols;
+  }
+
   $('.map-row').hide();
   $('.map-cell').addClass('off-screen');
 
