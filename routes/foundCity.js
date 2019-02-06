@@ -28,6 +28,14 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       player: unit.player,
       location: unit.location,
       buildings: [],
+      project: {
+        category: null,
+        index: null,
+      },
+      projectProgress: {
+        unit: [],
+        building: [],
+      },
     };
 
     let playerCities = data.cities.filter(city => {

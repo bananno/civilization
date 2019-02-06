@@ -25,6 +25,10 @@ var CitySchema = new mongoose.Schema({
       type: Number,
     },
   },
+  projectProgress: {
+    unit: [],
+    building: [],
+  }
 });
 
 var City = mongoose.model('City', CitySchema);

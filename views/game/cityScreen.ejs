@@ -39,6 +39,7 @@
                     currentProject = buildingTypes[city.project.index].name;
                     productionTotal = buildingTypes[city.project.index].cost;
                 }
+                progress = city.projectProgress[city.project.category][city.project.index];
                 turnsToFinish = Math.ceil((productionTotal - progress) / cityProduction);
             }
         %>

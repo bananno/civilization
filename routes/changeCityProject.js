@@ -24,7 +24,10 @@ router.get('/changeProject/:cityId/:project/:index', (req, res, next) => {
         category: project,
         index: index,
       },
+      projectProgress: city.projectProgress,
     };
+
+    cityData.projectProgress[project][index] = cityData.projectProgress[project][index] || 0;
 
     city.update(cityData, (error, city) => {
       if (error) {
