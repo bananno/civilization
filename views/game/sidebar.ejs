@@ -50,7 +50,7 @@
 <% currentTurnCities.forEach(city => { %>
     <%
     %>
-    <div class="active-city" city-id="<%= city._id %>">
+    <div class="info city" city-id="<%= city._id %>">
         <div class="close">X</div>
         <div>city</div>
     </div>
@@ -62,7 +62,7 @@
         let disableButton = unit.movesRemaining == 0 ? 'disabled="true"' : '';
         let foundCity = type == 'settler';
     %>
-    <div class="active-unit" unit-id="<%= unit._id %>">
+    <div class="info unit" unit-id="<%= unit._id %>">
         <div class="close">X</div>
         <div>
             <b>type:</b>

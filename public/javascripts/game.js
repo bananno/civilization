@@ -22,33 +22,32 @@ function setupActiveUnitSelection() {
     });
   });
 
-  $('.active-city .close').click(deactiveAll);
-
-  $('.active-unit .close').click(deactiveAll);
+  $('.info.city .close').click(deactivateAll);
+  $('.info.unit .close').click(deactivateAll);
 }
 
-function deactiveAll() {
+function deactivateAll() {
   $('.map-city').removeClass('active');
   $('.unit').removeClass('active');
 
-  $('.active-city').hide();
-  $('.active-unit').hide();
+  $('.info.city').hide();
+  $('.info.unit').hide();
 
   $('form.move-unit').hide();
 }
 
 function setActiveCity(id) {
-  deactiveAll();
+  deactivateAll();
 
-  $('.active-city[city-id="' + id + '"]').show();
+  $('.info.city[city-id="' + id + '"]').show();
 }
 
 function setActiveUnit(id) {
-  deactiveAll();
+  deactivateAll();
 
   $('.unit[unit-id="' + id + '"]').addClass('active');
   $('form.move-unit[unit-id="' + id + '"]').show();
-  $('.active-unit[unit-id="' + id + '"]').show();
+  $('.info.unit[unit-id="' + id + '"]').show();
 
   if (id && id.length && id != 'null') {
     mapCenter = units[id].location.concat();
