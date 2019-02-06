@@ -32,7 +32,7 @@ router.post('/endTurn', (req, res, next) => {
       // reset moves for all units
       const updateUnit = (i) => {
         if (i >= data.units.length) {
-          return updateCity(0);
+          return goToNext();
         }
         let unitData = {
           movesRemaining: data.units[i].moves,
@@ -45,7 +45,7 @@ router.post('/endTurn', (req, res, next) => {
       // increment project progress for all cities
       const updateCity = (i) => {
         if (i >= data.cities.length) {
-          return updatePlayer(0);
+          return goToNext();
         }
         let cityData = {};
 
@@ -64,7 +64,7 @@ router.post('/endTurn', (req, res, next) => {
       // increment gold for all players
       const updatePlayer = (i) => {
         if (i >= data.players.length) {
-          return res.redirect('/');
+          return goToNext();
         }
         let currentGold = data.players[i].gold;
         let goldPerTurn = data.goldPerTurn[data.players[i]._id];
@@ -76,7 +76,19 @@ router.post('/endTurn', (req, res, next) => {
         });
       };
 
-      updateUnit(0);
+      const functionList = [updateUnit, updateCity, updatePlayer];
+      let count = 0;
+
+      const goToNext = () => {
+        if (count < functionList.length) {
+          functionList[count](0);
+          count += 1;
+        } else {
+          res.redirect('/');
+        }
+      };
+
+      goToNext();
     });
   });
 });
