@@ -27,7 +27,16 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       game: data.game,
       player: unit.player,
       location: unit.location,
+      buildings: [],
     };
+
+    let playerCities = data.cities.filter(city => {
+      return city.player == unit.player;
+    });
+
+    if (playerCities.length == 0) {
+      cityData.buildings.push(0);
+    }
 
     City.create(cityData, (error, city) => {
       if (error) {

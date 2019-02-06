@@ -14,6 +14,9 @@ var CitySchema = new mongoose.Schema({
   location: {
     type: Array,
   },
+  buildings: {
+    type: Array,
+  },
 });
 
 var City = mongoose.model('City', CitySchema);
