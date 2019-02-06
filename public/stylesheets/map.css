@@ -99,3 +99,11 @@ form.move-unit.left {
   background-image: url(/images/spinning.gif);
   background-size: 45px;
 }
+
+.map-city.active {
+  color: red;
+}
+
+.map-city:hover {
+  cursor: pointer;
+}

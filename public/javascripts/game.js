@@ -40,6 +40,7 @@ function setActiveCity(id) {
   deactivateAll();
 
   $('.info.city[city-id="' + id + '"]').show();
+  $('.map-city[city-id="' + id + '"]').addClass('active');
 }
 
 function setActiveUnit(id) {

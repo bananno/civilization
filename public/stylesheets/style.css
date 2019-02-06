@@ -48,7 +48,12 @@ a {
 
 .info.city,
 .info.unit {
+  display: none;
   border: 2px solid black;
   margin-top: 10px;
   padding: 10px;
+}
+
+.info .close:hover {
+  cursor: pointer;
 }
