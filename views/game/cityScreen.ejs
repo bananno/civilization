@@ -1,6 +1,7 @@
 <%
     let cityGold = 0;
     let cityProduction = 0;
+
     city.buildings.forEach(i => {
         cityGold += buildingTypes[i].gold;
         cityProduction += buildingTypes[i].production;
@@ -64,6 +65,9 @@
             <% }); %>
             <% buildingTypes.forEach((buildingType, i) => { %>
                 <%
+                    if (city.buildings.indexOf(i) >= 0) {
+                        return;
+                    }
                     let path = '/changeProject/' + city._id + '/building/' + i;
                 %>
                 <li>
