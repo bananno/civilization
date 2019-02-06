@@ -2,6 +2,7 @@
 const buildingTypes = [
   {
     name: 'palace',
+    gold: 5,
   },
 ];
 

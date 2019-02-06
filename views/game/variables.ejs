@@ -128,4 +128,11 @@
         map[i][j].rivalUnit = true;
         map[i][j].unitId = unit._id;
     });
+
+    currentTurnCities.forEach(city => {
+        city.buildings.forEach(i => {
+            let building = buildingTypes[i];
+            goldPerTurn += building.gold;
+        });
+    });
 %>
