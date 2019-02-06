@@ -24,37 +24,40 @@ router.post('/endTurn', (req, res, next) => {
       if (error) {
         return next(error);
       }
-      if (endOfRound) {
-        const updateUnit = (i) => {
-          if (i >= data.units.length) {
-            return updatePlayer(0);
-          }
-          let unitData = {
-            movesRemaining: data.units[i].moves,
-          };
-          data.units[i].update(unitData, (error, unit) => {
-            updateUnit(i + 1);
-          });
-        };
 
-        const updatePlayer = (i) => {
-          if (i >= data.players.length) {
-            return res.redirect('/');
-          }
-          let currentGold = data.players[i].gold;
-          let goldPerTurn = data.goldPerTurn[data.players[i]._id];
-          let playerData = {
-            gold: currentGold + goldPerTurn
-          };
-          data.players[i].update(playerData, (error, player) => {
-            updatePlayer(i + 1);
-          });
-        };
-
-        updateUnit(0);
-      } else {
-        res.redirect('/');
+      if (!endOfRound) {
+        return res.redirect('/');
       }
+
+      // reset moves for all units
+      const updateUnit = (i) => {
+        if (i >= data.units.length) {
+          return updatePlayer(0);
+        }
+        let unitData = {
+          movesRemaining: data.units[i].moves,
+        };
+        data.units[i].update(unitData, (error, unit) => {
+          updateUnit(i + 1);
+        });
+      };
+
+      // increment gold for all players
+      const updatePlayer = (i) => {
+        if (i >= data.players.length) {
+          return res.redirect('/');
+        }
+        let currentGold = data.players[i].gold;
+        let goldPerTurn = data.goldPerTurn[data.players[i]._id];
+        let playerData = {
+          gold: currentGold + goldPerTurn
+        };
+        data.players[i].update(playerData, (error, player) => {
+          updatePlayer(i + 1);
+        });
+      };
+
+      updateUnit(0);
     })
   });
 });
