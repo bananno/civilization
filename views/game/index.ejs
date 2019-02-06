@@ -16,6 +16,12 @@
     let map = [];
 
     let mapCenter = currentTurnUnits[0].location;
+
+    let unitsById = [];
+
+    units.forEach(unit => {
+        unitsById[unit._id] = unit;
+    });
 %>
 
 <% include ./variables %>

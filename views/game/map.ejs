@@ -54,10 +54,15 @@
                             <% if (cell.city) { %>
                                 &#9733;
                             <% } %>
-                            <% if (cell.unit) { %>
-                                <span class="unit turn" unit-id="<%= cell.unitId %>">**</span>
-                            <% } else if (cell.rivalUnit) { %>
-                                <span class="unit rival" unit-id="<%= cell.unitId %>">*</span>
+                            <% if (cell.unit || cell.rivalUnit) { %>
+                                <%
+                                    let unitClass = 'unit ' + cell.unit ? 'turn' : 'rival';
+                                    let unit = unitsById[cell.unitId];
+                                    let unitImage = unit.unitType.name;
+                                %>
+                                <div class="<%= unitClass %>" unit-id="<%= cell.unitId %>">
+                                    <img src="/images/units/<%= unitImage %>.png">
+                                </div>
                             <% } else { %>
                                 <% cell.moves.forEach(move => { %>
                                     <form action="<%= move.path %>" method="post" class="move-unit"
