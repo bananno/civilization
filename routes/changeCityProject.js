@@ -7,12 +7,31 @@ router.get('/changeProject/:cityId/:project/:index', (req, res, next) => {
   let project = req.params.project;
   let index = req.params.index;
 
-  console.log(cityId);
-  console.log(project);
-  console.log(index);
-
   getData(req, res, next, (data) => {
-    res.redirect('/');
+    let turnPlayerId = data.players[data.game.nextPlayer]._id;
+
+    let city = data.cities.filter(city => {
+      return city._id == cityId && '' + city.player == '' + turnPlayerId;
+    })[0];
+
+    if (city == null) {
+      console.log('Invalid city action.');
+      return res.redirect('/');
+    }
+
+    let cityData = {
+      project: {
+        category: project,
+        index: index,
+      },
+    };
+
+    city.update(cityData, (error, city) => {
+      if (error) {
+        return next(error);
+      }
+      res.redirect('/');
+    });
   });
 });
 

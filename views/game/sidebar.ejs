@@ -79,8 +79,18 @@
             </ul>
         </div>
         <div>
+            <%
+                let currentProject = '_______';
+                if (city.project) {
+                    if (city.project.category == 'unit') {
+                        currentProject = unitTypes[city.project.index].name;
+                    } else if (city.project.category == 'building') {
+                        currentProject = buildingTypes[city.project.index].name;
+                    }
+                }
+            %>
             current construction:
-            ______
+            <%= currentProject %>
         </div>
         <div>
             change construction:
@@ -95,7 +105,7 @@
                 <% }); %>
                 <% buildingTypes.forEach((buildingType, i) => { %>
                     <%
-                        let path = '/changeProject/:cityId/building/' + i;
+                        let path = '/changeProject/' + city._id + '/building/' + i;
                     %>
                     <li>
                         <a href="<%= path %>"><%= buildingType.name %></a>
