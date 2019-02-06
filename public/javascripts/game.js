@@ -38,14 +38,14 @@ function centerMap() {
   $('.map-row').hide();
   $('.map-cell').addClass('off-screen');
 
-  let startRow = mapCenter[0] - 5;
+  let startRow = mapCenter[0] - rowRadius;
   if (startRow < 0) {
     startRow = 0;
   }
-  let endRow = startRow + 10;
+  let endRow = startRow + (2 * rowRadius);
 
-  let startCol = mapCenter[1] - 5;
-  let endCol = startCol + 10;
+  let startCol = mapCenter[1] - colRadius;
+  let endCol = startCol + (2 * colRadius);
 
   for (let r = startRow; r <= endRow; r++) {
     $('.map-row').filter('[row="' + r + '"]').show();
