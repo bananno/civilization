@@ -59,7 +59,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       unitData.location = [newRow, newCol];
       unitData.movesRemaining = unit.movesRemaining - 1;
 
-      let newTiles = getNewlyDiscoveredTiles(data.game.mapSize, oldRow, oldCol, newRow, newCol);
+      let newTiles = getNewlyDiscoveredTiles(data.game.mapSize, newRow, newCol);
 
       newTiles.forEach(coords => {
         let tile = data.tiles.filter(tile => {
@@ -96,29 +96,30 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
   });
 });
 
-function getNewlyDiscoveredTiles(mapSize, oldRow, oldCol, newRow, newCol) {
+function getNewlyDiscoveredTiles(mapSize, newRow, newCol) {
   let numMapRows = mapSize[0];
   let numMapCols = mapSize[1];
+  let tiles = [];
 
-  if (newRow != oldRow) {
-    let tempRow = newRow + (newRow > oldRow ? 1 : -1);
-    if (tempRow < 0 || tempRow >= numMapRows) {
-      return [];
+  for (let r = newRow - 2; r <= newRow + 2; r++) {
+    if (r < 0) {
+      continue;
     }
-    return [[tempRow, newCol - 1], [tempRow, newCol], [tempRow, newCol + 1]];
+    if (r >= numMapRows) {
+      break;
+    }
+    for (let cTemp = newCol - 2; cTemp <= newCol; cTemp++) {
+      let c = cTemp;
+      if (c < 0) {
+        c += numMapCols;
+      } else if (c >= numMapCols) {
+        c -= numMapCols;
+      }
+      tiles.push([r, c]);
+    }
   }
 
-  if (newCol != oldCol) {
-    let tempCol = newCol + (newCol > oldCol ? 1 : -1);
-    if (tempCol < 0) {
-      tempCol = numMapCols - 1;
-    } else if (tempCol == numMapCols) {
-      tempCol = 0;
-    }
-    return [[newRow - 1, tempCol], [newRow, tempCol], [newRow + 1, tempCol]];
-  }
-
-  return [];
+  return tiles;
 }
 
 module.exports = router;
