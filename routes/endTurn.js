@@ -3,6 +3,10 @@ const router = express.Router();
 const getData = require('./getData');
 const createUnit = require('./createUnit');
 
+const cityGrowthRate = [0, 15, 22, 30, 40, 51, 63, 76, 90, 105, 121, 138, 155, 174, 194, 214,
+  235, 258, 280, 304, 329, 354, 380, 407, 435, 464, 493, 523, 554, 585, 617, 650, 684, 719, 754,
+  790, 826, 863, 901, 940, 979];
+
 router.post('/endTurn', (req, res, next) => {
   getData(req, res, next, (data) => {
     let gameData = {};
@@ -83,6 +87,11 @@ function endRound(res, data) {
     }
 
     cityData.food = city.food + foodSurplus;
+
+    if (cityData.food >= cityGrowthRate[city.population] && foodSurplus >= 2) {
+      cityData.population = city.population + 1;
+      cityData.food -= cityGrowthRate[city.population];
+    }
 
     const completeUpdate = () => {
       city.update(cityData, error => {

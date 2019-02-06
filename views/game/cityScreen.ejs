@@ -14,6 +14,8 @@
         790, 826, 863, 901, 940, 979];
 
     let foodNeededForGrowth = growthRate[city.population];
+
+    let foodSurplus = cityFood - (city.population * 2);
 %>
 
 <div class="info city" city-id="<%= city._id %>">
@@ -21,11 +23,16 @@
     <div>city</div>
     <div>
         population: <%= city.population %><br/>
-        (<%= city.food %> / <%= foodNeededForGrowth %>)
+        (<%= city.food %> / <%= foodNeededForGrowth %>)<br/>
+        <% if (foodSurplus == 0) { %>
+            no growth
+        <% } else { %>
+            <%= Math.ceil((foodNeededForGrowth - city.food) / foodSurplus) %> turns
+        <% } %>
     </div>
     <div>
         gold: <%= cityGold %><br/>
-        food: <%= cityFood %><br/>
+        food: <%= cityFood %> (<%= foodSurplus %> surplus)<br/>
         production: <%= cityProduction %><br/>
     </div>
     <div>
