@@ -3,6 +3,7 @@ const Player = require('../models/player');
 const Tile = require('../models/tile');
 const City = require('../models/city');
 const Unit = require('../models/unit');
+const buildingTypes = require('../models/buildingTypes');
 
 function getData(req, res, next, callback) {
   Game.findById(req.session.gameId, (error, game) => {
@@ -34,6 +35,7 @@ function getData(req, res, next, callback) {
               tiles: tiles,
               cities: cities,
               units: units,
+              buildingTypes: buildingTypes,
             });
           });
         });

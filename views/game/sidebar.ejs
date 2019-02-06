@@ -53,6 +53,14 @@
     <div class="info city" city-id="<%= city._id %>">
         <div class="close">X</div>
         <div>city</div>
+        <div>
+            buildings:
+            <ul>
+                <% city.buildings.forEach(i => { %>
+                    <li><%= buildingTypes[i].name %></li>
+                <% }); %>
+            </ul>
+        </div>
     </div>
 <% }); %>
 

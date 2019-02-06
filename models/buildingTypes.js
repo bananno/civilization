@@ -5,4 +5,4 @@ const buildingTypes = [
   },
 ];
 
-export default buildingTypes;
+module.exports = buildingTypes;
