@@ -32,7 +32,7 @@
             let progress = 0;
             let turnsToFinish = 0;
 
-            if (city.project) {
+            if (city.project.category) {
                 if (city.project.category == 'unit') {
                     currentProject = unitTypes[city.project.index].name;
                     productionTotal = unitTypes[city.project.index].cost;
