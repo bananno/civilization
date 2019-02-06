@@ -35,11 +35,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const routeFiles = [
-  'index',
-  'games',
+  'game',
   'newGame',
   'moveUnit',
   'foundCity',
+  'endTurn',
 ];
 
 routeFiles.forEach(filename => {
