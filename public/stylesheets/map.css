@@ -17,6 +17,26 @@
 form.move-unit {
   height: 98%;
   width: 98%;
+  background-image: url(/images/pointing.gif);
+  opacity: 0.5;
+  background-repeat: no-repeat;
+  background-size: 40px;
+  background-position: center;
+}
+
+form.move-unit.up {
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+
+form.move-unit.down {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+form.move-unit.left {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .map-cell.dark {

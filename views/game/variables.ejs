@@ -93,9 +93,18 @@
                 })();
 
                 if (isAdjacentTile) {
+                    let direction = 'right';
+                    if (r < row) {
+                        direction = 'up';
+                    } else if (r > row) {
+                        direction = 'down';
+                    } else if (c < col) {
+                        direction = 'left';
+                    }
                     map[r][c].moves.push({
                         unitId: unit._id,
                         path: '/moveUnit/' + unit._id + '/' + r + '/' + c,
+                        direction: direction,
                     });
                 }
             }

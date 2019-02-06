@@ -71,7 +71,8 @@
                                 </div>
                             <% } else { %>
                                 <% cell.moves.forEach(move => { %>
-                                    <form action="<%= move.path %>" method="post" class="move-unit"
+                                    <form action="<%= move.path %>" method="post"
+                                        class="move-unit <%= move.direction %>"
                                         unit-id="<%= move.unitId %>"
                                         onContextMenu="rightClickForm(this); return false">
                                     </form>
