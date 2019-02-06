@@ -100,6 +100,17 @@ form.move-unit.left {
   background-size: 45px;
 }
 
+.map-city {
+  height: 100%;
+  width: 100%;
+}
+
+.map-city, .in-city {
+  background-image: url(/images/city.png);
+  background-size: 70px;
+  background-repeat: no-repeat;
+}
+
 .map-city.active {
   color: red;
 }

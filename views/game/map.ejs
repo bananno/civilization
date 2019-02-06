@@ -51,22 +51,29 @@
                             }
                         %>
                         <td class="<%= className %>" row="<%= r %>" column="<%= c %>">
-                            <% if (cell.myCity || cell.rivalCity) { %>
-                                <%
-                                    let cityClass = 'map-city ' + (cell.myCity ? 'turn' : 'rival');
-                                %>
-                                <div class="<%= cityClass %>" city-id="<%= cell.cityId %>">
-                                    &#9733;
-                                </div>
-                            <% } %>
                             <% if (cell.myUnit || cell.rivalUnit) { %>
                                 <%
                                     let unitClass = 'unit ' + (cell.myUnit ? 'turn' : 'rival');
                                     let unit = unitsById[cell.unitId];
                                     let unitImage = unit.unitType.name;
+                                    if (cell.myCity || cell.rivalCity) {
+                                        unitClass += ' in-city';
+                                    }
                                 %>
+                                <% if (cell.myCity || cell.rivalCity) { %>
+                                    <div class="in-city">
+                                <% } %>
                                 <div class="<%= unitClass %>" unit-id="<%= cell.unitId %>">
                                     <img src="/images/units/<%= unitImage %>.png">
+                                </div>
+                                <% if (cell.myCity || cell.rivalCity) { %>
+                                    </div>
+                                <% } %>
+                            <% } else if (cell.myCity || cell.rivalCity) { %>
+                                <%
+                                    let cityClass = 'map-city ' + (cell.myCity ? 'turn' : 'rival');
+                                %>
+                                <div class="<%= cityClass %>" city-id="<%= cell.cityId %>">
                                 </div>
                             <% } else { %>
                                 <% cell.moves.forEach(move => { %>
