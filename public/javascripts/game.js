@@ -1,7 +1,32 @@
 
-document.onkeypress = (e) => {
+document.onkeydown = (e) => {
   if (e.key == 'Enter') {
     $('form#end-turn').submit();
+    return;
+  }
+
+  if (e.key.match('Arrow')) {
+    if (e.key == 'ArrowUp') {
+      mapCenter[0] -= 1;
+    } else if (e.key == 'ArrowDown') {
+      mapCenter[0] += 1;
+    } else if (e.key == 'ArrowLeft') {
+      mapCenter[1] -= 1;
+    } else if (e.key == 'ArrowRight') {
+      mapCenter[1] += 1;
+    }
+
+    if (mapCenter[0] < 0 || mapCenter[0] >= numRows) {
+      return;
+    }
+
+    if (mapCenter[1] >= numCols) {
+      mapCenter[1] -= numCols;
+    } else if (mapCenter[1] < 0) {
+      mapCenter[1] += numCols;
+    }
+
+    centerMap();
   }
 };
 
