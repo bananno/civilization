@@ -29,6 +29,20 @@ function getData(req, res, next, callback) {
             if (error) {
               return next(error);
             }
+
+            let goldPerTurn = {};
+
+            players.forEach(player => {
+              goldPerTurn[player._id] = 0;
+            });
+
+            cities.forEach(city => {
+              city.buildings.forEach(i => {
+                let building = buildingTypes[i];
+                goldPerTurn[city.player] += building.gold;
+              });
+            });
+
             callback({
               game: game,
               players: players,
@@ -36,6 +50,7 @@ function getData(req, res, next, callback) {
               cities: cities,
               units: units,
               buildingTypes: buildingTypes,
+              goldPerTurn: goldPerTurn,
             });
           });
         });
