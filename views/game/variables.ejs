@@ -3,7 +3,9 @@
         map[i] = [];
         for (let j = 0; j < game.mapSize[1]; j++) {
             map[i][j] = {
-                city: false,
+                myCity: false,
+                rivalCity: false,
+                cityId: null,
                 myUnit: false,
                 rivalUnit: false,
                 moves: [],
@@ -21,7 +23,16 @@
     });
 
     cities.forEach(city => {
-        map[city.location[0]][city.location[1]].city = true;
+        let row = city.location[0];
+        let col = city.location[1];
+
+        map[row][col].cityId = city._id;
+
+        if (city.player == currentTurnPlayerId) {
+            map[row][col].myCity = true;
+        } else {
+            map[row][col].rivalCity = true;
+        }
     });
 
     tiles.forEach(tile => {

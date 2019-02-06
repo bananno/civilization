@@ -51,8 +51,13 @@
                             }
                         %>
                         <td class="<%= className %>" row="<%= r %>" column="<%= c %>">
-                            <% if (cell.city) { %>
-                                &#9733;
+                            <% if (cell.myCity || cell.rivalCity) { %>
+                                <%
+                                    let cityClass = 'map-city ' + (cell.myCity ? 'turn' : 'rival');
+                                %>
+                                <div class="<%= cityClass %>" city-id="<%= cell.cityId %>">
+                                    &#9733;
+                                </div>
                             <% } %>
                             <% if (cell.myUnit || cell.rivalUnit) { %>
                                 <%

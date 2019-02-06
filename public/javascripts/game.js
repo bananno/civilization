@@ -14,28 +14,40 @@ function setupActiveUnitSelection() {
     });
   });
 
-  $('.active-unit .close').click(() => {
-    setActiveUnit(null);
+  $('.map-city.turn').toArray().forEach(city => {
+    let $city = $(city);
+    let cityId = $city.attr('city-id');
+    $city.click(() => {
+      setActiveCity(cityId);
+    });
   });
+
+  $('.active-city .close').click(deactiveAll);
+
+  $('.active-unit .close').click(deactiveAll);
 }
 
-function showPlayersList(show) {
-  $('#players-box').toggle(show);
+function deactiveAll() {
+  $('.map-city').removeClass('active');
+  $('.unit').removeClass('active');
+
+  $('.active-city').hide();
+  $('.active-unit').hide();
+
+  $('form.move-unit').hide();
 }
 
 function setActiveCity(id) {
-  $('.active-city').hide();
+  deactiveAll();
+
   $('.active-city[city-id="' + id + '"]').show();
 }
 
 function setActiveUnit(id) {
-  $('.unit').removeClass('active');
+  deactiveAll();
+
   $('.unit[unit-id="' + id + '"]').addClass('active');
-
-  $('form.move-unit').hide();
   $('form.move-unit[unit-id="' + id + '"]').show();
-
-  $('.active-unit').hide();
   $('.active-unit[unit-id="' + id + '"]').show();
 
   if (id && id.length && id != 'null') {
