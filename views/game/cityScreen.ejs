@@ -49,26 +49,34 @@
             let productionTotal = 0;
             let progress = 0;
             let turnsToFinish = 0;
+            let project = city.project.category;
 
-            if (city.project.category) {
-                if (city.project.category == 'unit') {
+            if (project == 'unit' || project == 'building') {
+                if (project == 'unit') {
                     currentProject = unitTypes[city.project.index].name;
                     productionTotal = unitTypes[city.project.index].cost;
-                } else if (city.project.category == 'building') {
+                } else if (project == 'building') {
                     currentProject = buildingTypes[city.project.index].name;
                     productionTotal = buildingTypes[city.project.index].cost;
                 }
                 progress = city.projectProgress[city.project.category][city.project.index];
                 progress += city.productionRollover;
                 turnsToFinish = Math.ceil((productionTotal - progress) / cityProduction);
+            } else if (project == 'gold') {
+                currentProject = 'gold';
             }
         %>
         current construction:
-        <%= currentProject %>
-        <% if (productionTotal) { %>
-            (<%= progress %> / <%= productionTotal %>)
-            <br/>
-            <%= turnsToFinish %> turns to finish
+        <% if (project == 'gold') { %>
+            gold <br/>
+            (<%= Math.floor(cityProduction/2) %> per turn)
+        <% } else { %>
+            <%= currentProject %>
+            <% if (productionTotal) { %>
+                (<%= progress %> / <%= productionTotal %>)
+                <br/>
+                <%= turnsToFinish %> turns to finish
+            <% } %>
         <% } %>
     </div>
     <div>
@@ -96,6 +104,9 @@
                     <a href="<%= path %>"><%= buildingType.name %></a>
                 </li>
             <% }); %>
+            <li>
+                <a href="/changeProject/<%= city._id %>/gold/0">gold</a>
+            </li>
         </ul>
     </div>
 </div>
