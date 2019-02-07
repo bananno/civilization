@@ -25,11 +25,17 @@
 
 <div class="info">
     <% currentTurnUnits.forEach(unit => { %>
-        <p onClick="setActiveUnit('<%= unit._id %>')">
+        <%
+            let className = 'unit-roster';
+            if (unit.movesRemaining == 0 || unit.orders) {
+                className += ' done';
+            }
+        %>
+        <div class="<%= className %>" onClick="setActiveUnit('<%= unit._id %>')">
             <%= unit.unitType.name %>
             <br/>
             <%= unit.movesRemaining %> moves remaining
-        </p>
+        </div>
     <% }); %>
 </div>
 

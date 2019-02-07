@@ -81,3 +81,15 @@ a {
   cursor: pointer;
   border-radius: 10px;
 }
+
+.unit-roster {
+  background-color: #bbb;
+  padding: 3px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.unit-roster.done {
+  background-color: #eee;
+}
