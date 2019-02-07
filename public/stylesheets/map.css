@@ -53,6 +53,23 @@
   background-repeat: no-repeat;
 }
 
+.layer-unit {
+  background-size: 20px;
+  background-repeat: no-repeat;
+}
+
+.layer-unit.unit-worker {
+  background-image: url(/images/units/worker.png);
+}
+
+.layer-unit.unit-settler {
+  background-image: url(/images/units/settler.png);
+}
+
+.layer-unit.unit-scout {
+  background-image: url(/images/units/scout.png);
+}
+
 
 
 
