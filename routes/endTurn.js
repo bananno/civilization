@@ -38,15 +38,21 @@ router.post('/endTurn', (req, res, next) => {
 });
 
 function endRound(res, data) {
-  // reset moves for all units
+  // reset moves & skips for all units
   const updateUnit = (i) => {
     if (i >= data.units.length) {
       return goToNext();
     }
-    let unitData = {
-      movesRemaining: data.units[i].moves,
-    };
-    data.units[i].update(unitData, (error, unit) => {
+    let unit = data.units[i];
+    let unitData = {};
+
+    unitData.movesRemaining = unit.moves;
+
+    if (unit.orders == 'skip turn') {
+      unitData.orders = null;
+    }
+
+    unit.update(unitData, (error, unit) => {
       updateUnit(i + 1);
     });
   };
