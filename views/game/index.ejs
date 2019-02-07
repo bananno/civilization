@@ -21,10 +21,12 @@
     let activeCity = null;
 
     let activeUnit = currentTurnUnits.filter(unit => {
-        if (unit.movesRemaining > 0) {
+        let unitNeedsOrders = unit.movesRemaining > 0 && unit.orders == null;
+        if (unitNeedsOrders) {
             canEndTurnNow = false;
+            return true;
         }
-        return unit.movesRemaining > 0 && unit.orders == null;
+        return false;
     })[0];
 
     let map = [];
