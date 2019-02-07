@@ -1,9 +1,10 @@
 <%
-    let showTestMap = false;
+    let testShowFullMap = false;
+    let testShowSectionBorders = false;
 %>
 
 <style>
-<% if (showTestMap) { %>
+<% if (testShowSectionBorders) { %>
     .map-cell.boardnum-1 {
       border: 1px solid white;
     }
@@ -21,7 +22,9 @@
     .map-cell.center {
       border-color: blue;
     }
-<% } else { %>
+<% } %>
+
+<% if (!testShowFullMap) { %>
     .map-cell.off-screen {
       display: none;
     }
