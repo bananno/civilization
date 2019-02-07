@@ -44,12 +44,16 @@
     <script src="/javascripts/game.js"></script>
 </head>
 <body>
+    <div id="game-header">
+        <% include ./header %>
+    </div>
     <div id="game-sidebar">
         <% include ./sidebar %>
     </div>
     <div id="game-map">
         <% include ./map %>
     </div>
+
     <script>
         let rowRadius = 6;
         let colRadius = 10;

@@ -1,0 +1,39 @@
+
+<style>
+    #game-header {
+        height: 30px;
+        background-color: black;
+        color: white;
+        font-size: 20px;
+        line-height: 30px;
+        border-bottom: 3px solid gray;
+    }
+
+    #game-header div {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    #game-header img {
+        height: 20px;
+        margin: 5px 0 0 10px;
+    }
+
+    .header-money {
+        color: yellow;
+        margin: 5px 0;
+    }
+</style>
+
+<%
+    let currentGold = players[game.nextPlayer].gold;
+    let income = goldPerTurn[players[game.nextPlayer]._id];
+%>
+
+<div>
+    <img src="/images/gold.png">
+</div>
+
+<div class="header-money">
+    <%= currentGold %> (<%= (income < 0 ? '-' : '+') + income %>)
+</div>
