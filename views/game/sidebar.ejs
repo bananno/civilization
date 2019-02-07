@@ -90,6 +90,11 @@
                     <button <%= disableActions %>>build farm</button>
                 </form>
             <% } %>
+            <% if (unit.movesRemaining) { %>
+                <form action="/skipTurn/<%= unit._id %>" method="post">
+                    <button <%= disableActions %>>skip turn</button>
+                </form>
+            <% } %>
         </div>
     </div>
 <% }); %>
