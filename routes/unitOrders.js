@@ -18,9 +18,16 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
       return res.redirect('/');
     }
 
-    let unitData = {
-      orders: 'skip turn',
-    };
+    let unitData = {};
+
+    if (orders == 'skipTurn') {
+      unitData.orders = 'skip turn';
+    } else if (orders == 'sleep') {
+      unitData.orders = 'sleep';
+    } else {
+      console.log('invalid unit action');
+      return res.redirect('/');
+    }
 
     unit.update(unitData, (error, unit) => {
       if (error) {

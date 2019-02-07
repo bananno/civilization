@@ -95,6 +95,9 @@
                     <button <%= disableActions %>>skip turn</button>
                 </form>
             <% } %>
+            <form action="/unitOrders/<%= unit._id %>/sleep" method="post">
+                <button>sleep</button>
+            </form>
         </div>
     </div>
 <% }); %>
