@@ -76,9 +76,15 @@
                     <button <%= disableActions %>>skip turn</button>
                 </form>
             <% } %>
-            <form action="/unitOrders/<%= unit._id %>/sleep" method="post">
-                <button>sleep</button>
-            </form>
+            <% if (unit.orders == 'sleep') { %>
+                <form action="/unitOrders/<%= unit._id %>/wake" method="post">
+                    <button>wake</button>
+                </form>
+            <% } else { %>
+                <form action="/unitOrders/<%= unit._id %>/sleep" method="post">
+                    <button>sleep</button>
+                </form>
+            <% } %>
         </div>
     </div>
 <% }); %>

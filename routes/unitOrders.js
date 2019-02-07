@@ -24,6 +24,8 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
       unitData.orders = 'skip turn';
     } else if (orders == 'sleep') {
       unitData.orders = 'sleep';
+    } else if (orders == 'wake') {
+      unitData.orders = null;
     } else if (orders == 'buildFarm') {
       return improveLand(res, data, unit, orders);
     } else {
