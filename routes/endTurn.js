@@ -80,20 +80,20 @@ function endRound(res, data) {
 
     if (projectCategory == 'unit' || projectCategory == 'building') {
       cityData.projectProgress = city.projectProgress;
-      cityData.projectProgress[projectCategory][index] += productionPerTurn;
-      cityData.projectProgress[projectCategory][index] += city.productionRollover;
+      cityData.projectProgress[projectCategory][projectIndex] += productionPerTurn;
+      cityData.projectProgress[projectCategory][projectIndex] += city.productionRollover;
 
       cityData.productionRollover = 0;
 
-      productionSoFar = cityData.projectProgress[projectCategory][index];
+      productionSoFar = cityData.projectProgress[projectCategory][projectIndex];
 
       if (projectCategory == 'unit') {
-        productionNeeded = data.unitTypes[index].cost;
-        if (data.unitTypes[index].name == 'settler') {
+        productionNeeded = data.unitTypes[projectIndex].cost;
+        if (data.unitTypes[projectIndex].name == 'settler') {
           allowGrowth = false;
         }
       } else if (projectCategory == 'building') {
-        productionNeeded = data.buildingTypes[index].cost;
+        productionNeeded = data.buildingTypes[projectIndex].cost;
       }
 
       projectIsComplete = productionSoFar >= productionNeeded;
@@ -116,7 +116,7 @@ function endRound(res, data) {
 
     if (projectIsComplete) {
       cityData.productionRollover = productionSoFar - productionNeeded;
-      cityData.projectProgress[projectCategory][index] = 0;
+      cityData.projectProgress[projectCategory][projectIndex] = 0;
       cityData.project = {
         category: null,
         index: null,
@@ -124,13 +124,13 @@ function endRound(res, data) {
 
       if (projectCategory == 'building') {
         cityData.buildings = data.cities[i].buildings;
-        cityData.buildings.push(index);
+        cityData.buildings.push(projectIndex);
       } else if (projectCategory == 'unit') {
         let unitData = {
           game: city.game,
           player: city.player,
           location: city.location.concat(),
-          unitTypeIndex: index,
+          unitTypeIndex: projectIndex,
         };
         return createUnit(unitData, completeUpdate);
       }
