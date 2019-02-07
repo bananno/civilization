@@ -31,10 +31,12 @@ router.post('/improveLand/:unitId/:improvement', (req, res, next) => {
       orders: 'build farm',
     };
 
-    let tileData = {
-      improvement: 'build farm',
-      progress: 0,
-    };
+    let tileData = {};
+
+    if (tile.improvement != 'build farm') {
+      tileData.improvement = 'build farm';
+      tileData.progress = 0;
+    }
 
     unit.update(unitData, (error, unit) => {
       if (error) {
