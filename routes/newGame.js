@@ -37,7 +37,10 @@ router.post('/newGame', (req, res, next) => {
             row: i,
             column: j,
             discovered: [],
+            food: 1,
+            gold: 1,
           };
+
           tileList.push(tileData);
         }
       }
