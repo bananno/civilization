@@ -43,18 +43,45 @@ function endRound(res, data) {
     if (i >= data.units.length) {
       return goToNext();
     }
+
     let unit = data.units[i];
     let unitData = {};
+
+    const completeUpdate = () => {
+      unit.update(unitData, (error, unit) => {
+        if (error) {
+          return next(error);
+        }
+        updateUnit(i + 1);
+      });
+    };
 
     unitData.movesRemaining = unit.moves;
 
     if (unit.orders == 'skip turn') {
       unitData.orders = null;
-    }
+      completeUpdate();
+    } else if (unit.orders == 'build farm') {
+      let tile = findTile(data.tiles, unit.location[0], unit.location[1]);
+      let tileData = {};
 
-    unit.update(unitData, (error, unit) => {
-      updateUnit(i + 1);
-    });
+      tileData.progress = tile.progress + unit.movesRemaining;
+
+      if (tileData.progress >= 5) {
+        tileData.improvement = 'farm';
+        tileData.progress = 0;
+        unitData.orders = null;
+      }
+
+      tile.update(tileData, (error, tile) => {
+        if (error) {
+          return next(error);
+        }
+        completeUpdate();
+      });
+    } else {
+      completeUpdate();
+    }
   };
 
   // increment project & growth progress for all cities
@@ -206,6 +233,12 @@ function calculateCityFood(city, buildingTypes) {
   });
 
   return food;
+}
+
+function findTile(tiles, row, column) {
+  return tiles.filter(tile => {
+    return tile.row == row && tile.column == column;
+  })[0];
 }
 
 module.exports = router;
