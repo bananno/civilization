@@ -35,7 +35,14 @@
                 <% for (let boardnum = 0; boardnum < 3; boardnum++) { %>
                     <% row.forEach((cell, c) => { %>
                         <%
+                            let tile = cell.tile;
+
                             let className = 'map-cell boardnum-' + boardnum;
+
+                            if (tile.improvement) {
+                                className += ' ' + tile.improvement.split(' ').join('-');
+                            }
+
                             if (boardnum != 1) {
                                 className += ' off-screen';
                             }

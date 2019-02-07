@@ -95,6 +95,12 @@ form.move-unit.left {
   display: none;
 }
 
+.map-cell.farm {
+  background-image: url(/images/map/farm.png);
+  background-size: 45px;
+  background-repeat: no-repeat;
+}
+
 .map-cell .unit.active {
   background-image: url(/images/spinning.gif);
   background-size: 45px;
