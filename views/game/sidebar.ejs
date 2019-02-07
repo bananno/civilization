@@ -86,7 +86,7 @@
                     <button <%= disableActions %>>found city</button>
                 </form>
             <% } else if (type == 'worker') { %>
-                <form action="/improveLand/<%= unit._id %>/farm" method="post">
+                <form action="/unitOrders/<%= unit._id %>/buildFarm" method="post">
                     <button <%= disableActions %>>build farm</button>
                 </form>
             <% } %>

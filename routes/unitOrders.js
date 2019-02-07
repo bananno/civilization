@@ -24,6 +24,8 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
       unitData.orders = 'skip turn';
     } else if (orders == 'sleep') {
       unitData.orders = 'sleep';
+    } else if (orders == 'buildFarm') {
+      return improveLand(unit, orders);
     } else {
       console.log('invalid unit action');
       return res.redirect('/');
@@ -37,5 +39,43 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
     });
   });
 });
+
+function improveLand(unit, orders) {
+  let tile = data.tiles.filter(tile => {
+    return tile.row == unit.location[0] && tile.column == unit.location[1];
+  })[0];
+
+  let turnPlayerId = data.players[data.game.nextPlayer]._id;
+
+  if (unit.unitType.name != 'worker' || unit.movesRemaining == 0
+      || '' + tile.owner != '' + turnPlayerId
+      || '' + unit.player != '' + turnPlayerId) {
+    console.log('invalid unit action');
+    return res.redirect('/');
+  }
+
+  let unitData = {
+    orders: 'build farm',
+  };
+
+  let tileData = {};
+
+  if (tile.improvement != 'build farm') {
+    tileData.improvement = 'build farm';
+    tileData.progress = 0;
+  }
+
+  unit.update(unitData, (error, unit) => {
+    if (error) {
+      return next(error);
+    }
+    tile.update(tileData, (error, tile) => {
+      if (error) {
+        return next(error);
+      }
+      res.redirect('/');
+    });
+  });
+}
 
 module.exports = router;
