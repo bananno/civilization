@@ -1,18 +1,8 @@
 
-<h1>Civilization</h1>
-
 <div class="info">
     <form id="end-turn" action="/endTurn" method="POST">
         <button type="submit">end turn for <%= players[game.nextPlayer].name %></button>
     </form>
-</div>
-
-<div class="info">
-    <%= game.name %>
-</div>
-
-<div class="info">
-    Turn: <%= game.turn %>
 </div>
 
 <div class="info">
@@ -30,15 +20,6 @@
 </div>
 
 <div class="info">
-    <%
-        let currentGold = players[game.nextPlayer].gold;
-        let income = goldPerTurn[players[game.nextPlayer]._id];
-    %>
-    Gold: <%= currentGold %>
-    (<%= (income < 0 ? '-' : '+') + income %>)
-</div>
-
-<div class="info">
     <% currentTurnUnits.forEach(unit => { %>
         <p onClick="setActiveUnit('<%= unit._id %>')">
             <%= unit.unitType.name %>
@@ -46,10 +27,6 @@
             <%= unit.movesRemaining %> moves remaining
         </p>
     <% }); %>
-</div>
-
-<div class="info">
-    <a href="/exitGame">load different game</a>
 </div>
 
 <% currentTurnCities.forEach(city => { %>
