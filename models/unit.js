@@ -27,6 +27,10 @@ var UnitSchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
+  orders: {
+    type: String,
+    default: null
+  },
 });
 
 var Unit = mongoose.model('Unit', UnitSchema);

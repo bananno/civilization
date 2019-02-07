@@ -27,9 +27,16 @@ router.post('/improveLand/:unitId/:improvement', (req, res, next) => {
       return res.redirect('/');
     }
 
-    console.log('success');
+    let unitData = {
+      orders: 'build farm',
+    };
 
-    res.redirect('/');
+    unit.update(unitData, (error, unit) => {
+      if (error) {
+        return next(error);
+      }
+      res.redirect('/');
+    });
   });
 });
 

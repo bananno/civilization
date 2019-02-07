@@ -72,6 +72,14 @@
             <%= unit.movesRemaining %>
         </div>
         <div>
+            <b>orders:</b>
+            <% if (unit.orders) { %>
+                <%= unit.orders %>
+            <% } else { %>
+                NONE
+            <% } %>
+        </div>
+        <div>
             <b>actions:</b>
             <% if (type == 'settler') { %>
                 <form action="/foundCity/<%= unit._id %>" method="post">
