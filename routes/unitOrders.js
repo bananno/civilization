@@ -25,7 +25,7 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
     } else if (orders == 'sleep') {
       unitData.orders = 'sleep';
     } else if (orders == 'buildFarm') {
-      return improveLand(unit, orders);
+      return improveLand(res, data, unit, orders);
     } else {
       console.log('invalid unit action');
       return res.redirect('/');
@@ -40,7 +40,7 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
   });
 });
 
-function improveLand(unit, orders) {
+function improveLand(res, data, unit, orders) {
   let tile = data.tiles.filter(tile => {
     return tile.row == unit.location[0] && tile.column == unit.location[1];
   })[0];
