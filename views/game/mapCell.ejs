@@ -59,10 +59,23 @@
     if (clickable) {
         className += ' clickable';
     }
+
+    let tileId = 'mapTile_' + r + '_' + c;
+    className += ' ' + tileId;
+    let functionName = 'click_' + tileId;
 %>
 
+<script>
+function <%= functionName %>() {
+    <% if (clickable) { %>
+        $('.map-cell').removeClass('active');
+        $('.<%= tileId %>').addClass('active');
+    <% } %>
+}
+</script>
+
 <div class="<%= className %>" row="<%= r %>" column="<%= c %>"
-        food="<%= food %>" gold="<%= gold %>">
+        food="<%= food %>" gold="<%= gold %>" onClick="<%= functionName %>()">
 
     <% tileStack.forEach(layer => { %>
         <div class="tile-stack layer-<%= layer %>"> </div>

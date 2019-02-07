@@ -74,6 +74,12 @@
   background-image: url(/images/units/scout.png);
 }
 
+.map-cell.active .layer-highlight {
+  background-image: url(/images/spinning.gif);
+  background-size: 20px;
+  background-color: black;
+}
+
 
 
 
