@@ -1,27 +1,39 @@
 
 <style>
     #game-header {
-        height: 30px;
+        height: 33px;
         background-color: black;
-        color: white;
-        font-size: 20px;
-        line-height: 30px;
         border-bottom: 3px solid gray;
+        display: flex;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding-right: 50px;
+        cursor: default;
     }
 
-    #game-header div {
+    .game-header-section {
+    }
+
+    .header-image, .header-text {
         display: inline-block;
+        height: 100%;
         vertical-align: top;
     }
 
-    #game-header img {
+    .header-image img {
         height: 20px;
         margin: 5px 0 0 10px;
     }
 
+    .header-text {
+        color: white;
+        font-size: 14px;
+        line-height: 30px;
+        margin-right: 5px;
+    }
+
     .header-money {
         color: yellow;
-        margin: 5px 0;
     }
 </style>
 
@@ -31,9 +43,23 @@
 %>
 
 <div>
-    <img src="/images/gold.png">
+    <div class="header-image">
+        <img src="/images/gold.png">
+    </div>
+
+    <div class="header-text header-money">
+        <%= currentGold %> (<%= (income < 0 ? '-' : '+') + income %>)
+    </div>
 </div>
 
-<div class="header-money">
-    <%= currentGold %> (<%= (income < 0 ? '-' : '+') + income %>)
+<div>
+    <div class="header-text">
+        Turn: <%= game.turn %>
+    </div>
+    <div class="header-text">
+        |
+    </div>
+    <div class="header-text">
+        <a href="/exitGame">load different game</a>
+    </div>
 </div>
