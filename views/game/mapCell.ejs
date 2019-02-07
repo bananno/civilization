@@ -1,10 +1,20 @@
 <%
     let tile = cell.tile;
 
+    let tileStack = [];
+
     let className = 'map-cell boardnum-' + boardnum;
+
+    tileStack.push('terrain');
+    tileStack.push('territory');
+    tileStack.push('improvement');
 
     if (tile.improvement) {
         className += ' ' + tile.improvement.split(' ').join('-');
+    }
+
+    if (cell.myCity || cell.rivalCity) {
+        tileStack.push('city');
     }
 
     if (boardnum != 1) {
@@ -33,27 +43,18 @@
     if (cell.myUnit || cell.rivalUnit) {
         let unit = unitsById[cell.unitId];
         unitName = unit.unitType.name;
+        tileStack.push('unit unit-' + unitName);
     }
+
+    tileStack.push('darkness');
 %>
 
 <div class="<%= className %>" row="<%= r %>" column="<%= c %>"
         food="<%= food %>" gold="<%= gold %>">
 
-    <div class="tile-stack layer-terrain"> </div>
-
-    <div class="tile-stack layer-territory"> </div>
-
-    <div class="tile-stack layer-improvement"> </div>
-
-    <% if (cell.myCity || cell.rivalCity) { %>
-        <div class="tile-stack layer-city"> </div>
-    <% } %>
-
-    <% if (unitName) { %>
-        <div class="tile-stack layer-unit unit-<%= unitName %>"> </div>
-    <% } %>
-
-    <div class="tile-stack layer-darkness"> </div>
+    <% tileStack.forEach(layer => { %>
+        <div class="tile-stack layer-<%= layer %>"> </div>
+    <% }); %>
 
 
 
