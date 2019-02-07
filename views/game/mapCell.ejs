@@ -15,7 +15,11 @@
     }
 
     tileStack.push('terrain');
-    tileStack.push('territory');
+
+    if (cell.player) {
+        className += ' player' + cell.player;
+        tileStack.push('territory territory-' + cell.player);
+    }
 
     if (tile.improvement) {
         let improvementName = tile.improvement.split(' ').join('-');
@@ -27,24 +31,19 @@
         }
     }
 
-    if (cell.myCity || cell.rivalCity) {
-        tileStack.push('city');
-        if (cell.myCity) {
-            clickable = true;
-        }
+    if (cell.myCity || cell.myUnit) {
+        tileStack.push('highlight');
+        clickable = true;
     }
 
-    if (cell.player) {
-        className += ' player' + cell.player;
+    if (cell.myCity || cell.rivalCity) {
+        tileStack.push('city');
     }
 
     if (cell.myUnit || cell.rivalUnit) {
         let unit = unitsById[cell.unitId];
         let unitName = unit.unitType.name;
         tileStack.push('unit unit-' + unitName);
-        if (cell.myUnit) {
-            clickable = true;
-        }
     }
 
     if (cell.lit || cell.owned) {
