@@ -59,9 +59,16 @@
                             } else {
                                 className += ' dark';
                             }
+
+                            let food = tile.food;
+                            let gold = tile.gold;
+
+                            if (tile.improvement == 'farm') {
+                                food += 1;
+                            }
                         %>
                         <td class="<%= className %>" row="<%= r %>" column="<%= c %>"
-                                food="<%= tile.food %>" gold="<%= tile.gold %>">
+                                food="<%= food %>" gold="<%= gold %>">
                             <% if (cell.myUnit || cell.rivalUnit) { %>
                                 <%
                                     let unitClass = 'unit ' + (cell.myUnit ? 'turn' : 'rival');
