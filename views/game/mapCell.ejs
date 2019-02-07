@@ -52,14 +52,8 @@
             tileStack.push('unit unit-' + unitName);
         }
 
-        if (cell.lit || cell.owned) {
-            className += ' lit';
-        } else if (cell.discovered) {
-            className += ' discovered';
-            tileStack.push('outOfRange');
-        } else {
-            className += ' dark';
-            tileStack.push('notDiscovered');
+        if (!cell.lit) {
+            tileStack.push('fog');
         }
 
         if (clickable) {
@@ -86,8 +80,6 @@ function <%= functionName %>() {
         <div class="tile-stack layer-<%= layer %>"> </div>
     <% }); %>
 
-
-
     <% if (cell.myUnit || cell.rivalUnit) { %>
         <%
             let unitClass = 'unit ' + (cell.myUnit ? 'turn' : 'rival');
@@ -97,15 +89,9 @@ function <%= functionName %>() {
                 unitClass += ' in-city';
             }
         %>
-        <% if (cell.myCity || cell.rivalCity) { %>
-            <div class="in-city">
-        <% } %>
         <div class="<%= unitClass %>" unit-id="<%= cell.unitId %>">
             <img src="/images/units/<%= unitImage %>.png">
         </div>
-        <% if (cell.myCity || cell.rivalCity) { %>
-            </div>
-        <% } %>
     <% } else if (cell.myCity || cell.rivalCity) { %>
         <%
             let cityClass = 'map-city ' + (cell.myCity ? 'turn' : 'rival');
