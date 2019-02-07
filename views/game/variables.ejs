@@ -44,8 +44,8 @@
             if (tile.owner == currentTurnPlayerId) {
                 map[tile.row][tile.column].owned = true;
 
-                for (let i = tile.row - 2; i <= tile.row + 2; i++) {
-                    for (let j = tile.column - 2; j <= tile.column + 2; j++) {
+                for (let i = tile.row - 1; i <= tile.row + 1; i++) {
+                    for (let j = tile.column - 1; j <= tile.column + 1; j++) {
                         if (map[i] && map[i][j]) {
                             map[i][j].lit = true;
                         }
