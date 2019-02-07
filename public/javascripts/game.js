@@ -39,6 +39,8 @@ function setupActiveUnitSelection() {
 
   $('.info.city .close').click(deactivateAll);
   $('.info.unit .close').click(deactivateAll);
+
+  $('.map-cell').mouseover(hoverMapCell);
 }
 
 function deactivateAll() {
@@ -123,4 +125,14 @@ function centerMap() {
 
   $('.map-cell').removeClass('center');
   $('.map-cell[row="' + mapCenter[0] + '"][column="' + mapCenter[1] + '"]').addClass('center');
+}
+
+function hoverMapCell(e) {
+  let $mapCell = $(e.target);
+  let row = parseInt($mapCell.attr('row'));
+  let column = parseInt($mapCell.attr('column'));
+
+  let s = 'Row: ' + row + '<br>Column: ' + column;
+
+  $('.info.tile').html(s);
 }

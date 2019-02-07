@@ -93,3 +93,8 @@ a {
 .unit-roster.done {
   background-color: #eee;
 }
+
+.info.tile {
+  position: absolute;
+  bottom: 0;
+}
