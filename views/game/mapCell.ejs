@@ -6,6 +6,8 @@
     let food = tile.food;
     let gold = tile.gold;
 
+    let clickable = false;
+
     let className = 'map-cell boardnum-' + boardnum;
 
     if (boardnum != 1) {
@@ -27,6 +29,9 @@
 
     if (cell.myCity || cell.rivalCity) {
         tileStack.push('city');
+        if (cell.myCity) {
+            clickable = true;
+        }
     }
 
     if (cell.player) {
@@ -37,6 +42,9 @@
         let unit = unitsById[cell.unitId];
         let unitName = unit.unitType.name;
         tileStack.push('unit unit-' + unitName);
+        if (cell.myUnit) {
+            clickable = true;
+        }
     }
 
     if (cell.lit || cell.owned) {
@@ -47,6 +55,10 @@
     } else {
         className += ' dark';
         tileStack.push('notDiscovered');
+    }
+
+    if (clickable) {
+        className += ' clickable';
     }
 %>
 
