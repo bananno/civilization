@@ -45,7 +45,13 @@
                 map[tile.row][tile.column].owned = true;
 
                 for (let i = tile.row - 1; i <= tile.row + 1; i++) {
-                    for (let j = tile.column - 1; j <= tile.column + 1; j++) {
+                    for (let j1 = tile.column - 1; j1 <= tile.column + 1; j1++) {
+                        let j = j1;
+                        if (j < 0) {
+                            j += game.mapSize[1];
+                        } else if (j >= game.mapSize[1]) {
+                            j -= game.mapSize[1];
+                        }
                         if (map[i] && map[i][j]) {
                             map[i][j].lit = true;
                         }
