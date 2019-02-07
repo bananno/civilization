@@ -10,59 +10,64 @@
 
     let className = 'map-cell boardnum-' + boardnum;
 
+    let tileId = 'mapTile_' + r + '_' + c;
+    className += ' ' + tileId;
+    let functionName = 'click_' + tileId;
+
     if (boardnum != 1) {
         className += ' off-screen';
     }
 
-    tileStack.push('terrain');
+    if (cell.lit || cell.owned || cell.discovered) {
 
-    if (cell.player) {
-        className += ' player' + cell.player;
-        tileStack.push('territory territory-' + cell.player);
-    }
+        tileStack.push('terrain');
 
-    if (tile.improvement) {
-        let improvementName = tile.improvement.split(' ').join('-');
-        className += ' ' + improvementName;
-        tileStack.push('improvement improvement-' + improvementName);
-
-        if (improvementName == 'farm') {
-            food += 1;
+        if (cell.player) {
+            className += ' player' + cell.player;
+            tileStack.push('territory territory-' + cell.player);
         }
-    }
 
-    if (cell.myCity || cell.myUnit) {
-        tileStack.push('highlight');
-        clickable = true;
-    }
+        if (tile.improvement) {
+            let improvementName = tile.improvement.split(' ').join('-');
+            className += ' ' + improvementName;
+            tileStack.push('improvement improvement-' + improvementName);
 
-    if (cell.myCity || cell.rivalCity) {
-        tileStack.push('city');
-    }
+            if (improvementName == 'farm') {
+                food += 1;
+            }
+        }
 
-    if (cell.myUnit || cell.rivalUnit) {
-        let unit = unitsById[cell.unitId];
-        let unitName = unit.unitType.name;
-        tileStack.push('unit unit-' + unitName);
-    }
+        if (cell.myCity || cell.myUnit) {
+            tileStack.push('highlight');
+            clickable = true;
+        }
 
-    if (cell.lit || cell.owned) {
-        className += ' lit';
-    } else if (cell.discovered) {
-        className += ' discovered';
-        tileStack.push('outOfRange');
+        if (cell.myCity || cell.rivalCity) {
+            tileStack.push('city');
+        }
+
+        if (cell.myUnit || cell.rivalUnit) {
+            let unit = unitsById[cell.unitId];
+            let unitName = unit.unitType.name;
+            tileStack.push('unit unit-' + unitName);
+        }
+
+        if (cell.lit || cell.owned) {
+            className += ' lit';
+        } else if (cell.discovered) {
+            className += ' discovered';
+            tileStack.push('outOfRange');
+        } else {
+            className += ' dark';
+            tileStack.push('notDiscovered');
+        }
+
+        if (clickable) {
+            className += ' clickable';
+        }
     } else {
-        className += ' dark';
-        tileStack.push('notDiscovered');
+        className += ' notDiscovered';
     }
-
-    if (clickable) {
-        className += ' clickable';
-    }
-
-    let tileId = 'mapTile_' + r + '_' + c;
-    className += ' ' + tileId;
-    let functionName = 'click_' + tileId;
 %>
 
 <script>
