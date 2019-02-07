@@ -37,7 +37,9 @@
             <tr class="map-row" row="<%= r %>">
                 <% for (let boardnum = 0; boardnum < 3; boardnum++) { %>
                     <% row.forEach((cell, c) => { %>
-                        <% include ./mapCell %>
+                        <td>
+                            <% include ./mapCell %>
+                        </td>
                     <% }); %>
                 <% } %>
             </tr>
