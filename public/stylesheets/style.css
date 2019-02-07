@@ -75,3 +75,9 @@ a {
 .info.city ul {
   margin-left: 20px;
 }
+
+#end-turn button {
+  padding: 5px 8px;
+  cursor: pointer;
+  border-radius: 10px;
+}

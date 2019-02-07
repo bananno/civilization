@@ -1,7 +1,11 @@
 
 <div class="info">
     <form id="end-turn" action="/endTurn" method="POST">
-        <button type="submit">end turn for <%= players[game.nextPlayer].name %></button>
+        <% if (canEndTurnNow) { %>
+            <button type="submit">end turn</button>
+        <% } else { %>
+            <button type="submit" disabled="true">end turn</button>
+        <% } %>
     </form>
 </div>
 
