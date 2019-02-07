@@ -3,50 +3,51 @@
 
     let tileStack = [];
 
+    let food = tile.food;
+    let gold = tile.gold;
+
     let className = 'map-cell boardnum-' + boardnum;
+
+    if (boardnum != 1) {
+        className += ' off-screen';
+    }
 
     tileStack.push('terrain');
     tileStack.push('territory');
-    tileStack.push('improvement');
 
     if (tile.improvement) {
-        className += ' ' + tile.improvement.split(' ').join('-');
+        let improvementName = tile.improvement.split(' ').join('-');
+        className += ' ' + improvementName;
+        tileStack.push('improvement improvement-' + improvementName);
+
+        if (improvementName == 'farm') {
+            food += 1;
+        }
     }
 
     if (cell.myCity || cell.rivalCity) {
         tileStack.push('city');
     }
 
-    if (boardnum != 1) {
-        className += ' off-screen';
-    }
     if (cell.player) {
         className += ' player' + cell.player;
     }
+
+    if (cell.myUnit || cell.rivalUnit) {
+        let unit = unitsById[cell.unitId];
+        let unitName = unit.unitType.name;
+        tileStack.push('unit unit-' + unitName);
+    }
+
     if (cell.lit || cell.owned) {
         className += ' lit';
     } else if (cell.discovered) {
         className += ' discovered';
+        tileStack.push('outOfRange');
     } else {
         className += ' dark';
+        tileStack.push('notDiscovered');
     }
-
-    let food = tile.food;
-    let gold = tile.gold;
-
-    if (tile.improvement == 'farm') {
-        food += 1;
-    }
-
-    let unitName = null;
-
-    if (cell.myUnit || cell.rivalUnit) {
-        let unit = unitsById[cell.unitId];
-        unitName = unit.unitType.name;
-        tileStack.push('unit unit-' + unitName);
-    }
-
-    tileStack.push('darkness');
 %>
 
 <div class="<%= className %>" row="<%= r %>" column="<%= c %>"
