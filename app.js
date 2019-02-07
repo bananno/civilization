@@ -38,7 +38,6 @@ const routeFiles = [
   'game',
   'newGame',
   'moveUnit',
-  'improveLand',
   'foundCity',
   'changeCityProject',
   'unitOrders',
