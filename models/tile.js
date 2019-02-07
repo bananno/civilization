@@ -23,6 +23,13 @@ var TileSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
+  improvement: {
+    type: String,
+  },
+  progress: {
+    type: Number,
+    default: 0,
+  },
 });
 
 var Tile = mongoose.model('Tile', TileSchema);

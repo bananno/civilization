@@ -31,11 +31,21 @@ router.post('/improveLand/:unitId/:improvement', (req, res, next) => {
       orders: 'build farm',
     };
 
+    let tileData = {
+      improvement: 'build farm',
+      progress: 0,
+    };
+
     unit.update(unitData, (error, unit) => {
       if (error) {
         return next(error);
       }
-      res.redirect('/');
+      tile.update(tileData, (error, tile) => {
+        if (error) {
+          return next(error);
+        }
+        res.redirect('/');
+      });
     });
   });
 });
