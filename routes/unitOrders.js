@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
 
-router.post('/skipTurn/:unitId', (req, res, next) => {
+router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
   let unitId = req.params.unitId;
+  let orders = req.params.orders;
 
   getData(req, res, next, (data) => {
     let unit = data.units.filter(unit => {

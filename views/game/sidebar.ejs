@@ -91,7 +91,7 @@
                 </form>
             <% } %>
             <% if (unit.movesRemaining) { %>
-                <form action="/skipTurn/<%= unit._id %>" method="post">
+                <form action="/unitOrders/<%= unit._id %>/skipTurn" method="post">
                     <button <%= disableActions %>>skip turn</button>
                 </form>
             <% } %>
