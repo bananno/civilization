@@ -41,7 +41,7 @@ const routeFiles = [
   'improveLand',
   'foundCity',
   'changeCityProject',
-  'skipTurn',
+  'unitOrders',
   'endTurn',
 ];
 
