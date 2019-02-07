@@ -33,15 +33,17 @@
         food="<%= food %>" gold="<%= gold %>">
 
     <div class="tile-stack layer-terrain"> </div>
-    <div class="tile-stack layer-hill"> </div>
-    <div class="tile-stack layer-road"> </div>
-    <div class="tile-stack layer-mine"> </div>
-    <div class="tile-stack layer-forest"> </div>
-    <div class="tile-stack layer-city"> </div>
-    <div class="tile-stack layer-civilian"> </div>
-    <div class="tile-stack layer-military"> </div>
+    <!-- <div class="tile-stack layer-hill"> </div> -->
+    <div class="tile-stack layer-territory"> </div>
+    <!-- <div class="tile-stack layer-road"> </div> -->
+    <div class="tile-stack layer-improvement"> </div>
+    <!-- <div class="tile-stack layer-forest"> </div> -->
+    <% if (cell.myCity || cell.rivalCity) { %>
+        <div class="tile-stack layer-city"> </div>
+    <% } %>
+    <!-- <div class="tile-stack layer-civilian"> </div>
+    <div class="tile-stack layer-military"> </div> -->
     <div class="tile-stack layer-darkness"> </div>
-
 
     <% if (cell.myUnit || cell.rivalUnit) { %>
         <%
