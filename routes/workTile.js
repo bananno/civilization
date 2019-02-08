@@ -22,6 +22,15 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
       return res.redirect('/');
     }
 
+    let cityTilesWorked = data.tiles.filter(tile => {
+      return tile.worked == city._id;
+    });
+
+    if (cityTilesWorked.length >= city.population) {
+      console.log('All citizens are already employed at other tiles.');
+      return res.redirect('/');
+    }
+
     console.log('WORK TILE');
     console.log(cityId);
     console.log(tileId);
