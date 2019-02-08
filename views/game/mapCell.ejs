@@ -70,25 +70,7 @@
         <div class="tile-stack layer-<%= layer %>"> </div>
     <% }); %>
 
-    <% if (cell.myUnit || cell.rivalUnit) { %>
-        <%
-            let unitClass = 'unit ' + (cell.myUnit ? 'turn' : 'rival');
-            let unit = unitsById[cell.unitId];
-            let unitImage = unit.unitType.name;
-            if (cell.myCity || cell.rivalCity) {
-                unitClass += ' in-city';
-            }
-        %>
-        <div class="<%= unitClass %>" unit-id="<%= cell.unitId %>">
-            <img src="/images/units/<%= unitImage %>.png">
-        </div>
-    <% } else if (cell.myCity || cell.rivalCity) { %>
-        <%
-            let cityClass = 'map-city ' + (cell.myCity ? 'turn' : 'rival');
-        %>
-        <div class="<%= cityClass %>" city-id="<%= cell.cityId %>">
-        </div>
-    <% } else { %>
+    <% if (cell.myUnit || cell.rivalUnit || cell.myCity || cell.rivalCity) { %>
         <% cell.moves.forEach(move => { %>
             <form action="<%= move.path %>" method="post"
                 class="move-unit <%= move.direction %>"

@@ -122,6 +122,8 @@ function clickMapCell(row, column) {
   }
 
   if (activeUnitOrCityId) {
+    $('.map-cell').removeClass('active');
+    $('.map-cell[row="' + row + '"][column="' + column + '"]').addClass('active');
     if (units[activeUnitOrCityId]) {
       setActiveUnit(activeUnitOrCityId);
     } else {
