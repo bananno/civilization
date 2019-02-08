@@ -22,18 +22,24 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    let cityTilesWorked = data.tiles.filter(tile => {
-      return tile.worked == city._id;
-    });
-
-    if (cityTilesWorked.length >= city.population) {
-      console.log('All citizens are already employed at other tiles.');
-      return res.redirect('/');
-    }
-
     let tileData = {};
 
-    tileData.worked = city;
+    let alreadyWorkingTile = '' + tile.worked == '' + city._id;
+
+    if (alreadyWorkingTile) {
+      tileData.worked = null;
+    } else {
+      let cityTilesWorked = data.tiles.filter(nextTile => {
+        return nextTile.worked == city._id;
+      });
+
+      if (cityTilesWorked.length >= city.population) {
+        console.log('All citizens are already employed at other tiles.');
+        return res.redirect('/');
+      }
+
+      tileData.worked = city;
+    }
 
     tile.update(tileData, error => {
       if (error) {
