@@ -30,7 +30,7 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
       tileData.worked = null;
     } else {
       let cityTilesWorked = data.tiles.filter(nextTile => {
-        return nextTile.worked == city._id;
+        return '' + nextTile.worked == '' + city._id;
       });
 
       if (cityTilesWorked.length >= city.population) {
