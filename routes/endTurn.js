@@ -103,7 +103,7 @@ function endRound(res, data) {
       });
     };
 
-    let cityGrossOutput = calculateCityOutput(city, data.tiles, data.buildingTypes);
+    let cityGrossOutput = data.cityOutput[city._id];
 
     let projectCategory = city.project.category;
     let projectIndex = city.project.index;
@@ -214,32 +214,6 @@ function allCitiesHaveProject(player, cities) {
     }
   }
   return true;
-}
-
-function calculateCityOutput(city, tiles, buildingTypes) {
-  let food = 0;
-  let gold = 0;
-  let production = 0;
-
-  tiles.forEach(tile => {
-    if ('' + tile.worked == '' + city._id) {
-      food += tile.food;
-      gold += tile.gold;
-      production += tile.production;
-    }
-  });
-
-  city.buildings.forEach(i => {
-    food += buildingTypes[i].food;
-    gold += buildingTypes[i].gold;
-    production += buildingTypes[i].production;
-  });
-
-  return {
-    food: food,
-    gold: gold,
-    production: production,
-  };
 }
 
 function findTile(tiles, row, column) {
