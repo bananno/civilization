@@ -36,55 +36,6 @@
         }
     });
 
-    currentTurnCities.forEach(city => {
-        let [row, col] = city.location;
-        let alreadyCovered = {};
-
-        const addWorkingTile = (r, c1) => {
-            if (Math.abs(row - r) > 3 || Math.abs(col - c1) > 3) {
-                return;
-            }
-
-            if (r < 0 || r >= game.mapSize[0]) {
-                return;
-            }
-
-            let c = c1;
-
-            if (c < 0) {
-                c += game.mapSize[1];
-            } else if (c >= game.mapSize[1]) {
-                c -= game.mapSize[1];
-            }
-
-            if (alreadyCovered[r + ',' + c]) {
-                return;
-            }
-
-            alreadyCovered[r + ',' + c] = true;
-
-            let workable = true;
-
-            if (map[r][c].cityId) {
-                workable = false;
-            }
-
-            if (workable) {
-                map[r][c].workTiles.push({
-                    cityId: city._id,
-                    path: '/workTile/' + city._id + '/' + r + '/' + c,
-                });
-            }
-
-            addWorkingTile(r - 1, c1);
-            addWorkingTile(r + 1, c1);
-            addWorkingTile(r, c1 - 1);
-            addWorkingTile(r, c1 + 1);
-        };
-
-        addWorkingTile(row, col);
-    });
-
     tiles.forEach(tile => {
         map[tile.row] = map[tile.row] || [];
         map[tile.row][tile.column].tile = tile;
@@ -119,6 +70,59 @@
         if (tile.discovered.indexOf(currentTurnPlayerId) >= 0) {
             map[tile.row][tile.column].discovered = true;
         }
+    });
+
+    currentTurnCities.forEach(city => {
+        let [row, col] = city.location;
+        let alreadyCovered = {};
+
+        const addWorkingTile = (r, c1) => {
+            if (Math.abs(row - r) > 3 || Math.abs(col - c1) > 3) {
+                return;
+            }
+
+            if (r < 0 || r >= game.mapSize[0]) {
+                return;
+            }
+
+            let c = c1;
+
+            if (c < 0) {
+                c += game.mapSize[1];
+            } else if (c >= game.mapSize[1]) {
+                c -= game.mapSize[1];
+            }
+
+            if (alreadyCovered[r + ',' + c]) {
+                return;
+            }
+
+            alreadyCovered[r + ',' + c] = true;
+
+            if (!map[r][c].owned) {
+                return;
+            }
+
+            let workable = true;
+
+            if (map[r][c].cityId) {
+                workable = false;
+            }
+
+            if (workable) {
+                map[r][c].workTiles.push({
+                    cityId: city._id,
+                    path: '/workTile/' + city._id + '/' + r + '/' + c,
+                });
+            }
+
+            addWorkingTile(r - 1, c1);
+            addWorkingTile(r + 1, c1);
+            addWorkingTile(r, c1 - 1);
+            addWorkingTile(r, c1 + 1);
+        };
+
+        addWorkingTile(row, col);
     });
 
     currentTurnUnits.forEach(unit => {
