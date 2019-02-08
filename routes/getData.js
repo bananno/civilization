@@ -11,7 +11,7 @@ function getData(req, res, next, callback) {
     data.buildingTypes = buildingTypes;
     data.unitTypes = unitTypes;
 
-    data.turnPlayerId = players[game.nextPlayer]._id;
+    data.turnPlayerId = data.players[data.game.nextPlayer]._id;
 
     data.goldPerTurn = {};
     data.cityOutput = {};
@@ -83,14 +83,14 @@ function collectFromDatabase(req, res, next, callback) {
             if (error) {
               return next(error);
             }
-          });
 
-          callback({
-            game: game,
-            players: players,
-            tiles: tiles,
-            cities: cities,
-            units: units,
+            callback({
+              game: game,
+              players: players,
+              tiles: tiles,
+              cities: cities,
+              units: units,
+            });
           });
         });
       });
