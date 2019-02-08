@@ -89,6 +89,7 @@
     <% cell.workTiles.forEach(workTile => { %>
         <form action="<%= workTile.path %>" method="post"
             class="work-tile"
+            city-id="<%= workTile.cityId %>"
             onClick="$(this).submit()">
         </form>
     <% }); %>
