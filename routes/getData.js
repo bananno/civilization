@@ -49,6 +49,8 @@ function getData(req, res, next, callback) {
               }
             });
 
+            let turnPlayerId = players[game.nextPlayer]._id;
+
             callback({
               game: game,
               players: players,
@@ -58,6 +60,7 @@ function getData(req, res, next, callback) {
               buildingTypes: buildingTypes,
               unitTypes: unitTypes,
               goldPerTurn: goldPerTurn,
+              turnPlayerId: turnPlayerId,
             });
           });
         });

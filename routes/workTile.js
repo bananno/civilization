@@ -15,9 +15,9 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
       return tile._id == tileId;
     })[0];
 
-    let turnPlayerId = '' + data.players[data.game.nextPlayer]._id;
-
-    if ('' + city.player != turnPlayerId || '' + tile.player != turnPlayerId) {
+    if (city == null || tile == null
+        || ('' + city.player != '' + data.turnPlayerId)
+        || ('' + tile.player != '' + data.turnPlayerId)) {
       console.log('Invalid city/tile action.');
       return res.redirect('/');
     }
@@ -31,12 +31,16 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    console.log('WORK TILE');
-    console.log(cityId);
-    console.log(tileId);
+    let tileData = {};
 
-    res.redirect('/');
+    tileData.worked = city;
 
+    tile.update(tileData, error => {
+      if (error) {
+        return next(error);
+      }
+      res.redirect('/');
+    });
   });
 });
 

@@ -18,7 +18,7 @@
     let foodSurplus = cityFood - (city.population * 2);
 
     let tilesWorked = tiles.filter(tile => {
-        return tile.worked == city._id;
+        return '' + tile.worked == '' + city._id;
     });
 %>
 
