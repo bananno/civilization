@@ -11,10 +11,6 @@
 
     let className = 'map-cell boardnum-' + boardnum;
 
-    let tileId = 'mapTile_' + r + '_' + c;
-    className += ' ' + tileId;
-    let functionName = 'click_' + tileId;
-
     if (boardnum != 1) {
         className += ' off-screen';
     }
@@ -65,15 +61,6 @@
         className += ' notDiscovered';
     }
 %>
-
-<script>
-function <%= functionName %>() {
-    <% if (clickable) { %>
-        $('.map-cell').removeClass('active');
-        $('.<%= tileId %>').addClass('active');
-    <% } %>
-}
-</script>
 
 <div class="<%= className %>" row="<%= r %>" column="<%= c %>"
         onMouseover="hoverMapCell(<%= r %>, <%= c %>)"
