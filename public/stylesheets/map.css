@@ -75,6 +75,18 @@
   background-size: 45px;
 }
 
+.layer-working {
+  background-size: 30px;
+}
+
+.layer-working.working-true {
+  background-image: url(/images/worktile-true.png);
+}
+
+.layer-working.working-false {
+  background-image: url(/images/worktile-false.png);
+}
+
 form.move-unit {
   height: 98%;
   width: 98%;

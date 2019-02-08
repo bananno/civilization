@@ -51,6 +51,10 @@
             tileStack.push('unit unit-' + unitName);
         }
 
+        if (cell.owned) {
+            tileStack.push('working working-false');
+        }
+
         if (!cell.lit) {
             tileStack.push('fog');
         }
