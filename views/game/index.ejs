@@ -70,6 +70,7 @@
 
         let units = [];
         let cities = [];
+        let tiles = [];
 
         <% units.forEach(unit => { %>
             units['<%= unit._id %>'] = {
@@ -83,6 +84,16 @@
                 location: [<%= city.location[0] %>, <%= city.location[1] %>],
             };
         <% }); %>
+
+        <% for (let r = 0; r < map.length; r++) { %>
+            tiles[<%= r %>] = [];
+            <% for (let c = 0; c < map[r].length; c++) { %>
+                tiles[<%= r %>].push({
+                    food: <%= map[r][c].tile.food %>,
+                    gold: <%= map[r][c].tile.gold %>,
+                });
+            <% } %>
+        <% } %>
 
         let mapCenter = [<%= mapCenter[0] %>, <%= mapCenter[1] %>];
         let numRows = <%= game.mapSize[0] %>;

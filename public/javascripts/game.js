@@ -131,8 +131,9 @@ function hoverMapCell(e) {
   let $mapCell = $(e.target);
   let row = parseInt($mapCell.attr('row'));
   let column = parseInt($mapCell.attr('column'));
-  let food = parseInt($mapCell.attr('food'));
-  let gold = parseInt($mapCell.attr('gold'));
+  let tile = tiles[row][column];
+  let food = tile.food;
+  let gold = tile.gold;
 
   let values = ['Row: ' + row, 'Column: ' + column, 'Food: ' + food, 'Gold: ' + gold];
 
