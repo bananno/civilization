@@ -126,7 +126,18 @@ function centerMap() {
 }
 
 function clickMapCell(row, column) {
-  console.log('click ' + row + ' ' + column);
+  let tile = tiles[parseInt(row)][parseInt(column)];
+
+  if (tile.unitsCities) {
+    let selectedIndex = tile.unitsCities.indexOf(activeUnitOrCityId);
+    if (selectedIndex >= 0 && selectedIndex < tile.unitsCities.length - 1) {
+      activeUnitOrCityId = tile.unitsCities[selectedIndex + 1];
+    } else {
+      activeUnitOrCityId = tile.unitsCities[0];
+    }
+  }
+
+  console.log(activeUnitOrCityId);
 }
 
 function hoverMapCell(row, column) {
