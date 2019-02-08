@@ -179,7 +179,7 @@ function endRound(res, data) {
       return goToNext();
     }
     let currentGold = data.players[i].gold;
-    let goldPerTurn = data.goldPerTurn[data.players[i]._id];
+    let goldPerTurn = data.playerOutput[data.players[i]._id].gold;
     let playerData = {
       gold: currentGold + goldPerTurn
     };
