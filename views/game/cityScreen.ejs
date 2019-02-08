@@ -16,6 +16,10 @@
     let foodNeededForGrowth = growthRate[city.population];
 
     let foodSurplus = cityFood - (city.population * 2);
+
+    let tilesWorked = tiles.filter(tile => {
+        return tile.worked == city._id;
+    });
 %>
 
 <div class="info city" city-id="<%= city._id %>">
@@ -39,10 +43,10 @@
         Citizens:
         <ul>
             <li>
-                <%= city.tilesWorked.length %> working
+                <%= tilesWorked.length %> working
             </li>
             <li>
-                <%= city.population - city.tilesWorked.length %> unemployed
+                <%= city.population - tilesWorked.length %> unemployed
             </li>
         </ul>
     </div>
