@@ -38,6 +38,8 @@
     tiles.forEach(tile => {
         map[tile.row] = map[tile.row] || [];
         map[tile.row][tile.column].tile = tile;
+        map[tile.row][tile.column].food = tile.food;
+        map[tile.row][tile.column].gold = tile.gold;
 
         if (tile.owner) {
             map[tile.row][tile.column].player = playerNums[tile.owner] + 1;
@@ -58,6 +60,10 @@
                     }
                 }
             }
+        }
+
+        if (tile.improvement == 'farm') {
+            map[tile.row][tile.column].food += 1;
         }
 
         if (tile.discovered.indexOf(currentTurnPlayerId) >= 0) {

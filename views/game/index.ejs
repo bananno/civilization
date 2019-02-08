@@ -78,8 +78,8 @@
             tiles[<%= r %>] = [];
             <% for (let c = 0; c < map[r].length; c++) { %>
                 tiles[<%= r %>].push({
-                    food: <%= map[r][c].tile.food %>,
-                    gold: <%= map[r][c].tile.gold %>,
+                    food: <%= map[r][c].food %>,
+                    gold: <%= map[r][c].gold %>,
                     unitsCities: [],
                 });
             <% } %>
