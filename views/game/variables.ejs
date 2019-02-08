@@ -110,9 +110,11 @@
             }
 
             if (workable) {
+                let tileId = map[r][c].tile._id;
+
                 map[r][c].workTiles.push({
                     cityId: city._id,
-                    path: '/workTile/' + city._id + '/' + r + '/' + c,
+                    path: '/workTile/' + city._id + '/' + tileId,
                 });
             }
 
