@@ -40,14 +40,16 @@
         let [row, col] = city.location;
         let alreadyCovered = {};
 
-        const addWorkingTile = (r, c, distance) => {
-            if (distance > 3) {
+        const addWorkingTile = (r, c1) => {
+            if (Math.abs(row - r) > 3 || Math.abs(col - c1) > 3) {
                 return;
             }
 
             if (r < 0 || r >= game.mapSize[0]) {
                 return;
             }
+
+            let c = c1;
 
             if (c < 0) {
                 c += game.mapSize[1];
@@ -61,19 +63,26 @@
 
             alreadyCovered[r + ',' + c] = true;
 
-            map[r][c].workTiles.push({
-                cityId: city._id,
-                path: '/workTile/' + city._id + '/' + r + '/' + c,
-            });
+            let workable = true;
 
-            for (let r1 = r - 1; r1 <= r + 1; r1++) {
-                for (let c1 = c - 1; c1 <= c + 1; c1++) {
-                    addWorkingTile(r1, c1, distance + 1);
-                }
+            if (map[r][c].cityId) {
+                workable = false;
             }
+
+            if (workable) {
+                map[r][c].workTiles.push({
+                    cityId: city._id,
+                    path: '/workTile/' + city._id + '/' + r + '/' + c,
+                });
+            }
+
+            addWorkingTile(r - 1, c1);
+            addWorkingTile(r + 1, c1);
+            addWorkingTile(r, c1 - 1);
+            addWorkingTile(r, c1 + 1);
         };
 
-        addWorkingTile(row, col, 0);
+        addWorkingTile(row, col);
     });
 
     tiles.forEach(tile => {
