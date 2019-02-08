@@ -109,3 +109,9 @@ form.move-unit.left {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
 }
+
+form.move-unit.right {
+  /* for some reason, the hover effect is broken for this direction when this code is absent */
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
