@@ -38,11 +38,15 @@ function deactivateAll() {
 function setActiveCity(id) {
   deactivateAll();
 
+  activeUnitOrCityId = id;
   $('.info.city[city-id="' + id + '"]').show();
   $('.map-city[city-id="' + id + '"]').addClass('active');
 
   if (id && id.length && id != 'null') {
     mapCenter = cities[id].location.concat();
+    setActiveMapCell(cities[id].location[0], cities[id].location[1]);
+  } else {
+    setActiveMapCell(null);
   }
 
   centerMap();
@@ -51,15 +55,26 @@ function setActiveCity(id) {
 function setActiveUnit(id) {
   deactivateAll();
 
+  activeUnitOrCityId = id;
   $('.unit[unit-id="' + id + '"]').addClass('active');
   $('form.move-unit[unit-id="' + id + '"]').show();
   $('.info.unit[unit-id="' + id + '"]').show();
 
   if (id && id.length && id != 'null') {
     mapCenter = units[id].location.concat();
+    setActiveMapCell(units[id].location[0], units[id].location[1]);
+  } else {
+    setActiveMapCell(null);
   }
 
   centerMap();
+}
+
+function setActiveMapCell(row, column) {
+  $('.map-cell').removeClass('active');
+  if (row != null && column != null) {
+    $('.map-cell[row="' + row + '"][column="' + column + '"]').addClass('active');
+  }
 }
 
 function centerMap() {
@@ -122,8 +137,6 @@ function clickMapCell(row, column) {
   }
 
   if (activeUnitOrCityId) {
-    $('.map-cell').removeClass('active');
-    $('.map-cell[row="' + row + '"][column="' + column + '"]').addClass('active');
     if (units[activeUnitOrCityId]) {
       setActiveUnit(activeUnitOrCityId);
     } else {
