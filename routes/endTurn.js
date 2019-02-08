@@ -132,7 +132,7 @@ function endRound(res, data) {
       projectIsComplete = productionSoFar >= productionNeeded;
     }
 
-    let foodPerTurn = calculateCityFood(city, tiles, data.buildingTypes);
+    let foodPerTurn = calculateCityFood(city, data.tiles, data.buildingTypes);
     let foodEatenPerTurn = city.population * 2;
     let foodSurplus = foodPerTurn - foodEatenPerTurn;
 
