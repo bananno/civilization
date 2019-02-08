@@ -21,22 +21,6 @@ document.onkeydown = (e) => {
 };
 
 function setupActiveUnitSelection() {
-  $('.unit.turn').toArray().forEach(unit => {
-    let $unit = $(unit);
-    let unitId = $unit.attr('unit-id');
-    $unit.click(() => {
-      setActiveUnit(unitId);
-    });
-  });
-
-  $('.map-city.turn').toArray().forEach(city => {
-    let $city = $(city);
-    let cityId = $city.attr('city-id');
-    $city.click(() => {
-      setActiveCity(cityId);
-    });
-  });
-
   $('.info.city .close').click(deactivateAll);
   $('.info.unit .close').click(deactivateAll);
 }
@@ -137,7 +121,13 @@ function clickMapCell(row, column) {
     }
   }
 
-  console.log(activeUnitOrCityId);
+  if (activeUnitOrCityId) {
+    if (units[activeUnitOrCityId]) {
+      setActiveUnit(activeUnitOrCityId);
+    } else {
+      setActiveCity(activeUnitOrCityId);
+    }
+  }
 }
 
 function hoverMapCell(row, column) {
