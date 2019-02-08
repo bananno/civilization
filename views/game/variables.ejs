@@ -76,6 +76,12 @@
         let [row, col] = city.location;
         let alreadyCovered = {};
 
+        let cityTilesWorked = tiles.filter(tile => {
+            return '' + tile.worked == '' + city._id;
+        });
+
+        let atMaxWork = cityTilesWorked.length >= city.population;
+
         const addWorkingTile = (r, c1) => {
             if (Math.abs(row - r) > 3 || Math.abs(col - c1) > 3) {
                 return;
@@ -111,11 +117,18 @@
 
             if (workable) {
                 let tile = map[r][c].tile;
+                let working = false;
+
+                if ('' + tile.worked == '' + city._id) {
+                    working = true;
+                } else if (atMaxWork) {
+                    working = 'disabled';
+                }
 
                 map[r][c].workTiles.push({
                     cityId: city._id,
                     path: '/workTile/' + city._id + '/' + tile._id,
-                    working: ('' + tile.worked == '' + city._id),
+                    working: working,
                 });
             }
 

@@ -90,7 +90,10 @@
         <form action="<%= workTile.path %>" method="post"
             class="work-tile working-<%= workTile.working %>"
             city-id="<%= workTile.cityId %>"
-            onClick="$(this).submit()">
+            <% if (workTile.working != 'disabled') { %>
+                onClick="$(this).submit()"
+            <% } %>
+            >
         </form>
     <% }); %>
 </div>
