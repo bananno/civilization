@@ -38,9 +38,32 @@ function getData(req, res, next, callback) {
               goldPerTurn[player._id] = 0;
             });
 
+            // Initialize city output; calculate output from each city's buildings.
             cities.forEach(city => {
-              cityOutput[city._id] = calculateCityOutput(city, tiles);
+              cityOutput[city._id] = {
+                gold: 0,
+                food: 0,
+                production: 0,
+              };
 
+              city.buildings.forEach(i => {
+                output.gold += buildingTypes[i].gold;
+                output.food += buildingTypes[i].food;
+                output.production += buildingTypes[i].production;
+              });
+            });
+
+            // Calculate output of all tiles that are worked by a city.
+            tiles.forEach(tile => {
+              if (tile.worked) {
+                output[tile.worked].gold += tile.gold;
+                output[tile.worked].food += tile.food;
+                output[tile.worked].production += tile.production || 0;
+              }
+            });
+
+            // Calculate each player's gold per turn as the sum of all cities' gold.
+            cities.forEach(city => {
               goldPerTurn[city.player] += cityOutput[city._id].gold;
 
               if (city.project.category == 'gold') {
@@ -68,30 +91,6 @@ function getData(req, res, next, callback) {
       });
     });
   });
-}
-
-function calculateCityOutput(city, tiles) {
-  let output = {
-    gold: 0,
-    food: 0,
-    production: 0,
-  };
-
-  tiles.forEach(tile => {
-    if ('' + tile.worked == '' + city._id) {
-      output.gold += tile.gold;
-      output.food += tile.food;
-      output.production += tile.production || 0;
-    }
-  });
-
-  city.buildings.forEach(i => {
-    output.gold += buildingTypes[i].gold;
-    output.food += buildingTypes[i].food;
-    output.production += buildingTypes[i].production;
-  });
-
-  return output;
 }
 
 module.exports = getData;
