@@ -41,7 +41,6 @@ var CitySchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  tilesWorked: [],
 });
 
 var City = mongoose.model('City', CitySchema);

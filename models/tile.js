@@ -21,8 +21,11 @@ var TileSchema = new mongoose.Schema({
   discovered: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Player',
-    required: true,
   }],
+  worked: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'City',
+  },
   improvement: {
     type: String,
   },
