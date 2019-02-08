@@ -50,7 +50,7 @@ function improveLand(res, data, unit, orders) {
   let turnPlayerId = data.players[data.game.nextPlayer]._id;
 
   if (unit.unitType.name != 'worker' || unit.movesRemaining == 0
-      || '' + tile.owner != '' + turnPlayerId
+      || '' + tile.player != '' + turnPlayerId
       || '' + unit.player != '' + turnPlayerId) {
     console.log('invalid unit action');
     return res.redirect('/');

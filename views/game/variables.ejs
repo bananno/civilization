@@ -42,9 +42,9 @@
         map[tile.row][tile.column].food = tile.food;
         map[tile.row][tile.column].gold = tile.gold;
 
-        if (tile.owner) {
-            map[tile.row][tile.column].player = playerNums[tile.owner] + 1;
-            if (tile.owner == currentTurnPlayerId) {
+        if (tile.player) {
+            map[tile.row][tile.column].player = playerNums[tile.player] + 1;
+            if (tile.player == currentTurnPlayerId) {
                 map[tile.row][tile.column].owned = true;
 
                 for (let i = tile.row - 1; i <= tile.row + 1; i++) {

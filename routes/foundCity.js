@@ -101,8 +101,8 @@ router.post('/foundCity/:unitId', (req, res, next) => {
               tileObj.update.discovered.push(city.player);
 
               if (isCityRow && isCityCol) {
-                if (tile.owner == null) {
-                  tileObj.update.owner = city.player;
+                if (tile.player == null) {
+                  tileObj.update.player = city.player;
                 }
               }
 
