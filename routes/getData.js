@@ -7,6 +7,59 @@ const buildingTypes = require('../models/buildingTypes');
 const unitTypes = require('../models/unitTypes');
 
 function getData(req, res, next, callback) {
+  collectFromDatabase(req, res, next, data => {
+    data.buildingTypes = buildingTypes;
+    data.unitTypes = unitTypes;
+
+    data.turnPlayerId = players[game.nextPlayer]._id;
+
+    data.goldPerTurn = {};
+    data.cityOutput = {};
+
+    data.players.forEach(player => {
+      data.goldPerTurn[player._id] = 0;
+    });
+
+    // Initialize city output; calculate output from each city's buildings.
+    data.cities.forEach(city => {
+      data.cityOutput[city._id] = {
+        gold: 0,
+        food: 0,
+        production: 0,
+      };
+
+      city.buildings.forEach(i => {
+        data.cityOutput.gold += buildingTypes[i].gold;
+        data.cityOutput.food += buildingTypes[i].food;
+        data.cityOutput.production += buildingTypes[i].production;
+      });
+    });
+
+    // Calculate output of all tiles that are worked by a city.
+    data.tiles.forEach(tile => {
+      if (tile.worked) {
+        data.cityOutput[tile.worked].gold += tile.gold;
+        data.cityOutput[tile.worked].food += tile.food;
+        data.cityOutput[tile.worked].production += tile.production || 0;
+      }
+    });
+
+    // Calculate each player's gold per turn as the sum of all cities' gold.
+    // Convert city production to gold, if applicable.
+    data.cities.forEach(city => {
+      data.goldPerTurn[city.player] += data.cityOutput[city._id].gold;
+
+      if (city.project.category == 'gold') {
+        let cityProduction = data.cityOutput[city._id].production;
+        data.goldPerTurn[city.player] += Math.floor(cityProduction / 2);
+      }
+    });
+
+    callback(data);
+  });
+}
+
+function collectFromDatabase(req, res, next, callback) {
   Game.findById(req.session.gameId, (error, game) => {
     if (error) {
       return next(error);
@@ -30,62 +83,14 @@ function getData(req, res, next, callback) {
             if (error) {
               return next(error);
             }
+          });
 
-            let goldPerTurn = {};
-            let cityOutput = {};
-
-            players.forEach(player => {
-              goldPerTurn[player._id] = 0;
-            });
-
-            // Initialize city output; calculate output from each city's buildings.
-            cities.forEach(city => {
-              cityOutput[city._id] = {
-                gold: 0,
-                food: 0,
-                production: 0,
-              };
-
-              city.buildings.forEach(i => {
-                cityOutput.gold += buildingTypes[i].gold;
-                cityOutput.food += buildingTypes[i].food;
-                cityOutput.production += buildingTypes[i].production;
-              });
-            });
-
-            // Calculate output of all tiles that are worked by a city.
-            tiles.forEach(tile => {
-              if (tile.worked) {
-                cityOutput[tile.worked].gold += tile.gold;
-                cityOutput[tile.worked].food += tile.food;
-                cityOutput[tile.worked].production += tile.production || 0;
-              }
-            });
-
-            // Calculate each player's gold per turn as the sum of all cities' gold.
-            cities.forEach(city => {
-              goldPerTurn[city.player] += cityOutput[city._id].gold;
-
-              if (city.project.category == 'gold') {
-                let cityProduction = cityOutput[city._id].production;
-                goldPerTurn[city.player] += Math.floor(cityProduction / 2);
-              }
-            });
-
-            let turnPlayerId = players[game.nextPlayer]._id;
-
-            callback({
-              game: game,
-              players: players,
-              tiles: tiles,
-              cities: cities,
-              units: units,
-              buildingTypes: buildingTypes,
-              unitTypes: unitTypes,
-              goldPerTurn: goldPerTurn,
-              cityOutput: cityOutput,
-              turnPlayerId: turnPlayerId,
-            });
+          callback({
+            game: game,
+            players: players,
+            tiles: tiles,
+            cities: cities,
+            units: units,
           });
         });
       });
