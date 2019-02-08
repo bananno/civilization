@@ -103,7 +103,7 @@ function endRound(res, data) {
       });
     };
 
-    let cityOutputPerTurn = calculateCityOutput(city, data.tiles, data.buildingTypes);
+    let cityGrossOutput = calculateCityOutput(city, data.tiles, data.buildingTypes);
 
     let projectCategory = city.project.category;
     let projectIndex = city.project.index;
@@ -115,7 +115,7 @@ function endRound(res, data) {
 
     if (projectCategory == 'unit' || projectCategory == 'building') {
       cityData.projectProgress = city.projectProgress;
-      cityData.projectProgress[projectCategory][projectIndex] += cityOutputPerTurn.production;
+      cityData.projectProgress[projectCategory][projectIndex] += cityGrossOutput.production;
       cityData.projectProgress[projectCategory][projectIndex] += city.productionRollover;
 
       cityData.productionRollover = 0;
@@ -135,7 +135,7 @@ function endRound(res, data) {
     }
 
     let foodEatenPerTurn = city.population * 2;
-    let foodSurplus = cityOutputPerTurn.food - foodEatenPerTurn;
+    let foodSurplus = cityGrossOutput.food - foodEatenPerTurn;
 
     if (!allowGrowth && foodSurplus > 0) {
       foodSurplus = 0;
