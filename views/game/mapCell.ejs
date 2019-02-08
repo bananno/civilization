@@ -12,7 +12,6 @@
     let className = 'map-cell boardnum-' + boardnum;
 
     let allowTileEntry = true;
-    let allowTileWorking = false;
 
     if (boardnum != 1) {
         className += ' off-screen';
@@ -52,10 +51,6 @@
             tileStack.push('unit unit-' + unitName);
         }
 
-        if (cell.owned && !cell.myCity) {
-            allowTileWorking = true;
-        }
-
         if (!cell.lit) {
             tileStack.push('fog');
         }
@@ -91,12 +86,10 @@
         <% }); %>
     <% } %>
 
-    <% if (allowTileWorking) { %>
-        <% cell.workTiles.forEach(workTile => { %>
-            <form action="<%= workTile.path %>" method="post"
-                class="work-tile"
-                onClick="$(this).submit()">
-            </form>
-        <% }); %>
-    <% } %>
+    <% cell.workTiles.forEach(workTile => { %>
+        <form action="<%= workTile.path %>" method="post"
+            class="work-tile"
+            onClick="$(this).submit()">
+        </form>
+    <% }); %>
 </div>

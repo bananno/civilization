@@ -37,15 +37,43 @@
     });
 
     currentTurnCities.forEach(city => {
-        let row = city.location[0];
-        let col = city.location[1];
+        let [row, col] = city.location;
+        let alreadyCovered = {};
 
-        if (row > 0) {
-            map[row - 1][col].workTiles.push({
+        const addWorkingTile = (r, c, distance) => {
+            if (distance > 3) {
+                return;
+            }
+
+            if (r < 0 || r >= game.mapSize[0]) {
+                return;
+            }
+
+            if (c < 0) {
+                c += game.mapSize[1];
+            } else if (c >= game.mapSize[1]) {
+                c -= game.mapSize[1];
+            }
+
+            if (alreadyCovered[r + ',' + c]) {
+                return;
+            }
+
+            alreadyCovered[r + ',' + c] = true;
+
+            map[r][c].workTiles.push({
                 cityId: city._id,
-                path: '/workTile/' + city._id + '/' + (row - 1) + '/' + col,
+                path: '/workTile/' + city._id + '/' + r + '/' + c,
             });
-        }
+
+            for (let r1 = r - 1; r1 <= r + 1; r1++) {
+                for (let c1 = c - 1; c1 <= c + 1; c1++) {
+                    addWorkingTile(r1, c1, distance + 1);
+                }
+            }
+        };
+
+        addWorkingTile(row, col, 0);
     });
 
     tiles.forEach(tile => {
