@@ -70,6 +70,7 @@ function endRound(res, data) {
       if (tileData.progress >= 5) {
         tileData.improvement = 'farm';
         tileData.progress = 0;
+        tileData.food = tile.food + 1;
         unitData.orders = null;
       }
 

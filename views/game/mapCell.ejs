@@ -30,10 +30,6 @@
             let improvementName = tile.improvement.split(' ').join('-');
             className += ' ' + improvementName;
             tileStack.push('improvement improvement-' + improvementName);
-
-            if (improvementName == 'farm') {
-                food += 1;
-            }
         }
 
         if (cell.myCity || cell.myUnit) {
