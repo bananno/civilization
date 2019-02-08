@@ -33,6 +33,8 @@ function deactivateAll() {
 
   $('form.move-unit').hide();
 
+  $('.layer-working').hide();
+
   activeUnitOrCityId = null;
 }
 
@@ -46,6 +48,7 @@ function setActiveCity(id) {
   if (id && id.length && id != 'null') {
     mapCenter = cities[id].location.concat();
     setActiveMapCell(cities[id].location[0], cities[id].location[1]);
+    $('.layer-working').show();
   }
 
   centerMap();

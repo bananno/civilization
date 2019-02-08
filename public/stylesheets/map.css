@@ -77,9 +77,11 @@
 
 .layer-working {
   background-size: 30px;
+  display: none;
 }
 
-.layer-working.working-true {
+.layer-working.working-true,
+.layer-working.working-false:hover {
   background-image: url(/images/worktile-true.png);
 }
 
