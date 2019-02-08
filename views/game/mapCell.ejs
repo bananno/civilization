@@ -74,7 +74,8 @@ function <%= functionName %>() {
 </script>
 
 <div class="<%= className %>" row="<%= r %>" column="<%= c %>"
-        food="<%= food %>" gold="<%= gold %>" onClick="<%= functionName %>()">
+        onMouseover="hoverMapCell(<%= r %>, <%= c %>)"
+        onClick="<%= functionName %>()">
 
     <% tileStack.forEach(layer => { %>
         <div class="tile-stack layer-<%= layer %>"> </div>

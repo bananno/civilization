@@ -39,8 +39,6 @@ function setupActiveUnitSelection() {
 
   $('.info.city .close').click(deactivateAll);
   $('.info.unit .close').click(deactivateAll);
-
-  $('.map-cell').mouseover(hoverMapCell);
 }
 
 function deactivateAll() {
@@ -127,15 +125,10 @@ function centerMap() {
   $('.map-cell[row="' + mapCenter[0] + '"][column="' + mapCenter[1] + '"]').addClass('center');
 }
 
-function hoverMapCell(e) {
-  let $mapCell = $(e.target);
-  let row = parseInt($mapCell.attr('row'));
-  let column = parseInt($mapCell.attr('column'));
-  let tile = tiles[row][column];
-  let food = tile.food;
-  let gold = tile.gold;
-
-  let values = ['Row: ' + row, 'Column: ' + column, 'Food: ' + food, 'Gold: ' + gold];
-
+function hoverMapCell(row, column) {
+  let tile = tiles[parseInt(row)][parseInt(column)];
+  let values = ['Row: ' + row, 'Column: ' + column];
+  values.push('Food: ' + tile.food);
+  values.push('Gold: ' + tile.gold);
   $('.info.tile').html(values.join('<br>'));
 }
