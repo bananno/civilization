@@ -75,20 +75,6 @@
   background-size: 45px;
 }
 
-.layer-working {
-  background-size: 30px;
-  display: none;
-}
-
-.layer-working.working-true,
-.layer-working.working-false:hover {
-  background-image: url(/images/worktile-true.png);
-}
-
-.layer-working.working-false {
-  background-image: url(/images/worktile-false.png);
-}
-
 form.move-unit {
   height: 98%;
   width: 98%;
@@ -123,4 +109,19 @@ form.move-unit.right {
   /* for some reason, the hover effect is broken for this direction when this code is absent */
   -webkit-transform: rotate(0deg);
   transform: rotate(0deg);
+}
+
+form.work-tile {
+  display: none;
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  background-image: url(/images/worktile-false.png);
+  background-size: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+form.work-tile:hover {
+  background-image: url(/images/worktile-true.png);
 }

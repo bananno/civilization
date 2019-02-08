@@ -12,6 +12,9 @@
     let className = 'map-cell boardnum-' + boardnum;
 
     let allowTileEntry = true;
+    let allowTileWorking = false;
+
+    let workPath = null;
 
     if (boardnum != 1) {
         className += ' off-screen';
@@ -51,8 +54,9 @@
             tileStack.push('unit unit-' + unitName);
         }
 
-        if (cell.owned) {
-            tileStack.push('working working-false');
+        if (cell.owned && !cell.myCity) {
+            allowTileWorking = true;
+            workPath = 'workTile/' + 'insert-cell-id-later' + '/' + r + '/' + c;
         }
 
         if (!cell.lit) {
@@ -88,5 +92,12 @@
                 onClick="$(this).submit()">
             </form>
         <% }); %>
+    <% } %>
+
+    <% if (allowTileWorking) { %>
+        <form action="<%= workPath %>" method="post"
+            class="work-tile"
+            onClick="$(this).submit()">
+        </form>
     <% } %>
 </div>

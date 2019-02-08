@@ -41,6 +41,7 @@ const routeFiles = [
   'foundCity',
   'changeCityProject',
   'unitOrders',
+  'workTile',
   'endTurn',
 ];
 
