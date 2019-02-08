@@ -47,18 +47,18 @@ function getData(req, res, next, callback) {
               };
 
               city.buildings.forEach(i => {
-                output.gold += buildingTypes[i].gold;
-                output.food += buildingTypes[i].food;
-                output.production += buildingTypes[i].production;
+                cityOutput.gold += buildingTypes[i].gold;
+                cityOutput.food += buildingTypes[i].food;
+                cityOutput.production += buildingTypes[i].production;
               });
             });
 
             // Calculate output of all tiles that are worked by a city.
             tiles.forEach(tile => {
               if (tile.worked) {
-                output[tile.worked].gold += tile.gold;
-                output[tile.worked].food += tile.food;
-                output[tile.worked].production += tile.production || 0;
+                cityOutput[tile.worked].gold += tile.gold;
+                cityOutput[tile.worked].food += tile.food;
+                cityOutput[tile.worked].production += tile.production || 0;
               }
             });
 
