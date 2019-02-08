@@ -116,12 +116,16 @@ form.work-tile {
   position: absolute;
   height: 50px;
   width: 50px;
-  background-image: url(/images/worktile-false.png);
   background-size: 30px;
   background-repeat: no-repeat;
   background-position: center;
 }
 
-form.work-tile:hover {
+form.work-tile.working-true,
+form.work-tile.working-false:hover {
   background-image: url(/images/worktile-true.png);
+}
+
+form.work-tile.working-false {
+  background-image: url(/images/worktile-false.png);
 }
