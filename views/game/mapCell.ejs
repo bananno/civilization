@@ -11,6 +11,8 @@
 
     let className = 'map-cell boardnum-' + boardnum;
 
+    let allowTileEntry = true;
+
     if (boardnum != 1) {
         className += ' off-screen';
     }
@@ -57,6 +59,10 @@
             className += ' clickable';
             onClick = 'clickMapCell(' + r + ', ' + c + ')';
         }
+
+        if (cell.myUnit || cell.rivalUnit || cell.rivalCity) {
+            allowTileEntry = false;
+        }
     } else {
         className += ' notDiscovered';
     }
@@ -70,7 +76,7 @@
         <div class="tile-stack layer-<%= layer %>"> </div>
     <% }); %>
 
-    <% if (cell.myUnit || cell.rivalUnit || cell.myCity || cell.rivalCity) { %>
+    <% if (allowTileEntry) { %>
         <% cell.moves.forEach(move => { %>
             <form action="<%= move.path %>" method="post"
                 class="move-unit <%= move.direction %>"

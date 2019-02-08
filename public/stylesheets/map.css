@@ -8,7 +8,7 @@
 }
 
 .map-cell {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   width: 50px;
   height: 50px;
   text-align: center;
@@ -19,10 +19,14 @@
 }
 
 .tile-stack {
-  height: 20px;
-  width: 20px;
+  height: 50px;
+  width: 50px;
   position: absolute;
-  border: 1px solid red;
+}
+
+.tile-stack {
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .tile-stack.layer-terrain {
@@ -47,19 +51,16 @@
 
 .tile-stack.layer-city {
   background-image: url(/images/city.png);
-  background-size: 20px;
-  background-repeat: no-repeat;
+  background-size: 70px;
 }
 
 .layer-improvement.improvement-farm {
   background-image: url(/images/map/farm.png);
-  background-size: 20px;
-  background-repeat: no-repeat;
+  background-size: 50px;
 }
 
 .layer-unit {
-  background-size: 20px;
-  background-repeat: no-repeat;
+  background-size: auto 45px;
 }
 
 .layer-unit.unit-worker {
@@ -76,12 +77,8 @@
 
 .map-cell.active .layer-highlight {
   background-image: url(/images/spinning.gif);
-  background-size: 20px;
-  background-color: black;
+  background-size: 45px;
 }
-
-
-
 
 form.move-unit {
   height: 98%;
@@ -111,85 +108,4 @@ form.move-unit.down {
 form.move-unit.left {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
-}
-
-.map-cell.dark {
-  background-color: #03210c;
-}
-
-.map-cell.discovered {
-  background-color: #0b5b24;
-}
-
-.map-cell.lit {
-  background-color: #2aba57;
-}
-
-.map-cell.player1.discovered {
-  background-color: #19248c;
-}
-
-.map-cell.player1.lit {
-  background-color: #757fe5;
-}
-
-.map-cell.player2.discovered {
-  background-color: #872424;
-}
-
-.map-cell.player2.lit {
-  background-color: #ff7777;
-}
-
-.map-cell {
-  height: 50px;
-  width: 50px;
-}
-
-.map-cell .unit {
-  height: 45px;
-  width: 45px;
-}
-
-.map-cell .unit img {
-  height: 45px;
-}
-
-.map-cell .unit.turn:hover {
-  cursor: pointer;
-}
-
-.map-cell.dark .rival.unit,
-.map-cell.discovered .rival.unit {
-  display: none;
-}
-
-.map-cell.farm {
-  background-image: url(/images/map/farm.png);
-  background-size: 45px;
-  background-repeat: no-repeat;
-}
-
-.map-cell .unit.active {
-  background-image: url(/images/spinning.gif);
-  background-size: 45px;
-}
-
-.map-city, .in-city {
-  background-image: url(/images/city.png);
-  background-size: 70px;
-  background-repeat: no-repeat;
-}
-
-.map-city {
-  height: 100%;
-  width: 100%;
-}
-
-.map-city.active {
-  color: red;
-}
-
-.map-city:hover {
-  cursor: pointer;
 }
