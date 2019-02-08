@@ -103,9 +103,10 @@ function endRound(res, data) {
       });
     };
 
+    let cityOutputPerTurn = calculateCityOutput(city, data.tiles, data.buildingTypes);
+
     let projectCategory = city.project.category;
     let projectIndex = city.project.index;
-    let productionPerTurn = calculateCityProduction(city, data.buildingTypes);
 
     let productionSoFar = 0;
     let productionNeeded = 0;
@@ -114,7 +115,7 @@ function endRound(res, data) {
 
     if (projectCategory == 'unit' || projectCategory == 'building') {
       cityData.projectProgress = city.projectProgress;
-      cityData.projectProgress[projectCategory][projectIndex] += productionPerTurn;
+      cityData.projectProgress[projectCategory][projectIndex] += cityOutputPerTurn.production;
       cityData.projectProgress[projectCategory][projectIndex] += city.productionRollover;
 
       cityData.productionRollover = 0;
@@ -133,9 +134,8 @@ function endRound(res, data) {
       projectIsComplete = productionSoFar >= productionNeeded;
     }
 
-    let foodPerTurn = calculateCityFood(city, data.tiles, data.buildingTypes);
     let foodEatenPerTurn = city.population * 2;
-    let foodSurplus = foodPerTurn - foodEatenPerTurn;
+    let foodSurplus = cityOutputPerTurn.food - foodEatenPerTurn;
 
     if (!allowGrowth && foodSurplus > 0) {
       foodSurplus = 0;
@@ -216,30 +216,30 @@ function allCitiesHaveProject(player, cities) {
   return true;
 }
 
-function calculateCityProduction(city, buildingTypes) {
-  let production = 0;
-
-  city.buildings.forEach(i => {
-    production += buildingTypes[i].production;
-  });
-
-  return production;
-}
-
-function calculateCityFood(city, tiles, buildingTypes) {
+function calculateCityOutput(city, tiles, buildingTypes) {
   let food = 0;
+  let gold = 0;
+  let production = 0;
 
   tiles.forEach(tile => {
     if ('' + tile.worked == '' + city._id) {
       food += tile.food;
+      gold += tile.gold;
+      production += tile.production;
     }
   });
 
   city.buildings.forEach(i => {
     food += buildingTypes[i].food;
+    gold += buildingTypes[i].gold;
+    production += buildingTypes[i].production;
   });
 
-  return food;
+  return {
+    food: food,
+    gold: gold,
+    production: production,
+  };
 }
 
 function findTile(tiles, row, column) {
