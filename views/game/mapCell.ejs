@@ -7,6 +7,7 @@
     let gold = tile.gold;
 
     let clickable = false;
+    let onClick = null;
 
     let className = 'map-cell boardnum-' + boardnum;
 
@@ -58,6 +59,7 @@
 
         if (clickable) {
             className += ' clickable';
+            onClick = 'clickMapCell(' + r + ', ' + c + ')';
         }
     } else {
         className += ' notDiscovered';
@@ -75,7 +77,7 @@ function <%= functionName %>() {
 
 <div class="<%= className %>" row="<%= r %>" column="<%= c %>"
         onMouseover="hoverMapCell(<%= r %>, <%= c %>)"
-        onClick="<%= functionName %>()">
+        onClick="<%= onClick %>">
 
     <% tileStack.forEach(layer => { %>
         <div class="tile-stack layer-<%= layer %>"> </div>

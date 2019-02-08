@@ -125,6 +125,10 @@ function centerMap() {
   $('.map-cell[row="' + mapCenter[0] + '"][column="' + mapCenter[1] + '"]').addClass('center');
 }
 
+function clickMapCell(row, column) {
+  console.log('click ' + row + ' ' + column);
+}
+
 function hoverMapCell(row, column) {
   let tile = tiles[parseInt(row)][parseInt(column)];
   let values = ['Row: ' + row, 'Column: ' + column];
