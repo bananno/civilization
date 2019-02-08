@@ -36,6 +36,17 @@
         production: <%= cityProduction %><br/>
     </div>
     <div>
+        Citizens:
+        <ul>
+            <li>
+                <%= city.tilesWorked.length %> working
+            </li>
+            <li>
+                <%= city.population - city.tilesWorked.length %> unemployed
+            </li>
+        </ul>
+    </div>
+    <div>
         buildings:
         <ul>
             <% city.buildings.forEach(i => { %>
