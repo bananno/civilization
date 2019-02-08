@@ -132,7 +132,7 @@ function endRound(res, data) {
       projectIsComplete = productionSoFar >= productionNeeded;
     }
 
-    let foodPerTurn = calculateCityFood(city, data.buildingTypes);
+    let foodPerTurn = calculateCityFood(city, tiles, data.buildingTypes);
     let foodEatenPerTurn = city.population * 2;
     let foodSurplus = foodPerTurn - foodEatenPerTurn;
 
@@ -225,8 +225,14 @@ function calculateCityProduction(city, buildingTypes) {
   return production;
 }
 
-function calculateCityFood(city, buildingTypes) {
+function calculateCityFood(city, tiles, buildingTypes) {
   let food = 0;
+
+  tiles.forEach(tile => {
+    if ('' + tile.worked == '' + city._id) {
+      food += tile.food;
+    }
+  });
 
   city.buildings.forEach(i => {
     food += buildingTypes[i].food;
