@@ -1,13 +1,5 @@
 <%
-    let cityGold = 0;
-    let cityFood = 0;
-    let cityProduction = 0;
-
-    city.buildings.forEach(i => {
-        cityGold += buildingTypes[i].gold;
-        cityFood += buildingTypes[i].food;
-        cityProduction += buildingTypes[i].production;
-    });
+    let thisCityOutput = cityOutput[city._id];
 
     const growthRate = [0, 15, 22, 30, 40, 51, 63, 76, 90, 105, 121, 138, 155, 174, 194, 214, 235,
         258, 280, 304, 329, 354, 380, 407, 435, 464, 493, 523, 554, 585, 617, 650, 684, 719, 754,
@@ -15,7 +7,7 @@
 
     let foodNeededForGrowth = growthRate[city.population];
 
-    let foodSurplus = cityFood - (city.population * 2);
+    let foodSurplus = thisCityOutput.food - (city.population * 2);
 
     let tilesWorked = tiles.filter(tile => {
         return '' + tile.worked == '' + city._id;
@@ -35,9 +27,9 @@
         <% } %>
     </div>
     <div>
-        gold: <%= cityGold %><br/>
-        food: <%= cityFood %> (<%= foodSurplus %> surplus)<br/>
-        production: <%= cityProduction %><br/>
+        gold: <%= thisCityOutput.gold %><br/>
+        food: <%= thisCityOutput.food %> (<%= foodSurplus %> surplus)<br/>
+        production: <%= thisCityOutput.production %><br/>
     </div>
     <div>
         Citizens:
@@ -76,7 +68,8 @@
                 }
                 progress = city.projectProgress[city.project.category][city.project.index];
                 progress += city.productionRollover;
-                turnsToFinish = Math.ceil((productionTotal - progress) / cityProduction);
+                turnsToFinish = (productionTotal - progress) / thisCityOutput.production;
+                turnsToFinish = Math.ceil(turnsToFinish);
             } else if (project == 'gold') {
                 currentProject = 'gold';
             }
@@ -84,7 +77,7 @@
         current construction:
         <% if (project == 'gold') { %>
             gold <br/>
-            (<%= Math.floor(cityProduction/2) %> per turn)
+            (<%= Math.floor(thisCityOutput.production/2) %> per turn)
         <% } else { %>
             <%= currentProject %>
             <% if (productionTotal) { %>
