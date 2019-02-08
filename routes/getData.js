@@ -32,19 +32,19 @@ function getData(req, res, next, callback) {
             }
 
             let goldPerTurn = {};
+            let cityOutput = {};
 
             players.forEach(player => {
               goldPerTurn[player._id] = 0;
             });
 
             cities.forEach(city => {
-              let cityProduction = 0;
-              city.buildings.forEach(i => {
-                let building = buildingTypes[i];
-                goldPerTurn[city.player] += building.gold;
-                cityProduction += building.production;
-              });
+              cityOutput[city._id] = calculateCityOutput(city, tiles);
+
+              goldPerTurn[city.player] += cityOutput[city._id].gold;
+
               if (city.project.category == 'gold') {
+                let cityProduction = cityOutput[city._id].production;
                 goldPerTurn[city.player] += Math.floor(cityProduction / 2);
               }
             });
@@ -60,6 +60,7 @@ function getData(req, res, next, callback) {
               buildingTypes: buildingTypes,
               unitTypes: unitTypes,
               goldPerTurn: goldPerTurn,
+              cityOutput: cityOutput,
               turnPlayerId: turnPlayerId,
             });
           });
@@ -67,6 +68,30 @@ function getData(req, res, next, callback) {
       });
     });
   });
+}
+
+function calculateCityOutput(city, tiles) {
+  let output = {
+    gold: 0,
+    food: 0,
+    production: 0,
+  };
+
+  tiles.forEach(tile => {
+    if ('' + tile.worked == '' + city._id) {
+      output.gold += tile.gold;
+      output.food += tile.food;
+      output.production += tile.production || 0;
+    }
+  });
+
+  city.buildings.forEach(i => {
+    output.gold += buildingTypes[i].gold;
+    output.food += buildingTypes[i].food;
+    output.production += buildingTypes[i].production;
+  });
+
+  return output;
 }
 
 module.exports = getData;
