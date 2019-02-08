@@ -9,6 +9,7 @@
                 myUnit: false,
                 rivalUnit: false,
                 moves: [],
+                workTiles: [],
                 lit: false,
                 discovered: false,
                 player: null,
@@ -32,6 +33,18 @@
             map[row][col].myCity = true;
         } else {
             map[row][col].rivalCity = true;
+        }
+    });
+
+    currentTurnCities.forEach(city => {
+        let row = city.location[0];
+        let col = city.location[1];
+
+        if (row > 0) {
+            map[row - 1][col].workTiles.push({
+                cityId: city._id,
+                path: '/workTile/' + city._id + '/' + (row - 1) + '/' + col,
+            });
         }
     });
 

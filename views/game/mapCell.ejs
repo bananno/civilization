@@ -14,8 +14,6 @@
     let allowTileEntry = true;
     let allowTileWorking = false;
 
-    let workPath = null;
-
     if (boardnum != 1) {
         className += ' off-screen';
     }
@@ -56,7 +54,6 @@
 
         if (cell.owned && !cell.myCity) {
             allowTileWorking = true;
-            workPath = 'workTile/' + 'insert-cell-id-later' + '/' + r + '/' + c;
         }
 
         if (!cell.lit) {
@@ -95,9 +92,11 @@
     <% } %>
 
     <% if (allowTileWorking) { %>
-        <form action="<%= workPath %>" method="post"
-            class="work-tile"
-            onClick="$(this).submit()">
-        </form>
+        <% cell.workTiles.forEach(workTile => { %>
+            <form action="<%= workTile.path %>" method="post"
+                class="work-tile"
+                onClick="$(this).submit()">
+            </form>
+        <% }); %>
     <% } %>
 </div>
