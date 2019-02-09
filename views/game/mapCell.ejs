@@ -21,6 +21,11 @@
 
         tileStack.push('ground ground-' + tile.terrain.ground);
 
+        if (cell.player) {
+            className += ' player' + cell.player;
+            tileStack.push('territory territory-' + cell.player);
+        }
+
         if (tile.terrain.mountain) {
             tileStack.push('mountain');
         } else {
@@ -30,11 +35,6 @@
             if (tile.terrain.forest) {
                 tileStack.push('forest');
             }
-        }
-
-        if (cell.player) {
-            className += ' player' + cell.player;
-            tileStack.push('territory territory-' + cell.player);
         }
 
         if (tile.improvement) {
