@@ -58,6 +58,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
     if (legalMove) {
       unitData.location = [newRow, newCol];
       unitData.movesRemaining = unit.movesRemaining - 1;
+      unitData.orders = null;
 
       let newTiles = getNewlyDiscoveredTiles(data.game.mapSize, newRow, newCol);
 
