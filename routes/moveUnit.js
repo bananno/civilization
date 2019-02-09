@@ -18,6 +18,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
     let oldRow = unit.location[0];
     let oldCol = unit.location[1];
     let unitData = {};
+    let newTile;
 
     let legalMove = (() => {
       if (unit.movesRemaining == 0) {
@@ -50,7 +51,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
         return false;
       }
 
-      let newTile = findTile(data.tiles, newRow, newCol);
+      newTile = findTile(data.tiles, newRow, newCol);
 
       if (newTile.terrain.mountain) {
         return false;
@@ -62,9 +63,19 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
     let tileList = [];
 
     if (legalMove) {
+      let movesUsed = 1;
+
+      if (newTile.terrain.hill || newTile.terrain.forest) {
+        movesUsed += 1;
+      }
+
       unitData.location = [newRow, newCol];
-      unitData.movesRemaining = unit.movesRemaining - 1;
+      unitData.movesRemaining = unit.movesRemaining - movesUsed;
       unitData.orders = null;
+
+      if (unitData.movesRemaining < 0) {
+        unitData.movesRemaining = 0;
+      }
 
       let newTiles = getNewlyDiscoveredTiles(data.game.mapSize, newRow, newCol);
 
