@@ -66,7 +66,9 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       let movesUsed = 1;
 
       if (newTile.terrain.hill || newTile.terrain.forest) {
-        movesUsed += 1;
+        if (unit.unitType.name != 'scout') {
+          movesUsed += 1;
+        }
       }
 
       unitData.location = [newRow, newCol];
