@@ -50,6 +50,12 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
         return false;
       }
 
+      let newTile = findTile(data.tiles, newRow, newCol);
+
+      if (newTile.terrain.mountain) {
+        return false;
+      }
+
       return true;
     })();
 
@@ -70,6 +76,9 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
           tileList.push(tile);
         }
       });
+    } else {
+      console.log('Invalid unit move.');
+      return res.redirect('/');
     }
 
     const updateTile = (i) => {
@@ -121,6 +130,12 @@ function getNewlyDiscoveredTiles(mapSize, newRow, newCol) {
   }
 
   return tiles;
+}
+
+function findTile(tiles, row, column) {
+  return tiles.filter(tile => {
+    return tile.row == row && tile.column == column;
+  })[0];
 }
 
 module.exports = router;

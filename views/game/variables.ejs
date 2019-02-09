@@ -155,6 +155,8 @@
         addWorkingTile(row, col);
     });
 
+    let count1 = 0;
+
     currentTurnUnits.forEach(unit => {
         let [row, col] = unit.location;
         map[row][col].myUnit = true;
@@ -208,13 +210,19 @@
                     return false;
                 })();
 
-                if (moveDirection) {
-                    map[r][c].moves.push({
-                        unitId: unit._id,
-                        path: '/moveUnit/' + unit._id + '/' + r + '/' + c,
-                        direction: moveDirection,
-                    });
+                if (!moveDirection) {
+                    continue;
                 }
+
+                if (map[r][c].tile.terrain.mountain) {
+                    continue;
+                }
+
+                map[r][c].moves.push({
+                    unitId: unit._id,
+                    path: '/moveUnit/' + unit._id + '/' + r + '/' + c,
+                    direction: moveDirection,
+                });
             }
         }
     });
