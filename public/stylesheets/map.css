@@ -30,6 +30,9 @@
 
 .layer-terrain {
   background-color: green;
+  background-image: url(/images/map/grassland.png);
+  background-size: 52px;
+
 }
 
 .layer-fog {
