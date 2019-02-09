@@ -35,9 +35,9 @@ function getData(req, res, next, callback) {
       };
 
       city.buildings.forEach(i => {
-        data.cityOutput.gold += buildingTypes[i].gold;
-        data.cityOutput.food += buildingTypes[i].food;
-        data.cityOutput.production += buildingTypes[i].production;
+        data.cityOutput[city._id].gold += buildingTypes[i].gold;
+        data.cityOutput[city._id].food += buildingTypes[i].food;
+        data.cityOutput[city._id].production += buildingTypes[i].production;
       });
     });
 
