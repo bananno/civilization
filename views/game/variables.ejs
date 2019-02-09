@@ -76,7 +76,7 @@
             return '' + tile.worked == '' + city._id;
         });
 
-        let atMaxWork = cityTilesWorked.length >= city.population;
+        let atMaxWork = cityTilesWorked.length >= city.population + 1;
 
         const addWorkingTile = (r, c1) => {
             if (Math.abs(row - r) > 3 || Math.abs(col - c1) > 3) {

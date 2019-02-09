@@ -17,7 +17,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
     let turnPlayerId = data.players[data.game.nextPlayer]._id;
 
-    if (unit.unitType.name != 'settler' || unit.movesRemaining == 0
+    if (unit == null || unit.unitType.name != 'settler' || unit.movesRemaining == 0
         || '' + unit.player != '' + turnPlayerId) {
       console.log('invalid unit action');
       return res.redirect('/');
@@ -104,6 +104,11 @@ router.post('/foundCity/:unitId', (req, res, next) => {
                 if (tile.player == null) {
                   tileObj.update.player = city.player;
                 }
+              }
+
+              // The city tile itself is automatically worked by the city.
+              if (row == city.location[0] && col == city.location[1]) {
+                tileObj.update.worked = city;
               }
 
               cityTiles.push(tileObj);

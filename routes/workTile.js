@@ -33,7 +33,7 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
         return '' + nextTile.worked == '' + city._id;
       });
 
-      if (cityTilesWorked.length >= city.population) {
+      if (cityTilesWorked.length >= city.population + 1) {
         console.log('All citizens are already employed at other tiles.');
         return res.redirect('/');
       }
