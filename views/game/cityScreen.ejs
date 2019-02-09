@@ -118,6 +118,17 @@
                 <img src="/images/buildingIcons/<%= buildingTypes[i].name %>.png">
                 <div>
                     <h3><%= buildingTypes[i].name %></h3>
+                    <% if (buildingTypes[i].gold < 0) { %>
+                        <%= buildingTypes[i].gold %> maintenance<br/>
+                    <% } else if (buildingTypes[i].gold > 0) { %>
+                        +<%= buildingTypes[i].gold %> gold<br/>
+                    <% } %>
+                    <% if (buildingTypes[i].food > 0) { %>
+                        +<%= buildingTypes[i].food %> food<br/>
+                    <% } %>
+                    <% if (buildingTypes[i].production > 0) { %>
+                        +<%= buildingTypes[i].production %> production<br/>
+                    <% } %>
                 </div>
             </div>
         <% }); %>
