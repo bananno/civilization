@@ -19,7 +19,18 @@
 
     if (cell.lit || cell.owned || cell.discovered) {
 
-        tileStack.push('terrain');
+        tileStack.push('ground ground-' + tile.terrain.ground);
+
+        if (tile.terrain.mountain) {
+            tileStack.push('mountain');
+        } else {
+            if (tile.terrain.hill) {
+                tileStack.push('hill');
+            }
+            if (tile.terrain.forest) {
+                tileStack.push('forest');
+            }
+        }
 
         if (cell.player) {
             className += ' player' + cell.player;

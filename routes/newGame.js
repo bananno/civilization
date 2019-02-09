@@ -39,7 +39,24 @@ router.post('/newGame', (req, res, next) => {
             discovered: [],
             food: 1,
             gold: 1,
+            terrain: {
+              ground: 'grassland',
+              forest: false,
+              hill: false,
+              mountain: false,
+            },
           };
+
+          let mountain = Math.round(Math.random()*20) > 18;
+
+          if (mountain) {
+            tileData.terrain.mountain = true;
+          } else {
+            let hill = Math.round(Math.random()*20) > 15;
+            let forest = Math.round(Math.random()*20) > 12;
+            tileData.terrain.hill = hill;
+            tileData.terrain.forest = forest;
+          }
 
           tileList.push(tileData);
         }
