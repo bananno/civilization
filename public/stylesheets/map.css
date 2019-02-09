@@ -39,6 +39,16 @@
   background-size: 60px;
 }
 
+.layer-hill {
+  background-image: url(/images/map/hill.png);
+  background-size: 50px;
+}
+
+.layer-forest {
+  background-image: url(/images/map/forest.png);
+  background-size: 60px;
+}
+
 .layer-fog {
   background-color: rgba(0, 0, 0, 0.5);
 }
