@@ -1,0 +1,14 @@
+<%
+  tiles.forEach(tile => {
+    let r = tile.row;
+    let c = tile.column;
+
+    let mapCell = map[r][c];
+
+    if (r == 0) {
+      map[r][c].edges.push('top');
+    } else if (r == numRows - 1) {
+      map[r][c].edges.push('bottom');
+    }
+  });
+%>

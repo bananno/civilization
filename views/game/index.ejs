@@ -3,6 +3,8 @@
 
     let canEndTurnNow = true;
 
+    let [numRows, numCols] = game.mapSize;
+
     let currentTurnUnits = units.filter(unit => {
         return unit.player == currentTurnPlayerId;
     });
@@ -44,6 +46,7 @@
 %>
 
 <% include ./variables %>
+<% include ./setShadows %>
 
 <!DOCTYPE html>
 <html>
@@ -113,8 +116,8 @@
         <% }); %>
 
         let mapCenter = [<%= mapCenter[0] %>, <%= mapCenter[1] %>];
-        let numRows = <%= game.mapSize[0] %>;
-        let numCols = <%= game.mapSize[1] %>;
+        let numRows = <%= numRows %>;
+        let numCols = <%= numCols %>;
 
         setupActiveUnitSelection();
         setActiveCity('<%= activeCity ? activeCity._id : null %>');
