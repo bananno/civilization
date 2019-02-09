@@ -189,12 +189,12 @@ function endRound(res, data) {
   };
 
   const functionList = [updateUnit, updateCity, updatePlayer];
-  let count = 0;
+  let count = -1;
 
   const goToNext = () => {
-    if (count < functionList.length) {
-      functionList[count](0);
+    if (count < functionList.length - 1) {
       count += 1;
+      functionList[count](0);
     } else {
       res.redirect('/');
     }
