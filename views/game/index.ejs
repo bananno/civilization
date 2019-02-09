@@ -8,10 +8,13 @@
     });
 
     let currentTurnCities = cities.filter(city => {
-        if (city.project.category == null) {
-            canEndTurnNow = false;
+        if ('' + city.player == '' + turnPlayerId) {
+            if (city.project.category == null) {
+                canEndTurnNow = false;
+            }
+            return true;
         }
-        return city.player == currentTurnPlayerId;
+        return false;
     });
 
     let rivalUnits = units.filter(unit => {
