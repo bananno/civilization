@@ -41,6 +41,7 @@
         map[tile.row][tile.column].tile = tile;
         map[tile.row][tile.column].food = tile.food;
         map[tile.row][tile.column].gold = tile.gold;
+        map[tile.row][tile.column].edges = [];
 
         if (tile.player) {
             map[tile.row][tile.column].player = playerNums[tile.player] + 1;
@@ -66,6 +67,11 @@
         if (tile.discovered.indexOf(currentTurnPlayerId) >= 0) {
             map[tile.row][tile.column].discovered = true;
         }
+
+        map[tile.row][tile.column].edges.push('top');
+        map[tile.row][tile.column].edges.push('left');
+        map[tile.row][tile.column].edges.push('right');
+        map[tile.row][tile.column].edges.push('bottom');
     });
 
     currentTurnCities.forEach(city => {

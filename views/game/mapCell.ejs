@@ -63,6 +63,10 @@
             tileStack.push('fog');
         }
 
+        cell.edges.forEach(edge => {
+            tileStack.push('edge edge-' + edge);
+        });
+
         if (clickable) {
             className += ' clickable';
             onClick = 'clickMapCell(' + r + ', ' + c + ')';
