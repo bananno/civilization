@@ -46,15 +46,18 @@ a {
   margin: 10px;
 }
 
-.info.city {
+.city-screen {
   position: absolute;
   top: 0;
   left: 0;
   background-color: white;
   width: 250px;
+  display: none;
+  border: 2px solid black;
+  margin-top: 10px;
+  padding: 10px;
 }
 
-.info.city,
 .info.unit {
   display: none;
   border: 2px solid black;
@@ -62,17 +65,18 @@ a {
   padding: 10px;
 }
 
+.city-screen .close:hover,
 .info .close:hover {
   cursor: pointer;
 }
 
-.info.city div {
+.city-screen div {
   margin-bottom: 10px;
   padding-bottom: 3px;
   border-bottom: 1px solid black;
 }
 
-.info.city ul {
+.city-screen ul {
   margin-left: 20px;
 }
 

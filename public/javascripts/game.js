@@ -21,14 +21,14 @@ document.onkeydown = (e) => {
 };
 
 function setupActiveUnitSelection() {
-  $('.info.city .close').click(deactivateAll);
+  $('.city-screen .close').click(deactivateAll);
   $('.info.unit .close').click(deactivateAll);
 }
 
 function deactivateAll() {
   $('.map-cell').removeClass('active');
 
-  $('.info.city').hide();
+  $('.city-screen').hide();
   $('.info.unit').hide();
 
   $('form.move-unit').hide();
@@ -43,7 +43,7 @@ function setActiveCity(id) {
   activeUnitOrCityId = id;
 
   $('form.work-tile[city-id="' + id + '"]').show();
-  $('.info.city[city-id="' + id + '"]').show();
+  $('.city-screen[city-id="' + id + '"]').show();
 
   if (id && id.length && id != 'null') {
     mapCenter = cities[id].location.concat();
