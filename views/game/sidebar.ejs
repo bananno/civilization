@@ -39,10 +39,6 @@
     <% }); %>
 </div>
 
-<% currentTurnCities.forEach(city => { %>
-    <% include ./cityScreen %>
-<% }); %>
-
 <% currentTurnUnits.forEach(unit => { %>
     <%
         let type = unit.unitType.name;

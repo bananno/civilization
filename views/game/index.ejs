@@ -48,6 +48,7 @@
     <title>Civilization</title>
 
     <link rel="stylesheet" href="/stylesheets/style.css"/>
+    <link rel="stylesheet" href="/stylesheets/cityScreen.css"/>
     <link rel="stylesheet" href="/stylesheets/map.css"/>
 
     <script src="/vendor/jquery-3.3.1.min.js"></script>
@@ -57,9 +58,15 @@
     <div id="game-header">
         <% include ./header %>
     </div>
+
     <div id="game-sidebar">
         <% include ./sidebar %>
     </div>
+
+    <% currentTurnCities.forEach(city => { %>
+        <% include ./cityScreen %>
+    <% }); %>
+
     <div id="game-map">
         <% include ./map %>
     </div>

@@ -1,0 +1,43 @@
+
+.city-screen {
+  display: none;
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 250px;
+  margin-top: 33px;
+  padding: 10px;
+  background-color: white;
+  border: 2px solid black;
+  max-height: 90%;
+  overflow: scroll;
+}
+
+.city-screen .close:hover {
+  cursor: pointer;
+}
+
+.city-screen .section {
+  margin-bottom: 10px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid black;
+}
+
+.city-screen ul {
+  margin-left: 20px;
+}
+
+.city-building-list img {
+  height: 50px;
+}
+
+.city-building-list div {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.city-building-list h3 {
+  font-weight: bold;
+  font-size: 14px;
+}
