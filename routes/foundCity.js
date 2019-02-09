@@ -15,12 +15,19 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return unit._id == unitId;
     })[0];
 
-    let turnPlayerId = data.players[data.game.nextPlayer]._id;
-
     if (unit == null || unit.unitType.name != 'settler' || unit.movesRemaining == 0
-        || '' + unit.player != '' + turnPlayerId) {
+        || '' + unit.player != '' + data.turnPlayerId) {
       console.log('invalid unit action');
       return res.redirect('/');
+    }
+
+    let tile = findTile(data.tiles, unit.location[0], unit.location[1]);
+
+    if (tile.player) {
+      if ('' + tile.player != '' + data.turnPlayerId) {
+        console.log('Cannot build a city in another player\'s territory.');
+        return res.redirect('/');
+      }
     }
 
     let cityData = {
@@ -132,5 +139,11 @@ router.post('/foundCity/:unitId', (req, res, next) => {
     });
   });
 });
+
+function findTile(tiles, row, column) {
+  return tiles.filter(tile => {
+    return tile.row == row && tile.column == column;
+  })[0];
+}
 
 module.exports = router;

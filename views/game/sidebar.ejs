@@ -47,6 +47,10 @@
     <%
         let type = unit.unitType.name;
         let disableActions = unit.movesRemaining == 0 ? 'disabled="true"' : '';
+        let inRivalTerritory = tiles.filter(tile => {
+            return unit.location[0] == tile.row && unit.location[1] == tile.column
+                && tile.player && '' + tile.player != '' + turnPlayerId;
+        }).length > 0;
     %>
     <div class="info unit" unit-id="<%= unit._id %>">
         <div class="close">X</div>
@@ -70,7 +74,11 @@
             <b>actions:</b>
             <% if (type == 'settler') { %>
                 <form action="/foundCity/<%= unit._id %>" method="post">
-                    <button <%= disableActions %>>found city</button>
+                    <% if (inRivalTerritory) { %>
+                        <button disabled="disabled">found city</button>
+                    <% } else { %>
+                        <button>found city</button>
+                    <% } %>
                 </form>
             <% } else if (type == 'worker') { %>
                 <form action="/unitOrders/<%= unit._id %>/buildFarm" method="post">
