@@ -16,8 +16,10 @@
 
 <div class="city-screen" city-id="<%= city._id %>">
     <div class="close">X</div>
-    <div>city</div>
-    <div>
+    <div class="section">
+        city
+    </div>
+    <div class="section">
         population: <%= city.population %><br/>
         (<%= city.food %> / <%= foodNeededForGrowth %>)<br/>
         <% if (foodSurplus == 0) { %>
@@ -26,12 +28,12 @@
             <%= Math.ceil((foodNeededForGrowth - city.food) / foodSurplus) %> turns
         <% } %>
     </div>
-    <div>
+    <div class="section">
         gold: <%= thisCityOutput.gold %><br/>
         food: <%= thisCityOutput.food %> (<%= foodSurplus %> surplus)<br/>
         production: <%= thisCityOutput.production %><br/>
     </div>
-    <div>
+    <div class="section">
         Citizens:
         <ul>
             <li>
@@ -42,15 +44,7 @@
             </li>
         </ul>
     </div>
-    <div>
-        buildings:
-        <ul>
-            <% city.buildings.forEach(i => { %>
-                <li><%= buildingTypes[i].name %></li>
-            <% }); %>
-        </ul>
-    </div>
-    <div>
+    <div class="section">
         <%
             let currentProject = '_______';
             let productionTotal = 0;
@@ -87,7 +81,7 @@
             <% } %>
         <% } %>
     </div>
-    <div>
+    <div class="section">
         change construction:
         <ul>
             <% unitTypes.forEach((unitType, i) => { %>
@@ -116,5 +110,16 @@
                 <a href="/changeProject/<%= city._id %>/gold/0">gold</a>
             </li>
         </ul>
+    </div>
+    <div>
+        buildings:
+        <% city.buildings.forEach(i => { %>
+            <div class="city-building-list">
+                <img src="/images/buildingIcons/<%= buildingTypes[i].name %>.png">
+                <div>
+                    <h3><%= buildingTypes[i].name %></h3>
+                </div>
+            </div>
+        <% }); %>
     </div>
 </div>
