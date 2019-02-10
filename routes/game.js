@@ -3,6 +3,7 @@ const router = express.Router();
 const Game = require('../models/game');
 const getData = require('./getData');
 const helpers = require('./helpers');
+const getVisibleTilesFunction = require('./getVisibleTiles');
 
 router.get('/', getHomePage);
 router.get('/newGame', newGameGet);
@@ -13,6 +14,7 @@ router.get('/exitGame', exitGame);
 function getHomePage(req, res, next) {
   getData(req, res, next, (data) => {
     data.helpers = helpers;
+    data.getVisibleTiles = getVisibleTilesFunction(data);
     res.render('game/index', data);
   });
 }

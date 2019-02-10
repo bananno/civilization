@@ -165,6 +165,13 @@
     map[row][col].myUnit = true;
     map[row][col].unitId = unit._id;
 
+    let litTiles = getVisibleTiles(row, col);
+
+    litTiles.forEach(coords => {
+      let [r, c] = coords;
+      map[r][c].lit = true;
+    });
+
     for (r = row - 2; r <= row + 2; r++) {
       if (r < 0) {
         continue;
@@ -180,8 +187,6 @@
         } else if (c >= game.mapSize[1]) {
           c -= game.mapSize[1];
         }
-
-        map[r][c].lit = true;
 
         if (unit.movesRemaining == 0) {
           continue;
