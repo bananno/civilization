@@ -20,7 +20,7 @@
     } else if (unitType == 'worker') {
         actions.push({
             path: '/unitOrders/buildFarm/' + unit._id,
-            hidden: inCity || unit.orders == 'build farm',
+            hidden: inCity || unit.orders == 'build farm' || tile.improvement == 'farm',
             disabled: inForest || !inOwnTerritory,
             text: 'build farm',
         });
