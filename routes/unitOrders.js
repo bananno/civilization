@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
+const helpers = require('./helpers');
 
 router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
   let orders = req.params.orders;
   let unitId = req.params.unitId;
 
   getData(req, res, next, (data) => {
-    let unit = findUnit(data.units, unitId);
+    let unit = helpers.findUnit(data.units, unitId);
 
     if ('' + unit.player != '' + data.turnPlayerId) {
       console.log('invalid unit action');
@@ -23,7 +24,7 @@ router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
     } else if (orders == 'wake' || orders == 'cancel') {
       unitData.orders = null;
     } else if (orders == 'buildFarm' || orders == 'chopForest') {
-      return improveLand(res, data, unit, orders);
+      return improveLand(res, next, data, unit, orders);
     } else {
       console.log('invalid unit action');
       return res.redirect('/');
@@ -38,7 +39,7 @@ router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
   });
 });
 
-function improveLand(res, data, unit, orders) {
+function improveLand(res, next, data, unit, orders) {
   const invalidAction = () => {
     console.log('Invalid unit action.');
     return res.redirect('/');
@@ -47,7 +48,7 @@ function improveLand(res, data, unit, orders) {
   let unitData = {};
   let tileData = {};
 
-  let tile = findTile(data.tiles, unit.location);
+  let tile = helpers.findTile(data.tiles, unit.location);
 
   let unitType = unit.unitType.name;
   let inForest = tile.terrain.forest;
@@ -90,21 +91,6 @@ function improveLand(res, data, unit, orders) {
       res.redirect('/');
     });
   });
-}
-
-function findUnit(units, id) {
-  return units.filter(unit => {
-    return unit._id == id;
-  })[0];
-}
-
-function findTile(tiles, row, column) {
-  if (row.constructor == Array) {
-    [row, column] = row;
-  }
-  return tiles.filter(tile => {
-    return tile.row == row && tile.column == column;
-  })[0];
 }
 
 module.exports = router;
