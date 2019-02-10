@@ -7,9 +7,7 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
   let orders = req.params.orders;
 
   getData(req, res, next, (data) => {
-    let unit = data.units.filter(unit => {
-      return unit._id == unitId;
-    })[0];
+    let unit = findUnit(data.units, unitId);
 
     if ('' + unit.player != '' + data.turnPlayerId) {
       console.log('invalid unit action');
@@ -22,7 +20,7 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
       unitData.orders = 'skip turn';
     } else if (orders == 'sleep') {
       unitData.orders = 'sleep';
-    } else if (orders == 'wake') {
+    } else if (orders == 'wake' || orders == 'cancel') {
       unitData.orders = null;
     } else if (orders == 'buildFarm' || orders == 'chopForest') {
       return improveLand(res, data, unit, orders);
@@ -41,20 +39,21 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
 });
 
 function improveLand(res, data, unit, orders) {
-  if (unit.movesRemaining == 0) {
-    console.log('invalid unit action');
+  const invalidAction = () => {
+    console.log('Invalid unit action.');
     return res.redirect('/');
+  };
+
+  if (unit.movesRemaining == 0) {
+    return invalidAction();
   }
 
   let unitData = {};
   let tileData = {};
 
-  let tile = data.tiles.filter(tile => {
-    return tile.row == unit.location[0] && tile.column == unit.location[1];
-  })[0];
+  let tile = findTile(data.tiles, unit.location);
 
   let unitType = unit.unitType.name;
-  let hasMoves = unit.movesRemaining > 0;
   let inForest = tile.terrain.forest;
   let inOwnTerritory = '' + tile.player == '' + data.turnPlayerId;
   let inRivalTerritory = tile.player && !inOwnTerritory;
@@ -62,15 +61,24 @@ function improveLand(res, data, unit, orders) {
       && city.location[1] == unit.location[1]).length > 0;
 
   if (orders == 'buildFarm') {
-    if (inForest || inCity || !inOwnTerritory || unitType != 'worker' || !hasMoves
+    if (inForest || inCity || !inOwnTerritory || unitType != 'worker'
         || tile.improvement != null) {
-      console.log('Invalid unit action.');
-      return res.redirect('/');
+      return invalidAction();
     }
     unitData.orders = 'build farm';
 
     if (tile.improvement != 'build farm') {
       tileData.improvement = 'build farm';
+      tileData.progress = 0;
+    }
+  } else if (orders == 'chopForest') {
+    if (!inForest || inRivalTerritory || unitType != 'worker') {
+      return invalidAction();
+    }
+    unitData.orders = 'chop forest';
+
+    if (tile.improvement != 'chop forest') {
+      tileData.improvement = 'chop forest';
       tileData.progress = 0;
     }
   }
@@ -86,6 +94,21 @@ function improveLand(res, data, unit, orders) {
       res.redirect('/');
     });
   });
+}
+
+function findUnit(units, id) {
+  return units.filter(unit => {
+    return unit._id == id;
+  })[0];
+}
+
+function findTile(tiles, row, column) {
+  if (row.constructor == Array) {
+    [row, column] = row;
+  }
+  return tiles.filter(tile => {
+    return tile.row == row && tile.column == column;
+  })[0];
 }
 
 module.exports = router;
