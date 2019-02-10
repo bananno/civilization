@@ -34,6 +34,14 @@ var TileSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  road: {
+    type: Boolean,
+    default: false,
+  },
+  roadProgress: {
+    type: Number,
+    default: 0,
+  },
   food: {
     type: Number,
     default: 1,
