@@ -49,34 +49,50 @@
   background-size: 60px;
 }
 
+/* FOG & EDGES */
+
+/* layer-edge-                        */
+/*            side-dark.side-left     */
+
 .layer-fog {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.layer-edge {
+.layer-edge-side-dark {
   background-image: url(/images/map/edge.png);
   background-size: 60px;
 }
 
-.layer-edge.edge-left {
+.layer-edge-corner-dark {
+  background-image: url(/images/map/edge-corner.png);
+  background-size: 60px;
+}
+
+.corner-bottom-left,
+.side-left {
   -webkit-transform: rotate(0deg);
   transform: rotate(0deg);
 }
 
-.layer-edge.edge-top {
+.corner-top-left,
+.side-top {
   -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.layer-edge.edge-right {
+.corner-top-right,
+.side-right {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
-.layer-edge.edge-bottom {
+.corner-bottom-right,
+.side-bottom {
   -webkit-transform: rotate(270deg);
   transform: rotate(270deg);
 }
+
+/* */
 
 .layer-territory.territory-1 {
   background-color: rgba(250, 60, 250, 0.5);

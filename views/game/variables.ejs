@@ -79,10 +79,15 @@
     if (tile.discovered.indexOf(currentTurnPlayerId) >= 0) {
       map[tile.row][tile.column].discovered = true;
     } else {
-      setDarkEdge(tile.row - 1, tile.column, 'bottom');
-      setDarkEdge(tile.row + 1, tile.column, 'top');
-      setDarkEdge(tile.row, tile.column - 1, 'right');
-      setDarkEdge(tile.row, tile.column + 1, 'left');
+      setDarkEdge(tile.row, tile.column + 1, 'side-dark side-left');
+      setDarkEdge(tile.row - 1, tile.column, 'side-dark side-bottom');
+      setDarkEdge(tile.row + 1, tile.column, 'side-dark side-top');
+      setDarkEdge(tile.row, tile.column - 1, 'side-dark side-right');
+
+      setDarkEdge(tile.row - 1, tile.column - 1, 'corner-dark corner-bottom-right');
+      setDarkEdge(tile.row - 1, tile.column + 1, 'corner-dark corner-bottom-left');
+      setDarkEdge(tile.row + 1, tile.column - 1, 'corner-dark corner-top-right');
+      setDarkEdge(tile.row + 1, tile.column + 1, 'corner-dark corner-top-left');
     }
   });
 
