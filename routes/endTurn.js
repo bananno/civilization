@@ -59,6 +59,10 @@ function endRound(res, data) {
 
     unitData.movesRemaining = unit.moves;
 
+    if (unit.orders == null) {
+      return completeUpdate();
+    }
+
     if (unit.orders == 'skip turn') {
       unitData.orders = null;
       completeUpdate();
