@@ -1,10 +1,45 @@
 <%
-    let type = unit.unitType.name;
-    let disableActions = unit.movesRemaining == 0 ? 'disabled="true"' : '';
+    let unitType = unit.unitType.name;
+    let movesRemaining = unit.movesRemaining > 0;
     let inRivalTerritory = tiles.filter(tile => {
         return unit.location[0] == tile.row && unit.location[1] == tile.column
             && tile.player && '' + tile.player != '' + turnPlayerId;
     }).length > 0;
+
+    let actions = [];
+
+    if (unitType == 'settler') {
+        actions.push({
+            path: '/foundCity/' + unit._id,
+            disabled: unit.movesRemaining == 0 || !inRivalTerritory,
+            text: 'found city',
+        });
+    } else if (unitType == 'worker') {
+        actions.push({
+            path: '/unitOrders/' + unit._id + '/buildFarm',
+            allowed: unit.movesRemaining == 0,
+            text: 'build farm',
+        });
+    }
+
+    if (unit.orders == 'sleep') {
+        actions.push({
+            path: '/unitOrders/' + unit._id + '/wake',
+            text: 'wake',
+        });
+    } else if (movesRemaining) {
+        actions.push({
+            path: '/unitOrders/' + unit._id + '/sleep',
+            text: 'sleep',
+        });
+    }
+
+    if (movesRemaining) {
+        actions.push({
+            path: '/unitOrders/' + unit._id + '/skipTurn',
+            text: 'skip turn',
+        });
+    }
 %>
 
 <div class="info unit" unit-id="<%= unit._id %>">
@@ -25,34 +60,18 @@
             NONE
         <% } %>
     </div>
+
     <div>
         <b>actions:</b>
-        <% if (type == 'settler') { %>
-            <form action="/foundCity/<%= unit._id %>" method="post">
-                <% if (inRivalTerritory) { %>
-                    <button disabled="disabled">found city</button>
+
+        <% actions.forEach(action => { %>
+            <form action="<%= action.path %>" method="post">
+                <% if (action.disabled) { %>
+                    <button disabled="disabled"><%= action.text %></button>
                 <% } else { %>
-                    <button>found city</button>
+                    <button type="submit"><%= action.text %></button>
                 <% } %>
             </form>
-        <% } else if (type == 'worker') { %>
-            <form action="/unitOrders/<%= unit._id %>/buildFarm" method="post">
-                <button <%= disableActions %>>build farm</button>
-            </form>
-        <% } %>
-        <% if (unit.movesRemaining) { %>
-            <form action="/unitOrders/<%= unit._id %>/skipTurn" method="post">
-                <button <%= disableActions %>>skip turn</button>
-            </form>
-        <% } %>
-        <% if (unit.orders == 'sleep') { %>
-            <form action="/unitOrders/<%= unit._id %>/wake" method="post">
-                <button>wake</button>
-            </form>
-        <% } else { %>
-            <form action="/unitOrders/<%= unit._id %>/sleep" method="post">
-                <button>sleep</button>
-            </form>
-        <% } %>
+        <% }); %>
     </div>
 </div>
