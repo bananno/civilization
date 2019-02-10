@@ -23,7 +23,8 @@ router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
       unitData.orders = 'sleep';
     } else if (orders == 'wake' || orders == 'cancel') {
       unitData.orders = null;
-    } else if (orders == 'buildFarm' || orders == 'chopForest') {
+    } else if (orders == 'buildFarm' || orders == 'chopForest'
+        || orders == 'removeImprovement') {
       return improveLand(res, next, data, unit, orders);
     } else {
       console.log('invalid unit action');
@@ -78,6 +79,11 @@ function improveLand(res, next, data, unit, orders) {
       tileData.project = 'chop';
       tileData.progress = 0;
     }
+  } else if (orders == 'removeImprovement') {
+    if (inRivalTerritory || unitType != 'worker' || tile.improvement != 'farm') {
+      return invalidAction();
+    }
+    unitData.orders = 'remove ' + tile.improvement;
   }
 
   unit.update(unitData, (error, unit) => {

@@ -30,6 +30,13 @@
             disabled: inRivalTerritory,
             text: 'chop forest',
         });
+        if (tile.improvement) {
+            actions.push({
+                path: '/unitOrders/removeImprovement/' + unit._id,
+                disabled: !inOwnTerritory,
+                text: 'remove ' + tile.improvement,
+            });
+        }
     }
 
     if (movesRemaining) {

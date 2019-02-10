@@ -79,6 +79,10 @@ function endRound(res, data) {
         projectDone = true;
         tileData.terrain = tile.terrain;
         tileData.terrain.forest = false;
+      } else if (unit.orders == 'remove farm' && unit.movesRemaining > 0) {
+        projectDone = true;
+        tileData.improvement = null;
+        tileData.food = tile.food - 1;
       }
 
       if (projectDone) {
