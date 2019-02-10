@@ -28,13 +28,21 @@
 
         if (tile.terrain.mountain) {
             tileStack.push('mountain');
-        } else {
-            if (tile.terrain.hill) {
-                tileStack.push('hill');
-            }
-            if (tile.terrain.forest) {
-                tileStack.push('forest');
-            }
+        }
+
+        if (tile.terrain.hill) {
+            tileStack.push('hill');
+        }
+
+        if (tile.road) {
+            tileStack.push('road road-top');
+            tileStack.push('road road-bottom');
+            tileStack.push('road road-left');
+            tileStack.push('road road-right');
+        }
+
+        if (tile.terrain.forest) {
+            tileStack.push('forest');
         }
 
         if (tile.improvement) {

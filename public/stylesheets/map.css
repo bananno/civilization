@@ -49,10 +49,33 @@
   background-size: 60px;
 }
 
-/* FOG & EDGES */
+/* ROAD */
 
-/* layer-edge-                        */
-/*            side-dark.side-left     */
+.layer-road {
+  background-size: 60px;
+}
+
+.layer-road.road-lone {
+  background-image: url(/images/map/road/lone.png);
+}
+
+.layer-road.road-left {
+  background-image: url(/images/map/road/left.png);
+}
+
+.layer-road.road-right {
+  background-image: url(/images/map/road/right.png);
+}
+
+.layer-road.road-top {
+  background-image: url(/images/map/road/top.png);
+}
+
+.layer-road.road-bottom {
+  background-image: url(/images/map/road/bottom.png);
+}
+
+/* FOG & EDGES */
 
 .layer-fog {
   background-color: rgba(0, 0, 0, 0.5);
