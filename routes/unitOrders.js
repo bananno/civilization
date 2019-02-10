@@ -23,7 +23,7 @@ router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
       unitData.orders = 'sleep';
     } else if (orders == 'wake' || orders == 'cancel') {
       unitData.orders = null;
-    } else if (orders == 'buildFarm' || orders == 'chopForest'
+    } else if (orders == 'buildFarm' || orders == 'buildRoad' || orders == 'chopForest'
         || orders == 'removeImprovement') {
       return improveLand(res, next, data, unit, orders);
     } else {
@@ -84,6 +84,11 @@ function improveLand(res, next, data, unit, orders) {
       return invalidAction();
     }
     unitData.orders = 'remove ' + tile.improvement;
+  } else if (orders == 'buildRoad') {
+    if (unitType != 'worker') {
+      return invalidAction();
+    }
+    unitData.orders = 'build road';
   }
 
   unit.update(unitData, (error, unit) => {
