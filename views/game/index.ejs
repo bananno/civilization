@@ -43,6 +43,15 @@
     units.forEach(unit => {
         unitsById[unit._id] = unit;
     });
+
+    const findTile = (row, column) => {
+        if (row.constructor == Array) {
+            [row, column] = row;
+        }
+        return tiles.filter(tile => {
+            return tile.row == row && tile.column == column;
+        })[0];
+    }
 %>
 
 <% include ./variables %>

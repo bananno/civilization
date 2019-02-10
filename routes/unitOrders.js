@@ -47,6 +47,13 @@ function improveLand(res, data, unit, orders) {
     return tile.row == unit.location[0] && tile.column == unit.location[1];
   })[0];
 
+  if (tile.terrain.forest) {
+    if (orders == 'buildFarm') {
+      console.log('Cannot build farm until forest is cleared.');
+      return res.redirect('/');
+    }
+  }
+
   let turnPlayerId = data.players[data.game.nextPlayer]._id;
 
   if (unit.unitType.name != 'worker' || unit.movesRemaining == 0

@@ -5,6 +5,8 @@
         return unit.location[0] == tile.row && unit.location[1] == tile.column
             && tile.player && '' + tile.player != '' + turnPlayerId;
     }).length > 0;
+    let tile = findTile(unit.location);
+    let isForest = tile.terrain.forest;
 
     let actions = [];
 
@@ -17,7 +19,7 @@
     } else if (unitType == 'worker') {
         actions.push({
             path: '/unitOrders/' + unit._id + '/buildFarm',
-            allowed: unit.movesRemaining == 0,
+            disabled: unit.movesRemaining == 0 || isForest,
             text: 'build farm',
         });
     }
