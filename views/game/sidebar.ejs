@@ -30,6 +30,20 @@
             if (unit.movesRemaining == 0 || unit.orders) {
                 className += ' done';
             }
+
+            let tile = helpers.findTile(tiles, unit.location);
+            let projectTurns = 0;
+
+            if (unit.orders == 'build farm') {
+                projectTurns = 10;
+            } else if (unit.orders == 'chop forest') {
+                projectTurns = 5;
+            }
+
+            if (projectTurns) {
+                projectTurns -= tile.progress;
+                projectTurns = Math.ceil(projectTurns / 2);
+            }
         %>
         <div class="<%= className %>" onClick="setActiveUnit('<%= unit._id %>')">
             <%= unit.unitType.name %>
@@ -38,6 +52,9 @@
             <% if (unit.orders) { %>
                 <br/>
                 <%= unit.orders %>
+                <% if (projectTurns) { %>
+                    (<%= projectTurns %>)
+                <% } %>
             <% } %>
         </div>
     <% }); %>

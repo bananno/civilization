@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Game = require('../models/game');
 const getData = require('./getData');
+const helpers = require('./helpers');
 
 router.get('/', getHomePage);
 router.get('/newGame', newGameGet);
@@ -11,6 +12,7 @@ router.get('/exitGame', exitGame);
 
 function getHomePage(req, res, next) {
   getData(req, res, next, (data) => {
+    data.helpers = helpers;
     res.render('game/index', data);
   });
 }
