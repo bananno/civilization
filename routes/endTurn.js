@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
+const helpers = require('./helpers');
 const createUnit = require('./createUnit');
 
 const cityGrowthRate = [0, 15, 22, 30, 40, 51, 63, 76, 90, 105, 121, 138, 155, 174, 194, 214,
@@ -62,7 +63,7 @@ function endRound(res, data) {
       unitData.orders = null;
       completeUpdate();
     } else if (unit.orders == 'build farm') {
-      let tile = findTile(data.tiles, unit.location[0], unit.location[1]);
+      let tile = helpers.findTile(data.tiles, unit.location);
       let tileData = {};
 
       tileData.progress = tile.progress + unit.movesRemaining;
@@ -214,12 +215,6 @@ function allCitiesHaveProject(player, cities) {
     }
   }
   return true;
-}
-
-function findTile(tiles, row, column) {
-  return tiles.filter(tile => {
-    return tile.row == row && tile.column == column;
-  })[0];
 }
 
 module.exports = router;
