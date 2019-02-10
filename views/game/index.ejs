@@ -112,10 +112,7 @@
                         features.push('forest');
                     }
                     if (map[r][c].tile.improvement) {
-                        if (map[r][c].tile.improvement != 'build farm'
-                                && map[r][c].tile.improvement != 'chop forest') {
-                            features.push(map[r][c].tile.improvement);
-                        }
+                        features.push(map[r][c].tile.improvement);
                     }
                 %>
                 tiles[<%= r %>].push({

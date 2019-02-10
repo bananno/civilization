@@ -68,17 +68,23 @@ function endRound(res, data) {
 
       tileData.progress = tile.progress + unit.movesRemaining;
 
+      let projectDone = false;
+
       if (unit.orders == 'build farm' && tileData.progress >= 10) {
+        projectDone = true;
         tileData.improvement = 'farm';
-        tileData.progress = 0;
         tileData.food = tile.food + 1;
         unitData.orders = null;
       } else if (unit.orders == 'chop forest' && tileData.progress >= 5) {
-        tileData.improvement = null;
+        projectDone = true;
         tileData.terrain = tile.terrain;
         tileData.terrain.forest = false;
-        tileData.progress = 0;
+      }
+
+      if (projectDone) {
         unitData.orders = null;
+        tileData.project = null;
+        tileData.progress = 0;
       }
 
       tile.update(tileData, (error, tile) => {

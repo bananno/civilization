@@ -29,6 +29,7 @@ var TileSchema = new mongoose.Schema({
   improvement: {
     type: String,
   },
+  project: String,
   progress: {
     type: Number,
     default: 0,

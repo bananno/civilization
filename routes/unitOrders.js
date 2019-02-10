@@ -63,8 +63,8 @@ function improveLand(res, data, unit, orders) {
     }
     unitData.orders = 'build farm';
 
-    if (tile.improvement != 'build farm') {
-      tileData.improvement = 'build farm';
+    if (tile.project != 'farm') {
+      tileData.project = 'farm';
       tileData.progress = 0;
     }
   } else if (orders == 'chopForest') {
@@ -73,8 +73,8 @@ function improveLand(res, data, unit, orders) {
     }
     unitData.orders = 'chop forest';
 
-    if (tile.improvement != 'chop forest') {
-      tileData.improvement = 'chop forest';
+    if (tile.project != 'chop') {
+      tileData.project = 'chop';
       tileData.progress = 0;
     }
   }
