@@ -15,6 +15,6 @@ function findTile(tiles, row, column) {
 }
 
 module.exports = {
-    findUnit: findUnit,
-    findTile: findTile,
+  findUnit: findUnit,
+  findTile: findTile,
 };
