@@ -11,9 +11,7 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
       return unit._id == unitId;
     })[0];
 
-    let turnPlayerId = data.players[data.game.nextPlayer]._id;
-
-    if ('' + unit.player != '' + turnPlayerId) {
+    if ('' + unit.player != '' + data.turnPlayerId) {
       console.log('invalid unit action');
       return res.redirect('/');
     }
@@ -26,7 +24,7 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
       unitData.orders = 'sleep';
     } else if (orders == 'wake') {
       unitData.orders = null;
-    } else if (orders == 'buildFarm') {
+    } else if (orders == 'buildFarm' || orders == 'chopForest') {
       return improveLand(res, data, unit, orders);
     } else {
       console.log('invalid unit action');
@@ -43,35 +41,38 @@ router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
 });
 
 function improveLand(res, data, unit, orders) {
-  let tile = data.tiles.filter(tile => {
-    return tile.row == unit.location[0] && tile.column == unit.location[1];
-  })[0];
-
-  if (tile.terrain.forest) {
-    if (orders == 'buildFarm') {
-      console.log('Cannot build farm until forest is cleared.');
-      return res.redirect('/');
-    }
-  }
-
-  let turnPlayerId = data.players[data.game.nextPlayer]._id;
-
-  if (unit.unitType.name != 'worker' || unit.movesRemaining == 0
-      || '' + tile.player != '' + turnPlayerId
-      || '' + unit.player != '' + turnPlayerId) {
+  if (unit.movesRemaining == 0) {
     console.log('invalid unit action');
     return res.redirect('/');
   }
 
-  let unitData = {
-    orders: 'build farm',
-  };
-
+  let unitData = {};
   let tileData = {};
 
-  if (tile.improvement != 'build farm') {
-    tileData.improvement = 'build farm';
-    tileData.progress = 0;
+  let tile = data.tiles.filter(tile => {
+    return tile.row == unit.location[0] && tile.column == unit.location[1];
+  })[0];
+
+  let unitType = unit.unitType.name;
+  let hasMoves = unit.movesRemaining > 0;
+  let inForest = tile.terrain.forest;
+  let inOwnTerritory = '' + tile.player == '' + data.turnPlayerId;
+  let inRivalTerritory = tile.player && !inOwnTerritory;
+  let inCity = data.cities.filter(city => city.location[0] == unit.location[0]
+      && city.location[1] == unit.location[1]).length > 0;
+
+  if (orders == 'buildFarm') {
+    if (inForest || inCity || !inOwnTerritory || unitType != 'worker' || !hasMoves
+        || tile.improvement != null) {
+      console.log('Invalid unit action.');
+      return res.redirect('/');
+    }
+    unitData.orders = 'build farm';
+
+    if (tile.improvement != 'build farm') {
+      tileData.improvement = 'build farm';
+      tileData.progress = 0;
+    }
   }
 
   unit.update(unitData, (error, unit) => {
