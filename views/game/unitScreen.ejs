@@ -20,15 +20,30 @@
     } else if (unitType == 'worker') {
         actions.push({
             path: '/unitOrders/' + unit._id + '/buildFarm',
-            hidden: inCity,
+            hidden: inCity || unit.orders == 'build farm',
             disabled: inForest || !inOwnTerritory,
             text: 'build farm',
         });
         actions.push({
             path: '/unitOrders/' + unit._id + '/chopForest',
-            hidden: !inForest,
+            hidden: !inForest || unit.orders == 'chop forest',
             disabled: inRivalTerritory,
             text: 'chop forest',
+        });
+    }
+
+    if (movesRemaining) {
+        actions.push({
+            path: '/unitOrders/' + unit._id + '/skipTurn',
+            text: 'skip turn',
+        });
+    }
+
+    if (unit.orders) {
+        actions.push({
+            path: '/unitOrders/' + unit._id + '/cancel',
+            hidden: unit.orders == 'sleep' || unit.orders == 'skip turn',
+            text: 'cancel',
         });
     }
 
@@ -37,17 +52,10 @@
             path: '/unitOrders/' + unit._id + '/wake',
             text: 'wake',
         });
-    } else if (movesRemaining) {
+    } else {
         actions.push({
             path: '/unitOrders/' + unit._id + '/sleep',
             text: 'sleep',
-        });
-    }
-
-    if (movesRemaining) {
-        actions.push({
-            path: '/unitOrders/' + unit._id + '/skipTurn',
-            text: 'skip turn',
         });
     }
 %>
