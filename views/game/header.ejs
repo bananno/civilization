@@ -38,6 +38,7 @@
 </style>
 
 <%
+     let playerName = players[game.nextPlayer].name;
     let currentGold = players[game.nextPlayer].gold;
     let income = playerOutput[players[game.nextPlayer]._id].gold;
 %>
@@ -53,6 +54,12 @@
 </div>
 
 <div>
+    <div class="header-text">
+        <%= playerName %>
+    </div>
+    <div class="header-text">
+        |
+    </div>
     <div class="header-text">
         Turn: <%= game.turn %>
     </div>

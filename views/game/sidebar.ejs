@@ -10,20 +10,6 @@
 </div>
 
 <div class="info">
-    <h2>Players</h2>
-    <ul>
-        <% players.forEach((player, i) => { %>
-            <li>
-                <%= player.name %>
-                <% if (game.nextPlayer === i) { %>
-                    (TURN)
-                <% }%>
-            </li>
-        <% }); %>
-    </ul>
-</div>
-
-<div class="info">
     <% currentTurnUnits.forEach(unit => { %>
         <%
             let className = 'unit-roster';
