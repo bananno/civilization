@@ -114,6 +114,9 @@
                     if (map[r][c].tile.improvement) {
                         features.push(map[r][c].tile.improvement);
                     }
+                    if (map[r][c].tile.road) {
+                        features.push('road');
+                    }
                 %>
                 tiles[<%= r %>].push({
                     food: <%= map[r][c].food %>,
