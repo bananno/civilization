@@ -35,6 +35,10 @@
             <%= unit.unitType.name %>
             <br/>
             <%= unit.movesRemaining %> moves remaining
+            <% if (unit.orders) { %>
+                <br/>
+                <%= unit.orders %>
+            <% } %>
         </div>
     <% }); %>
 </div>
