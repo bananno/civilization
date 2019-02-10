@@ -131,7 +131,7 @@ function getNewlyDiscoveredTiles(mapSize, newRow, newCol) {
     if (r >= numMapRows) {
       break;
     }
-    for (let cTemp = newCol - 2; cTemp <= newCol + 1; cTemp++) {
+    for (let cTemp = newCol - 2; cTemp <= newCol + 2; cTemp++) {
       let c = cTemp;
       if (c < 0) {
         c += numMapCols;
