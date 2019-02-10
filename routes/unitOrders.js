@@ -44,10 +44,6 @@ function improveLand(res, data, unit, orders) {
     return res.redirect('/');
   };
 
-  if (unit.movesRemaining == 0) {
-    return invalidAction();
-  }
-
   let unitData = {};
   let tileData = {};
 

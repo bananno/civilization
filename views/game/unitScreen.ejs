@@ -21,13 +21,13 @@
         actions.push({
             path: '/unitOrders/' + unit._id + '/buildFarm',
             hidden: inCity,
-            disabled: noMoves || inForest || !inOwnTerritory,
+            disabled: inForest || !inOwnTerritory,
             text: 'build farm',
         });
         actions.push({
             path: '/unitOrders/' + unit._id + '/chopForest',
             hidden: !inForest,
-            disabled: noMoves || inRivalTerritory,
+            disabled: inRivalTerritory,
             text: 'chop forest',
         });
     }
