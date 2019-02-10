@@ -13,6 +13,7 @@
         lit: false,
         discovered: false,
         edges: [],
+        roads: [],
         player: null,
         owned: false,
       };
@@ -36,6 +37,18 @@
       map[row][col].rivalCity = true;
     }
   });
+
+  const addRoad = (row, column, direction) => {
+    if (row < 0 || row > numRows) {
+      return;
+    }
+    if (column < 0) {
+      column += numCols;
+    } else if (column >= numCols) {
+      column -= numCols;
+    }
+    map[row][column].roads.push(direction);
+  };
 
   tiles.forEach(tile => {
     map[tile.row] = map[tile.row] || [];
@@ -66,6 +79,13 @@
 
     if (tile.discovered.indexOf(currentTurnPlayerId) >= 0) {
       map[tile.row][tile.column].discovered = true;
+    }
+
+    if (tile.road) {
+      addRoad(tile.row - 1, tile.column, 'bottom');
+      addRoad(tile.row, tile.column - 1, 'right');
+      addRoad(tile.row + 1, tile.column, 'top');
+      addRoad(tile.row, tile.column + 1, 'left');
     }
   });
 

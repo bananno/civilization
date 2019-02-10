@@ -35,10 +35,13 @@
         }
 
         if (tile.road) {
-            tileStack.push('road road-top');
-            tileStack.push('road road-bottom');
-            tileStack.push('road road-left');
-            tileStack.push('road road-right');
+            if (cell.roads.length == 0) {
+                tileStack.push('road road-lone');
+            } else {
+                cell.roads.forEach(road => {
+                    tileStack.push('road road-' + road);
+                });
+            }
         }
 
         if (tile.terrain.forest) {
