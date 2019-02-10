@@ -62,7 +62,8 @@ function endRound(res, data) {
     if (unit.orders == 'skip turn') {
       unitData.orders = null;
       completeUpdate();
-    } else if (unit.orders == 'build farm' || unit.orders == 'chop forest') {
+    } else if (unit.orders == 'build farm' || unit.orders == 'chop forest'
+        || unit.orders.match('remove')) {
       let tile = helpers.findTile(data.tiles, unit.location);
       let tileData = {};
 
