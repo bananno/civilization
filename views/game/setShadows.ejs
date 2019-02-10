@@ -1,21 +1,33 @@
 <%
+  const setDarkEdge = (row, col, direction) => {
+    if (row < 0 || row >= game.mapSize[0]) {
+      return;
+    }
+    if (col < 0) {
+      col += game.mapSize[1];
+    } else if (col >= game.mapSize[1]) {
+      col -= game.mapSize[1];
+    }
+
+    map[row][col].edges.push(direction);
+  };
+
   tiles.forEach(tile => {
-    // let r = tile.row;
-    // let c = tile.column;
+    let r = tile.row;
+    let c = tile.column;
 
-    // let mapCell = map[r][c];
+    if (map[r][c].discovered) {
+      return;
+    }
 
-    // if (r == 0) {
-    //   map[r][c].edges.push('top');
-    // } else if (r == numRows - 1) {
-    //   map[r][c].edges.push('bottom');
-    // } else {
-    //   if (!map[r - 1][c].discovered) {
-    //     map[r][c].edges.push('top');
-    //   }
-    //   if (!map[r + 1][c].discovered) {
-    //     map[r][c].edges.push('bottom');
-    //   }
-    // }
+    setDarkEdge(tile.row, tile.column + 1, 'side-dark side-left');
+    setDarkEdge(tile.row - 1, tile.column, 'side-dark side-bottom');
+    setDarkEdge(tile.row + 1, tile.column, 'side-dark side-top');
+    setDarkEdge(tile.row, tile.column - 1, 'side-dark side-right');
+
+    setDarkEdge(tile.row - 1, tile.column - 1, 'corner-dark corner-bottom-right');
+    setDarkEdge(tile.row - 1, tile.column + 1, 'corner-dark corner-bottom-left');
+    setDarkEdge(tile.row + 1, tile.column - 1, 'corner-dark corner-top-right');
+    setDarkEdge(tile.row + 1, tile.column + 1, 'corner-dark corner-top-left');
   });
 %>
