@@ -40,63 +40,7 @@
 </div>
 
 <% currentTurnUnits.forEach(unit => { %>
-    <%
-        let type = unit.unitType.name;
-        let disableActions = unit.movesRemaining == 0 ? 'disabled="true"' : '';
-        let inRivalTerritory = tiles.filter(tile => {
-            return unit.location[0] == tile.row && unit.location[1] == tile.column
-                && tile.player && '' + tile.player != '' + turnPlayerId;
-        }).length > 0;
-    %>
-    <div class="info unit" unit-id="<%= unit._id %>">
-        <div class="close">X</div>
-        <div>
-            <b>type:</b>
-            <%= unit.unitType.name %>
-        </div>
-        <div>
-            <b>moves:</b>
-            <%= unit.movesRemaining %>
-        </div>
-        <div>
-            <b>orders:</b>
-            <% if (unit.orders) { %>
-                <%= unit.orders %>
-            <% } else { %>
-                NONE
-            <% } %>
-        </div>
-        <div>
-            <b>actions:</b>
-            <% if (type == 'settler') { %>
-                <form action="/foundCity/<%= unit._id %>" method="post">
-                    <% if (inRivalTerritory) { %>
-                        <button disabled="disabled">found city</button>
-                    <% } else { %>
-                        <button>found city</button>
-                    <% } %>
-                </form>
-            <% } else if (type == 'worker') { %>
-                <form action="/unitOrders/<%= unit._id %>/buildFarm" method="post">
-                    <button <%= disableActions %>>build farm</button>
-                </form>
-            <% } %>
-            <% if (unit.movesRemaining) { %>
-                <form action="/unitOrders/<%= unit._id %>/skipTurn" method="post">
-                    <button <%= disableActions %>>skip turn</button>
-                </form>
-            <% } %>
-            <% if (unit.orders == 'sleep') { %>
-                <form action="/unitOrders/<%= unit._id %>/wake" method="post">
-                    <button>wake</button>
-                </form>
-            <% } else { %>
-                <form action="/unitOrders/<%= unit._id %>/sleep" method="post">
-                    <button>sleep</button>
-                </form>
-            <% } %>
-        </div>
-    </div>
+    <% include ./unitScreen %>
 <% }); %>
 
 <div class="info tile">
