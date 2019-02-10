@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
 
-router.post('/unitOrders/:unitId/:orders', (req, res, next) => {
-  let unitId = req.params.unitId;
+router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
   let orders = req.params.orders;
+  let unitId = req.params.unitId;
 
   getData(req, res, next, (data) => {
     let unit = findUnit(data.units, unitId);
