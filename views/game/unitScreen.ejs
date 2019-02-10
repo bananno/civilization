@@ -14,7 +14,7 @@
     if (unitType == 'settler') {
         actions.push({
             path: '/foundCity/' + unit._id,
-            disabled: noMoves || !inRivalTerritory || inCity,
+            disabled: noMoves || inRivalTerritory || inCity,
             text: 'found city',
         });
     } else if (unitType == 'worker') {
