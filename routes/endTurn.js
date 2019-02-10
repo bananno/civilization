@@ -62,16 +62,22 @@ function endRound(res, data) {
     if (unit.orders == 'skip turn') {
       unitData.orders = null;
       completeUpdate();
-    } else if (unit.orders == 'build farm') {
+    } else if (unit.orders == 'build farm' || unit.orders == 'chop forest') {
       let tile = helpers.findTile(data.tiles, unit.location);
       let tileData = {};
 
       tileData.progress = tile.progress + unit.movesRemaining;
 
-      if (tileData.progress >= 5) {
+      if (unit.orders == 'build farm' && tileData.progress >= 10) {
         tileData.improvement = 'farm';
         tileData.progress = 0;
         tileData.food = tile.food + 1;
+        unitData.orders = null;
+      } else if (unit.orders == 'chop forest' && tileData.progress >= 5) {
+        tileData.improvement = null;
+        tileData.terrain = tile.terrain;
+        tileData.terrain.forest = false;
+        tileData.progress = 0;
         unitData.orders = null;
       }
 
