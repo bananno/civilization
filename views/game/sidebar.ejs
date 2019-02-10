@@ -21,13 +21,14 @@
             let projectTurns = 0;
 
             if (unit.orders == 'build farm') {
-                projectTurns = 10;
+                projectTurns = 10 - tile.progress;
             } else if (unit.orders == 'chop forest') {
-                projectTurns = 5;
+                projectTurns = 5 - tile.progress;
+            } else if (unit.orders == 'build road') {
+                projectTurns = 5 - tile.roadProgress;
             }
 
             if (projectTurns) {
-                projectTurns -= tile.progress;
                 projectTurns = Math.ceil(projectTurns / 2);
             }
         %>
