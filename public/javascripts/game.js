@@ -143,8 +143,9 @@ function clickMapCell(row, column) {
 
 function hoverMapCell(row, column) {
   let tile = tiles[parseInt(row)][parseInt(column)];
-  let values = ['Row: ' + row, 'Column: ' + column];
-  values.push('Food: ' + tile.food);
-  values.push('Gold: ' + tile.gold);
+  let values = ['[' + row + ', ' + column + ']'];
+  values.push(tile.features);
+  values.push('food: ' + tile.food);
+  values.push('gold: ' + tile.gold);
   $('.info.tile').html(values.join('<br>'));
 }
