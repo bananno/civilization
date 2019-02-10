@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
+const helpers = require('./helpers');
 
 router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
   let unitId = req.params.unitId;
@@ -51,7 +52,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
         return false;
       }
 
-      newTile = findTile(data.tiles, newRow, newCol);
+      newTile = helpers.findTile(data.tiles, newRow, newCol);
 
       if (newTile.terrain.mountain) {
         return false;
@@ -69,6 +70,12 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
         if (unit.unitType.name != 'scout') {
           movesUsed += 1;
         }
+      }
+
+      let oldTile = helpers.findTile(data.tiles, oldRow, oldCol);
+
+      if (newTile.road && oldTile.road) {
+        movesUsed = Math.ceil(movesUsed / 2);
       }
 
       unitData.location = [newRow, newCol];
@@ -143,12 +150,6 @@ function getNewlyDiscoveredTiles(mapSize, newRow, newCol) {
   }
 
   return tiles;
-}
-
-function findTile(tiles, row, column) {
-  return tiles.filter(tile => {
-    return tile.row == row && tile.column == column;
-  })[0];
 }
 
 module.exports = router;
