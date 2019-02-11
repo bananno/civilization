@@ -36,6 +36,7 @@ Terrain:
 
 const immediateCorners = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
 const immediateEdges = [[-1, 0], [0, 1], [1, 0], [0, -1]];
+const farBetweens = [[-2, -1], [-2, 1], [1, 0], [0, -1]];
 
 const getVisibleTilesFunction = (data) => {
   let [numRows, numCols] = data.game.mapSize;
@@ -78,27 +79,47 @@ const getVisibleTilesFunction = (data) => {
     let unitIsInForest = tileGroup[0][0].forest;
     let unitIsOnHill = tileGroup[0][0].hill;
 
-    if (unitIsInForest) {
-      visible[-2] = [false, false, false];
-      visible[2] = [false, false, false];
-      visible[-1][-2] = false;
-      visible[0][-2] = false;
-      visible[1][-2] = false;
-      visible[-1][2] = false;
-      visible[0][2] = false;
-      visible[1][2] = false;
-    } else {
-      [...immediateEdges, ...immediateCorners].forEach(pair => {
-        let [r1, c1] = pair;
-        let adjacent = tileGroup[r1][c1];
-        let far = tileGroup[r1 * 2][c1 * 2];
+    const isVisible = (adj, far) => {
+      if (unitIsInForest) {
+        return false;
+      }
+      if (adj.mountain) {
+        return false;
+      }
+      if (adj.hill && !far.mountain) {
+        return false;
+      }
+      if (adj.forest && !unitIsOnHill && !far.mountain && !far.hill) {
+        return false;
+      }
+      return true;
+    };
 
-        if (adjacent.mountain
-            || (adjacent.hill && !far.mountain)
-            || (adjacent.forest && !unitIsOnHill && !far.mountain && !far.hill)) {
-          visible[r1 * 2][c1 * 2] = false;
-        }
-      });
+    for (let i = 0; i < 4; i++) {
+
+      // edge
+
+      let [r1, c1] = immediateEdges[i];
+      let adjEdge = tileGroup[r1][c1];
+      let farEdge = tileGroup[r1 * 2][c1 * 2];
+
+      visible[r1 * 2][c1 * 2] = isVisible(adjEdge, farEdge);
+
+      // corner
+
+      let [r2, c2] = immediateCorners[i];
+      let adjCorner = tileGroup[r2][c2];
+      let farCorner = tileGroup[r2 * 2][c2 * 2];
+
+      visible[r2 * 2][c2 * 2] = isVisible(adjCorner, farCorner);
+
+      // in-between
+
+      // let [r3, c3] = farBetweens[i];
+      // let farBetween = tileGroup[r3][c3];
+
+      // visible[r3][c3] = false;
+      // visible[r3][c3] = false;
     }
 
     // Return all pairs that are still true.
