@@ -6,6 +6,7 @@ const Tile = require('../models/tile');
 const Unit = require('../models/unit');
 const unitTypes = require('../models/unitTypes');
 const createUnit = require('./createUnit');
+const helpers = require('./helpers');
 const getVisibleTilesFunction = require('./getVisibleTiles');
 
 router.post('/newGame', (req, res, next) => {
@@ -47,13 +48,13 @@ router.post('/newGame', (req, res, next) => {
             },
           };
 
-          let mountain = Math.round(Math.random()*20) > 18;
+          let mountain = helpers.booleanByPercentage(5);
 
           if (mountain) {
             tileData.terrain.mountain = true;
           } else {
-            let hill = Math.round(Math.random()*20) > 15;
-            let forest = Math.round(Math.random()*20) > 12;
+            let hill = helpers.booleanByPercentage(25);
+            let forest = helpers.booleanByPercentage(40);
             tileData.terrain.hill = hill;
             tileData.terrain.forest = forest;
           }

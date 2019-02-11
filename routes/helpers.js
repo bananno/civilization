@@ -14,7 +14,12 @@ function findTile(tiles, row, column) {
   })[0];
 }
 
+function booleanByPercentage(percentage) {
+  return Math.round(Math.random() * 100) <= percentage;
+}
+
 module.exports = {
   findUnit: findUnit,
   findTile: findTile,
+  booleanByPercentage: booleanByPercentage,
 };
