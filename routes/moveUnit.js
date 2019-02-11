@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
 const helpers = require('./helpers');
+const getVisibleTilesFunction = require('./getVisibleTiles');
 
 router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
   let unitId = req.params.unitId;
@@ -9,6 +10,8 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
   let newCol = parseInt(req.params.col);
 
   getData(req, res, next, (data) => {
+    const getVisibleTiles = getVisibleTilesFunction(data);
+
     let numMapRows = data.game.mapSize[0];
     let numMapCols = data.game.mapSize[1];
 
@@ -86,16 +89,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
         unitData.movesRemaining = 0;
       }
 
-      let newTiles = getNewlyDiscoveredTiles(data.game.mapSize, newRow, newCol);
-
-      newTiles.forEach(coords => {
-        let tile = data.tiles.filter(tile => {
-          return tile.row == coords[0] && tile.column == coords[1];
-        })[0];
-        if (tile) {
-          tileList.push(tile);
-        }
-      });
+      tileList = getVisibleTiles(newRow, newCol);
     } else {
       console.log('Invalid unit move.');
       return res.redirect('/');
@@ -105,11 +99,12 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       if (i >= tileList.length) {
         return res.redirect('/');
       }
+      let tile = helpers.findTile(tileList[i]);
       let tileData = {
-        discovered: tileList[i].discovered
+        discovered: tile.discovered
       };
       tileData.discovered.push(unit.player);
-      tileList[i].update(tileData, (error, tile) => {
+      tile.update(tileData, error => {
         if (error) {
           return next(error);
         }
@@ -125,31 +120,5 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
     });
   });
 });
-
-function getNewlyDiscoveredTiles(mapSize, newRow, newCol) {
-  let numMapRows = mapSize[0];
-  let numMapCols = mapSize[1];
-  let tiles = [];
-
-  for (let r = newRow - 2; r <= newRow + 2; r++) {
-    if (r < 0) {
-      continue;
-    }
-    if (r >= numMapRows) {
-      break;
-    }
-    for (let cTemp = newCol - 2; cTemp <= newCol + 2; cTemp++) {
-      let c = cTemp;
-      if (c < 0) {
-        c += numMapCols;
-      } else if (c >= numMapCols) {
-        c -= numMapCols;
-      }
-      tiles.push([r, c]);
-    }
-  }
-
-  return tiles;
-}
 
 module.exports = router;
