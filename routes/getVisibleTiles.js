@@ -34,9 +34,8 @@ Terrain:
 
 */
 
-const immediateCorners = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+const immediateCorners = [[-1, -1], [-1, 1], [1, 1], [1, -1]];
 const immediateEdges = [[-1, 0], [0, 1], [1, 0], [0, -1]];
-const farBetweens = [[-2, -1], [-2, 1], [1, 0], [0, -1]];
 
 const getVisibleTilesFunction = (data) => {
   let [numRows, numCols] = data.game.mapSize;
@@ -59,7 +58,6 @@ const getVisibleTilesFunction = (data) => {
           c -= numCols;
         }
 
-        visible[r1][c1] = true;
         tileGroup[r1][c1] = {
           mountain: false,
           hill: false,
@@ -79,7 +77,7 @@ const getVisibleTilesFunction = (data) => {
     let unitIsInForest = tileGroup[0][0].forest;
     let unitIsOnHill = tileGroup[0][0].hill;
 
-    const isVisible = (adj, far) => {
+    const farTileIsVisible = (adj, far) => {
       if (unitIsInForest) {
         return false;
       }
@@ -95,32 +93,39 @@ const getVisibleTilesFunction = (data) => {
       return true;
     };
 
-    for (let i = 0; i < 4; i++) {
+    visible[0][0] = true;
 
-      // edge
+    immediateEdges.forEach((pair, i) => {
+      let [r, c] = pair;
+      let adj = tileGroup[r][c];
+      let far = tileGroup[r * 2][c * 2];
 
-      let [r1, c1] = immediateEdges[i];
-      let adjEdge = tileGroup[r1][c1];
-      let farEdge = tileGroup[r1 * 2][c1 * 2];
+      let r1 = r * 2 || -1;
+      let c1 = c * 2 || -1;
+      let r2 = r * 2 || 1;
+      let c2 = c * 2 || 1;
 
-      visible[r1 * 2][c1 * 2] = isVisible(adjEdge, farEdge);
+      visible[r][c] = true;
+      visible[r * 2][c * 2] = farTileIsVisible(adj, far);
+      visible[r1][c1] = visible[r1][c1] || farTileIsVisible(adj, tileGroup[r1][c1]);
+      visible[r2][c2] = visible[r2][c2] || farTileIsVisible(adj, tileGroup[r2][c2]);
+    });
 
-      // corner
+    immediateCorners.forEach(pair => {
+      let [r, c] = pair;
+      let adj = tileGroup[r][c];
+      let far = tileGroup[r * 2][c * 2];
 
-      let [r2, c2] = immediateCorners[i];
-      let adjCorner = tileGroup[r2][c2];
-      let farCorner = tileGroup[r2 * 2][c2 * 2];
+      let r1 = r * 2;
+      let c1 = c;
+      let r2 = r;
+      let c2 = c * 2;
 
-      visible[r2 * 2][c2 * 2] = isVisible(adjCorner, farCorner);
-
-      // in-between
-
-      // let [r3, c3] = farBetweens[i];
-      // let farBetween = tileGroup[r3][c3];
-
-      // visible[r3][c3] = false;
-      // visible[r3][c3] = false;
-    }
+      visible[r][c] = true;
+      visible[r * 2][c * 2] = farTileIsVisible(adj, far);
+      visible[r1][c1] = visible[r1][c1] || farTileIsVisible(adj, tileGroup[r1][c1]);
+      visible[r2][c2] = visible[r2][c2] || farTileIsVisible(adj, tileGroup[r2][c2]);
+    });
 
     // Return all pairs that are still true.
 
