@@ -133,7 +133,10 @@
                         +<%= buildingTypes[i].production.food %> food<br/>
                     <% } %>
                     <% if (buildingTypes[i].production.labor > 0) { %>
-                        +<%= buildingTypes[i].production.labor %> production<br/>
+                        +<%= buildingTypes[i].production.labor %> labor<br/>
+                    <% } %>
+                    <% if (buildingTypes[i].name == 'workshop') { %>
+                        +10% labor<br/>
                     <% } %>
                 </div>
             </div>

@@ -38,11 +38,19 @@ function getData(req, res, next, callback) {
         labor: 0,
       };
 
+      let extraLaborPercentage = 0;
+
       city.buildings.forEach(i => {
         city.production.gold += buildingTypes[i].production.gold;
         city.production.food += buildingTypes[i].production.food;
         city.production.labor += buildingTypes[i].production.labor;
+
+        if (buildingTypes[i].name == 'workshop') {
+          extraLaborPercentage += 10;
+        }
       });
+
+      city.production.labor += Math.round((city.production.labor * extraLaborPercentage) / 100);
     });
 
     // Calculate production of all tiles that are worked by any city.

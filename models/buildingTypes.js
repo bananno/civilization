@@ -17,7 +17,16 @@ const buildingTypes = [
       food: 2,
       labor: 0,
     },
-  }
+  },
+  {
+    name: 'workshop',
+    laborCost: 120,
+    production: {
+      gold: -2,
+      food: 0,
+      labor: 2,
+    },
+  },
 ];
 
 module.exports = buildingTypes;
