@@ -60,15 +60,30 @@ const getVisibleTilesFunction = (data) => {
     });
 
     // If the unit is NOT on a hill:
-    // A hill in an adjacent edge obscures the tile directly behind it.
-    // A forest in an adjacent edge obscures the non-hill/mountain tiles directly behind it.
+    // A hill in an immediate edge obscures the tile directly behind it.
+    // A forest in an immediate edge obscures the non-hill/mountain tile directly behind it.
+    // A hill in an immediate corner obscures the futher corner tile behind it.
+    // A forest in an immediate corner obscures the non-hill/mountain futher corner tile behind it.
 
     if (!tileGroup[0][0].hill) {
       immediateEdges.forEach(pair => {
         let [r1, c1] = pair;
         if (tileGroup[r1][c1].hill) {
           visible[r1 * 2][c1 * 2] = false;
-        } else if (tileGroup[r1][c1].forest && !tileGroup[r1 * 2][c1 * 2].hill) {
+        } else if (tileGroup[r1][c1].forest
+            && !tileGroup[r1 * 2][c1 * 2].mountain
+            && !tileGroup[r1 * 2][c1 * 2].hill) {
+          visible[r1 * 2][c1 * 2] = false;
+        }
+      });
+
+      immediateCorners.forEach(pair => {
+        let [r1, c1] = pair;
+        if (tileGroup[r1][c1].hill) {
+          visible[r1 * 2][c1 * 2] = false;
+        } else if (tileGroup[r1][c1].forest
+          && !tileGroup[r1 * 2][c1 * 2].hill
+          && !tileGroup[r1 * 2][c1 * 2].mountain) {
           visible[r1 * 2][c1 * 2] = false;
         }
       });
