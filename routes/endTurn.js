@@ -135,8 +135,6 @@ function endRound(res, data) {
       });
     };
 
-    let cityGrossProduction = data.cityProduction[city._id];
-
     let projectCategory = city.project.category;
     let projectIndex = city.project.index;
 
@@ -147,7 +145,7 @@ function endRound(res, data) {
 
     if (projectCategory == 'unit' || projectCategory == 'building') {
       cityData.projectProgress = city.projectProgress;
-      cityData.projectProgress[projectCategory][projectIndex] += cityGrossProduction.work;
+      cityData.projectProgress[projectCategory][projectIndex] += city.production.work;
       cityData.projectProgress[projectCategory][projectIndex] += city.storage.labor;
 
       cityData.storage.labor = 0;
@@ -167,7 +165,7 @@ function endRound(res, data) {
     }
 
     let foodEatenPerTurn = city.population * 2;
-    let foodSurplus = cityGrossProduction.food - foodEatenPerTurn;
+    let foodSurplus = city.production.food - foodEatenPerTurn;
 
     if (!allowGrowth && foodSurplus > 0) {
       foodSurplus = 0;
@@ -210,12 +208,11 @@ function endRound(res, data) {
     if (i >= data.players.length) {
       return goToNext();
     }
-    let currentGold = data.players[i].gold;
-    let goldPerTurn = data.playerProduction[data.players[i]._id].gold;
-    let playerData = {
-      gold: currentGold + goldPerTurn
-    };
-    data.players[i].update(playerData, (error, player) => {
+    let player = data.players[i];
+    let playerData = {};
+    playerData.storage = player.storage;
+    playerData.storage.gold += player.production.gold;
+    player.update(playerData, (error, player) => {
       updatePlayer(i + 1);
     });
   };
