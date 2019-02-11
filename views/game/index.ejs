@@ -4,10 +4,7 @@
     };
 
     const isCurrentTurnPlayer = (player) => {
-        if (player) {
-            player = player._id;
-        }
-        return '' + player == '' + turnPlayerId;
+        return '' + (player._id || player) == '' + turnPlayerId;
     };
 
     let currentTurnPlayerId = '' + players[game.nextPlayer]._id;

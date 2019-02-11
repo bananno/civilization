@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
-
+const helpers = require('./helpers');
 const Unit = require('../models/unit');
 const City = require('../models/city');
 
@@ -11,9 +11,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
     let numMapRows = data.game.mapSize[0];
     let numMapCols = data.game.mapSize[1];
 
-    let unit = data.units.filter(unit => {
-      return unit._id == unitId;
-    })[0];
+    let unit = helpers.findUnit(data.units, unitId);
 
     if (unit == null || unit.unitType.name != 'settler' || unit.movesRemaining == 0
         || '' + unit.player != '' + data.turnPlayerId) {
@@ -21,7 +19,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    let tile = findTile(data.tiles, unit.location[0], unit.location[1]);
+    let tile = helpers.findTile(data.tiles, unit.location);
 
     if (tile.player) {
       if ('' + tile.player != '' + data.turnPlayerId) {
@@ -79,57 +77,50 @@ router.post('/foundCity/:unitId', (req, res, next) => {
         let startCol = startColCity - 1;
         let endCol = endColCity + 1;
 
-        for (let row = startRow; row <= endRow; row++) {
-          if (row < 0) {
+        for (let r = startRow; r <= endRow; r++) {
+          if (r < 0) {
             continue;
           }
-          if (row >= numMapCols) {
+          if (r >= numMapCols) {
             break;
           }
 
-          let isCityRow = row >= startRowCity && row <= endRowCity;
+          let rowIsInCitySquare = r >= startRowCity && r <= endRowCity;
 
-          for (let col1 = startCol; col1 <= endCol; col1++) {
-            let isCityCol = col1 >= startColCity && col1 <= endColCity;
-            let col = col1;
-            if (col < 0) {
-              col += numMapCols;
-            } else if (col > numMapCols - 1) {
-              col -= numMapCols;
-            }
-
-            let tile = data.tiles.filter(tile => {
-              return tile.row == row && tile.column == col;
-            })[0];
+          for (let cTemp = startCol; cTemp <= endCol; cTemp++) {
+            let c = helpers.getColumm(numMapCols, cTemp);
+            let tile = helpers.findTile(data.tiles, r, c);
 
             if (tile) {
-              let tileObj = {
-                tile: tile,
-                update: {}
-              };
+              let tileObj = {};
 
-              tileObj.update.discovered = tile.discovered;
-              tileObj.update.discovered.push(city.player);
+              tileObj.discovered = tile.discovered;
+              tileObj.discovered.push(city.player);
 
-              if (isCityRow && isCityCol) {
-                if (tile.player == null) {
-                  tileObj.update.player = city.player;
+              if (rowIsInCitySquare) {
+                if (cTemp >= startColCity && cTemp <= endColCity) {
+                  if (tile.player == null) {
+                    tileObj.player = city.player;
+                  }
                 }
               }
 
               // The city tile itself is automatically worked by the city.
               // Remove any terrain features (forest) automatically.
               // Automatically build a road in the city.
-              if (row == city.location[0] && col == city.location[1]) {
-                tileObj.update.worked = city;
+              if (helpers.sameLocation(city.location, [r, c])) {
+                tileObj.worked = city;
                 if (tile.terrain.forest) {
-                  tileObj.update.terrain = tile.terrain;
-                  tileObj.update.terrain.forest = false;
+                  tileObj.terrain = tile.terrain;
+                  tileObj.terrain.forest = false;
                 }
-                tileObj.update.road = true;
+                tileObj.road = true;
               }
 
-              cityTiles.push(tileObj);
+              cityTiles.push({
+                tile: tile,
+                update: tileObj,
+              });
             }
           }
         }
@@ -138,23 +129,22 @@ router.post('/foundCity/:unitId', (req, res, next) => {
           if (i >= cityTiles.length) {
             return res.redirect('/');
           }
-          cityTiles[i].tile.update(cityTiles[i].update, (error, tile) => {
+
+          let tile = cityTiles[i].tile;
+          let tileData = cityTiles[i].update;
+
+          tile.update(tileData, error => {
             if (error) {
               return next(error);
             }
             claimTile(i + 1);
           });
         }
+
         claimTile(0);
       });
     });
   });
 });
-
-function findTile(tiles, row, column) {
-  return tiles.filter(tile => {
-    return tile.row == row && tile.column == column;
-  })[0];
-}
 
 module.exports = router;

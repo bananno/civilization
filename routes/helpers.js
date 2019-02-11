@@ -5,6 +5,16 @@ helpers.sameLocation = (arr1, arr2) => {
   return arr1[0] == arr2[0] && arr1[1] == arr2[1];
 };
 
+helpers.getColumn = (numCols, c) => {
+  if (c < 0) {
+    return c + numCols;
+  }
+  if (c >= numCols) {
+    return c - numCols;
+  }
+  return c;
+};
+
 helpers.findUnit = (units, id) => {
   return units.filter(unit => {
     return unit._id == id;
