@@ -3,13 +3,41 @@ const getVisibleTilesFunction = (data) => {
   let [numRows, numCols] = data.game.mapSize;
 
   return (row, column) => {
+    let tileGroup = {};
+
+    for (let r1 = -2; r1 <= 2; r1++) {
+      let r = row + r1;
+      tileGroup[r1] = [];
+
+      for (let c1 = -2; c1 <= 2; c1++) {
+        let c = column + c1;
+
+        if (c < 0) {
+          c += numCols;
+        } else if (c >= numCols) {
+          c -= numCols;
+        }
+
+        tileGroup[r1][c1] = {
+          mountain: false,
+          hill: false,
+          forest: false,
+        };
+
+        let tile = findTile(data.tiles, r, c);
+
+        if (tile) {
+          tileGroup[r1][c1].mountain = tile.terrain.mountain;
+          tileGroup[r1][c1].hill = tile.terrain.hill;
+          tileGroup[r1][c1].forest = tile.terrain.forest;
+        }
+      }
+    }
+
     let coords = [];
 
     const isFlat = (r1, c1) => {
-      let r = row + r1;
-      let c = column + c1;
-
-      return true;
+      return !(tileGroup[r1][c1].mountain || tileGroup[r1][c1].hill || tileGroup[r1][c1].forest);
     };
 
     const saveTile = (r1, c1) => {
@@ -53,5 +81,14 @@ const getVisibleTilesFunction = (data) => {
 
   return getVisibleTiles;
 };
+
+function findTile(tiles, row, column) {
+  if (row.constructor == Array) {
+    [row, column] = row;
+  }
+  return tiles.filter(tile => {
+    return tile.row == row && tile.column == column;
+  })[0];
+}
 
 module.exports = getVisibleTilesFunction;
