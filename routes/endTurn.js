@@ -138,30 +138,30 @@ function endRound(res, data) {
     let projectCategory = city.project.category;
     let projectIndex = city.project.index;
 
-    let workSoFar = 0;
-    let workNeeded = 0;
+    let laborSoFar = 0;
+    let laborNeeded = 0;
     let projectIsComplete = false;
     let allowGrowth = true;
 
     if (projectCategory == 'unit' || projectCategory == 'building') {
       cityData.projectProgress = city.projectProgress;
-      cityData.projectProgress[projectCategory][projectIndex] += city.production.work;
+      cityData.projectProgress[projectCategory][projectIndex] += city.production.labor;
       cityData.projectProgress[projectCategory][projectIndex] += city.storage.labor;
 
       cityData.storage.labor = 0;
 
-      workSoFar = cityData.projectProgress[projectCategory][projectIndex];
+      laborSoFar = cityData.projectProgress[projectCategory][projectIndex];
 
       if (projectCategory == 'unit') {
-        workNeeded = data.unitTypes[projectIndex].workCost;
+        laborNeeded = data.unitTypes[projectIndex].laborCost;
         if (data.unitTypes[projectIndex].name == 'settler') {
           allowGrowth = false;
         }
       } else if (projectCategory == 'building') {
-        workNeeded = data.buildingTypes[projectIndex].workCost;
+        laborNeeded = data.buildingTypes[projectIndex].laborCost;
       }
 
-      projectIsComplete = workSoFar >= workNeeded;
+      projectIsComplete = laborSoFar >= laborNeeded;
     }
 
     let foodEatenPerTurn = city.population * 2;
@@ -179,7 +179,7 @@ function endRound(res, data) {
     }
 
     if (projectIsComplete) {
-      cityData.storage.labor = workSoFar - workNeeded;
+      cityData.storage.labor = laborSoFar - laborNeeded;
       cityData.projectProgress[projectCategory][projectIndex] = 0;
       cityData.project = {
         category: null,
