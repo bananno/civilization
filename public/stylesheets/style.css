@@ -87,3 +87,7 @@ a {
   padding: 10px;
   border-radius: 10px;
 }
+
+img.production-icon {
+  height: 20px;
+}
