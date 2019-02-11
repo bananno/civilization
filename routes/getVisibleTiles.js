@@ -39,117 +39,119 @@ const immediateEdges = [[-1, 0], [0, 1], [1, 0], [0, -1]];
 
 const helpers = require('./helpers');
 
-const getVisibleTilesFunction = (data) => {
-  let [numRows, numCols] = data.game.mapSize;
+const getVisibleTiles = (numRows, numCols, tiles, row, column) => {
+  if (row.constructor == Array) {
+    [row, column] = row;
+  }
 
-  return (row, column) => {
-    if (row.constructor == Array) {
-      [row, column] = row;
+  let visible = [];
+  let tileGroup = [];
+
+  for (let r1 = -2; r1 <= 2; r1++) {
+    let r = row + r1;
+    visible[r1] = [];
+    tileGroup[r1] = [];
+
+    for (let c1 = -2; c1 <= 2; c1++) {
+      let c = column + c1;
+
+      if (c < 0) {
+        c += numCols;
+      } else if (c >= numCols) {
+        c -= numCols;
+      }
+
+      tileGroup[r1][c1] = {
+        mountain: false,
+        hill: false,
+        forest: false,
+      };
+
+      let tile = helpers.findTile(tiles, r, c);
+
+      if (tile) {
+        tileGroup[r1][c1].mountain = tile.terrain.mountain;
+        tileGroup[r1][c1].hill = tile.terrain.hill;
+        tileGroup[r1][c1].forest = tile.terrain.forest;
+      }
+    }
+  }
+
+  let unitIsInForest = tileGroup[0][0].forest;
+  let unitIsOnHill = tileGroup[0][0].hill;
+
+  const compareTiles = (adjR, adjC, farR, farC) => {
+    let adjTile = tileGroup[adjR][adjC];
+    let farTile = tileGroup[farR][farC];
+
+    if (unitIsInForest) {
+      return;
+    }
+    if (adjTile.mountain) {
+      return;
+    }
+    if (adjTile.hill && !farTile.mountain) {
+      return;
+    }
+    if (adjTile.forest && !unitIsOnHill && !farTile.mountain && !farTile.hill) {
+      return;
     }
 
-    let visible = [];
-    let tileGroup = [];
+    visible[farR][farC] = true;
+  };
 
-    for (let r1 = -2; r1 <= 2; r1++) {
-      let r = row + r1;
-      visible[r1] = [];
-      tileGroup[r1] = [];
+  visible[0][0] = true;
 
-      for (let c1 = -2; c1 <= 2; c1++) {
+  immediateEdges.forEach(pair => {
+    let [r, c] = pair;
+    visible[r][c] = true;
+    compareTiles(r, c, r * 2, c * 2);
+    compareTiles(r, c, r * 2 || -1, c * 2 || -1);
+    compareTiles(r, c, r * 2 || 1, c * 2 || 1);
+  });
+
+  immediateCorners.forEach(pair => {
+    let [r, c] = pair;
+    visible[r][c] = true;
+    compareTiles(r, c, r * 2, c * 2);
+    compareTiles(r, c, r * 2, c);
+    compareTiles(r, c, r, c * 2);
+  });
+
+  // Return all pairs that are still true.
+
+  let coords = [];
+
+  for (let r1 = -2; r1 <= 2; r1++) {
+    let r = row + r1;
+    if (r < 0) {
+      continue;
+    }
+    if (r >= numRows) {
+      break;
+    }
+    for (let c1 = -2; c1 <= 2; c1++) {
+      if (visible[r1][c1]) {
         let c = column + c1;
-
         if (c < 0) {
           c += numCols;
         } else if (c >= numCols) {
           c -= numCols;
         }
-
-        tileGroup[r1][c1] = {
-          mountain: false,
-          hill: false,
-          forest: false,
-        };
-
-        let tile = helpers.findTile(data.tiles, r, c);
-
-        if (tile) {
-          tileGroup[r1][c1].mountain = tile.terrain.mountain;
-          tileGroup[r1][c1].hill = tile.terrain.hill;
-          tileGroup[r1][c1].forest = tile.terrain.forest;
-        }
+        coords.push([r, c]);
       }
     }
+  }
 
-    let unitIsInForest = tileGroup[0][0].forest;
-    let unitIsOnHill = tileGroup[0][0].hill;
+  return coords;
+};
 
-    const compareTiles = (adjR, adjC, farR, farC) => {
-      let adjTile = tileGroup[adjR][adjC];
-      let farTile = tileGroup[farR][farC];
+const getVisibleTilesFunction = (data) => {
+  let [numRows, numCols] = data.game.mapSize;
 
-      if (unitIsInForest) {
-        return;
-      }
-      if (adjTile.mountain) {
-        return;
-      }
-      if (adjTile.hill && !farTile.mountain) {
-        return;
-      }
-      if (adjTile.forest && !unitIsOnHill && !farTile.mountain && !farTile.hill) {
-        return;
-      }
-
-      visible[farR][farC] = true;
-    };
-
-    visible[0][0] = true;
-
-    immediateEdges.forEach(pair => {
-      let [r, c] = pair;
-      visible[r][c] = true;
-      compareTiles(r, c, r * 2, c * 2);
-      compareTiles(r, c, r * 2 || -1, c * 2 || -1);
-      compareTiles(r, c, r * 2 || 1, c * 2 || 1);
-    });
-
-    immediateCorners.forEach(pair => {
-      let [r, c] = pair;
-      visible[r][c] = true;
-      compareTiles(r, c, r * 2, c * 2);
-      compareTiles(r, c, r * 2, c);
-      compareTiles(r, c, r, c * 2);
-    });
-
-    // Return all pairs that are still true.
-
-    let coords = [];
-
-    for (let r1 = -2; r1 <= 2; r1++) {
-      let r = row + r1;
-      if (r < 0) {
-        continue;
-      }
-      if (r >= numRows) {
-        break;
-      }
-      for (let c1 = -2; c1 <= 2; c1++) {
-        if (visible[r1][c1]) {
-          let c = column + c1;
-          if (c < 0) {
-            c += numCols;
-          } else if (c >= numCols) {
-            c -= numCols;
-          }
-          coords.push([r, c]);
-        }
-      }
-    }
-
-    return coords;
+  return (row, col) => {
+    return getVisibleTiles(numRows, numCols, data.tiles, row, col);
   };
-
-  return getVisibleTiles;
 };
 
 module.exports = getVisibleTilesFunction;
