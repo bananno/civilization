@@ -43,6 +43,10 @@ const getVisibleTilesFunction = (data) => {
   let [numRows, numCols] = data.game.mapSize;
 
   return (row, column) => {
+    if (row.constructor == Array) {
+      [row, column] = row;
+    }
+
     let visible = [];
     let tileGroup = [];
 

@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-
 const Game = require('../models/game');
 const Player = require('../models/player');
 const Tile = require('../models/tile');
 const Unit = require('../models/unit');
 const unitTypes = require('../models/unitTypes');
 const createUnit = require('./createUnit');
+const getVisibleTilesFunction = require('./getVisibleTiles');
 
 router.post('/newGame', (req, res, next) => {
   var gameData = {
@@ -62,6 +62,11 @@ router.post('/newGame', (req, res, next) => {
         }
       }
 
+      const getVisibleTiles = getVisibleTilesFunction({
+        mapSize: game.mapSize,
+        tiles: tileList,
+      });
+
       const createPlayer = (i) => {
         var playerData = {
           game: game,
@@ -89,8 +94,20 @@ router.post('/newGame', (req, res, next) => {
 
           tempUnitLocationCount += 2;
 
-          tileList = setTilesDiscovered(game, tileList, tempUnit1, player);
-          tileList = setTilesDiscovered(game, tileList, tempUnit2, player);
+          let revealedTiles = [];
+
+          revealedTiles = revealedTiles.concat(getVisibleTiles(tempUnit1.location));
+          revealedTiles = revealedTiles.concat(getVisibleTiles(tempUnit2.location));
+
+          revealedTiles.forEach(pair => {
+            let [r, c] = pair;
+            tileList = tileList.map(tile => {
+              if (tile.row == r && tile.column == c) {
+                tile.discovered.push(player);
+              }
+              return tile;
+            });
+          });
 
           createUnit(tempUnit1, () => {
             createUnit(tempUnit2, () => {
@@ -121,39 +138,5 @@ router.post('/newGame', (req, res, next) => {
     }
   });
 });
-
-function setTilesDiscovered(game, tileList, unit, player) {
-  let numMapCols = game.mapSize[1];
-  let startRow = unit.location[0] - 2;
-  let endRow = unit.location[0] + 2;
-  let startCol = unit.location[1] - 2;
-  let endCol = unit.location[1] + 2;
-
-  let columns = [];
-
-  for (let c = startCol; c <= endCol; c++) {
-    if (c < 0) {
-      columns.push(c + numMapCols);
-    } else if (c >= numMapCols) {
-      columns.push(c - numMapCols);
-    } else {
-      columns.push(c);
-    }
-  }
-
-  return tileList.map(tile => {
-    if (tile.row < startRow || tile.row > endRow) {
-      return tile;
-    }
-
-    if (columns.indexOf(tile.column) < 0) {
-      return tile;
-    }
-
-    tile.discovered.push(player);
-
-    return tile;
-  });
-}
 
 module.exports = router;
