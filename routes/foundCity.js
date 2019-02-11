@@ -43,6 +43,10 @@ router.post('/foundCity/:unitId', (req, res, next) => {
         unit: [],
         building: [],
       },
+      storage: {
+        food: 0,
+        labor: 0,
+      },
     };
 
     let playerCities = data.cities.filter(city => {

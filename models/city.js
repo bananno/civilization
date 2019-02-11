@@ -33,13 +33,9 @@ var CitySchema = new mongoose.Schema({
     unit: [],
     building: [],
   },
-  foodBasket: {
-    type: Number,
-    default: 0,
-  },
-  workRollover: {
-    type: Number,
-    default: 0,
+  storage: {
+    food: Number,
+    labor: Number,
   },
 });
 

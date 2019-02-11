@@ -9,9 +9,8 @@ var PlayerSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-  gold: {
-    type: Number,
-    default: 0,
+  storage: {
+    gold: Number,
   },
 });
 

@@ -21,7 +21,7 @@ function getData(req, res, next, callback) {
       data.playerProduction[player._id] = {
         gold: 0,
         food: 0,
-        work: 0,
+        labor: 0,
       };
     });
 
@@ -31,13 +31,13 @@ function getData(req, res, next, callback) {
       data.cityProduction[city._id] = {
         gold: 0,
         food: 0,
-        work: 0,
+        labor: 0,
       };
 
       city.buildings.forEach(i => {
         data.cityProduction[city._id].gold += buildingTypes[i].gold;
         data.cityProduction[city._id].food += buildingTypes[i].food;
-        data.cityProduction[city._id].work += buildingTypes[i].work;
+        data.cityProduction[city._id].labor += buildingTypes[i].labor;
       });
     });
 
@@ -46,7 +46,7 @@ function getData(req, res, next, callback) {
       if (tile.worked) {
         data.cityProduction[tile.worked].gold += tile.production.gold;
         data.cityProduction[tile.worked].food += tile.production.food;
-        data.cityProduction[tile.worked].work += tile.production.work;
+        data.cityProduction[tile.worked].labor += tile.production.labor;
       }
     });
 
@@ -55,11 +55,11 @@ function getData(req, res, next, callback) {
     data.cities.forEach(city => {
       data.playerProduction[city.player].gold += data.cityProduction[city._id].gold;
       data.playerProduction[city.player].food += data.cityProduction[city._id].food;
-      data.playerProduction[city.player].work += data.cityProduction[city._id].work;
+      data.playerProduction[city.player].labor += data.cityProduction[city._id].labor;
 
       if (city.project.category == 'gold') {
-        let cityWork = data.cityProduction[city._id].work;
-        data.playerProduction[city.player].gold += Math.floor(cityWork / 2);
+        let cityLabor = data.cityProduction[city._id].labor;
+        data.playerProduction[city.player].gold += Math.floor(cityLabor / 2);
       }
     });
 

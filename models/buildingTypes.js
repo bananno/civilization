@@ -2,20 +2,20 @@
 const buildingTypes = [
   {
     name: 'palace',
-    cost: 0,
+    laborCost: 0,
     production: {
       gold: 5,
       food: 2,
-      work: 5,
+      labor: 5,
     },
   },
   {
     name: 'granary',
-    cost: 60,
+    laborCost: 60,
     production: {
       gold: -1,
       food: 2,
-      work: 0,
+      labor: 0,
     },
   }
 ];

@@ -1,5 +1,5 @@
 <%
-    let thisCityOutput = cityOutput[city._id];
+    let thisCityProduction = cityProduction[city._id];
 
     const growthRate = [0, 15, 22, 30, 40, 51, 63, 76, 90, 105, 121, 138, 155, 174, 194, 214, 235,
         258, 280, 304, 329, 354, 380, 407, 435, 464, 493, 523, 554, 585, 617, 650, 684, 719, 754,
@@ -7,7 +7,7 @@
 
     let foodNeededForGrowth = growthRate[city.population];
 
-    let foodSurplus = thisCityOutput.food - (city.population * 2);
+    let foodSurplus = thisCityProduction.food - (city.population * 2);
 
     let tilesWorked = tiles.filter(tile => {
         return '' + tile.worked == '' + city._id;
@@ -29,9 +29,10 @@
         <% } %>
     </div>
     <div class="section">
-        gold: <%= thisCityOutput.gold %><br/>
-        food: <%= thisCityOutput.food %> (<%= foodSurplus %> surplus)<br/>
-        production: <%= thisCityOutput.production %><br/>
+        <h3>Production:</h3>
+        gold: <%= thisCityProduction.gold %><br/>
+        food: <%= thisCityProduction.food %> (<%= foodSurplus %> surplus)<br/>
+        work: <%= thisCityProduction.work %><br/>
     </div>
     <div class="section">
         Citizens:

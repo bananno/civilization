@@ -82,7 +82,8 @@ function endRound(res, data) {
       if (unit.orders == 'build farm' && tileData.progress >= 10) {
         projectDone = true;
         tileData.improvement = 'farm';
-        tileData.food = tile.food + 1;
+        tileData.production = tile.production;
+        tileData.production.food += 1;
         unitData.orders = null;
       } else if (unit.orders == 'chop forest' && tileData.progress >= 5) {
         projectDone = true;
@@ -91,7 +92,8 @@ function endRound(res, data) {
       } else if (unit.orders == 'remove farm' && unit.movesRemaining > 0) {
         projectDone = true;
         tileData.improvement = null;
-        tileData.food = tile.food - 1;
+        tileData.production = tile.production;
+        tileData.production.food -= 1;
       } else if (unit.orders == 'build road' && tileData.roadProgress >= 5) {
         tileData.road = true;
         unitData.orders = null;
@@ -122,6 +124,7 @@ function endRound(res, data) {
 
     let city = data.cities[i];
     let cityData = {};
+    cityData.storage = city.storage;
 
     const completeUpdate = () => {
       city.update(cityData, error => {
@@ -145,19 +148,19 @@ function endRound(res, data) {
     if (projectCategory == 'unit' || projectCategory == 'building') {
       cityData.projectProgress = city.projectProgress;
       cityData.projectProgress[projectCategory][projectIndex] += cityGrossProduction.work;
-      cityData.projectProgress[projectCategory][projectIndex] += city.workRollover;
+      cityData.projectProgress[projectCategory][projectIndex] += city.storage.labor;
 
-      cityData.workRollover = 0;
+      cityData.storage.labor = 0;
 
       workSoFar = cityData.projectProgress[projectCategory][projectIndex];
 
       if (projectCategory == 'unit') {
-        workNeeded = data.unitTypes[projectIndex].cost;
+        workNeeded = data.unitTypes[projectIndex].workCost;
         if (data.unitTypes[projectIndex].name == 'settler') {
           allowGrowth = false;
         }
       } else if (projectCategory == 'building') {
-        workNeeded = data.buildingTypes[projectIndex].cost;
+        workNeeded = data.buildingTypes[projectIndex].workCost;
       }
 
       projectIsComplete = workSoFar >= workNeeded;
@@ -170,15 +173,15 @@ function endRound(res, data) {
       foodSurplus = 0;
     }
 
-    cityData.foodBasket = city.foodBasket + foodSurplus;
+    cityData.storage.food += foodSurplus;
 
-    if (cityData.foodBasket >= cityGrowthRate[city.population] && foodSurplus >= 2) {
+    if (cityData.storage.food >= cityGrowthRate[city.population] && foodSurplus >= 2) {
       cityData.population = city.population + 1;
-      cityData.foodBasket -= cityGrowthRate[city.population];
+      cityData.storage.food -= cityGrowthRate[city.population];
     }
 
     if (projectIsComplete) {
-      cityData.workRollover = workSoFar - workNeeded;
+      cityData.storage.labor = workSoFar - workNeeded;
       cityData.projectProgress[projectCategory][projectIndex] = 0;
       cityData.project = {
         category: null,

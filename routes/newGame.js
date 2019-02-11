@@ -41,7 +41,7 @@ router.post('/newGame', (req, res, next) => {
             production: {
               food: 1,
               gold: 1,
-              work: 1,
+              labor: 1,
             },
             terrain: {
               ground: 'grassland',
@@ -58,7 +58,7 @@ router.post('/newGame', (req, res, next) => {
             tileData.production ={
               food: 0,
               gold: 0,
-              work: 0,
+              labor: 0,
             };
           } else {
             let hill = helpers.booleanByPercentage(25);
