@@ -1,4 +1,15 @@
 <%
+    const findTile = (row, column) => {
+        return helpers.findTile(tiles, row, column);
+    };
+
+    const isCurrentTurnPlayer = (player) => {
+        if (player) {
+            player = player._id;
+        }
+        return '' + player == '' + turnPlayerId;
+    };
+
     let currentTurnPlayerId = '' + players[game.nextPlayer]._id;
 
     let canEndTurnNow = true;
@@ -43,22 +54,6 @@
     units.forEach(unit => {
         unitsById[unit._id] = unit;
     });
-
-    const findTile = (row, column) => {
-        if (row.constructor == Array) {
-            [row, column] = row;
-        }
-        return tiles.filter(tile => {
-            return tile.row == row && tile.column == column;
-        })[0];
-    };
-
-    const isCurrentTurnPlayer = (player) => {
-        if (player) {
-            player = player._id;
-        }
-        return '' + player == '' + turnPlayerId;
-    };
 %>
 
 <% include ./variables %>

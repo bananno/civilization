@@ -31,11 +31,11 @@ router.post('/newGame', (req, res, next) => {
 
       let tileList = [];
 
-      for (let i = 0; i < game.mapSize[0]; i++) {
-        for (let j = 0; j < game.mapSize[1]; j++) {
+      for (let r = 0; r < game.mapSize[0]; r++) {
+        for (let c = 0; c < game.mapSize[1]; c++) {
           let tileData = {
             game: game,
-            location: [i, j],
+            location: [r, c],
             discovered: [],
             production: {
               food: 1,

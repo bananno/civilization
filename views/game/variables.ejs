@@ -1,8 +1,8 @@
 <%
-  for (let i = 0; i < game.mapSize[0]; i++) {
-    map[i] = [];
-    for (let j = 0; j < game.mapSize[1]; j++) {
-      map[i][j] = {
+  for (let r = 0; r < numRows; r++) {
+    map[r] = [];
+    for (let c = 0; c < numCols; c++) {
+      map[r][c] = {
         myCity: false,
         rivalCity: false,
         cityId: null,
@@ -50,27 +50,29 @@
   };
 
   tiles.forEach(tile => {
-    map[tile.row] = map[tile.row] || [];
-    map[tile.row][tile.column].tile = tile;
-    map[tile.row][tile.column].food = tile.production.food;
-    map[tile.row][tile.column].gold = tile.production.gold;
-    map[tile.row][tile.column].labor = tile.production.labor;
+    let [r, c] = tile.location;
+
+    map[r] = map[r] || [];
+    map[r][c].tile = tile;
+    map[r][c].food = tile.production.food;
+    map[r][c].gold = tile.production.gold;
+    map[r][c].labor = tile.production.labor;
 
     if (tile.player) {
-      map[tile.row][tile.column].player = playerNums[tile.player] + 1;
+      map[r][c].player = playerNums[tile.player] + 1;
       if (isCurrentTurnPlayer(tile.player)) {
-        map[tile.row][tile.column].owned = true;
+        map[r][c].owned = true;
 
-        for (let i = tile.row - 1; i <= tile.row + 1; i++) {
-          for (let j1 = tile.column - 1; j1 <= tile.column + 1; j1++) {
-            let j = j1;
-            if (j < 0) {
-              j += game.mapSize[1];
-            } else if (j >= game.mapSize[1]) {
-              j -= game.mapSize[1];
+        for (let r1 = r - 1; r1 <= r + 1; r1++) {
+          for (let cTemp = c - 1; cTemp <= c + 1; cTemp++) {
+            let c1 = cTemp;
+            if (c1 < 0) {
+              c1 += numCols;
+            } else if (c1 >= numCols) {
+              c1 -= numCols;
             }
-            if (map[i] && map[i][j]) {
-              map[i][j].lit = true;
+            if (map[r1] && map[r1][c1]) {
+              map[r1][c1].lit = true;
             }
           }
         }
@@ -78,14 +80,14 @@
     }
 
     if (tile.discovered.indexOf(turnPlayerId) >= 0) {
-      map[tile.row][tile.column].discovered = true;
+      map[r][c].discovered = true;
     }
 
     if (tile.road) {
-      addRoad(tile.row - 1, tile.column, 'bottom');
-      addRoad(tile.row, tile.column - 1, 'right');
-      addRoad(tile.row + 1, tile.column, 'top');
-      addRoad(tile.row, tile.column + 1, 'left');
+      addRoad(r - 1, c, 'bottom');
+      addRoad(r, c - 1, 'right');
+      addRoad(r + 1, c, 'top');
+      addRoad(r, c + 1, 'left');
     }
   });
 
