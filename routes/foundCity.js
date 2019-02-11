@@ -81,14 +81,14 @@ router.post('/foundCity/:unitId', (req, res, next) => {
           if (r < 0) {
             continue;
           }
-          if (r >= numMapCols) {
+          if (r >= numMapRows) {
             break;
           }
 
           let rowIsInCitySquare = r >= startRowCity && r <= endRowCity;
 
           for (let cTemp = startCol; cTemp <= endCol; cTemp++) {
-            let c = helpers.getColumm(numMapCols, cTemp);
+            let c = helpers.getColumn(numMapCols, cTemp);
             let tile = helpers.findTile(data.tiles, r, c);
 
             if (tile) {
