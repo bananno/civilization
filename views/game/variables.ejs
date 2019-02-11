@@ -53,8 +53,9 @@
   tiles.forEach(tile => {
     map[tile.row] = map[tile.row] || [];
     map[tile.row][tile.column].tile = tile;
-    map[tile.row][tile.column].food = tile.food;
-    map[tile.row][tile.column].gold = tile.gold;
+    map[tile.row][tile.column].food = tile.production.food;
+    map[tile.row][tile.column].gold = tile.production.gold;
+    map[tile.row][tile.column].labor = tile.production.labor;
 
     if (tile.player) {
       map[tile.row][tile.column].player = playerNums[tile.player] + 1;

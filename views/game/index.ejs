@@ -6,7 +6,7 @@
     let [numRows, numCols] = game.mapSize;
 
     let currentTurnUnits = units.filter(unit => {
-        return unit.player == currentTurnPlayerId;
+        return unit.player == '' + turnPlayerId;
     });
 
     let currentTurnCities = cities.filter(city => {
@@ -20,7 +20,7 @@
     });
 
     let rivalUnits = units.filter(unit => {
-        return unit.player != currentTurnPlayerId;
+        return unit.player != '' + turnPlayerId;
     });
 
     let activeCity = null;
