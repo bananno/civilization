@@ -1,12 +1,17 @@
 
+const immediateCorners = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+const immediateEdges = [[-1, 0], [0, 1], [1, 0], [0, -1]];
+
 const getVisibleTilesFunction = (data) => {
   let [numRows, numCols] = data.game.mapSize;
 
   return (row, column) => {
-    let tileGroup = {};
+    let visible = [];
+    let tileGroup = [];
 
     for (let r1 = -2; r1 <= 2; r1++) {
       let r = row + r1;
+      visible[r1] = [];
       tileGroup[r1] = [];
 
       for (let c1 = -2; c1 <= 2; c1++) {
@@ -18,6 +23,7 @@ const getVisibleTilesFunction = (data) => {
           c -= numCols;
         }
 
+        visible[r1][c1] = true;
         tileGroup[r1][c1] = {
           mountain: false,
           hill: false,
@@ -34,66 +40,49 @@ const getVisibleTilesFunction = (data) => {
       }
     }
 
+    // A mountain in an immediate corner obscures 3 tiles behind it.
+    // A mountain in an immediate edge obscures 1 tile directly behind it.
+
+    immediateCorners.forEach(pair => {
+      let [r1, c1] = pair;
+      if (tileGroup[r1][c1].mountain) {
+        visible[r1 * 2][c1 * 2] = false;
+        visible[r1 * 2][c1] = false;
+        visible[r1][c1 * 2] = false;
+      }
+    });
+
+    immediateEdges.forEach(pair => {
+      let [r1, c1] = pair;
+      if (tileGroup[r1][c1].mountain) {
+        visible[r1 * 2][c1 * 2] = false;
+      }
+    });
+
+    // Return all pairs that are still true.
+
     let coords = [];
 
-    const isMountain = (r1, c1) => {
-      return tileGroup[r1][c1].mountain;
-    };
-
-    const isHill = (r1, c1) => {
-      return tileGroup[r1][c1].hill;
-    };
-
-    const isClear = (r1, c1) => {
-      return !tileGroup[r1][c1].forest;
-    };
-
-    const isFlat = (r1, c1) => {
-      return !(isMountain(r1, c1) || isHill(r1, c1));
-    };
-
-    const isOpen = (r1, c1) => {
-      return !(tileGroup[r1][c1].mountain || tileGroup[r1][c1].hill || tileGroup[r1][c1].forest);
-    };
-
-    const saveTile = (r1, c1) => {
+    for (let r1 = -2; r1 <= 2; r1++) {
       let r = row + r1;
-      let c = column + c1;
-
-      if (r < 0 || r >= numRows) {
-        return;
+      if (r < 0) {
+        continue;
       }
-
-      if (c < 0) {
-        c += numCols;
-      } else if (c >= numCols) {
-        c -= numCols;
+      if (r >= numRows) {
+        break;
       }
-
-      coords.push([r, c]);
-    };
-
-    for (let r1 = -1; r1 <= 1; r1++) {
-      for (let c1 = -1; c1 <= 1; c1++) {
-        saveTile(r1, c1);
+      for (let c1 = -2; c1 <= 2; c1++) {
+        if (visible[r1][c1]) {
+          let c = column + c1;
+          if (c < 0) {
+            c += numCols;
+          } else if (c >= numCols) {
+            c -= numCols;
+          }
+          coords.push([r, c]);
+        }
       }
     }
-
-    const lookBehind = (row1, col1, row2, col2) => {
-      if (isMountain(row1, col1)) {
-        return;
-      }
-
-      // Unit is on a hill, OR adjacent tile is totally clear, OR 2 tiles away is a hill.
-      if (isHill(0, 0) || isOpen(row1, col1) || isHill(row2, col2)) {
-        saveTile(row2, col2);
-      }
-    };
-
-    lookBehind(0, 1, 0, 2);
-    lookBehind(0, -1, 0, -2);
-    lookBehind(-1, 0, -2, 0);
-    lookBehind(1, 0, 2, 0);
 
     return coords;
   };
