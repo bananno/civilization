@@ -52,7 +52,7 @@
     <div class="section">
         <%
             let currentProject = '_______';
-            let productionTotal = 0;
+            let laborTotal = 0;
             let progress = 0;
             let turnsToFinish = 0;
             let project = city.project.category;
@@ -61,14 +61,14 @@
             if (project == 'unit' || project == 'building') {
                 if (project == 'unit') {
                     currentProject = unitTypes[city.project.index].name;
-                    productionTotal = unitTypes[city.project.index].cost;
+                    laborTotal = unitTypes[city.project.index].cost;
                 } else if (project == 'building') {
                     currentProject = buildingTypes[city.project.index].name;
-                    productionTotal = buildingTypes[city.project.index].cost;
+                    laborTotal = buildingTypes[city.project.index].cost;
                 }
                 progress = city.projectProgress[city.project.category][city.project.index];
-                progress += city.productionRollover;
-                turnsToFinish = (productionTotal - progress) / city.production.labor;
+                progress += city.storage.labor;
+                turnsToFinish = (laborTotal - progress) / city.production.labor;
                 turnsToFinish = Math.ceil(turnsToFinish);
             } else if (project == 'gold') {
                 currentProject = 'gold';
@@ -81,8 +81,8 @@
             (<%= extraGoldFromLabor %> per turn)
         <% } else { %>
             <%= currentProject %>
-            <% if (productionTotal) { %>
-                (<%= progress %> / <%= productionTotal %>)
+            <% if (laborTotal) { %>
+                (<%= progress %> / <%= laborTotal %>)
                 <br/>
                 <%= turnsToFinish %> turns to finish
             <% } %>
@@ -125,16 +125,16 @@
                 <img src="/images/buildingIcons/<%= buildingTypes[i].name %>.png">
                 <div>
                     <h3><%= buildingTypes[i].name %></h3>
-                    <% if (buildingTypes[i].gold < 0) { %>
-                        <%= buildingTypes[i].gold %> maintenance<br/>
-                    <% } else if (buildingTypes[i].gold > 0) { %>
-                        +<%= buildingTypes[i].gold %> gold<br/>
+                    <% if (buildingTypes[i].production.gold < 0) { %>
+                        <%= buildingTypes[i].production.gold %> maintenance<br/>
+                    <% } else if (buildingTypes[i].production.gold > 0) { %>
+                        +<%= buildingTypes[i].production.gold %> gold<br/>
                     <% } %>
-                    <% if (buildingTypes[i].food > 0) { %>
-                        +<%= buildingTypes[i].food %> food<br/>
+                    <% if (buildingTypes[i].production.food > 0) { %>
+                        +<%= buildingTypes[i].production.food %> food<br/>
                     <% } %>
-                    <% if (buildingTypes[i].production > 0) { %>
-                        +<%= buildingTypes[i].production %> production<br/>
+                    <% if (buildingTypes[i].production.labor > 0) { %>
+                        +<%= buildingTypes[i].production.labor %> production<br/>
                     <% } %>
                 </div>
             </div>
