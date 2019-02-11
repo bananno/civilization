@@ -120,9 +120,11 @@
                 tiles[<%= r %>].push({
                     food: <%= map[r][c].food %>,
                     gold: <%= map[r][c].gold %>,
+                    labor: <%= map[r][c].labor %>,
                     unitsCities: [],
                     features: ['<%= features.join(', ') %>'],
                     city: false,
+                    discovered: <%= map[r][c].discovered %>,
                 });
             <% } %>
         <% } %>

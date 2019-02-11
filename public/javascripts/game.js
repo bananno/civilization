@@ -143,6 +143,11 @@ function clickMapCell(row, column) {
 
 function hoverMapCell(row, column) {
   let tile = tiles[parseInt(row)][parseInt(column)];
+  if (!tile.discovered) {
+    $('.info.tile').hide();
+    return;
+  }
+  $('.info.tile').show();
   let values = ['[' + row + ', ' + column + ']'];
   values.push(tile.features);
   tile.food ? values.push('food: ' + tile.food) : null;
