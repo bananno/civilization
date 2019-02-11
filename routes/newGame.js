@@ -35,8 +35,7 @@ router.post('/newGame', (req, res, next) => {
         for (let j = 0; j < game.mapSize[1]; j++) {
           let tileData = {
             game: game,
-            row: i,
-            column: j,
+            location: [i, j],
             discovered: [],
             production: {
               food: 1,
@@ -109,9 +108,8 @@ router.post('/newGame', (req, res, next) => {
           revealedTiles = revealedTiles.concat(getVisibleTiles(tempUnit2.location));
 
           revealedTiles.forEach(pair => {
-            let [r, c] = pair;
             tileList = tileList.map(tile => {
-              if (tile.row == r && tile.column == c) {
+              if (helpers.sameLocation(pair, tile.location)) {
                 tile.discovered.push(player);
               }
               return tile;

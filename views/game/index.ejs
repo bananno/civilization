@@ -6,11 +6,11 @@
     let [numRows, numCols] = game.mapSize;
 
     let currentTurnUnits = units.filter(unit => {
-        return unit.player == '' + turnPlayerId;
+        return isCurrentTurnPlayer(unit.player);
     });
 
     let currentTurnCities = cities.filter(city => {
-        if ('' + city.player == '' + turnPlayerId) {
+        if (isCurrentTurnPlayer(city.player)) {
             if (city.project.category == null) {
                 canEndTurnNow = false;
             }
@@ -20,7 +20,7 @@
     });
 
     let rivalUnits = units.filter(unit => {
-        return unit.player != '' + turnPlayerId;
+        return !(isCurrentTurnPlayer(unit.player));
     });
 
     let activeCity = null;
@@ -51,7 +51,14 @@
         return tiles.filter(tile => {
             return tile.row == row && tile.column == column;
         })[0];
-    }
+    };
+
+    const isCurrentTurnPlayer = (player) => {
+        if (player) {
+            player = player._id;
+        }
+        return '' + player == '' + turnPlayerId;
+    };
 %>
 
 <% include ./variables %>

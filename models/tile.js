@@ -12,11 +12,8 @@ var TileSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
-  row: {
-    type: Number,
-  },
-  column: {
-    type: Number,
+  location: {
+    type: Array,
   },
   discovered: [{
     type: mongoose.Schema.Types.ObjectId,
