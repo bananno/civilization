@@ -59,6 +59,21 @@ const getVisibleTilesFunction = (data) => {
       }
     });
 
+    // If the unit is NOT on a hill:
+    // A hill in an adjacent edge obscures the tile directly behind it.
+    // A forest in an adjacent edge obscures the non-hill/mountain tiles directly behind it.
+
+    if (!tileGroup[0][0].hill) {
+      immediateEdges.forEach(pair => {
+        let [r1, c1] = pair;
+        if (tileGroup[r1][c1].hill) {
+          visible[r1 * 2][c1 * 2] = false;
+        } else if (tileGroup[r1][c1].forest && !tileGroup[r1 * 2][c1 * 2].hill) {
+          visible[r1 * 2][c1 * 2] = false;
+        }
+      });
+    }
+
     // Return all pairs that are still true.
 
     let coords = [];
