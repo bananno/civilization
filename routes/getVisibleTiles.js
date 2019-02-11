@@ -37,6 +37,8 @@ Terrain:
 const immediateCorners = [[-1, -1], [-1, 1], [1, 1], [1, -1]];
 const immediateEdges = [[-1, 0], [0, 1], [1, 0], [0, -1]];
 
+const helpers = require('./helpers');
+
 const getVisibleTilesFunction = (data) => {
   let [numRows, numCols] = data.game.mapSize;
 
@@ -64,7 +66,7 @@ const getVisibleTilesFunction = (data) => {
           forest: false,
         };
 
-        let tile = findTile(data.tiles, r, c);
+        let tile = helpers.findTile(data.tiles, r, c);
 
         if (tile) {
           tileGroup[r1][c1].mountain = tile.terrain.mountain;
@@ -145,14 +147,5 @@ const getVisibleTilesFunction = (data) => {
 
   return getVisibleTiles;
 };
-
-function findTile(tiles, row, column) {
-  if (row.constructor == Array) {
-    [row, column] = row;
-  }
-  return tiles.filter(tile => {
-    return tile.row == row && tile.column == column;
-  })[0];
-}
 
 module.exports = getVisibleTilesFunction;
