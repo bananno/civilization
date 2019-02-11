@@ -1,17 +1,21 @@
 <%
-    let thisCityProduction = cityProduction[city._id];
-
     const growthRate = [0, 15, 22, 30, 40, 51, 63, 76, 90, 105, 121, 138, 155, 174, 194, 214, 235,
         258, 280, 304, 329, 354, 380, 407, 435, 464, 493, 523, 554, 585, 617, 650, 684, 719, 754,
         790, 826, 863, 901, 940, 979];
 
     let foodNeededForGrowth = growthRate[city.population];
 
-    let foodSurplus = thisCityProduction.food - (city.population * 2);
+    let foodSurplusPerTurn = city.production.food - (city.population * 2);
 
     let tilesWorked = tiles.filter(tile => {
         return '' + tile.worked == '' + city._id;
     });
+
+    let growthTurns = 0;
+
+    if (foodSurplusPerTurn > 0) {
+        growthTurns = Math.ceil((foodNeededForGrowth - city.storage.food) / foodSurplusPerTurn);
+    }
 %>
 
 <div class="city-screen" city-id="<%= city._id %>">
@@ -21,18 +25,18 @@
     </div>
     <div class="section">
         population: <%= city.population %><br/>
-        (<%= city.food %> / <%= foodNeededForGrowth %>)<br/>
-        <% if (foodSurplus == 0) { %>
-            no growth
+        (<%= city.storage.food %> / <%= foodNeededForGrowth %>)<br/>
+        <% if (growthTurns) { %>
+            <%= growthTurns %> turns
         <% } else { %>
-            <%= Math.ceil((foodNeededForGrowth - city.food) / foodSurplus) %> turns
+            no growth
         <% } %>
     </div>
     <div class="section">
         <h3>Production:</h3>
-        gold: <%= thisCityProduction.gold %><br/>
-        food: <%= thisCityProduction.food %> (<%= foodSurplus %> surplus)<br/>
-        work: <%= thisCityProduction.work %><br/>
+        gold: <%= city.production.gold %><br/>
+        food: <%= city.production.food %> (<%= foodSurplusPerTurn %> surplus)<br/>
+        labor: <%= city.production.labor %><br/>
     </div>
     <div class="section">
         Citizens:
@@ -52,6 +56,7 @@
             let progress = 0;
             let turnsToFinish = 0;
             let project = city.project.category;
+            let extraGoldFromLabor = 0;
 
             if (project == 'unit' || project == 'building') {
                 if (project == 'unit') {
@@ -63,16 +68,17 @@
                 }
                 progress = city.projectProgress[city.project.category][city.project.index];
                 progress += city.productionRollover;
-                turnsToFinish = (productionTotal - progress) / thisCityOutput.production;
+                turnsToFinish = (productionTotal - progress) / city.production.labor;
                 turnsToFinish = Math.ceil(turnsToFinish);
             } else if (project == 'gold') {
                 currentProject = 'gold';
+                extraGoldFromLabor = Math.floor(city.production.labor / 2);
             }
         %>
         current construction:
         <% if (project == 'gold') { %>
             gold <br/>
-            (<%= Math.floor(thisCityOutput.production/2) %> per turn)
+            (<%= extraGoldFromLabor %> per turn)
         <% } else { %>
             <%= currentProject %>
             <% if (productionTotal) { %>

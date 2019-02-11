@@ -42,7 +42,7 @@ var TileSchema = new mongoose.Schema({
   production: {
     food: Number,
     gold: Number,
-    work: Number,
+    labor: Number,
   },
   terrain: {
     ground: {

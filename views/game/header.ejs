@@ -40,7 +40,7 @@
 <%
     let playerName = players[game.nextPlayer].name;
     let currentGold = players[game.nextPlayer].storage.gold;
-    let income = playerProduction[players[game.nextPlayer]._id].gold;
+    let income = players[game.nextPlayer].production.gold;
 %>
 
 <div>
