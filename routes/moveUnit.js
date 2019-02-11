@@ -99,7 +99,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       if (i >= tileList.length) {
         return res.redirect('/');
       }
-      let tile = helpers.findTile(tileList[i]);
+      let tile = helpers.findTile(data.tiles, tileList[i]);
       let tileData = {
         discovered: tile.discovered
       };
