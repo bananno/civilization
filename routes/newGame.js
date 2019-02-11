@@ -63,7 +63,7 @@ router.post('/newGame', (req, res, next) => {
       }
 
       const getVisibleTiles = getVisibleTilesFunction({
-        mapSize: game.mapSize,
+        game: { mapSize: game.mapSize },
         tiles: tileList,
       });
 
