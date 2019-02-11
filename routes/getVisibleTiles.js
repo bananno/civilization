@@ -36,7 +36,23 @@ const getVisibleTilesFunction = (data) => {
 
     let coords = [];
 
+    const isMountain = (r1, c1) => {
+      return tileGroup[r1][c1].mountain;
+    };
+
+    const isHill = (r1, c1) => {
+      return tileGroup[r1][c1].hill;
+    };
+
+    const isClear = (r1, c1) => {
+      return !tileGroup[r1][c1].forest;
+    };
+
     const isFlat = (r1, c1) => {
+      return !(isMountain(r1, c1) || isHill(r1, c1));
+    };
+
+    const isOpen = (r1, c1) => {
       return !(tileGroup[r1][c1].mountain || tileGroup[r1][c1].hill || tileGroup[r1][c1].forest);
     };
 
@@ -63,18 +79,21 @@ const getVisibleTilesFunction = (data) => {
       }
     }
 
-    if (isFlat(-1, 0)) {
-      saveTile(-2, 0);
-    }
-    if (isFlat(0, -1)) {
-      saveTile(0, -2);
-    }
-    if (isFlat(1, 0)) {
-      saveTile(2, 0);
-    }
-    if (isFlat(0, 1)) {
-      saveTile(0, 2);
-    }
+    const lookBehind = (row1, col1, row2, col2) => {
+      if (isMountain(row1, col1)) {
+        return;
+      }
+
+      // Unit is on a hill, OR adjacent tile is totally clear, OR 2 tiles away is a hill.
+      if (isHill(0, 0) || isOpen(row1, col1) || isHill(row2, col2)) {
+        saveTile(row2, col2);
+      }
+    };
+
+    lookBehind(0, 1, 0, 2);
+    lookBehind(0, -1, 0, -2);
+    lookBehind(-1, 0, -2, 0);
+    lookBehind(1, 0, 2, 0);
 
     return coords;
   };
