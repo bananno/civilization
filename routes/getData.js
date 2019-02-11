@@ -13,53 +13,53 @@ function getData(req, res, next, callback) {
 
     data.turnPlayerId = data.players[data.game.nextPlayer]._id;
 
-    data.playerOutput = {};
-    data.cityOutput = {};
+    data.playerProduction = {};
+    data.cityProduction = {};
 
     // Initialize player output.
     data.players.forEach(player => {
-      data.playerOutput[player._id] = {
+      data.playerProduction[player._id] = {
         gold: 0,
         food: 0,
-        production: 0,
+        work: 0,
       };
     });
 
     // Initialize city output.
     // Calculate output from each city's buildings.
     data.cities.forEach(city => {
-      data.cityOutput[city._id] = {
+      data.cityProduction[city._id] = {
         gold: 0,
         food: 0,
-        production: 0,
+        work: 0,
       };
 
       city.buildings.forEach(i => {
-        data.cityOutput[city._id].gold += buildingTypes[i].gold;
-        data.cityOutput[city._id].food += buildingTypes[i].food;
-        data.cityOutput[city._id].production += buildingTypes[i].production;
+        data.cityProduction[city._id].gold += buildingTypes[i].gold;
+        data.cityProduction[city._id].food += buildingTypes[i].food;
+        data.cityProduction[city._id].work += buildingTypes[i].work;
       });
     });
 
     // Calculate output of all tiles that are worked by any city.
     data.tiles.forEach(tile => {
       if (tile.worked) {
-        data.cityOutput[tile.worked].gold += tile.gold;
-        data.cityOutput[tile.worked].food += tile.food;
-        data.cityOutput[tile.worked].production += tile.production || 0;
+        data.cityProduction[tile.worked].gold += tile.production.gold;
+        data.cityProduction[tile.worked].food += tile.production.food;
+        data.cityProduction[tile.worked].work += tile.production.work;
       }
     });
 
     // Calculate each player's gold per turn as the sum of all cities' gold.
     // Convert city production to gold, if applicable.
     data.cities.forEach(city => {
-      data.playerOutput[city.player].gold += data.cityOutput[city._id].gold;
-      data.playerOutput[city.player].food += data.cityOutput[city._id].food;
-      data.playerOutput[city.player].production += data.cityOutput[city._id].production;
+      data.playerProduction[city.player].gold += data.cityProduction[city._id].gold;
+      data.playerProduction[city.player].food += data.cityProduction[city._id].food;
+      data.playerProduction[city.player].work += data.cityProduction[city._id].work;
 
       if (city.project.category == 'gold') {
-        let cityProduction = data.cityOutput[city._id].production;
-        data.playerOutput[city.player].gold += Math.floor(cityProduction / 2);
+        let cityWork = data.cityProduction[city._id].work;
+        data.playerProduction[city.player].gold += Math.floor(cityWork / 2);
       }
     });
 

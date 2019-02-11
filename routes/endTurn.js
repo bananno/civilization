@@ -132,53 +132,53 @@ function endRound(res, data) {
       });
     };
 
-    let cityGrossOutput = data.cityOutput[city._id];
+    let cityGrossProduction = data.cityProduction[city._id];
 
     let projectCategory = city.project.category;
     let projectIndex = city.project.index;
 
-    let productionSoFar = 0;
-    let productionNeeded = 0;
+    let workSoFar = 0;
+    let workNeeded = 0;
     let projectIsComplete = false;
     let allowGrowth = true;
 
     if (projectCategory == 'unit' || projectCategory == 'building') {
       cityData.projectProgress = city.projectProgress;
-      cityData.projectProgress[projectCategory][projectIndex] += cityGrossOutput.production;
-      cityData.projectProgress[projectCategory][projectIndex] += city.productionRollover;
+      cityData.projectProgress[projectCategory][projectIndex] += cityGrossProduction.work;
+      cityData.projectProgress[projectCategory][projectIndex] += city.workRollover;
 
-      cityData.productionRollover = 0;
+      cityData.workRollover = 0;
 
-      productionSoFar = cityData.projectProgress[projectCategory][projectIndex];
+      workSoFar = cityData.projectProgress[projectCategory][projectIndex];
 
       if (projectCategory == 'unit') {
-        productionNeeded = data.unitTypes[projectIndex].cost;
+        workNeeded = data.unitTypes[projectIndex].cost;
         if (data.unitTypes[projectIndex].name == 'settler') {
           allowGrowth = false;
         }
       } else if (projectCategory == 'building') {
-        productionNeeded = data.buildingTypes[projectIndex].cost;
+        workNeeded = data.buildingTypes[projectIndex].cost;
       }
 
-      projectIsComplete = productionSoFar >= productionNeeded;
+      projectIsComplete = workSoFar >= workNeeded;
     }
 
     let foodEatenPerTurn = city.population * 2;
-    let foodSurplus = cityGrossOutput.food - foodEatenPerTurn;
+    let foodSurplus = cityGrossProduction.food - foodEatenPerTurn;
 
     if (!allowGrowth && foodSurplus > 0) {
       foodSurplus = 0;
     }
 
-    cityData.food = city.food + foodSurplus;
+    cityData.foodBasket = city.foodBasket + foodSurplus;
 
-    if (cityData.food >= cityGrowthRate[city.population] && foodSurplus >= 2) {
+    if (cityData.foodBasket >= cityGrowthRate[city.population] && foodSurplus >= 2) {
       cityData.population = city.population + 1;
-      cityData.food -= cityGrowthRate[city.population];
+      cityData.foodBasket -= cityGrowthRate[city.population];
     }
 
     if (projectIsComplete) {
-      cityData.productionRollover = productionSoFar - productionNeeded;
+      cityData.workRollover = workSoFar - workNeeded;
       cityData.projectProgress[projectCategory][projectIndex] = 0;
       cityData.project = {
         category: null,
@@ -208,7 +208,7 @@ function endRound(res, data) {
       return goToNext();
     }
     let currentGold = data.players[i].gold;
-    let goldPerTurn = data.playerOutput[data.players[i]._id].gold;
+    let goldPerTurn = data.playerProduction[data.players[i]._id].gold;
     let playerData = {
       gold: currentGold + goldPerTurn
     };
