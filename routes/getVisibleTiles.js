@@ -77,54 +77,42 @@ const getVisibleTilesFunction = (data) => {
     let unitIsInForest = tileGroup[0][0].forest;
     let unitIsOnHill = tileGroup[0][0].hill;
 
-    const farTileIsVisible = (adj, far) => {
+    const compareTiles = (adjR, adjC, farR, farC) => {
+      let adjTile = tileGroup[adjR][adjC];
+      let farTile = tileGroup[farR][farC];
+
       if (unitIsInForest) {
-        return false;
+        return;
       }
-      if (adj.mountain) {
-        return false;
+      if (adjTile.mountain) {
+        return;
       }
-      if (adj.hill && !far.mountain) {
-        return false;
+      if (adjTile.hill && !farTile.mountain) {
+        return;
       }
-      if (adj.forest && !unitIsOnHill && !far.mountain && !far.hill) {
-        return false;
+      if (adjTile.forest && !unitIsOnHill && !farTile.mountain && !farTile.hill) {
+        return;
       }
-      return true;
+
+      visible[farR][farC] = true;
     };
 
     visible[0][0] = true;
 
-    immediateEdges.forEach((pair, i) => {
+    immediateEdges.forEach(pair => {
       let [r, c] = pair;
-      let adj = tileGroup[r][c];
-      let far = tileGroup[r * 2][c * 2];
-
-      let r1 = r * 2 || -1;
-      let c1 = c * 2 || -1;
-      let r2 = r * 2 || 1;
-      let c2 = c * 2 || 1;
-
       visible[r][c] = true;
-      visible[r * 2][c * 2] = farTileIsVisible(adj, far);
-      visible[r1][c1] = visible[r1][c1] || farTileIsVisible(adj, tileGroup[r1][c1]);
-      visible[r2][c2] = visible[r2][c2] || farTileIsVisible(adj, tileGroup[r2][c2]);
+      compareTiles(r, c, r * 2, c * 2);
+      compareTiles(r, c, r * 2 || -1, c * 2 || -1);
+      compareTiles(r, c, r * 2 || 1, c * 2 || 1);
     });
 
     immediateCorners.forEach(pair => {
       let [r, c] = pair;
-      let adj = tileGroup[r][c];
-      let far = tileGroup[r * 2][c * 2];
-
-      let r1 = r * 2;
-      let c1 = c;
-      let r2 = r;
-      let c2 = c * 2;
-
       visible[r][c] = true;
-      visible[r * 2][c * 2] = farTileIsVisible(adj, far);
-      visible[r1][c1] = visible[r1][c1] || farTileIsVisible(adj, tileGroup[r1][c1]);
-      visible[r2][c2] = visible[r2][c2] || farTileIsVisible(adj, tileGroup[r2][c2]);
+      compareTiles(r, c, r * 2, c * 2);
+      compareTiles(r, c, r * 2, c);
+      compareTiles(r, c, r, c * 2);
     });
 
     // Return all pairs that are still true.
