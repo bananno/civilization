@@ -75,50 +75,27 @@ const getVisibleTilesFunction = (data) => {
       }
     }
 
-    // A mountain in an immediate corner obscures 3 tiles behind it.
-    // A mountain in an immediate edge obscures 1 tile directly behind it.
+    let unitIsInForest = tileGroup[0][0].forest;
+    let unitIsOnHill = tileGroup[0][0].hill;
 
-    immediateCorners.forEach(pair => {
-      let [r1, c1] = pair;
-      if (tileGroup[r1][c1].mountain) {
-        visible[r1 * 2][c1 * 2] = false;
-        visible[r1 * 2][c1] = false;
-        visible[r1][c1 * 2] = false;
-      }
-    });
-
-    immediateEdges.forEach(pair => {
-      let [r1, c1] = pair;
-      if (tileGroup[r1][c1].mountain) {
-        visible[r1 * 2][c1 * 2] = false;
-      }
-    });
-
-    // If the unit is NOT on a hill:
-    // A hill in an immediate edge obscures the tile directly behind it.
-    // A forest in an immediate edge obscures the non-hill/mountain tile directly behind it.
-    // A hill in an immediate corner obscures the futher corner tile behind it.
-    // A forest in an immediate corner obscures the non-hill/mountain futher corner tile behind it.
-
-    if (!tileGroup[0][0].hill) {
-      immediateEdges.forEach(pair => {
+    if (unitIsInForest) {
+      visible[-2] = [false, false, false];
+      visible[2] = [false, false, false];
+      visible[-1][-2] = false;
+      visible[0][-2] = false;
+      visible[1][-2] = false;
+      visible[-1][2] = false;
+      visible[0][2] = false;
+      visible[1][2] = false;
+    } else {
+      [...immediateEdges, ...immediateCorners].forEach(pair => {
         let [r1, c1] = pair;
-        if (tileGroup[r1][c1].hill) {
-          visible[r1 * 2][c1 * 2] = false;
-        } else if (tileGroup[r1][c1].forest
-            && !tileGroup[r1 * 2][c1 * 2].mountain
-            && !tileGroup[r1 * 2][c1 * 2].hill) {
-          visible[r1 * 2][c1 * 2] = false;
-        }
-      });
+        let adjacent = tileGroup[r1][c1];
+        let far = tileGroup[r1 * 2][c1 * 2];
 
-      immediateCorners.forEach(pair => {
-        let [r1, c1] = pair;
-        if (tileGroup[r1][c1].hill) {
-          visible[r1 * 2][c1 * 2] = false;
-        } else if (tileGroup[r1][c1].forest
-          && !tileGroup[r1 * 2][c1 * 2].hill
-          && !tileGroup[r1 * 2][c1 * 2].mountain) {
+        if (adjacent.mountain
+            || (adjacent.hill && !far.mountain)
+            || (adjacent.forest && !unitIsOnHill && !far.mountain && !far.hill)) {
           visible[r1 * 2][c1 * 2] = false;
         }
       });
