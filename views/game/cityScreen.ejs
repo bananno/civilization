@@ -42,11 +42,11 @@
     }
 %>
 
+<div class="city-screen city-screen-top" city-id="<%= city._id %>">
+    <h1>CITY TITLE</h1>
+</div>
+
 <div class="city-screen city-screen-left" city-id="<%= city._id %>">
-    <div class="close">X</div>
-    <div class="section">
-        city
-    </div>
     <div class="section">
         population: <%= city.population %><br/>
         (<%= city.storage.food %> / <%= foodNeededForGrowth %>)<br/>
@@ -182,4 +182,8 @@
             </div>
         <% }); %>
     </div>
+</div>
+
+<div class="city-screen city-screen-bottom" city-id="<%= city._id %>">
+    <button class="close">Close [esc]</button>
 </div>
