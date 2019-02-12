@@ -36,6 +36,7 @@ var CitySchema = new mongoose.Schema({
   storage: {
     food: Number,
     labor: Number,
+    culture: Number,
   },
 });
 

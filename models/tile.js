@@ -40,9 +40,26 @@ var TileSchema = new mongoose.Schema({
     default: 0,
   },
   production: {
-    food: Number,
-    gold: Number,
-    labor: Number,
+    food: {
+      type: Number,
+      default: 0,
+    },
+    gold: {
+      type: Number,
+      default: 0,
+    },
+    labor: {
+      type: Number,
+      default: 0,
+    },
+    culture: {
+      type: Number,
+      default: 0,
+    },
+    science: {
+      type: Number,
+      default: 0,
+    },
   },
   terrain: {
     ground: {

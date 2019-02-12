@@ -7,6 +7,8 @@ const buildingTypes = [
       gold: 5,
       food: 2,
       labor: 5,
+      culture: 1,
+      science: 3,
     },
   },
   {
@@ -16,6 +18,8 @@ const buildingTypes = [
       gold: -1,
       food: 2,
       labor: 0,
+      culture: 0,
+      science: 0,
     },
   },
   {
@@ -25,6 +29,8 @@ const buildingTypes = [
       gold: -2,
       food: 0,
       labor: 2,
+      culture: 0,
+      science: 0,
     },
   },
 ];

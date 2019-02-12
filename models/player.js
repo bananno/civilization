@@ -14,6 +14,14 @@ var PlayerSchema = new mongoose.Schema({
       type: Number,
       default: 0,
     },
+    culture: {
+      type: Number,
+      default: 0,
+    },
+    science: {
+      type: Number,
+      default: 0,
+    },
   },
 });
 
