@@ -24,6 +24,8 @@ function getData(req, res, next, callback) {
         gold: 0,
         food: 0,
         labor: 0,
+        culture: 0,
+        science: 0,
       };
     });
 
@@ -36,6 +38,8 @@ function getData(req, res, next, callback) {
         gold: 0,
         food: 0,
         labor: 0,
+        culture: 0,
+        science: 0,
       };
 
       let extraLaborPercentage = 0;
@@ -44,6 +48,8 @@ function getData(req, res, next, callback) {
         city.production.gold += buildingTypes[i].production.gold;
         city.production.food += buildingTypes[i].production.food;
         city.production.labor += buildingTypes[i].production.labor;
+        city.production.culture += buildingTypes[i].production.culture;
+        city.production.science += buildingTypes[i].production.science;
 
         if (buildingTypes[i].name == 'workshop') {
           extraLaborPercentage += 10;
@@ -60,6 +66,8 @@ function getData(req, res, next, callback) {
         city.production.gold += tile.production.gold;
         city.production.food += tile.production.food;
         city.production.labor += tile.production.labor;
+        city.production.culture += tile.production.culture;
+        city.production.science += tile.production.science;
       }
     });
 
@@ -70,6 +78,8 @@ function getData(req, res, next, callback) {
       player.production.gold += city.production.gold;
       player.production.food += city.production.food;
       player.production.labor += city.production.labor;
+      player.production.culture += city.production.culture;
+      player.production.science += city.production.science;
 
       if (city.project.category == 'gold') {
         player.production.gold += Math.floor(city.production.labor / 2);
