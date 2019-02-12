@@ -56,14 +56,27 @@
             no growth
         <% } %>
     </div>
+
     <div class="section">
         <h3>Production:</h3>
-        gold: <%= city.production.gold %><br/>
-        food: <%= city.production.food %> (<%= foodSurplusPerTurn %> surplus)<br/>
-        labor: <%= city.production.labor %><br/>
-        culture: <%= city.production.culture %><br/>
-        science: <%= city.production.science %><br/>
+        <table>
+            <% ['gold', 'food', 'labor', 'culture', 'science'].forEach(prod => { %>
+                <tr>
+                    <td>
+                        <img src="/images/<%= prod %>.png" class="production-icon">
+                        <%= prod %>
+                    </td>
+                    <td>
+                        <%= city.production[prod] %>
+                        <% if (prod == 'food') { %>
+                            (<%= foodSurplusPerTurn %> surplus)
+                        <% } %>
+                    </td>
+                </tr>
+            <% }); %>
+        </table>
     </div>
+
     <div class="section">
         Citizens:
         <ul>
