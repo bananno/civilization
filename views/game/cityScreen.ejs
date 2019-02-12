@@ -42,7 +42,7 @@
     }
 %>
 
-<div class="city-screen" city-id="<%= city._id %>">
+<div class="city-screen city-screen-left" city-id="<%= city._id %>">
     <div class="close">X</div>
     <div class="section">
         city
@@ -132,6 +132,9 @@
             </li>
         </ul>
     </div>
+</div>
+
+<div class="city-screen city-screen-right" city-id="<%= city._id %>">
     <div>
         buildings:
         <% city.buildings.forEach(i => { %>
