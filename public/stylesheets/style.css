@@ -91,3 +91,42 @@ a {
 img.production-icon {
   height: 20px;
 }
+
+#menu-items {
+  width: 300px;
+  padding: 5px;
+}
+
+.menu-item {
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+  background-size: 50px;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.menu-item.item-units {
+  background-image: url(/images/menu-units-false.png);
+}
+
+.menu-item.item-units:hover {
+  background-image: url(/images/menu-units-true.png);
+}
+
+.menu-item.item-cities {
+  background-image: url(/images/menu-units-false.png);
+}
+
+.menu-item.item-cities:hover {
+  background-image: url(/images/menu-units-true.png);
+}
+
+.menu-item.item-research {
+  background-image: url(/images/menu-units-false.png);
+}
+
+.menu-item.item-research:hover {
+  background-image: url(/images/menu-units-true.png);
+}
