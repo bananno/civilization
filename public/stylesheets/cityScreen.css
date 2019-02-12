@@ -32,15 +32,31 @@
 }
 
 img.project-logo {
-  height: 50px;
+  height: 45px;
 }
 
-.city-building-list div {
+.city-building-list {
+  margin-top: 10px;
+}
+
+.city-building-list .descr {
   display: inline-block;
   vertical-align: top;
+  width: 195px;
 }
 
 .city-building-list h3 {
   font-weight: bold;
   font-size: 14px;
+}
+
+.city-building-list .production {
+  display: inline-block;
+  vertical-align: top;
+  width: 50px;
+  text-align: right;
+}
+
+.city-building-list .production.large {
+  width: 65px;
 }
