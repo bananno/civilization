@@ -16,7 +16,11 @@ document.onkeydown = (e) => {
       mapCenter[1] += 1;
     }
 
-    centerMap();
+    return centerMap();
+  }
+
+  if (e.key == 'Escape') {
+    return deactivateAll();
   }
 };
 
