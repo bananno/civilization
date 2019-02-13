@@ -1,7 +1,9 @@
 
 #menu-link-container {
-  width: 300px;
-  padding: 5px;
+  position: absolute;
+  top: 35px;
+  left: 10px;
+  z-index: 50;
 }
 
 .menu-link {
@@ -10,7 +12,6 @@
   background-size: 50px;
   background-position: top center;
   background-repeat: no-repeat;
-  cursor: pointer;
   color: transparent;
   text-align: center;
   padding-top: 50px;
@@ -49,5 +50,10 @@
 }
 
 .menu {
+  position: absolute;
+  top: 120px;
+  left: 10px;
+  z-index: 50;
   display: none;
+  width: 200px;
 }
