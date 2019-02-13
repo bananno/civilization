@@ -161,14 +161,14 @@ function clickMapCell(row, column) {
 function hoverMapCell(row, column) {
   let tile = tiles[parseInt(row)][parseInt(column)];
   if (!tile.discovered) {
-    $('.info.tile').hide();
+    $('#tile-details').hide();
     return;
   }
-  $('.info.tile').show();
+  $('#tile-details').show();
   let values = ['[' + row + ', ' + column + ']'];
   values.push(tile.features);
   tile.food ? values.push('food: ' + tile.food) : null;
   tile.gold ? values.push('gold: ' + tile.gold) : null;
   tile.labor ? values.push('labor: ' + tile.labor) : null;
-  $('.info.tile').html(values.join('<br>'));
+  $('#tile-details').html(values.join('<br>'));
 }

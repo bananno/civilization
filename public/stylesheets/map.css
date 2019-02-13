@@ -1,4 +1,13 @@
 
+#game-map {
+  text-align: center;
+  width: 100%;
+}
+
+#map {
+  margin: auto;
+}
+
 .map-row {
   display: none;
 }

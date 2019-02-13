@@ -77,10 +77,11 @@ a {
   background-color: #eee;
 }
 
-.info.tile {
+#tile-details {
+  display: none;
   position: absolute;
-  left: 270px;
-  bottom: 0;
+  right: 10px;
+  bottom: 10px;
   width: 150px;
   background-color: gray;
   margin: 10px;
