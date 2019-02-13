@@ -74,12 +74,18 @@
     </div>
 
     <div id="menu-items">
-        <div class="menu-link menu-units"> units </div>
-        <div class="menu-link menu-cities"> cities </div>
-        <div class="menu-link menu-research"> research </div>
+        <div class="menu-link menu-units" item="units"> units </div>
+        <div class="menu-link menu-cities" item="cities"> cities </div>
+        <div class="menu-link menu-research" item="research"> research </div>
     </div>
 
-    <% include ./menuUnits %>
+    <div class="menu menu-units" item="units">
+        <% include ./menuUnits %>
+    </div>
+
+    <div class="menu menu-cities" item="cities">
+        <% include ./menuCities %>
+    </div>
 
     <% currentTurnCities.forEach(city => { %>
         <% include ./cityScreen %>

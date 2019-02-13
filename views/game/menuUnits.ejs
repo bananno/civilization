@@ -1,39 +1,37 @@
 
-<div class="menu menu-units">
-    <% currentTurnUnits.forEach(unit => { %>
-        <%
-            let className = 'unit-roster';
-            if (unit.movesRemaining == 0 || unit.orders) {
-                className += ' done';
-            }
+<% currentTurnUnits.forEach(unit => { %>
+    <%
+        let className = 'unit-roster';
+        if (unit.movesRemaining == 0 || unit.orders) {
+            className += ' done';
+        }
 
-            let tile = helpers.findTile(tiles, unit.location);
-            let projectTurns = 0;
+        let tile = helpers.findTile(tiles, unit.location);
+        let projectTurns = 0;
 
-            if (unit.orders == 'build farm') {
-                projectTurns = 10 - tile.progress;
-            } else if (unit.orders == 'chop forest') {
-                projectTurns = 5 - tile.progress;
-            } else if (unit.orders == 'build road') {
-                projectTurns = 5 - tile.roadProgress;
-            }
+        if (unit.orders == 'build farm') {
+            projectTurns = 10 - tile.progress;
+        } else if (unit.orders == 'chop forest') {
+            projectTurns = 5 - tile.progress;
+        } else if (unit.orders == 'build road') {
+            projectTurns = 5 - tile.roadProgress;
+        }
 
-            if (projectTurns) {
-                projectTurns = Math.ceil(projectTurns / 2);
-            }
-        %>
+        if (projectTurns) {
+            projectTurns = Math.ceil(projectTurns / 2);
+        }
+    %>
 
-        <div class="<%= className %>" onClick="setActiveUnit('<%= unit._id %>')">
-            <%= unit.unitType.name %>
+    <div class="<%= className %>" onClick="setActiveUnit('<%= unit._id %>')">
+        <%= unit.unitType.name %>
+        <br/>
+        <%= unit.movesRemaining %> moves remaining
+        <% if (unit.orders) { %>
             <br/>
-            <%= unit.movesRemaining %> moves remaining
-            <% if (unit.orders) { %>
-                <br/>
-                <%= unit.orders %>
-                <% if (projectTurns) { %>
-                    (<%= projectTurns %>)
-                <% } %>
+            <%= unit.orders %>
+            <% if (projectTurns) { %>
+                (<%= projectTurns %>)
             <% } %>
-        </div>
-    <% }); %>
-</div>
+        <% } %>
+    </div>
+<% }); %>
