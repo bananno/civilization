@@ -109,7 +109,7 @@ img.production-icon {
   padding-top: 50px;
 }
 
-.menu-link:hover {
+.menu-link:hover, .menu-link.active {
   cursor: pointer;
   color: #fce8cc;
 }
@@ -118,6 +118,7 @@ img.production-icon {
   background-image: url(/images/menu-units-false.png);
 }
 
+.menu-link.menu-units.active,
 .menu-link.menu-units:hover {
   background-image: url(/images/menu-units-true.png);
 }
@@ -126,6 +127,7 @@ img.production-icon {
   background-image: url(/images/menu-units-false.png);
 }
 
+.menu-link.menu-cities.active,
 .menu-link.menu-cities:hover {
   background-image: url(/images/menu-units-true.png);
 }
@@ -134,6 +136,7 @@ img.production-icon {
   background-image: url(/images/menu-units-false.png);
 }
 
+.menu-link.menu-research.active,
 .menu-link.menu-research:hover {
   background-image: url(/images/menu-units-true.png);
 }

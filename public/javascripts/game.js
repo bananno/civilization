@@ -27,10 +27,19 @@ document.onkeydown = (e) => {
 function setupActiveUnitSelection() {
   $('.city-screen .close').click(deactivateAll);
   $('.info.unit .close').click(deactivateAll);
+
+  $('.menu-link').toArray().forEach(element => {
+    let $link = $(element);
+    $link.click(() => {
+      $('.menu-link').removeClass('active');
+      $link.addClass('active');
+    });
+  });
 }
 
 function deactivateAll() {
   $('.map-cell').removeClass('active');
+  $('.menu-link').removeClass('active');
 
   $('.city-screen').hide();
   $('.info.unit').hide();
