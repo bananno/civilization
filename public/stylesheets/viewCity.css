@@ -1,5 +1,5 @@
 
-.city-screen {
+.view-city {
   display: none;
   position: absolute;
   z-index: 100;
@@ -7,25 +7,25 @@
   color: #fce8cc;
 }
 
-.city-screen-top {
+.view-city-top {
   top: 0;
   width: 100%;
   text-align: center;
   margin-top: 40px;
 }
 
-.city-screen-top h1 {
+.view-city-top h1 {
   font-size: 20px;
   font-weight: bold;
 }
 
-.city-screen-bottom {
+.view-city-bottom {
   bottom: 20px;
   width: 100%;
   text-align: center;
 }
 
-.city-screen-left, .city-screen-right {
+.view-city-left, .view-city-right {
   top: 0;
   overflow: scroll;
   border: 2px solid gray;
@@ -35,34 +35,34 @@
   background-color: black;
 }
 
-.city-screen-left {
+.view-city-left {
   left: 0;
   width: 250px;
   margin-left: 7px;
 }
 
-.city-screen-right {
+.view-city-right {
   right: 0;
   margin-right: 7px;
 }
 
-.city-screen .close {
+.view-city .close {
   padding: 5px 8px;
   border-radius: 10px;
   background-color: gray;
 }
 
-.city-screen .close:hover {
+.view-city .close:hover {
   cursor: pointer;
 }
 
-.city-screen .section {
+.view-city .section {
   margin-bottom: 10px;
   padding-bottom: 3px;
   border-bottom: 1px solid gray;
 }
 
-.city-screen ul {
+.view-city ul {
   margin-left: 20px;
 }
 

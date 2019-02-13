@@ -42,11 +42,11 @@
     }
 %>
 
-<div class="city-screen city-screen-top" city-id="<%= city._id %>">
+<div class="view-city view-city-top" city-id="<%= city._id %>">
     <h1>CITY TITLE</h1>
 </div>
 
-<div class="city-screen city-screen-left" city-id="<%= city._id %>">
+<div class="view-city view-city-left" city-id="<%= city._id %>">
     <div class="section">
         population: <%= city.population %><br/>
         (<%= city.storage.food %> / <%= foodNeededForGrowth %>)<br/>
@@ -134,7 +134,7 @@
     </div>
 </div>
 
-<div class="city-screen city-screen-right" city-id="<%= city._id %>">
+<div class="view-city view-city-right" city-id="<%= city._id %>">
     <div>
         buildings:
         <% city.buildings.forEach(i => { %>
@@ -184,6 +184,6 @@
     </div>
 </div>
 
-<div class="city-screen city-screen-bottom" city-id="<%= city._id %>">
+<div class="view-city view-city-bottom" city-id="<%= city._id %>">
     <button class="close">Close [esc]</button>
 </div>

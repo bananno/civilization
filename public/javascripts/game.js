@@ -25,13 +25,12 @@ document.onkeydown = (e) => {
 };
 
 function setup() {
-  $('.city-screen .close').click(deactivateAll);
+  $('.view-city .close').click(deactivateAll);
   $('.info.unit .close').click(deactivateAll);
 
   $('.menu-link').toArray().forEach(element => {
     let $link = $(element);
     let item = $link.attr('item');
-    console.log(item);
     $link.click(() => {
       $('.menu-link').removeClass('active');
       $link.addClass('active');
@@ -45,7 +44,7 @@ function deactivateAll() {
   $('.map-cell').removeClass('active');
   $('.menu-link').removeClass('active');
 
-  $('.city-screen').hide();
+  $('.view-city').hide();
   $('.info.unit').hide();
   $('form.move-unit').hide();
   $('form.work-tile').hide();
@@ -60,7 +59,7 @@ function setActiveCity(id) {
   activeUnitOrCityId = id;
 
   $('form.work-tile[city-id="' + id + '"]').show();
-  $('.city-screen[city-id="' + id + '"]').show();
+  $('.view-city[city-id="' + id + '"]').show();
 
   if (id && id.length && id != 'null') {
     mapCenter = cities[id].location.concat();
