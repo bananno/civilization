@@ -81,13 +81,27 @@
 
     <% include ./menuUnits %>
 
-    <div id="game-sidebar">
-        <% include ./sidebar %>
-    </div>
-
     <% currentTurnCities.forEach(city => { %>
         <% include ./cityScreen %>
     <% }); %>
+
+    <% currentTurnUnits.forEach(unit => { %>
+        <% include ./unitScreen %>
+    <% }); %>
+
+    <div class="info">
+        <form id="end-turn" action="/endTurn" method="POST">
+            <% if (canEndTurnNow) { %>
+                <button type="submit">end turn</button>
+            <% } else { %>
+                <button type="submit" disabled="true">end turn</button>
+            <% } %>
+        </form>
+    </div>
+
+    <div class="info tile">
+        tiles
+    </div>
 
     <div id="game-map">
         <% include ./map %>
