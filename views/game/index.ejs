@@ -80,11 +80,11 @@
         <div class="menu-link menu-research" item="research"> research </div>
     </div>
 
-    <div class="menu menu-units" item="units">
+    <div class="menu menu-units">
         <% include ./menuUnits %>
     </div>
 
-    <div class="menu menu-cities" item="cities">
+    <div class="menu menu-cities">
         <% include ./menuCities %>
     </div>
 
@@ -180,7 +180,8 @@
         let numRows = <%= numRows %>;
         let numCols = <%= numCols %>;
 
-        setupActiveUnitSelection();
+        setup();
+
         setActiveCity('<%= activeCity ? activeCity._id : null %>');
         setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
     </script>

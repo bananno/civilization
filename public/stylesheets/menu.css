@@ -47,3 +47,7 @@
 .menu-link.menu-research:hover {
   background-image: url(/images/menu-units-true.png);
 }
+
+.menu {
+  display: none;
+}

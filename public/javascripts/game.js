@@ -24,15 +24,19 @@ document.onkeydown = (e) => {
   }
 };
 
-function setupActiveUnitSelection() {
+function setup() {
   $('.city-screen .close').click(deactivateAll);
   $('.info.unit .close').click(deactivateAll);
 
   $('.menu-link').toArray().forEach(element => {
     let $link = $(element);
+    let item = $link.attr('item');
+    console.log(item);
     $link.click(() => {
       $('.menu-link').removeClass('active');
       $link.addClass('active');
+      $('.menu').hide();
+      $('.menu.menu-' + item).show();
     });
   });
 }
@@ -43,9 +47,9 @@ function deactivateAll() {
 
   $('.city-screen').hide();
   $('.info.unit').hide();
-
   $('form.move-unit').hide();
   $('form.work-tile').hide();
+  $('.menu').hide();
 
   activeUnitOrCityId = null;
 }
