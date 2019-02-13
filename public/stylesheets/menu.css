@@ -1,0 +1,49 @@
+
+#menu-link-container {
+  width: 300px;
+  padding: 5px;
+}
+
+.menu-link {
+  display: inline-block;
+  width: 50px;
+  background-size: 50px;
+  background-position: top center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  color: transparent;
+  text-align: center;
+  padding-top: 50px;
+}
+
+.menu-link:hover, .menu-link.active {
+  cursor: pointer;
+  color: #fce8cc;
+}
+
+.menu-link.menu-units {
+  background-image: url(/images/menu-units-false.png);
+}
+
+.menu-link.menu-units.active,
+.menu-link.menu-units:hover {
+  background-image: url(/images/menu-units-true.png);
+}
+
+.menu-link.menu-cities {
+  background-image: url(/images/menu-units-false.png);
+}
+
+.menu-link.menu-cities.active,
+.menu-link.menu-cities:hover {
+  background-image: url(/images/menu-units-true.png);
+}
+
+.menu-link.menu-research {
+  background-image: url(/images/menu-units-false.png);
+}
+
+.menu-link.menu-research.active,
+.menu-link.menu-research:hover {
+  background-image: url(/images/menu-units-true.png);
+}
