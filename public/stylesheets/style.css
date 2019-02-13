@@ -97,7 +97,7 @@ img.production-icon {
   padding: 5px;
 }
 
-.menu-item {
+.menu-link {
   display: inline-block;
   width: 50px;
   background-size: 50px;
@@ -109,31 +109,31 @@ img.production-icon {
   padding-top: 50px;
 }
 
-.menu-item:hover {
+.menu-link:hover {
   cursor: pointer;
   color: #fce8cc;
 }
 
-.menu-item.item-units {
+.menu-link.menu-units {
   background-image: url(/images/menu-units-false.png);
 }
 
-.menu-item.item-units:hover {
+.menu-link.menu-units:hover {
   background-image: url(/images/menu-units-true.png);
 }
 
-.menu-item.item-cities {
+.menu-link.menu-cities {
   background-image: url(/images/menu-units-false.png);
 }
 
-.menu-item.item-cities:hover {
+.menu-link.menu-cities:hover {
   background-image: url(/images/menu-units-true.png);
 }
 
-.menu-item.item-research {
+.menu-link.menu-research {
   background-image: url(/images/menu-units-false.png);
 }
 
-.menu-item.item-research:hover {
+.menu-link.menu-research:hover {
   background-image: url(/images/menu-units-true.png);
 }
