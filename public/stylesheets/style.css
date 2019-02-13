@@ -99,12 +99,19 @@ img.production-icon {
 
 .menu-item {
   display: inline-block;
-  height: 50px;
   width: 50px;
   background-size: 50px;
-  background-position: center;
+  background-position: top center;
   background-repeat: no-repeat;
   cursor: pointer;
+  color: transparent;
+  text-align: center;
+  padding-top: 50px;
+}
+
+.menu-item:hover {
+  cursor: pointer;
+  color: #fce8cc;
 }
 
 .menu-item.item-units {
