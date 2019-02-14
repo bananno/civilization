@@ -7,7 +7,6 @@
 html, body {
   height: 100%;
   background-color: black;
-  text-align: center;
 }
 
 table {
@@ -18,32 +17,11 @@ a {
   color: #00B7FF;
 }
 
-#game-sidebar {
-  display: inline-block;
-  vertical-align: top;
-}
-
-#game-sidebar {
-  width: 15%;
-  padding: 25px;
-  max-height: 100%;
-}
-
-#game-sidebar h1 {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-#game-sidebar h2 {
-  font-size: 15px;
-  font-weight: bold;
-}
-
-#game-sidebar .info {
-  margin: 10px;
-}
-
-.info.unit {
+.view-unit {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 50;
   display: none;
   border: 2px solid gray;
   margin-top: 10px;

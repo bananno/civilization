@@ -26,7 +26,7 @@ document.onkeydown = (e) => {
 
 function setup() {
   $('.view-city .close').click(deactivateAll);
-  $('.info.unit .close').click(deactivateAll);
+  $('.view-unit .close').click(deactivateAll);
 
   $('.menu-link').toArray().forEach(element => {
     let $link = $(element);
@@ -45,7 +45,7 @@ function deactivateAll() {
   $('.menu-link').removeClass('active');
 
   $('.view-city').hide();
-  $('.info.unit').hide();
+  $('.view-unit').hide();
   $('form.move-unit').hide();
   $('form.work-tile').hide();
   $('.menu').hide();
@@ -75,7 +75,7 @@ function setActiveUnit(id) {
   activeUnitOrCityId = id;
 
   $('form.move-unit[unit-id="' + id + '"]').show();
-  $('.info.unit[unit-id="' + id + '"]').show();
+  $('.view-unit[unit-id="' + id + '"]').show();
 
   if (id && id.length && id != 'null') {
     mapCenter = units[id].location.concat();
