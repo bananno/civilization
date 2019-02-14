@@ -1,10 +1,38 @@
 
+<%
+    let actionsRemaining = false;
+%>
+
 <div id="next-action">
-    <form id="end-turn" action="/endTurn" method="POST">
-        <% if (canEndTurnNow) { %>
+    <% currentTurnUnits.forEach(unit => { %>
+        <%
+            if (actionsRemaining || unit.orders || unit.movesRemaining == 0) {
+                return;
+            }
+            actionsRemaining = true;
+        %>
+        <div>
+            <button onClick="setActiveUnit('<%= unit._id %>')">unit needs orders</button>
+        </div>
+    <% }); %>
+
+    <% if (!actionsRemaining) { %>
+        <% currentTurnCities.forEach(city => { %>
+            <%
+                if (actionsRemaining || city.project.category) {
+                    return;
+                }
+                actionsRemaining = true;
+            %>
+            <div>
+                <button onClick="setActiveCity('<%= city._id %>')">city needs project</button>
+            </div>
+        <% }); %>
+    <% } %>
+
+    <% if (!actionsRemaining) { %>
+        <form id="end-turn" action="/endTurn" method="POST">
             <button type="submit">end turn</button>
-        <% } else { %>
-            <button type="submit" disabled="true">end turn</button>
-        <% } %>
-    </form>
+        </form>
+    <% } %>
 </div>

@@ -9,8 +9,6 @@
 
     let currentTurnPlayerId = '' + players[game.nextPlayer]._id;
 
-    let canEndTurnNow = true;
-
     let [numRows, numCols] = game.mapSize;
 
     let currentTurnUnits = units.filter(unit => {
@@ -18,13 +16,7 @@
     });
 
     let currentTurnCities = cities.filter(city => {
-        if (isCurrentTurnPlayer(city.player)) {
-            if (city.project.category == null) {
-                canEndTurnNow = false;
-            }
-            return true;
-        }
-        return false;
+        return isCurrentTurnPlayer(city.player);
     });
 
     let rivalUnits = units.filter(unit => {
@@ -36,7 +28,6 @@
     let activeUnit = currentTurnUnits.filter(unit => {
         let unitNeedsOrders = unit.movesRemaining > 0 && unit.orders == null;
         if (unitNeedsOrders) {
-            canEndTurnNow = false;
             return true;
         }
         return false;
