@@ -50,6 +50,13 @@ function setup() {
     });
   });
 
+  $('.city-roster').toArray().forEach(element => {
+    let cityId = $(element).attr('city-id');
+    $(element).click(() => {
+      setActiveCity(cityId);
+    });
+  });
+
   goToNextAction(false);
 }
 
