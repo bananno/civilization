@@ -1,10 +1,16 @@
 <%
     let playerName = players[game.nextPlayer].name;
-    let sciencePerTurn = players[game.nextPlayer].production.science;
-    let currentGold = players[game.nextPlayer].storage.gold;
-    let goldPerTurn = players[game.nextPlayer].production.gold;
-    let currentCulture = players[game.nextPlayer].production.culture;
-    let culturePerTurn = players[game.nextPlayer].storage.culture;
+
+    let storage = {
+        gold: players[game.nextPlayer].storage.gold,
+        culture: players[game.nextPlayer].storage.culture
+    };
+
+    let production = {
+        science: players[game.nextPlayer].production.science,
+        gold: players[game.nextPlayer].production.gold,
+        culture: players[game.nextPlayer].production.culture
+    };
 %>
 
 <div>
@@ -13,7 +19,7 @@
     </div>
 
     <div class="header-text header-science">
-        <%= (sciencePerTurn < 0 ? '-' : '+') + sciencePerTurn %>
+        <%= (production.science < 0 ? '-' : '+') + production.science %>
     </div>
 
     <div class="header-image">
@@ -21,7 +27,8 @@
     </div>
 
     <div class="header-text header-money">
-        <%= currentGold %> (<%= (goldPerTurn < 0 ? '-' : '+') + goldPerTurn %>)
+        <%= storage.gold %>
+        (<%= (production.gold < 0 ? '-' : '+') + production.gold %>)
     </div>
 
     <div class="header-image">
@@ -29,7 +36,8 @@
     </div>
 
     <div class="header-text header-culture">
-        <%= currentCulture %> (<%= (culturePerTurn < 0 ? '-' : '+') + culturePerTurn %>)
+        <%= storage.culture %>
+        (<%= (production.culture < 0 ? '-' : '+') + production.culture %>)
     </div>
 </div>
 
