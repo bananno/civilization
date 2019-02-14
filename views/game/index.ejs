@@ -61,40 +61,7 @@
         <% include ./header %>
     </div>
 
-    <div id="menu-link-container">
-        <div class="menu-link menu-units" item="units"> units </div>
-        <div class="menu-link menu-cities" item="cities"> cities </div>
-        <div class="menu-link menu-research" item="research"> research </div>
-    </div>
-
-    <div class="menu menu-units">
-        <% include ./menuUnits %>
-    </div>
-
-    <div class="menu menu-cities">
-        <% include ./menuCities %>
-    </div>
-
-    <div class="menu menu-research info-box">
-        Current research:
-        <ul>
-            <li>
-                <% if (currentPlayer.researchCurrent == null ) { %>
-                    none
-                <% } else { %>
-                    <%= technologyList[currentPlayer.researchCurrent].name %>
-                <% } %>
-            </li>
-        </ul>
-        Choose research:
-        <ul>
-            <% technologyList.forEach((tech, i) => { %>
-                <li>
-                    <a href="/chooseResearch/<%= i %>"><%= tech.name %></a>
-                </li>
-            <% }); %>
-        </ul>
-    </div>
+    <% include ./menu/menu %>
 
     <% currentTurnCities.forEach(city => { %>
         <% include ./viewCity %>
