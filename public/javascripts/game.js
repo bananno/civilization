@@ -1,4 +1,8 @@
 
+let tileSize = 50;
+let rowRadius = 6;
+let colRadius = 10;
+
 document.onkeydown = (e) => {
   if (e.key == 'Enter') {
     return goToNextAction(true);
@@ -23,7 +27,11 @@ document.onkeydown = (e) => {
   }
 };
 
+$(window).resize(resizeWindow);
+
 function setup() {
+  resizeWindow();
+
   $('.view-city .close').click(deactivateAll);
   $('.view-unit .close').click(deactivateAll);
 
@@ -58,6 +66,13 @@ function setup() {
   });
 
   goToNextAction(false);
+}
+
+function resizeWindow() {
+  let windowWidth = $(window).width();
+  let numCols = windowWidth / tileSize;
+  colRadius = Math.floor(numCols / 2) + 1;
+  centerMap();
 }
 
 function goToNextAction(includeEndTurn) {
