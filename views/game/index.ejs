@@ -96,7 +96,7 @@
         <% include ./viewUnit %>
     <% }); %>
 
-    <div class="info">
+    <div id="next-action">
         <form id="end-turn" action="/endTurn" method="POST">
             <% if (canEndTurnNow) { %>
                 <button type="submit">end turn</button>

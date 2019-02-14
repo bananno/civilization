@@ -17,6 +17,19 @@ a {
   color: #00B7FF;
 }
 
+#next-action {
+  position: absolute;
+  z-index: 150;
+  top: 40px;
+  left: 200px;
+}
+
+#next-action button {
+  padding: 5px 8px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
 .view-unit {
   position: absolute;
   bottom: 10px;
@@ -27,16 +40,6 @@ a {
   margin-top: 10px;
   padding: 10px;
   color: #fce8cc;
-}
-
-.info .close:hover {
-  cursor: pointer;
-}
-
-#end-turn button {
-  padding: 5px 8px;
-  cursor: pointer;
-  border-radius: 10px;
 }
 
 .unit-roster {
