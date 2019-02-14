@@ -1,6 +1,9 @@
 
 <%
     let actionsRemaining = false;
+
+    let needsResearch = playerRef[turnPlayerId].research == null
+        && playerRef[turnPlayerId].production.science > 0;
 %>
 
 <div id="next-action">
@@ -28,6 +31,13 @@
                 <button onClick="setActiveCity('<%= city._id %>')">city needs project</button>
             </div>
         <% }); %>
+    <% } %>
+
+    <% if (!actionsRemaining && needsResearch) { %>
+        <% actionsRemaining = true; %>
+        <div>
+            <button onClick="null">choose research</button>
+        </div>
     <% } %>
 
     <% if (!actionsRemaining) { %>

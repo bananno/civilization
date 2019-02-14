@@ -23,6 +23,7 @@ var PlayerSchema = new mongoose.Schema({
       default: 0,
     },
   },
+  research: Number,
 });
 
 var Player = mongoose.model('Player', PlayerSchema);
