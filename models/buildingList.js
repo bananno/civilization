@@ -1,5 +1,5 @@
 
-const buildingTypes = [
+const buildingList = [
   {
     name: 'palace',
     laborCost: 0,
@@ -35,4 +35,4 @@ const buildingTypes = [
   },
 ];
 
-module.exports = buildingTypes;
+module.exports = buildingList;
