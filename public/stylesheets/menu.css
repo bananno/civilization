@@ -49,9 +49,26 @@
   background-image: url(/images/menu-units-true.png);
 }
 
+#close-all-menus {
+  position: absolute;
+  top: 105px;
+  left: 160px;
+  z-index: 50;
+  display: none;
+  background-color: black;
+  color: white;
+  padding: 3px 5px;
+  border-radius: 5px;
+}
+
+#close-all-menus:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .menu {
   position: absolute;
-  top: 120px;
+  top: 130px;
   left: 10px;
   z-index: 50;
   display: none;

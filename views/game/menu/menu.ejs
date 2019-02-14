@@ -4,10 +4,14 @@
 
 <div id="menu-link-container">
     <% menuItems.forEach(item => { %>
-        <div class="menu-link menu-<%= item %>" onClick="clickMenuLink('<%= item %>')">
+        <div class="menu-link menu-<%= item %>" onClick="toggleMenu('<%= item %>')">
             <%= item %>
         </div>
     <% }); %>
+</div>
+
+<div id="close-all-menus" onClick="closeAllMenus()">
+    close
 </div>
 
 <div class="menu menu-units">

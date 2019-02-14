@@ -60,23 +60,26 @@ function useKeyboard(e) {
   }
 }
 
-function clickMenuLink(item, alwaysTrue) {
-  let $link = $('.menu-link.menu-' + item);
-
-  let showMenuNow = !$link.hasClass('active') || alwaysTrue;
-
-  $('.menu-link').removeClass('active');
-  $('.menu').hide();
-
-  if (showMenuNow) {
-    $link.addClass('active');
-    $('.menu.menu-' + item).show();
+function toggleMenu(item) {
+  let isOpenAlready = $('.menu-link.menu-' + item).hasClass('active');
+  if (isOpenAlready) {
+    closeAllMenus();
+  } else {
+    openMenu(item);
   }
+}
+
+function openMenu(item) {
+  closeAllMenus();
+  $('.menu-link.menu-' + item).addClass('active');
+  $('.menu.menu-' + item).show();
+  $('#close-all-menus').show();
 }
 
 function closeAllMenus() {
   $('.menu-link').removeClass('active');
   $('.menu').hide();
+  $('#close-all-menus').hide();
 }
 
 function goToNextAction(includeEndTurn) {
