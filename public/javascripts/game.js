@@ -32,10 +32,15 @@ function setup() {
     let $link = $(element);
     let item = $link.attr('item');
     $link.click(() => {
-      $('.menu-link').removeClass('active');
-      $link.addClass('active');
-      $('.menu').hide();
-      $('.menu.menu-' + item).show();
+      if ($link.hasClass('active')) {
+        $link.removeClass('active');
+        $('.menu').hide();
+      } else {
+        $('.menu-link').removeClass('active');
+        $link.addClass('active');
+        $('.menu').hide();
+        $('.menu.menu-' + item).show();
+      }
     });
   });
 
