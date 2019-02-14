@@ -3,15 +3,18 @@
   display: none;
   position: absolute;
   z-index: 100;
+}
+
+.view-city-top,
+.view-city-bottom {
+  width: 100%;
   padding: 10px;
   color: #fce8cc;
+  text-align: center;
 }
 
 .view-city-top {
-  top: 0;
-  width: 100%;
-  text-align: center;
-  margin-top: 40px;
+  top: 40px;
 }
 
 .view-city-top h1 {
@@ -21,18 +24,13 @@
 
 .view-city-bottom {
   bottom: 20px;
-  width: 100%;
-  text-align: center;
 }
 
 .view-city-left, .view-city-right {
   top: 0;
   overflow: scroll;
-  border: 2px solid gray;
-  border-radius: 10px;
   max-height: 90%;
   margin-top: 40px;
-  background-color: black;
 }
 
 .view-city-left {

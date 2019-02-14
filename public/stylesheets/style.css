@@ -122,3 +122,11 @@ img.production-icon {
 .header-culture {
   color: #ff00ff;
 }
+
+.info-box {
+  padding: 10px;
+  color: #fce8cc;
+  border: 2px solid gray;
+  border-radius: 10px;
+  background-color: black;
+}

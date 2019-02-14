@@ -46,7 +46,7 @@
     <h1>CITY TITLE</h1>
 </div>
 
-<div class="view-city view-city-left" city-id="<%= city._id %>">
+<div class="view-city view-city-left info-box" city-id="<%= city._id %>">
     <div class="section">
         population: <%= city.population %><br/>
         (<%= city.storage.food %> / <%= foodNeededForGrowth %>)<br/>
@@ -134,7 +134,7 @@
     </div>
 </div>
 
-<div class="view-city view-city-right" city-id="<%= city._id %>">
+<div class="view-city view-city-right info-box" city-id="<%= city._id %>">
     <div>
         buildings:
         <% city.buildings.forEach(i => { %>
