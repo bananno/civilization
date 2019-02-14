@@ -1,0 +1,18 @@
+Current research:
+<ul>
+    <li>
+        <% if (currentPlayer.researchCurrent == null ) { %>
+            none
+        <% } else { %>
+            <%= technologyList[currentPlayer.researchCurrent].name %>
+        <% } %>
+    </li>
+</ul>
+Choose research:
+<ul>
+    <% technologyList.forEach((tech, i) => { %>
+        <li>
+            <a href="/chooseResearch/<%= i %>"><%= tech.name %></a>
+        </li>
+    <% }); %>
+</ul>
