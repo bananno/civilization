@@ -1,7 +1,7 @@
 
 document.onkeydown = (e) => {
   if (e.key == 'Enter') {
-    $('form#end-turn').submit();
+    $('#next-action button').click();
     return;
   }
 
