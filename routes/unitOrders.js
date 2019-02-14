@@ -23,8 +23,8 @@ router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
       unitData.orders = 'sleep';
     } else if (orders == 'wake' || orders == 'cancel') {
       unitData.orders = null;
-    } else if (orders == 'buildFarm' || orders == 'buildRoad' || orders == 'chopForest'
-        || orders == 'removeImprovement') {
+    } else if (orders == 'buildFarm' || orders == 'buildMine' || orders == 'buildRoad'
+        || orders == 'chopForest' || orders == 'removeImprovement') {
       return improveLand(res, next, data, unit, orders);
     } else {
       console.log('invalid unit action');
@@ -53,6 +53,7 @@ function improveLand(res, next, data, unit, orders) {
 
   let unitType = unit.unitType.name;
   let inForest = tile.terrain.forest;
+  let onHill = tile.terrain.hill;
   let inOwnTerritory = '' + tile.player == '' + data.turnPlayerId;
   let inRivalTerritory = tile.player && !inOwnTerritory;
   let inCity = data.cities.filter(city => city.location[0] == unit.location[0]
@@ -67,6 +68,17 @@ function improveLand(res, next, data, unit, orders) {
 
     if (tile.project != 'farm') {
       tileData.project = 'farm';
+      tileData.progress = 0;
+    }
+  } else if (orders == 'buildMine') {
+    if (inForest || !onHill || inCity || !inOwnTerritory || unitType != 'worker'
+        || tile.improvement != null) {
+      return invalidAction();
+    }
+    unitData.orders = 'build mine';
+
+    if (tile.project != 'mine') {
+      tileData.project = 'mine';
       tileData.progress = 0;
     }
   } else if (orders == 'chopForest') {

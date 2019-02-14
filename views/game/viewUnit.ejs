@@ -4,6 +4,7 @@
     let noMoves = unit.movesRemaining == 0;
     let tile = findTile(unit.location);
     let inForest = tile.terrain.forest;
+    let onHill = tile.terrain.hill;
     let inOwnTerritory = tile.player && '' + tile.player == '' + turnPlayerId;
     let inRivalTerritory = tile.player && '' + tile.player != '' + turnPlayerId;
     let inCity = cities.filter(city => city.location[0] == unit.location[0]
@@ -28,6 +29,12 @@
             hidden: inCity || unit.orders == 'build farm' || tile.improvement == 'farm',
             disabled: inForest || !inOwnTerritory,
             text: 'build farm',
+        });
+        actions.push({
+            path: '/unitOrders/buildMine/' + unit._id,
+            hidden: !onHill || inCity || unit.orders == 'build mine' || tile.improvement == 'mine',
+            disabled: inForest || !inOwnTerritory,
+            text: 'build mine',
         });
         actions.push({
             path: '/unitOrders/chopForest/' + unit._id,
