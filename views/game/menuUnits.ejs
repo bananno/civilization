@@ -33,7 +33,7 @@
             <% if (projectTurns) { %>
                 (<%= projectTurns %>)
             <% } %>
-        <% } else { %>
+        <% } else if (unit.movesRemaining) { %>
             <br/>
             <span class="red">needs orders</span>
         <% } %>

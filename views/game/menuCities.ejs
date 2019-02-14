@@ -1,4 +1,59 @@
 
 <% currentTurnCities.forEach(city => { %>
-    CITIES HERE
+    <%
+        let className = 'city-roster';
+
+        if (city.project.category) {
+            className += ' done';
+        }
+
+        let projectTurns = 0;
+
+        if (projectTurns) {
+            projectTurns = Math.ceil(projectTurns / 2);
+        }
+
+        let currentProject = null;
+        let turnsToFinish = 0;
+        let project = city.project.category;
+
+        if (project == 'unit' || project == 'building') {
+            let laborTotal = 0;
+            let progress = 0;
+
+            if (project == 'unit') {
+                currentProject = unitTypes[city.project.index].name;
+                laborTotal = unitTypes[city.project.index].laborCost;
+            } else if (project == 'building') {
+                currentProject = buildingTypes[city.project.index].name;
+                laborTotal = buildingTypes[city.project.index].laborCost;
+            }
+
+            progress = city.projectProgress[city.project.category][city.project.index];
+            progress += city.storage.labor;
+            turnsToFinish = (laborTotal - progress) / city.production.labor;
+            turnsToFinish = Math.ceil(turnsToFinish);
+        } else if (project == 'gold') {
+            currentProject = 'gold';
+        }
+
+        let tilesWorked = tiles.filter(tile => {
+            return '' + tile.worked == '' + city._id;
+        });
+
+        let unemployment = city.population - tilesWorked.length + 1;
+    %>
+
+    <div class="<%= className %>" city-id="<%= city._id %>">
+        city
+        <br/><%= city.population %> citizens
+        <% if (unemployment) { %>
+            <br/><span class="red"><%= unemployment %> unemployed citizens</span>
+        <% } %>
+        <% if (currentProject) { %>
+            <br/>project: <%= currentProject %> (<%= turnsToFinish %> turns)
+        <% } else { %>
+            <br/><span class="red">needs project</span>
+        <% } %>
+    </div>
 <% }); %>

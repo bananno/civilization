@@ -44,14 +44,16 @@ a {
   color: #fce8cc;
 }
 
+.city-roster,
 .unit-roster {
   background-color: #eee;
-  padding: 3px 5px;
-  border-radius: 5px;
+  padding: 5px 8px;
+  border-radius: 10px;
   cursor: pointer;
   margin-bottom: 5px;
 }
 
+.city-roster.done,
 .unit-roster.done {
   background-color: #999;
 }
