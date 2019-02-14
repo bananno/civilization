@@ -7,9 +7,7 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
   let tileId = req.params.tileId;
 
   getData(req, res, next, (data) => {
-    let city = data.cities.filter(city => {
-      return city._id == cityId;
-    })[0];
+    let city = data.cityRef[cityId];
 
     let tile = data.tiles.filter(tile => {
       return tile._id == tileId;
@@ -35,6 +33,17 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
 
       if (cityTilesWorked.length >= city.population + 1) {
         console.log('All citizens are already employed at other tiles.');
+        return res.redirect('/');
+      }
+
+      let tileOutput = 0;
+
+      ['gold', 'food', 'labor', 'culture', 'science'].forEach(prod => {
+        tileOutput += tile.production[prod];
+      });
+
+      if (tileOutput == 0) {
+        console.log('Cannot work tiles with 0 production value.');
         return res.redirect('/');
       }
 
