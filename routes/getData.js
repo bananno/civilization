@@ -32,6 +32,8 @@ function getData(req, res, next, callback) {
       };
     });
 
+    data.currentPlayer = data.playerRef[data.turnPlayerId];
+
     // Initialize city production.
     // Calculate production from each city's buildings.
     data.cities.forEach(city => {

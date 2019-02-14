@@ -76,6 +76,17 @@
     </div>
 
     <div class="menu menu-research info-box">
+        Current research:
+        <ul>
+            <li>
+                <% if (currentPlayer.researchCurrent == null ) { %>
+                    none
+                <% } else { %>
+                    <%= technologyList[currentPlayer.researchCurrent].name %>
+                <% } %>
+            </li>
+        </ul>
+        Choose research:
         <ul>
             <% technologyList.forEach((tech, i) => { %>
                 <li>

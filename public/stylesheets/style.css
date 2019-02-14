@@ -130,3 +130,7 @@ img.production-icon {
   border-radius: 10px;
   background-color: black;
 }
+
+.info-box ul {
+  margin-left: 20px;
+}
