@@ -51,7 +51,10 @@
             <br/><span class="red"><%= unemployment %> unemployed citizens</span>
         <% } %>
         <% if (currentProject) { %>
-            <br/>project: <%= currentProject %> (<%= turnsToFinish %> turns)
+            <br/>project: <%= currentProject %>
+            <% if (turnsToFinish) { %>
+                (<%= turnsToFinish %> turns)
+            <% } %>
         <% } else { %>
             <br/><span class="red">needs project</span>
         <% } %>
