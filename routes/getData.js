@@ -75,7 +75,7 @@ function getData(req, res, next, callback) {
     });
 
     // Calculate each player's production per turn as the sum of all cities' production.
-    // Convert city labor to gold, if applicable.
+    // Convert city labor to another form of production, if applicable.
     data.cities.forEach(city => {
       let player = data.playerRef[city.player];
       player.production.gold += city.production.gold;
@@ -84,8 +84,10 @@ function getData(req, res, next, callback) {
       player.production.culture += city.production.culture;
       player.production.science += city.production.science;
 
-      if (city.project.category == 'gold') {
-        player.production.gold += Math.floor(city.production.labor / 2);
+      let prod = city.project.category;
+
+      if (prod == 'gold' || prod == 'culture' || prod == 'science') {
+        player.production[prod] += Math.floor(city.production.labor / 2);
       }
     });
 

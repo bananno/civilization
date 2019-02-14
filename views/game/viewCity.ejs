@@ -22,7 +22,7 @@
     let progress = 0;
     let turnsToFinish = 0;
     let project = city.project.category;
-    let extraGoldFromLabor = 0;
+    let laborConverted = 0;
 
     if (project == 'unit' || project == 'building') {
         if (project == 'unit') {
@@ -36,9 +36,9 @@
         progress += city.storage.labor;
         turnsToFinish = (laborTotal - progress) / city.production.labor;
         turnsToFinish = Math.ceil(turnsToFinish);
-    } else if (project == 'gold') {
-        currentProject = 'gold';
-        extraGoldFromLabor = Math.floor(city.production.labor / 2);
+    } else if (project == 'gold' || project == 'culture' || project == 'science') {
+        currentProject = project;
+        laborConverted = Math.floor(city.production.labor / 2);
     }
 %>
 
@@ -90,11 +90,10 @@
     </div>
     <div class="section">
         current project:<br/>
-        <% if (project == 'gold') { %>
-            gold <br/>
-            (<%= extraGoldFromLabor %> per turn)
+        <%= currentProject %>
+        <% if (laborConverted) { %>
+            <br/> (<%= laborConverted %> per turn)
         <% } else { %>
-            <%= currentProject %>
             <% if (laborTotal) { %>
                 (<%= progress %> / <%= laborTotal %>)
                 <br/>
@@ -116,6 +115,7 @@
                     <a href="<%= path %>"><%= unitType.name %></a>
                 </li>
             <% }); %>
+
             <% buildingList.forEach((buildingType, i) => { %>
                 <%
                     if (city.buildings.indexOf(i) >= 0) {
@@ -127,9 +127,12 @@
                     <a href="<%= path %>"><%= buildingType.name %></a>
                 </li>
             <% }); %>
-            <li>
-                <a href="/changeProject/<%= city._id %>/gold/0">gold</a>
-            </li>
+
+            <% ['gold', 'culture', 'science'].forEach(prod => { %>
+                <li>
+                    <a href="/changeProject/<%= city._id %>/<%= prod %>/0"><%= prod %></a>
+                </li>
+            <% }); %>
         </ul>
     </div>
 </div>
