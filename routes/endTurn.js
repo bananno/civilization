@@ -264,7 +264,7 @@ function allCitiesHaveProject(player, cities) {
 }
 
 function playerHasResearch(player) {
-  return player.research != null || player.production.science == 0;
+  return player.researchCurrent != null || player.production.science == 0;
 }
 
 module.exports = router;

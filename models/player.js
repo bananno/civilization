@@ -23,7 +23,9 @@ var PlayerSchema = new mongoose.Schema({
       default: 0,
     },
   },
-  research: Number,
+  technologies: [],
+  researchCurrent: Number,
+  researchProgress: [],
 });
 
 var Player = mongoose.model('Player', PlayerSchema);
