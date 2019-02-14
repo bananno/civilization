@@ -6,11 +6,15 @@
 </div>
 
 <div class="menu menu-units">
-    <% include ./units %>
+    <% currentTurnUnits.forEach(unit => { %>
+        <% include ./units %>
+    <% }); %>
 </div>
 
 <div class="menu menu-cities">
-    <% include ./cities %>
+    <% currentTurnCities.forEach(city => { %>
+        <% include ./cities %>
+    <% }); %>
 </div>
 
 <div class="menu menu-research info-box">
