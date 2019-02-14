@@ -109,7 +109,7 @@
                     if (city.population == 1 && unitType.name == 'settler') {
                         return;
                     }
-                    let path = '/changeProject/' + city._id + '/unit/' + i;
+                    let path = '/chooseProject/' + city._id + '/unit/' + i;
                 %>
                 <li>
                     <a href="<%= path %>"><%= unitType.name %></a>
@@ -121,7 +121,7 @@
                     if (city.buildings.indexOf(i) >= 0) {
                         return;
                     }
-                    let path = '/changeProject/' + city._id + '/building/' + i;
+                    let path = '/chooseProject/' + city._id + '/building/' + i;
                 %>
                 <li>
                     <a href="<%= path %>"><%= buildingType.name %></a>
@@ -130,7 +130,7 @@
 
             <% ['gold', 'culture', 'science'].forEach(prod => { %>
                 <li>
-                    <a href="/changeProject/<%= city._id %>/<%= prod %>/0"><%= prod %></a>
+                    <a href="/chooseProject/<%= city._id %>/<%= prod %>/0"><%= prod %></a>
                 </li>
             <% }); %>
         </ul>
