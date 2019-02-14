@@ -3,6 +3,7 @@ const technologyList = [
   {
     name: 'agriculture',
     scienceCost: 20,
+    blocked: [],
   },
   {
     name: 'hunting',

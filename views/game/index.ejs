@@ -7,8 +7,6 @@
         return '' + (player._id || player) == '' + turnPlayerId;
     };
 
-    let currentTurnPlayerId = '' + players[game.nextPlayer]._id;
-
     let [numRows, numCols] = game.mapSize;
 
     let currentTurnUnits = units.filter(unit => {
@@ -26,11 +24,7 @@
     let activeCity = null;
 
     let activeUnit = currentTurnUnits.filter(unit => {
-        let unitNeedsOrders = unit.movesRemaining > 0 && unit.orders == null;
-        if (unitNeedsOrders) {
-            return true;
-        }
-        return false;
+        return unit.movesRemaining > 0 && unit.orders == null;
     })[0];
 
     let map = [];
@@ -79,6 +73,12 @@
 
     <div class="menu menu-cities">
         <% include ./menuCities %>
+    </div>
+
+    <div class="menu menu-research info-box">
+        <% technologyList.forEach(tech => { %>
+            <%= tech.name %><br/>
+        <% }); %>
     </div>
 
     <% currentTurnCities.forEach(city => { %>
