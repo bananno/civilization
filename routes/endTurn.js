@@ -224,6 +224,7 @@ function endRound(res, data) {
     let playerData = {};
     playerData.storage = player.storage;
     playerData.storage.gold += player.production.gold;
+    playerData.storage.culture += player.production.culture;
     player.update(playerData, (error, player) => {
       updatePlayer(i + 1);
     });
