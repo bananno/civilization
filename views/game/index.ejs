@@ -161,8 +161,10 @@
 
         setup();
 
-        setActiveCity('<%= activeCity ? activeCity._id : null %>');
-        setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
+        if (activeUnitOrCityId == null) {
+            setActiveCity('<%= activeCity ? activeCity._id : null %>');
+            setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
+        }
     </script>
 </body>
 </html>

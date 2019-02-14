@@ -1,8 +1,7 @@
 
 document.onkeydown = (e) => {
   if (e.key == 'Enter') {
-    $('#next-action button').click();
-    return;
+    return goToNextAction(true);
   }
 
   if (e.key.match('Arrow')) {
@@ -50,6 +49,16 @@ function setup() {
       setActiveUnit(unitId, true);
     });
   });
+
+  goToNextAction(false);
+}
+
+function goToNextAction(includeEndTurn) {
+  if (includeEndTurn) {
+    $('#next-action button').click();
+  } else {
+    $('#next-action button').not('[type="submit"]').click();
+  }
 }
 
 function deactivateAll() {
