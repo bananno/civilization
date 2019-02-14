@@ -73,7 +73,7 @@ function endRound(res, data) {
 
       let projectDone = false;
 
-      if (unit.orders == 'build farm') {
+      if (unit.orders == 'build farm' || unit.orders == 'build mine') {
         tileData.progress = tile.progress + unit.movesRemaining;
       } else if (unit.orders == 'build road') {
         tileData.roadProgress = tile.roadProgress + unit.movesRemaining;
@@ -85,6 +85,12 @@ function endRound(res, data) {
         tileData.production = tile.production;
         tileData.production.food += 1;
         unitData.orders = null;
+      } else if (unit.orders == 'build mine' && tileData.progress >= 12) {
+        projectDone = true;
+        tileData.improvement = 'mine';
+        tileData.production = tile.production;
+        tileData.production.labor += 1;
+        unitData.orders = null;
       } else if (unit.orders == 'chop forest' && tileData.progress >= 5) {
         projectDone = true;
         tileData.terrain = tile.terrain;
@@ -94,6 +100,11 @@ function endRound(res, data) {
         tileData.improvement = null;
         tileData.production = tile.production;
         tileData.production.food -= 1;
+      } else if (unit.orders == 'remove mine' && unit.movesRemaining > 0) {
+        projectDone = true;
+        tileData.improvement = null;
+        tileData.production = tile.production;
+        tileData.production.labor -= 1;
       } else if (unit.orders == 'build road' && tileData.roadProgress >= 5) {
         tileData.road = true;
         unitData.orders = null;

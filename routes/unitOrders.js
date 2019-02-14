@@ -92,7 +92,8 @@ function improveLand(res, next, data, unit, orders) {
       tileData.progress = 0;
     }
   } else if (orders == 'removeImprovement') {
-    if (inRivalTerritory || unitType != 'worker' || tile.improvement != 'farm') {
+    if (inRivalTerritory || unitType != 'worker'
+        || (tile.improvement != 'farm' && tile.improvement != 'mine')) {
       return invalidAction();
     }
     unitData.orders = 'remove ' + tile.improvement;

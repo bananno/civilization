@@ -12,6 +12,8 @@
 
         if (unit.orders == 'build farm') {
             projectTurns = 10 - tile.progress;
+        } else if (unit.orders == 'build mine') {
+            projectTurns = 12 - tile.progress;
         } else if (unit.orders == 'chop forest') {
             projectTurns = 5 - tile.progress;
         } else if (unit.orders == 'build road') {

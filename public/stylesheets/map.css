@@ -153,6 +153,11 @@ div#map {
   background-size: 50px;
 }
 
+.layer-improvement.improvement-mine {
+  background-image: url(/images/map/mine.png);
+  background-size: 50px;
+}
+
 .layer-unit {
   background-size: auto 45px;
 }
