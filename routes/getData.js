@@ -3,13 +3,13 @@ const Player = require('../models/player');
 const Tile = require('../models/tile');
 const City = require('../models/city');
 const Unit = require('../models/unit');
-const buildingTypes = require('../models/buildingTypes');
-const unitTypes = require('../models/unitTypes');
+const buildingList = require('../models/buildingList');
+const unitList = require('../models/unitList');
 
 function getData(req, res, next, callback) {
   collectFromDatabase(req, res, next, data => {
-    data.buildingTypes = buildingTypes;
-    data.unitTypes = unitTypes;
+    data.buildingList = buildingList;
+    data.unitList = unitList;
 
     data.turnPlayerId = data.players[data.game.nextPlayer]._id;
 
@@ -45,13 +45,13 @@ function getData(req, res, next, callback) {
       let extraLaborPercentage = 0;
 
       city.buildings.forEach(i => {
-        city.production.gold += buildingTypes[i].production.gold;
-        city.production.food += buildingTypes[i].production.food;
-        city.production.labor += buildingTypes[i].production.labor;
-        city.production.culture += buildingTypes[i].production.culture;
-        city.production.science += buildingTypes[i].production.science;
+        city.production.gold += buildingList[i].production.gold;
+        city.production.food += buildingList[i].production.food;
+        city.production.labor += buildingList[i].production.labor;
+        city.production.culture += buildingList[i].production.culture;
+        city.production.science += buildingList[i].production.science;
 
-        if (buildingTypes[i].name == 'workshop') {
+        if (buildingList[i].name == 'workshop') {
           extraLaborPercentage += 10;
         }
       });

@@ -165,12 +165,12 @@ function endRound(res, data) {
       laborSoFar = cityData.projectProgress[projectCategory][projectIndex];
 
       if (projectCategory == 'unit') {
-        laborNeeded = data.unitTypes[projectIndex].laborCost;
-        if (data.unitTypes[projectIndex].name == 'settler') {
+        laborNeeded = data.unitList[projectIndex].laborCost;
+        if (data.unitList[projectIndex].name == 'settler') {
           allowGrowth = false;
         }
       } else if (projectCategory == 'building') {
-        laborNeeded = data.buildingTypes[projectIndex].laborCost;
+        laborNeeded = data.buildingList[projectIndex].laborCost;
       }
 
       projectIsComplete = laborSoFar >= laborNeeded;

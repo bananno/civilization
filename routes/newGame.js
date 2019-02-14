@@ -4,7 +4,6 @@ const Game = require('../models/game');
 const Player = require('../models/player');
 const Tile = require('../models/tile');
 const Unit = require('../models/unit');
-const unitTypes = require('../models/unitTypes');
 const createUnit = require('./createUnit');
 const helpers = require('./helpers');
 const getVisibleTilesFunction = require('./getVisibleTiles');

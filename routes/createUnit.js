@@ -1,12 +1,12 @@
 const Unit = require('../models/unit');
-const unitTypes = require('../models/unitTypes');
+const unitList = require('../models/unitList');
 
 const createUnit = (unitData, callback) => {
   let index = unitData.unitTypeIndex || 0;
 
-  unitData.unitType = unitData.unitType || unitTypes[index];
-  unitData.moves = unitData.moves || unitTypes[index].moves;
-  unitData.movesRemaining = unitData.movesRemaining || unitTypes[index].moves;
+  unitData.unitType = unitData.unitType || unitList[index];
+  unitData.moves = unitData.moves || unitList[index].moves;
+  unitData.movesRemaining = unitData.movesRemaining || unitList[index].moves;
 
   Unit.create(unitData, (error, unit) => {
     if (error) {

@@ -26,11 +26,11 @@
 
     if (project == 'unit' || project == 'building') {
         if (project == 'unit') {
-            currentProject = unitTypes[city.project.index].name;
-            laborTotal = unitTypes[city.project.index].laborCost;
+            currentProject = unitList[city.project.index].name;
+            laborTotal = unitList[city.project.index].laborCost;
         } else if (project == 'building') {
-            currentProject = buildingTypes[city.project.index].name;
-            laborTotal = buildingTypes[city.project.index].laborCost;
+            currentProject = buildingList[city.project.index].name;
+            laborTotal = buildingList[city.project.index].laborCost;
         }
         progress = city.projectProgress[city.project.category][city.project.index];
         progress += city.storage.labor;
@@ -105,7 +105,7 @@
     <div class="section">
         change construction:
         <ul>
-            <% unitTypes.forEach((unitType, i) => { %>
+            <% unitList.forEach((unitType, i) => { %>
                 <%
                     if (city.population == 1 && unitType.name == 'settler') {
                         return;
@@ -116,7 +116,7 @@
                     <a href="<%= path %>"><%= unitType.name %></a>
                 </li>
             <% }); %>
-            <% buildingTypes.forEach((buildingType, i) => { %>
+            <% buildingList.forEach((buildingType, i) => { %>
                 <%
                     if (city.buildings.indexOf(i) >= 0) {
                         return;
@@ -139,42 +139,42 @@
         buildings:
         <% city.buildings.forEach(i => { %>
             <div class="city-building-list">
-                <img src="/images/buildingIcons/<%= buildingTypes[i].name %>.png" class="project-logo">
+                <img src="/images/buildingIcons/<%= buildingList[i].name %>.png" class="project-logo">
                 <div class="descr">
-                    <h3><%= buildingTypes[i].name %></h3>
-                    <% if (buildingTypes[i].production.gold != 0) { %>
+                    <h3><%= buildingList[i].name %></h3>
+                    <% if (buildingList[i].production.gold != 0) { %>
                         <div class="production">
-                            <%= buildingTypes[i].production.gold %>
+                            <%= buildingList[i].production.gold %>
                             <img src="/images/gold.png" class="production-icon">
                         </div>
                     <% } %>
-                    <% if (buildingTypes[i].production.food != 0) { %>
+                    <% if (buildingList[i].production.food != 0) { %>
                         <div class="production">
-                            <%= buildingTypes[i].production.food %>
+                            <%= buildingList[i].production.food %>
                             <img src="/images/food.png" class="production-icon">
                         </div>
                     <% } %>
-                    <% if (buildingTypes[i].production.labor != 0) { %>
+                    <% if (buildingList[i].production.labor != 0) { %>
                         <div class="production">
-                            <%= buildingTypes[i].production.labor %>
+                            <%= buildingList[i].production.labor %>
                             <img src="/images/labor.png" class="production-icon">
                         </div>
                     <% } %>
-                    <% if (buildingTypes[i].name == 'workshop') { %>
+                    <% if (buildingList[i].name == 'workshop') { %>
                         <div class="production large">
                             10%
                             <img src="/images/labor.png" class="production-icon">
                         </div>
                     <% } %>
-                    <% if (buildingTypes[i].production.culture != 0) { %>
+                    <% if (buildingList[i].production.culture != 0) { %>
                         <div class="production">
-                            <%= buildingTypes[i].production.culture %>
+                            <%= buildingList[i].production.culture %>
                             <img src="/images/culture.png" class="production-icon">
                         </div>
                     <% } %>
-                    <% if (buildingTypes[i].production.science != 0) { %>
+                    <% if (buildingList[i].production.science != 0) { %>
                         <div class="production">
-                            <%= buildingTypes[i].production.science %>
+                            <%= buildingList[i].production.science %>
                             <img src="/images/science.png" class="production-icon">
                         </div>
                     <% } %>
