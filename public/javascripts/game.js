@@ -13,18 +13,9 @@ function setup() {
   $('.view-unit .close').click(deactivateAll);
 
   $('.menu-link').toArray().forEach(element => {
-    let $link = $(element);
-    let item = $link.attr('item');
-    $link.click(() => {
-      if ($link.hasClass('active')) {
-        $link.removeClass('active');
-        $('.menu').hide();
-      } else {
-        $('.menu-link').removeClass('active');
-        $link.addClass('active');
-        $('.menu').hide();
-        $('.menu.menu-' + item).show();
-      }
+    let item = $(element).attr('item');
+    $(element).click(() => {
+      clickMenuLink(item);
     });
   });
 
@@ -73,6 +64,20 @@ function useKeyboard(e) {
 
   if (e.key == 'Escape') {
     return deactivateAll();
+  }
+}
+
+function clickMenuLink(item, alwaysTrue) {
+  let $link = $('.menu-link.menu-' + item);
+
+  let showMenuNow = !$link.hasClass('active') || alwaysTrue;
+
+  $('.menu-link').removeClass('active');
+  $('.menu').hide();
+
+  if (showMenuNow) {
+    $link.addClass('active');
+    $('.menu.menu-' + item).show();
   }
 }
 
