@@ -40,6 +40,7 @@ const routeFiles = [
   'moveUnit',
   'foundCity',
   'chooseProject',
+  'chooseResearch',
   'unitOrders',
   'workTile',
   'endTurn',
