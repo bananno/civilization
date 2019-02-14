@@ -3,31 +3,8 @@ let tileSize = 50;
 let rowRadius = 6;
 let colRadius = 10;
 
-document.onkeydown = (e) => {
-  if (e.key == 'Enter') {
-    return goToNextAction(true);
-  }
-
-  if (e.key.match('Arrow')) {
-    if (e.key == 'ArrowUp') {
-      mapCenter[0] -= 1;
-    } else if (e.key == 'ArrowDown') {
-      mapCenter[0] += 1;
-    } else if (e.key == 'ArrowLeft') {
-      mapCenter[1] -= 1;
-    } else if (e.key == 'ArrowRight') {
-      mapCenter[1] += 1;
-    }
-
-    return centerMap();
-  }
-
-  if (e.key == 'Escape') {
-    return deactivateAll();
-  }
-};
-
 $(window).resize(resizeWindow);
+$(document).keydown(useKeyboard);
 
 function setup() {
   resizeWindow();
@@ -73,6 +50,30 @@ function resizeWindow() {
   let numCols = windowWidth / tileSize;
   colRadius = Math.floor(numCols / 2) + 1;
   centerMap();
+}
+
+function useKeyboard(e) {
+  if (e.key == 'Enter') {
+    return goToNextAction(true);
+  }
+
+  if (e.key.match('Arrow')) {
+    if (e.key == 'ArrowUp') {
+      mapCenter[0] -= 1;
+    } else if (e.key == 'ArrowDown') {
+      mapCenter[0] += 1;
+    } else if (e.key == 'ArrowLeft') {
+      mapCenter[1] -= 1;
+    } else if (e.key == 'ArrowRight') {
+      mapCenter[1] += 1;
+    }
+
+    return centerMap();
+  }
+
+  if (e.key == 'Escape') {
+    return deactivateAll();
+  }
 }
 
 function goToNextAction(includeEndTurn) {
