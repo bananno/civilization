@@ -5,7 +5,7 @@ const getData = require('./getData');
 router.get('/chooseResearch/:index', (req, res, next) => {
   getData(req, res, next, (data) => {
     let index = parseInt(req.params.index);
-    let player = data.playerRef[currentTurnPlayer];
+    let player = data.playerRef[data.turnPlayerId];
 
     let playerData = {
       researchCurrent: index,

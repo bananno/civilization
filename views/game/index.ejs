@@ -76,9 +76,13 @@
     </div>
 
     <div class="menu menu-research info-box">
-        <% technologyList.forEach(tech => { %>
-            <%= tech.name %><br/>
-        <% }); %>
+        <ul>
+            <% technologyList.forEach((tech, i) => { %>
+                <li>
+                    <a href="/chooseResearch/<%= i %>"><%= tech.name %></a>
+                </li>
+            <% }); %>
+        </ul>
     </div>
 
     <% currentTurnCities.forEach(city => { %>
