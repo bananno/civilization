@@ -73,7 +73,8 @@ function endRound(res, data) {
 
       let projectDone = false;
 
-      if (unit.orders == 'build farm' || unit.orders == 'build mine') {
+      if (unit.orders == 'build farm' || unit.orders == 'build mine'
+          || unit.orders == 'chop forest') {
         tileData.progress = tile.progress + unit.movesRemaining;
       } else if (unit.orders == 'build road') {
         tileData.roadProgress = tile.roadProgress + unit.movesRemaining;
