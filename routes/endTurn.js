@@ -18,6 +18,11 @@ router.post('/endTurn', (req, res, next) => {
       return res.redirect('/');
     }
 
+    if (!playerHasResearch(data.players[data.game.nextPlayer])) {
+      console.log('Player must choose research before ending turn.');
+      return res.redirect('/');
+    }
+
     if (data.game.nextPlayer < data.players.length - 1) {
       gameData.nextPlayer = data.game.nextPlayer + 1;
     } else {
@@ -256,6 +261,10 @@ function allCitiesHaveProject(player, cities) {
     }
   }
   return true;
+}
+
+function playerHasResearch(player) {
+  return player.research != null || player.production.science == 0;
 }
 
 module.exports = router;
