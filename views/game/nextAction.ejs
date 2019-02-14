@@ -1,0 +1,10 @@
+
+<div id="next-action">
+    <form id="end-turn" action="/endTurn" method="POST">
+        <% if (canEndTurnNow) { %>
+            <button type="submit">end turn</button>
+        <% } else { %>
+            <button type="submit" disabled="true">end turn</button>
+        <% } %>
+    </form>
+</div>
