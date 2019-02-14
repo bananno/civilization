@@ -134,6 +134,16 @@
         workable = false;
       }
 
+      let tileOutput = 0;
+
+      ['gold', 'food', 'labor', 'culture', 'science'].forEach(prod => {
+        tileOutput +=  map[r][c].tile.production[prod];
+      });
+
+      if (tileOutput == 0) {
+        workable = false;
+      }
+
       if (workable) {
         let tile = map[r][c].tile;
         let working = false;
