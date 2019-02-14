@@ -1,8 +1,13 @@
+<%
+    const menuItems = ['units', 'cities', 'research'];
+%>
 
 <div id="menu-link-container">
-    <div class="menu-link menu-units" item="units"> units </div>
-    <div class="menu-link menu-cities" item="cities"> cities </div>
-    <div class="menu-link menu-research" item="research"> research </div>
+    <% menuItems.forEach(item => { %>
+        <div class="menu-link menu-<%= item %>" onClick="clickMenuLink('<%= item %>')">
+            <%= item %>
+        </div>
+    <% }); %>
 </div>
 
 <div class="menu menu-units">

@@ -12,13 +12,6 @@ function setup() {
   $('.view-city .close').click(deactivateAll);
   $('.view-unit .close').click(deactivateAll);
 
-  $('.menu-link').toArray().forEach(element => {
-    let item = $(element).attr('item');
-    $(element).click(() => {
-      clickMenuLink(item);
-    });
-  });
-
   $('.unit-roster').toArray().forEach(element => {
     let unitId = $(element).attr('unit-id');
     $(element).click(() => {
@@ -81,6 +74,11 @@ function clickMenuLink(item, alwaysTrue) {
   }
 }
 
+function closeAllMenus() {
+  $('.menu-link').removeClass('active');
+  $('.menu').hide();
+}
+
 function goToNextAction(includeEndTurn) {
   if (includeEndTurn) {
     $('#next-action button').click();
@@ -91,15 +89,15 @@ function goToNextAction(includeEndTurn) {
 
 function deactivateAll() {
   $('.map-cell').removeClass('active');
-  $('.menu-link').removeClass('active');
 
   $('.view-city').hide();
   $('.view-unit').hide();
   $('form.move-unit').hide();
   $('form.work-tile').hide();
-  $('.menu').hide();
 
   activeUnitOrCityId = null;
+
+  closeAllMenus();
 }
 
 function setActiveCity(id) {
