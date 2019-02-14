@@ -3,13 +3,16 @@ const Player = require('../models/player');
 const Tile = require('../models/tile');
 const City = require('../models/city');
 const Unit = require('../models/unit');
+
 const buildingList = require('../models/buildingList');
 const unitList = require('../models/unitList');
+const technologyList = require('../models/technologyList');
 
 function getData(req, res, next, callback) {
   collectFromDatabase(req, res, next, data => {
     data.buildingList = buildingList;
     data.unitList = unitList;
+    data.technologyList = technologyList;
 
     data.turnPlayerId = data.players[data.game.nextPlayer]._id;
 
