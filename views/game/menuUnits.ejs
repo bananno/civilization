@@ -2,6 +2,7 @@
 <% currentTurnUnits.forEach(unit => { %>
     <%
         let className = 'unit-roster';
+
         if (unit.movesRemaining == 0 || unit.orders) {
             className += ' done';
         }
@@ -22,7 +23,7 @@
         }
     %>
 
-    <div class="<%= className %>" onClick="setActiveUnit('<%= unit._id %>')">
+    <div class="<%= className %>" unit-id="<%= unit._id %>">
         <%= unit.unitType.name %>
         <br/>
         <%= unit.movesRemaining %> moves remaining
@@ -32,6 +33,9 @@
             <% if (projectTurns) { %>
                 (<%= projectTurns %>)
             <% } %>
+        <% } else { %>
+            <br/>
+            <span class="red">needs orders</span>
         <% } %>
     </div>
 <% }); %>

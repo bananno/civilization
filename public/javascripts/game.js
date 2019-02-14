@@ -38,6 +38,13 @@ function setup() {
       $('.menu.menu-' + item).show();
     });
   });
+
+  $('.unit-roster').toArray().forEach(element => {
+    let unitId = $(element).attr('unit-id');
+    $(element).click(() => {
+      setActiveUnit(unitId, true);
+    });
+  });
 }
 
 function deactivateAll() {
@@ -69,8 +76,12 @@ function setActiveCity(id) {
   centerMap();
 }
 
-function setActiveUnit(id) {
+function setActiveUnit(id, showMenu) {
   deactivateAll();
+
+  if (showMenu) {
+    $('.menu.menu-units').show();
+  }
 
   activeUnitOrCityId = id;
 
