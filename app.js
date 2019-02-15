@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
-mongoose.connect('mongodb://localhost/civilization');
+mongoose.connect('mongodb://localhost/civilization', { useNewUrlParser: true });
 const db = mongoose.connection;
 
 const app = express();
