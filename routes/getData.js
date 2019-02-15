@@ -138,17 +138,28 @@ function collectFromDatabase(req, res, next, callback) {
 }
 
 function getTechnologyList(player, techList) {
+  const findTech = techName => {
+    return techList.filter(tech => tech.name == techName)[0];
+  };
+
+  const techIsFinished = tech => {
+    return tech.isFinished || player.technologies.indexOf(tech.name) >= 0;
+  };
+
   return techList.map((tech, i) => {
     tech.index = i;
 
-    if (player.technologies.indexOf(tech.name) >= 0) {
-      tech.isFinished = true;
-    } else if (false) {
-      tech.isBlocked = true;
-    } else {
-      tech.isAvailable = true;
-    }
+    tech.isFinished = techIsFinished(i);
+    tech.isBlocked = false;
 
+    tech.blocked.forEach(blockedName => {
+      const tech2 = findTech(blockedName);
+      if (!techIsFinished(tech2)) {
+        tech.isBlocked = true;
+      }
+    });
+
+    tech.isAvailable = !tech.isBlocked && !tech.isFinished;
     return tech;
   });
 }
