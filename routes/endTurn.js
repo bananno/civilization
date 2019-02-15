@@ -244,7 +244,7 @@ function endRound(res, data) {
     researchProgress += player.storage.science;
 
     if (researchProgress >= scienceCost) {
-      playerData.storage.science = scienceCost - researchProgress;
+      playerData.storage.science = researchProgress - scienceCost;
       playerData.technologies = player.technologies;
       playerData.technologies.push(player.researchCurrent);
       playerData.researchCurrent = null;
