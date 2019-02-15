@@ -1,18 +1,60 @@
+<%
+    let currentResearch = 'none';
+
+    if (currentPlayer.researchCurrent != null) {
+        currentResearch = technologyList[currentPlayer.researchCurrent].name;
+    }
+
+    let availableTechnologies = technologyList.map((tech, i) => {
+        tech.index = i;
+        return tech;
+    }).filter(tech => {
+        return true;
+    });
+
+    let blockedTechnologies = technologyList.filter(tech => {
+        return false;
+    });
+
+    let finishedTechnologies = technologyList.filter(tech => {
+        return currentPlayer.technologies.indexOf(tech.name) >= 0;
+    });
+%>
+
 Current research:
 <ul>
-    <li>
-        <% if (currentPlayer.researchCurrent == null ) { %>
-            none
-        <% } else { %>
-            <%= technologyList[currentPlayer.researchCurrent].name %>
-        <% } %>
-    </li>
+    <li> <%= currentResearch %> </li>
 </ul>
-Choose research:
+
+<p>
+    Choose research:
+</p>
 <ul>
-    <% technologyList.forEach((tech, i) => { %>
+    <% availableTechnologies.forEach(tech => { %>
         <li>
-            <a href="/chooseResearch/<%= i %>"><%= tech.name %></a>
+            <a href="/chooseResearch/<%= tech.index %>"><%= tech.name %></a>
+        </li>
+    <% }); %>
+</ul>
+
+<p>
+    Blocked technologies:
+</p>
+<ul>
+    <% blockedTechnologies.forEach(tech => { %>
+        <li>
+            <%= tech.name %>
+        </li>
+    <% }); %>
+</ul>
+
+<p>
+    Finished technologies:
+</p>
+<ul>
+    <% finishedTechnologies.forEach(tech => { %>
+        <li>
+            <%= tech.name %>
         </li>
     <% }); %>
 </ul>

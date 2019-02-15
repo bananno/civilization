@@ -74,3 +74,7 @@
   display: none;
   width: 200px;
 }
+
+.menu-research p {
+  margin-top: 10px;
+}
