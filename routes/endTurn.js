@@ -220,16 +220,39 @@ function endRound(res, data) {
     completeUpdate();
   }
 
-  // increment gold for all players
+  // increment production for all players
   const updatePlayer = (i) => {
     if (i >= data.players.length) {
       return goToNext();
     }
     let player = data.players[i];
     let playerData = {};
+
     playerData.storage = player.storage;
+    playerData.researchProgress = player.researchProgress;
+
+    // gold & culture go directly into storage for spending during turn
     playerData.storage.gold += player.production.gold;
     playerData.storage.culture += player.production.culture;
+
+    // research progress is applied to the current technology
+    let researchProgress = 0;
+    const currentTech = data.technologyList[player.researchCurrent];
+
+    researchProgress += playerData.researchProgress[player.researchCurrent];
+    researchProgress += player.production.science;
+    researchProgress += player.storage.science;
+
+    if (researchProgress >= currentTech.scienceCost) {
+      playerData.storage.science = currentTech.scienceCost - researchProgress;
+      playerData.technologies = player.technologies;
+      playerData.technologies.push(currentTech.name);
+      playerData.researchCurrent = null;
+    } else {
+      playerData.storage.science = 0;
+      playerData.researchProgress[player.researchCurrent] = researchProgress;
+    }
+
     player.update(playerData, (error, player) => {
       updatePlayer(i + 1);
     });
