@@ -6,6 +6,12 @@ router.get('/chooseResearch/:index', (req, res, next) => {
   getData(req, res, next, (data) => {
     let index = parseInt(req.params.index);
     let player = data.playerRef[data.turnPlayerId];
+    let technology = data.technologyList[index];
+
+    if (!technology.isAvailable) {
+      console.log('Technology is not available.');
+      return res.redirect('/');
+    }
 
     let playerData = {
       researchCurrent: index,

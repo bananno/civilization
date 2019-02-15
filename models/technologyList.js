@@ -8,7 +8,7 @@ const technologyList = [
   {
     name: 'hunting',
     scienceCost: 30,
-    blocked: ['agriculture'],
+    blocked: [],
   },
   {
     name: 'animal husbandry',
