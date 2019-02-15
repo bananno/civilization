@@ -12,7 +12,6 @@ function getData(req, res, next, callback) {
   collectFromDatabase(req, res, next, data => {
     data.buildingList = buildingList;
     data.unitList = unitList;
-    data.technologyList = technologyList;
 
     data.turnPlayerId = data.players[data.game.nextPlayer]._id;
 
@@ -33,6 +32,8 @@ function getData(req, res, next, callback) {
     });
 
     data.currentPlayer = data.playerRef[data.turnPlayerId];
+
+    data.technologyList = getTechnologyList(data.currentPlayer, technologyList);
 
     // Initialize city production.
     // Calculate production from each city's buildings.
@@ -133,6 +134,22 @@ function collectFromDatabase(req, res, next, callback) {
         });
       });
     });
+  });
+}
+
+function getTechnologyList(player, techList) {
+  return techList.map((tech, i) => {
+    tech.index = i;
+
+    if (player.technologies.indexOf(tech.name) >= 0) {
+      tech.isFinished = true;
+    } else if (false) {
+      tech.isBlocked = true;
+    } else {
+      tech.isAvailable = true;
+    }
+
+    return tech;
   });
 }
 
