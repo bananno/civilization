@@ -1,14 +1,25 @@
 <%
-    let currentResearch = 'none';
-
-    if (currentPlayer.researchCurrent != null) {
-        currentResearch = technologyList[currentPlayer.researchCurrent].name;
+    const getTurns = (tech) => {
+        const totalCost = tech.scienceCost,
+              progress = currentPlayer.researchProgress[tech.index] || 0,
+              perTurn = currentPlayer.production.science;
+        return Math.ceil((totalCost - progress) / perTurn);
     }
+
+    const currentTech = currentPlayer.researchCurrent == null ? null
+        : technologyList[currentPlayer.researchCurrent];
 %>
 
 Current research:
 <ul>
-    <li> <%= currentResearch %> </li>
+    <li>
+        <% if (currentTech) { %>
+            <%= currentTech.name %>
+            (<%= getTurns(currentTech) %> turns)
+        <% } else { %>
+            none
+        <% } %>
+    </li>
 </ul>
 
 <p>
@@ -18,6 +29,7 @@ Current research:
     <% technologyList.filter(tech => tech.isAvailable).forEach(tech => { %>
         <li>
             <a href="/chooseResearch/<%= tech.index %>"><%= tech.name %></a>
+            (<%= getTurns(tech) %> turns)
         </li>
     <% }); %>
 </ul>
