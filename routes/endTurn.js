@@ -225,8 +225,8 @@ function endRound(res, data) {
     if (i >= data.players.length) {
       return goToNext();
     }
-    let player = data.players[i];
-    let playerData = {};
+    const player = data.players[i];
+    const playerData = {};
 
     playerData.storage = player.storage;
     playerData.researchProgress = player.researchProgress;
@@ -236,24 +236,24 @@ function endRound(res, data) {
     playerData.storage.culture += player.production.culture;
 
     // research progress is applied to the current technology
+    const scienceCost = data.technologyList[player.researchCurrent].scienceCost;
     let researchProgress = 0;
-    const currentTech = data.technologyList[player.researchCurrent];
 
     researchProgress += playerData.researchProgress[player.researchCurrent];
     researchProgress += player.production.science;
     researchProgress += player.storage.science;
 
-    if (researchProgress >= currentTech.scienceCost) {
-      playerData.storage.science = currentTech.scienceCost - researchProgress;
+    if (researchProgress >= scienceCost) {
+      playerData.storage.science = scienceCost - researchProgress;
       playerData.technologies = player.technologies;
-      playerData.technologies.push(currentTech.name);
+      playerData.technologies.push(player.researchCurrent);
       playerData.researchCurrent = null;
     } else {
       playerData.storage.science = 0;
       playerData.researchProgress[player.researchCurrent] = researchProgress;
     }
 
-    player.update(playerData, (error, player) => {
+    player.update(playerData, error => {
       updatePlayer(i + 1);
     });
   };

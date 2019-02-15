@@ -143,7 +143,7 @@ function getTechnologyList(player, techList) {
   };
 
   const techIsFinished = tech => {
-    return tech.isFinished || player.technologies.indexOf(tech.name) >= 0;
+    return tech.isFinished || player.technologies.indexOf(tech.index) >= 0;
   };
 
   return techList.map((tech, i) => {
