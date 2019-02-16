@@ -3,7 +3,8 @@
     let actionsRemaining = false;
 
     let needsResearch = playerRef[turnPlayerId].researchCurrent == null
-        && playerRef[turnPlayerId].production.science > 0;
+        && playerRef[turnPlayerId].production.science > 0
+        && technologyList.filter(tech => tech.isAvailable).length > 0;
 %>
 
 <div id="next-action">
