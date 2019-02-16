@@ -46,6 +46,12 @@ function improveLand(res, next, data, unit, orders) {
     return res.redirect('/');
   };
 
+  const playerHasTech = (techName) => {
+    return data.currentPlayer.technologies.filter(techIndex => {
+      return data.technologyList[techIndex] == techName;
+    }).length > 0;
+  };
+
   let unitData = {};
   let tileData = {};
 
@@ -61,7 +67,7 @@ function improveLand(res, next, data, unit, orders) {
 
   if (orders == 'buildFarm') {
     if (inForest || inCity || !inOwnTerritory || unitType != 'worker'
-        || tile.improvement != null) {
+        || tile.improvement != null || !playerHasTech('agriculture')) {
       return invalidAction();
     }
     unitData.orders = 'build farm';
