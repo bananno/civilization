@@ -3,6 +3,15 @@
         258, 280, 304, 329, 354, 380, 407, 435, 464, 493, 523, 554, 585, 617, 650, 684, 719, 754,
         790, 826, 863, 901, 940, 979];
 
+    const getTurns = (project, template, index) => {
+        const totalCost = template.laborCost,
+              progress = city.projectProgress[index] || 0,
+              rollover = city.storage.labor,
+              perTurn = city.production.labor;
+
+        return Math.ceil((totalCost - (progress + rollover)) / perTurn);
+    }
+
     let foodNeededForGrowth = growthRate[city.population];
 
     let foodSurplusPerTurn = city.production.food - (city.population * 2);
@@ -22,7 +31,8 @@
     let progress = 0;
     let turnsToFinish = 0;
     let project = city.project.category;
-    let laborConverted = 0;
+    let laborConverted = Math.floor(city.production.labor / 2);
+    let convertingLabor = false;
 
     if (project == 'unit' || project == 'building') {
         if (project == 'unit') {
@@ -38,7 +48,7 @@
         turnsToFinish = Math.ceil(turnsToFinish);
     } else if (project == 'gold' || project == 'culture' || project == 'science') {
         currentProject = project;
-        laborConverted = Math.floor(city.production.labor / 2);
+        convertingLabor = true;
     }
 %>
 
@@ -91,7 +101,7 @@
     <div class="section">
         current project:<br/>
         <%= currentProject %>
-        <% if (laborConverted) { %>
+        <% if (convertingLabor) { %>
             <br/> (<%= laborConverted %> per turn)
         <% } else { %>
             <% if (laborTotal) { %>
@@ -113,10 +123,12 @@
                     if (!unitType.isAvailable) {
                         return;
                     }
-                    let path = '/chooseProject/' + city._id + '/unit/' + i;
+                    const path = '/chooseProject/' + city._id + '/unit/' + i;
+                    const turns = getTurns('unit', unitType, i);
                 %>
                 <li>
                     <a href="<%= path %>"><%= unitType.name %></a>
+                    (<%= turns %> turns)
                 </li>
             <% }); %>
         </ul>
@@ -130,10 +142,12 @@
                     if (!buildingType.isAvailable) {
                         return;
                     }
-                    let path = '/chooseProject/' + city._id + '/building/' + i;
+                    const path = '/chooseProject/' + city._id + '/building/' + i;
+                    const turns = getTurns('building', buildingType, i);
                 %>
                 <li>
                     <a href="<%= path %>"><%= buildingType.name %></a>
+                    (<%= turns %> turns)
                 </li>
             <% }); %>
         </ul>
@@ -142,6 +156,7 @@
             <% ['gold', 'culture', 'science'].forEach(prod => { %>
                 <li>
                     <a href="/chooseProject/<%= city._id %>/<%= prod %>/0"><%= prod %></a>
+                    (<%= laborConverted %> per turn)
                 </li>
             <% }); %>
         </ul>
