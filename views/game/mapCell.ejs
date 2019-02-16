@@ -20,7 +20,14 @@
     if (cell.lit || cell.owned || cell.discovered) {
 
         if (tile.terrain.water) {
-            tileStack.push('water');
+            let [r, c] = tile.location;
+            let waterLayer = ['water'];
+            if (r > 0 && c > 0 && c < numCols) {
+                if (!tileRef[r][c-1].terrain.water && !tileRef[r-1][c].terrain.water)
+                waterLayer.push('layer-curve-top-left');
+            }
+            tileStack.push('ground ground-grassland');
+            tileStack.push(waterLayer.join(' '));
         } else {
             tileStack.push('ground ground-' + tile.terrain.ground);
         }
