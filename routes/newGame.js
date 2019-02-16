@@ -75,11 +75,12 @@ router.post('/newGame', (req, res, next) => {
         }
       }
 
-      let pattern = mapPatterns.water[0];
-      let startRangeRow = 0 - pattern.length;
-      let endRangeRow = game.mapSize[0] + pattern.length;
-
       for (let count = 0; count < 10; count++) {
+        let patternNumber = helpers.getRandomInt(0, mapPatterns.water.length - 1);
+        let pattern = mapPatterns.water[patternNumber];
+        let startRangeRow = 0 - pattern.length;
+        let endRangeRow = game.mapSize[0] + pattern.length;
+
         let startRow = helpers.getRandomInt(startRangeRow, endRangeRow);
         let startCol = helpers.getRandomInt(0, game.mapSize[1]);
 
