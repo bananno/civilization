@@ -48,7 +48,7 @@ function improveLand(res, next, data, unit, orders) {
 
   const playerHasTech = (techName) => {
     return data.currentPlayer.technologies.filter(techIndex => {
-      return data.technologyList[techIndex] == techName;
+      return data.technologyList[techIndex].name == techName;
     }).length > 0;
   };
 
