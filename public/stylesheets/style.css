@@ -19,6 +19,10 @@ a {
   color: #00B7FF;
 }
 
+button:disabled {
+  color: #333;
+}
+
 #next-action {
   position: absolute;
   z-index: 150;
