@@ -56,16 +56,12 @@ router.post('/newGame', (req, res, next) => {
           };
 
           let mountain = helpers.booleanByPercentage(5);
-          let water = helpers.booleanByPercentage(5);
 
           if (mountain) {
             tileData.terrain.mountain = true;
             tileData.production.food = 0;
             tileData.production.gold = 0;
             tileData.production.labor = 0;
-          } else if (water) {
-            tileData.terrain.ground = null;
-            tileData.terrain.water = true;
           } else {
             let hill = helpers.booleanByPercentage(25);
             let forest = helpers.booleanByPercentage(40);
@@ -82,9 +78,6 @@ router.post('/newGame', (req, res, next) => {
       let pattern = mapPatterns[0];
       let startRangeRow = 0 - pattern.length;
       let endRangeRow = game.mapSize[0] + pattern.length;
-
-      console.log(startRangeRow)
-      console.log(endRangeRow)
 
       for (let count = 0; count < 10; count++) {
         let startRow = helpers.getRandomInt(startRangeRow, endRangeRow);
@@ -103,6 +96,8 @@ router.post('/newGame', (req, res, next) => {
               let c = helpers.getColumn(game.mapSize[1], startCol + c1);
               tempRefMap[r][c].terrain.ground = null;
               tempRefMap[r][c].terrain.water = true;
+              tempRefMap[r][c].terrain.hill = false;
+              tempRefMap[r][c].terrain.forest = false;
             }
           }
         }
