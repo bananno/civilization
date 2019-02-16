@@ -149,7 +149,7 @@ function getTechnologyList(player, techList) {
   return techList.map((tech, i) => {
     tech.index = i;
 
-    tech.isFinished = techIsFinished(i);
+    tech.isFinished = techIsFinished(tech);
     tech.isBlocked = false;
 
     tech.blocked.forEach(blockedName => {
