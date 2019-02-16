@@ -62,14 +62,11 @@ var TileSchema = new mongoose.Schema({
     },
   },
   terrain: {
-    ground: {
-      type: String,
-      default: 'grassland',
-      // grassland, plains, desert, tundra, coast, ocean
-    },
+    ground: String,
     forest: Boolean,
     hill: Boolean,
     mountain: Boolean,
+    water: Boolean,
   },
 });
 
