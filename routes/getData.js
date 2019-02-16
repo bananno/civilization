@@ -10,9 +10,6 @@ const technologyList = require('../models/technologyList');
 
 function getData(req, res, next, callback) {
   collectFromDatabase(req, res, next, data => {
-    data.buildingList = buildingList;
-    data.unitList = unitList;
-
     data.turnPlayerId = data.players[data.game.nextPlayer]._id;
 
     data.playerRef = {};
@@ -34,6 +31,8 @@ function getData(req, res, next, callback) {
     data.currentPlayer = data.playerRef[data.turnPlayerId];
 
     data.technologyList = getTechnologyList(data.currentPlayer, technologyList);
+    data.buildingList = mapTechRequirements(buildingList, data.technologyList);
+    data.unitList = mapTechRequirements(unitList, data.technologyList);
 
     // Initialize city production.
     // Calculate production from each city's buildings.
@@ -137,11 +136,11 @@ function collectFromDatabase(req, res, next, callback) {
   });
 }
 
-function getTechnologyList(player, techList) {
-  const findTech = techName => {
-    return techList.filter(tech => tech.name == techName)[0];
-  };
+function findTechByName(techList, techName) {
+  return techList.filter(tech => tech.name == techName)[0];
+}
 
+function getTechnologyList(player, techList) {
   const techIsFinished = tech => {
     return tech.isFinished || player.technologies.indexOf(tech.index) >= 0;
   };
@@ -153,7 +152,7 @@ function getTechnologyList(player, techList) {
     tech.isBlocked = false;
 
     tech.blocked.forEach(blockedName => {
-      const tech2 = findTech(blockedName);
+      const tech2 = findTechByName(techList, blockedName);
       if (!techIsFinished(tech2)) {
         tech.isBlocked = true;
       }
@@ -161,6 +160,18 @@ function getTechnologyList(player, techList) {
 
     tech.isAvailable = !tech.isBlocked && !tech.isFinished;
     return tech;
+  });
+}
+
+function mapTechRequirements(templateList, techList) {
+  return templateList.map(template => {
+    template.isAvailable = true;
+    template.technologies.forEach(techName => {
+      if (!findTechByName(techList, techName).isFinished) {
+        template.isAvailable = false;
+      }
+    });
+    return template;
   });
 }
 
