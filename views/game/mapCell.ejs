@@ -19,7 +19,11 @@
 
     if (cell.lit || cell.owned || cell.discovered) {
 
-        tileStack.push('ground ground-' + tile.terrain.ground);
+        if (tile.terrain.water) {
+            tileStack.push('water');
+        } else {
+            tileStack.push('ground ground-' + tile.terrain.ground);
+        }
 
         if (cell.player) {
             className += ' player' + cell.player;

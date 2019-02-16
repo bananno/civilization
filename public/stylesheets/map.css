@@ -46,13 +46,13 @@ div#map {
   background-position: center;
 }
 
-.layer-ground.ground-grassland {
-  background-image: url(/images/map/grassland.png);
+.layer-water {
+  background-image: url(/images/map/water.png);
   background-size: 90px;
 }
 
-.layer-ground.ground-water {
-  background-image: url(/images/map/water.png);
+.layer-ground.ground-grassland {
+  background-image: url(/images/map/grassland.png);
   background-size: 90px;
 }
 

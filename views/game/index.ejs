@@ -90,7 +90,12 @@
             <% for (let c = 0; c < map[r].length; c++) { %>
                 <%
                     let features = [];
-                    features.push(map[r][c].tile.terrain.ground);
+                    if (map[r][c].tile.terrain.water) {
+                        features.push('water');
+                    }
+                    if (map[r][c].tile.terrain.ground) {
+                        features.push(map[r][c].tile.terrain.ground);
+                    }
                     if (map[r][c].tile.terrain.mountain) {
                         features.push('mountain');
                     }
