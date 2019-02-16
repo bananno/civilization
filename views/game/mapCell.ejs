@@ -22,9 +22,25 @@
         if (tile.terrain.water) {
             let [r, c] = tile.location;
             let waterLayer = ['water'];
-            if (r > 0 && c > 0 && c < numCols) {
-                if (!tileRef[r][c-1].terrain.water && !tileRef[r-1][c].terrain.water)
-                waterLayer.push('layer-curve-top-left');
+            let c1 = helpers.getColumn(numCols, c - 1);
+            let c2 = helpers.getColumn(numCols, c + 1);
+            let leftLand = !tileRef[r][c1].terrain.water;
+            let rightLand = !tileRef[r][c2].terrain.water;
+            if (r > 0 && !tileRef[r - 1][c].terrain.water) {
+                if (leftLand) {
+                    waterLayer.push('layer-curve-top-left');
+                }
+                if (rightLand) {
+                    waterLayer.push('layer-curve-top-right');
+                }
+            }
+            if (r < numRows - 1 && !tileRef[r + 1][c].terrain.water) {
+                if (leftLand) {
+                    waterLayer.push('layer-curve-bottom-left');
+                }
+                if (rightLand) {
+                    waterLayer.push('layer-curve-bottom-right');
+                }
             }
             tileStack.push('ground ground-grassland');
             tileStack.push(waterLayer.join(' '));

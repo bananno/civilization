@@ -55,6 +55,18 @@ div#map {
   border-top-left-radius: 20px;
 }
 
+.layer-curve-top-right {
+  border-top-right-radius: 20px;
+}
+
+.layer-curve-bottom-left {
+  border-bottom-left-radius: 20px;
+}
+
+.layer-curve-bottom-right {
+  border-bottom-right-radius: 20px;
+}
+
 .layer-ground.ground-grassland {
   background-image: url(/images/map/grassland.png);
   background-size: 90px;
