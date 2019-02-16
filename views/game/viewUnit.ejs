@@ -12,7 +12,7 @@
 
     const playerHasTech = (techName) => {
         return currentPlayer.technologies.filter(techIndex => {
-            return technologyList[techIndex] == techName;
+            return technologyList[techIndex].name == techName;
         }).length > 0;
     };
 
