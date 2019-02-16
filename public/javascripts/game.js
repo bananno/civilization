@@ -58,6 +58,10 @@ function useKeyboard(e) {
   if (e.key == 'Escape') {
     return deactivateAll();
   }
+
+  if (e.key == ' ') {
+    $('form.unit-skip-turn:visible').submit();
+  }
 }
 
 function toggleMenu(item) {

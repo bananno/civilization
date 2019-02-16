@@ -61,6 +61,7 @@
         actions.push({
             path: '/unitOrders/skipTurn/' + unit._id,
             text: 'skip turn',
+            class: 'unit-skip-turn',
         });
     }
 
@@ -113,7 +114,11 @@
                     return;
                 }
             %>
-            <form action="<%= action.path %>" method="post">
+            <% if (action.class) { %>
+                <form action="<%= action.path %>" method="post" class="<%= action.class %>">
+            <% } else { %>
+                <form action="<%= action.path %>" method="post">
+            <% } %>
                 <% if (action.disabled) { %>
                     <button disabled="disabled"><%= action.text %></button>
                 <% } else { %>
