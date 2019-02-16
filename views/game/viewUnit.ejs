@@ -1,16 +1,22 @@
 <%
-    let unitType = unit.unitType.name;
-    let movesRemaining = unit.movesRemaining > 0;
-    let noMoves = unit.movesRemaining == 0;
-    let tile = findTile(unit.location);
-    let inForest = tile.terrain.forest;
-    let onHill = tile.terrain.hill;
-    let inOwnTerritory = tile.player && '' + tile.player == '' + turnPlayerId;
-    let inRivalTerritory = tile.player && '' + tile.player != '' + turnPlayerId;
-    let inCity = cities.filter(city => city.location[0] == unit.location[0]
+    const unitType = unit.unitType.name;
+    const movesRemaining = unit.movesRemaining > 0;
+    const noMoves = unit.movesRemaining == 0;
+    const tile = findTile(unit.location);
+    const inForest = tile.terrain.forest;
+    const onHill = tile.terrain.hill;
+    const inOwnTerritory = tile.player && '' + tile.player == '' + turnPlayerId;
+    const inRivalTerritory = tile.player && '' + tile.player != '' + turnPlayerId;
+    const inCity = cities.filter(city => city.location[0] == unit.location[0]
         && city.location[1] == unit.location[1]).length > 0;
 
-    let actions = [];
+    const playerHasTech = (techName) => {
+        return currentPlayer.technologies.filter(techIndex => {
+            return technologyList[techIndex] == techName;
+        }).length > 0;
+    };
+
+    const actions = [];
 
     if (unitType == 'settler') {
         actions.push({
@@ -27,7 +33,7 @@
         actions.push({
             path: '/unitOrders/buildFarm/' + unit._id,
             hidden: inCity || unit.orders == 'build farm' || tile.improvement == 'farm',
-            disabled: inForest || !inOwnTerritory,
+            disabled: inForest || !inOwnTerritory || !playerHasTech('agriculture'),
             text: 'build farm',
         });
         actions.push({
