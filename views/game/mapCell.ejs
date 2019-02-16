@@ -18,34 +18,40 @@
     }
 
     if (cell.lit || cell.owned || cell.discovered) {
+        const [r, c] = tile.location;
+
+        const c1 = helpers.getColumn(numCols, c - 1);
+        const c2 = helpers.getColumn(numCols, c + 1);
+
+        const leftCoast = tileRef[r][c].terrain.water != tileRef[r][c1].terrain.water;
+        const rightCoast = tileRef[r][c].terrain.water != tileRef[r][c2].terrain.water;
+
+        const cornerCoasts = [];
+
+        if (r > 0 && tileRef[r][c].terrain.water != tileRef[r - 1][c].terrain.water) {
+            if (leftCoast) {
+                cornerCoasts.push('layer-curve-top-left');
+            }
+            if (rightCoast) {
+                cornerCoasts.push('layer-curve-top-right');
+            }
+        }
+
+        if (r < numRows - 1 && tileRef[r][c].terrain.water != tileRef[r + 1][c].terrain.water) {
+            if (leftCoast) {
+                cornerCoasts.push('layer-curve-bottom-left');
+            }
+            if (rightCoast) {
+                cornerCoasts.push('layer-curve-bottom-right');
+            }
+        }
 
         if (tile.terrain.water) {
-            let [r, c] = tile.location;
-            let waterLayer = ['water'];
-            let c1 = helpers.getColumn(numCols, c - 1);
-            let c2 = helpers.getColumn(numCols, c + 1);
-            let leftLand = !tileRef[r][c1].terrain.water;
-            let rightLand = !tileRef[r][c2].terrain.water;
-            if (r > 0 && !tileRef[r - 1][c].terrain.water) {
-                if (leftLand) {
-                    waterLayer.push('layer-curve-top-left');
-                }
-                if (rightLand) {
-                    waterLayer.push('layer-curve-top-right');
-                }
-            }
-            if (r < numRows - 1 && !tileRef[r + 1][c].terrain.water) {
-                if (leftLand) {
-                    waterLayer.push('layer-curve-bottom-left');
-                }
-                if (rightLand) {
-                    waterLayer.push('layer-curve-bottom-right');
-                }
-            }
             tileStack.push('ground ground-grassland');
-            tileStack.push(waterLayer.join(' '));
+            tileStack.push('water ' + cornerCoasts.join(' '));
         } else {
-            tileStack.push('ground ground-' + tile.terrain.ground);
+            tileStack.push('water');
+            tileStack.push('ground ground-' + tile.terrain.ground + ' ' + cornerCoasts.join(' '));
         }
 
         if (cell.player) {
