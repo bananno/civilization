@@ -236,21 +236,25 @@ function endRound(res, data) {
     playerData.storage.culture += player.production.culture;
 
     // research progress is applied to the current technology
-    const scienceCost = data.technologyList[player.researchCurrent].scienceCost;
-    let researchProgress = 0;
+    if (player.researchCurrent) {
+      const scienceCost = data.technologyList[player.researchCurrent].scienceCost;
+      let researchProgress = 0;
 
-    researchProgress += playerData.researchProgress[player.researchCurrent];
-    researchProgress += player.production.science;
-    researchProgress += player.storage.science;
+      researchProgress += playerData.researchProgress[player.researchCurrent];
+      researchProgress += player.production.science;
+      researchProgress += player.storage.science;
 
-    if (researchProgress >= scienceCost) {
-      playerData.storage.science = researchProgress - scienceCost;
-      playerData.technologies = player.technologies;
-      playerData.technologies.push(player.researchCurrent);
-      playerData.researchCurrent = null;
+      if (researchProgress >= scienceCost) {
+        playerData.storage.science = researchProgress - scienceCost;
+        playerData.technologies = player.technologies;
+        playerData.technologies.push(player.researchCurrent);
+        playerData.researchCurrent = null;
+      } else {
+        playerData.storage.science = 0;
+        playerData.researchProgress[player.researchCurrent] = researchProgress;
+      }
     } else {
-      playerData.storage.science = 0;
-      playerData.researchProgress[player.researchCurrent] = researchProgress;
+      playerData.storage.science += player.production.science;
     }
 
     player.update(playerData, error => {
