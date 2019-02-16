@@ -102,11 +102,15 @@
         <% } %>
     </div>
     <div class="section">
-        change construction:
+        <h3>CHOOSE PROJECT</h3>
+        units:
         <ul>
             <% unitList.forEach((unitType, i) => { %>
                 <%
                     if (city.population == 1 && unitType.name == 'settler') {
+                        return;
+                    }
+                    if (!unitType.isAvailable) {
                         return;
                     }
                     let path = '/chooseProject/' + city._id + '/unit/' + i;
@@ -115,10 +119,15 @@
                     <a href="<%= path %>"><%= unitType.name %></a>
                 </li>
             <% }); %>
-
+        </ul>
+        buildings:
+        <ul>
             <% buildingList.forEach((buildingType, i) => { %>
                 <%
                     if (city.buildings.indexOf(i) >= 0) {
+                        return;
+                    }
+                    if (!buildingType.isAvailable) {
                         return;
                     }
                     let path = '/chooseProject/' + city._id + '/building/' + i;
@@ -127,7 +136,9 @@
                     <a href="<%= path %>"><%= buildingType.name %></a>
                 </li>
             <% }); %>
-
+        </ul>
+        other:
+        <ul>
             <% ['gold', 'culture', 'science'].forEach(prod => { %>
                 <li>
                     <a href="/chooseProject/<%= city._id %>/<%= prod %>/0"><%= prod %></a>
