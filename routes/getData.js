@@ -14,6 +14,7 @@ function getData(req, res, next, callback) {
 
     data.playerRef = {};
     data.cityRef = {};
+    data.tileRef = {};
 
     // Initialize player production.
     data.players.forEach(player => {
@@ -66,6 +67,10 @@ function getData(req, res, next, callback) {
 
     // Calculate production of all tiles that are worked by any city.
     data.tiles.forEach(tile => {
+      data.tileRef[tile._id] = tile;
+      data.tileRef[tile.location[0]] = data.tileRef[tile.location[0]] || [];
+      data.tileRef[tile.location[0]][tile.location[1]] = tile;
+
       if (tile.worked) {
         let city = data.cityRef[tile.worked];
         city.production.gold += tile.production.gold;
