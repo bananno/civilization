@@ -57,7 +57,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
 
       newTile = helpers.findTile(data.tiles, newRow, newCol);
 
-      if (newTile.terrain.mountain) {
+      if (newTile.terrain.mountain || newTile.terrain.ground == 'water') {
         return false;
       }
 
