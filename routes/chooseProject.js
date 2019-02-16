@@ -27,13 +27,13 @@ router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
       projectTemplate = data.unitList[index];
     }
 
-    if (city.population == 1 && projectTemplate.name == 'settler') {
-      console.log('Cannot train settlers in city with population of 1.');
+    if (!projectTemplate.isAvailable) {
+      console.log('Required technology is not yet discovered for this project.');
       return res.redirect('/');
     }
 
-    if (projectTemplate && !hasTechnology()) {
-      console.log('Required technology is not yet discovered for this project.');
+    if (city.population == 1 && projectTemplate.name == 'settler') {
+      console.log('Cannot train settlers in city with population of 1.');
       return res.redirect('/');
     }
 
@@ -57,9 +57,5 @@ router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
     });
   });
 });
-
-function hasTechnology() {
-  return false;
-}
 
 module.exports = router;
