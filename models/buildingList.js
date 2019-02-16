@@ -13,6 +13,18 @@ const buildingList = [
     technologies: [],
   },
   {
+    name: 'monument',
+    laborCost: 40,
+    production: {
+      gold: -1,
+      food: 0,
+      labor: 0,
+      culture: 2,
+      science: 0,
+    },
+    technologies: [],
+  },
+  {
     name: 'granary',
     laborCost: 60,
     production: {
