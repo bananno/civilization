@@ -9,38 +9,40 @@
     <link rel="shortcut icon" href="/images/favicon.png">
 </head>
 <body>
-    <h1>New Game</h1>
+    <div class="middlebox">
+        <h1>New Game</h1>
 
-    <p>
-        or <a href="/loadGame">load existing game</a>
-    </p>
-
-    <h2>Create game:</h2>
-
-    <form action="/newGame" method="POST">
         <p>
-            <b>Name:</b>
-            <input type="text" name="name" value="Game <%= numberOfGames + 1 %>">
+            or <a href="/loadGame">load existing game</a>
         </p>
 
-        <% for (let i = 0; i < 2; i++) { %>
-            <h3>Player <%= i + 1 %>:</h3>
+        <h2>Create game:</h2>
 
+        <form action="/newGame" method="POST">
             <p>
                 <b>Name:</b>
-                <input type="text" name="playername_<%= i %>" value="Player <%= i + 1%>">
+                <input type="text" name="name" value="Game <%= numberOfGames + 1 %>">
             </p>
-        <% } %>
 
-        <p>
-            <b>Map size:</b>
-            <input type="number" name="rows" value="20" style="width: 50px">
-            <input type="number" name="columns" value="40" style="width: 50px">
-        </p>
+            <% for (let i = 0; i < 2; i++) { %>
+                <h3>Player <%= i + 1 %>:</h3>
 
-        <p>
-            <button type="submit">submit</button>
-        </p>
-    </form>
+                <p>
+                    <b>Name:</b>
+                    <input type="text" name="playername_<%= i %>" value="Player <%= i + 1%>">
+                </p>
+            <% } %>
+
+            <p>
+                <b>Map size:</b>
+                <input type="number" name="rows" value="20" style="width: 50px">
+                <input type="number" name="columns" value="40" style="width: 50px">
+            </p>
+
+            <p>
+                <button type="submit">submit</button>
+            </p>
+        </form>
+    </div>
 </body>
 </html>

@@ -1,4 +1,8 @@
 
+html, body {
+  overflow: hidden;
+}
+
 #next-action {
   position: absolute;
   z-index: 150;

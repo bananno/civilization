@@ -9,18 +9,20 @@
     <link rel="shortcut icon" href="/images/favicon.png">
 </head>
 <body>
-    <h1>Load Game</h1>
+    <div class="middlebox">
+        <h1>Load Game</h1>
 
-    <p>
-        or <a href="/newGame">start new game</a>
-    </p>
+        <p>
+            or <a href="/newGame">start new game</a>
+        </p>
 
-    <h2>Select game:</h2>
+        <h2>Select game:</h2>
 
-    <ul>
-        <% games.forEach(game => { %>
-            <li><a href="/loadGame/<%= game._id %>"><%= game.name %></a></li>
-        <% }); %>
-    </ul>
+        <ul>
+            <% games.reverse().forEach(game => { %>
+                <li><a href="/loadGame/<%= game._id %>"><%= game.name %></a></li>
+            <% }); %>
+        </ul>
+    </div>
 </body>
 </html>
