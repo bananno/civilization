@@ -236,7 +236,7 @@ function endRound(res, data) {
     playerData.storage.culture += player.production.culture;
 
     // research progress is applied to the current technology
-    if (player.researchCurrent) {
+    if (player.researchCurrent != null) {
       const scienceCost = data.technologyList[player.researchCurrent].scienceCost;
       let researchProgress = 0;
 
