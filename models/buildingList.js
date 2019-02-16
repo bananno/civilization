@@ -10,6 +10,7 @@ const buildingList = [
       culture: 1,
       science: 3,
     },
+    technologies: [],
   },
   {
     name: 'granary',
@@ -21,6 +22,7 @@ const buildingList = [
       culture: 0,
       science: 0,
     },
+    technologies: ['agriculture'],
   },
   {
     name: 'workshop',
@@ -32,6 +34,7 @@ const buildingList = [
       culture: 0,
       science: 0,
     },
+    technologies: [],
   },
 ];
 

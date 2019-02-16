@@ -19,8 +19,21 @@ router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
       return res.redirect('/');
     }
 
-    if (city.population == 1 && project == 'unit' && data.unitList[index].name == 'settler') {
+    let projectTemplate = null;
+
+    if (project == 'building') {
+      projectTemplate = data.buildingList[index];
+    } else if (project == 'unit') {
+      projectTemplate = data.unitList[index];
+    }
+
+    if (city.population == 1 && projectTemplate.name == 'settler') {
       console.log('Cannot train settlers in city with population of 1.');
+      return res.redirect('/');
+    }
+
+    if (projectTemplate && !hasTechnology()) {
+      console.log('Required technology is not yet discovered for this project.');
       return res.redirect('/');
     }
 
@@ -44,5 +57,9 @@ router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
     });
   });
 });
+
+function hasTechnology() {
+  return false;
+}
 
 module.exports = router;
