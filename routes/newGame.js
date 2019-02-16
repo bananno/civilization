@@ -75,7 +75,7 @@ router.post('/newGame', (req, res, next) => {
         }
       }
 
-      let pattern = mapPatterns[0].pattern;
+      let pattern = mapPatterns.water[0];
       let startRangeRow = 0 - pattern.length;
       let endRangeRow = game.mapSize[0] + pattern.length;
 
