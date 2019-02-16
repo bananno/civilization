@@ -47,8 +47,12 @@ div#map {
 }
 
 .layer-ground.ground-grassland {
-  background-color: green;
   background-image: url(/images/map/grassland.png);
+  background-size: 90px;
+}
+
+.layer-ground.ground-water {
+  background-image: url(/images/map/water.png);
   background-size: 90px;
 }
 
