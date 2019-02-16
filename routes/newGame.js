@@ -83,14 +83,23 @@ router.post('/newGame', (req, res, next) => {
       let startRangeRow = 0 - pattern.length;
       let endRangeRow = game.mapSize[0] + pattern.length;
 
+      console.log(startRangeRow)
+      console.log(endRangeRow)
+
       for (let count = 0; count < 10; count++) {
         let startRow = helpers.getRandomInt(startRangeRow, endRangeRow);
         let startCol = helpers.getRandomInt(0, game.mapSize[1]);
 
         for (let r1 = 0; r1 < pattern.length; r1++) {
+          let r = startRow + r1;
+          if (r < 0) {
+            continue;
+          }
+          if (r >= game.mapSize[0]) {
+            break;
+          }
           for (let c1 = 0; c1 < pattern[0].length; c1++) {
             if (pattern[r1][c1] == 1) {
-              let r = startRow + r1;
               let c = helpers.getColumn(game.mapSize[1], startCol + c1);
               tempRefMap[r][c].terrain.ground = null;
               tempRefMap[r][c].terrain.water = true;

@@ -31,11 +31,11 @@ helpers.findTile = (tiles, row, column) => {
 };
 
 helpers.getRandomInt = (min, max) => {
-  Math.floor(Math.random() * (max + 1 - min)) + min;
+  return Math.floor(Math.random() * (max + 1 - min)) + min;
 };
 
 helpers.booleanByPercentage = (percentage) => {
-  return getRandomInt(0, 100) <= percentage;
+  return helpers.getRandomInt(0, 100) <= percentage;
 };
 
 module.exports = helpers;
