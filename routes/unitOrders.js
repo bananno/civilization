@@ -78,7 +78,7 @@ function improveLand(res, next, data, unit, orders) {
     }
   } else if (orders == 'buildMine') {
     if (inForest || !onHill || inCity || !inOwnTerritory || unitType != 'worker'
-        || tile.improvement != null) {
+        || tile.improvement != null || !playerHasTech('mining')) {
       return invalidAction();
     }
     unitData.orders = 'build mine';
@@ -88,7 +88,8 @@ function improveLand(res, next, data, unit, orders) {
       tileData.progress = 0;
     }
   } else if (orders == 'chopForest') {
-    if (!inForest || inRivalTerritory || unitType != 'worker') {
+    if (!inForest || inRivalTerritory || unitType != 'worker'
+         || !playerHasTech('bronze working')) {
       return invalidAction();
     }
     unitData.orders = 'chop forest';

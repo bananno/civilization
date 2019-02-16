@@ -34,7 +34,7 @@ const buildingList = [
       culture: 0,
       science: 0,
     },
-    technologies: [],
+    technologies: ['bronze working'],
   },
 ];
 

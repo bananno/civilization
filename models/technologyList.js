@@ -11,9 +11,19 @@ const technologyList = [
     blocked: [],
   },
   {
+    name: 'mining',
+    scienceCost: 35,
+    blocked: ['agriculture'],
+  },
+  {
     name: 'animal husbandry',
     scienceCost: 55,
     blocked: ['hunting', 'agriculture'],
+  },
+  {
+    name: 'bronze working',
+    scienceCost: 55,
+    blocked: ['mining'],
   },
 ];
 

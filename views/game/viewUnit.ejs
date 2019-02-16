@@ -39,13 +39,13 @@
         actions.push({
             path: '/unitOrders/buildMine/' + unit._id,
             hidden: !onHill || inCity || unit.orders == 'build mine' || tile.improvement == 'mine',
-            disabled: inForest || !inOwnTerritory,
+            disabled: inForest || !inOwnTerritory || !playerHasTech('mining'),
             text: 'build mine',
         });
         actions.push({
             path: '/unitOrders/chopForest/' + unit._id,
             hidden: !inForest || unit.orders == 'chop forest',
-            disabled: inRivalTerritory,
+            disabled: inRivalTerritory || !playerHasTech('bronze working'),
             text: 'chop forest',
         });
         if (tile.improvement) {
