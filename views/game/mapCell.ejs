@@ -33,13 +33,17 @@
                 cornerCoasts.push('layer-curve-top-left');
             }
             if (rightCoast) {
-                cornerCoasts.push('layer-curve-top-right');
+                if (tileRef[r - 1][c].terrain.water == tileRef[r - 1][c2].terrain.water) {
+                    cornerCoasts.push('layer-curve-top-right');
+                }
             }
         }
 
         if (r < numRows - 1 && tileRef[r][c].terrain.water != tileRef[r + 1][c].terrain.water) {
             if (leftCoast) {
-                cornerCoasts.push('layer-curve-bottom-left');
+                if (tileRef[r + 1][c].terrain.water == tileRef[r + 1][c1].terrain.water) {
+                    cornerCoasts.push('layer-curve-bottom-left');
+                }
             }
             if (rightCoast) {
                 cornerCoasts.push('layer-curve-bottom-right');
