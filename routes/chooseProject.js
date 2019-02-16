@@ -27,12 +27,12 @@ router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
       projectTemplate = data.unitList[index];
     }
 
-    if (!projectTemplate.isAvailable) {
+    if (projectTemplate && !projectTemplate.isAvailable) {
       console.log('Required technology is not yet discovered for this project.');
       return res.redirect('/');
     }
 
-    if (city.population == 1 && projectTemplate.name == 'settler') {
+    if (city.population == 1 && projectTemplate && projectTemplate.name == 'settler') {
       console.log('Cannot train settlers in city with population of 1.');
       return res.redirect('/');
     }
