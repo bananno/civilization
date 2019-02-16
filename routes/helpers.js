@@ -30,8 +30,12 @@ helpers.findTile = (tiles, row, column) => {
   })[0];
 };
 
+helpers.getRandomInt = (min, max) => {
+  Math.floor(Math.random() * (max + 1 - min)) + min;
+};
+
 helpers.booleanByPercentage = (percentage) => {
-  return Math.round(Math.random() * 100) <= percentage;
-}
+  return getRandomInt(0, 100) <= percentage;
+};
 
 module.exports = helpers;

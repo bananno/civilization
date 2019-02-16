@@ -4,6 +4,7 @@ const Game = require('../models/game');
 const Player = require('../models/player');
 const Tile = require('../models/tile');
 const Unit = require('../models/unit');
+const mapPatterns = require('../models/mapPatterns');
 const createUnit = require('./createUnit');
 const helpers = require('./helpers');
 const getVisibleTilesFunction = require('./getVisibleTiles');
@@ -29,8 +30,10 @@ router.post('/newGame', (req, res, next) => {
       let tempUnitLocationCount = 0;
 
       let tileList = [];
+      let tempRefMap = [];
 
       for (let r = 0; r < game.mapSize[0]; r++) {
+        tempRefMap[r] = [];
         for (let c = 0; c < game.mapSize[1]; c++) {
           let tileData = {
             game: game,
@@ -70,7 +73,29 @@ router.post('/newGame', (req, res, next) => {
             tileData.terrain.forest = forest;
           }
 
+          tempRefMap[r][c] = tileData;
+
           tileList.push(tileData);
+        }
+      }
+
+      let pattern = mapPatterns[0];
+      let startRangeRow = 0 - pattern.length;
+      let endRangeRow = game.mapSize[0] + pattern.length;
+
+      for (let count = 0; count < 10; count++) {
+        let startRow = helpers.getRandomInt(startRangeRow, endRangeRow);
+        let startCol = helpers.getRandomInt(0, game.mapSize[1]);
+
+        for (let r1 = 0; r1 < pattern.length; r1++) {
+          for (let c1 = 0; c1 < pattern[0].length; c1++) {
+            if (pattern[r1][c1] == 1) {
+              let r = startRow + r1;
+              let c = helpers.getColumn(game.mapSize[1], startCol + c1);
+              tempRefMap[r][c].terrain.ground = null;
+              tempRefMap[r][c].terrain.water = true;
+            }
+          }
         }
       }
 
