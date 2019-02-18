@@ -2,15 +2,19 @@ const Unit = require('../models/unit');
 const unitList = require('../models/unitList');
 
 const createUnit = (unitData, callback) => {
-  let index = unitData.templateIndex;
+  let unitTemplate;
 
-  if (index == null && unitData.templateName != null) {
-    index = unitList.filter(template => template.name == unitData.templateName)[0];
-  };
+  if (unitData.templateIndex) {
+    unitTemplate = unitList[unitData.templateIndex];
+  } else {
+    unitTemplate = unitList.filter(template => {
+      return template.name == unitData.templateName;
+    })[0];
+  }
 
-  unitData.templateName = unitList[index].name;
-  unitData.moves = unitData.moves || unitList[index].moves;
-  unitData.movesRemaining = unitData.movesRemaining || unitList[index].moves;
+  unitData.templateName = unitTemplate.name;
+  unitData.moves = unitData.moves || unitTemplate.moves;
+  unitData.movesRemaining = unitData.movesRemaining || unitTemplate.moves;
 
   Unit.create(unitData, (error, unit) => {
     if (error) {
