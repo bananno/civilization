@@ -23,6 +23,7 @@ router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
     } else if (orders == 'sleep') {
       unitData.orders = 'sleep';
     } else if (orders == 'automate' && unit.unitType.name == 'worker') {
+      unitData.orders = null;
       unitData.automate = true;
     } else if (orders == 'wake' || orders == 'cancel') {
       unitData.orders = null;
