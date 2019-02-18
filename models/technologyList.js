@@ -25,6 +25,11 @@ const technologyList = [
     scienceCost: 55,
     blocked: ['mining'],
   },
+  {
+    name: 'sailing',
+    scienceCost: 55,
+    blocked: [],
+  },
 ];
 
 module.exports = technologyList;

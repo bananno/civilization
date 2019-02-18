@@ -198,6 +198,10 @@ div#map {
   background-image: url(/images/units/scout.png);
 }
 
+.layer-unit.unit-galley {
+  background-image: url(/images/units/galley.png);
+}
+
 .map-cell.active .layer-highlight {
   background-image: url(/images/spinning.gif);
   background-size: 45px;
