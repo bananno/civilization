@@ -7,8 +7,7 @@
     const onHill = tile.terrain.hill;
     const inOwnTerritory = tile.player && '' + tile.player == '' + turnPlayerId;
     const inRivalTerritory = tile.player && '' + tile.player != '' + turnPlayerId;
-    const inCity = cities.filter(city => city.location[0] == unit.location[0]
-        && city.location[1] == unit.location[1]).length > 0;
+    const inCity = tile.improvement == 'city';
 
     const playerHasTech = (techName) => {
         return currentPlayer.technologies.filter(techIndex => {
@@ -33,13 +32,13 @@
         actions.push({
             path: '/unitOrders/buildFarm/' + unit._id,
             hidden: inCity || unit.orders == 'build farm' || tile.improvement == 'farm',
-            disabled: inForest || !inOwnTerritory || !playerHasTech('agriculture'),
+            disabled: inForest || !inOwnTerritory || !playerHasTech('agriculture') || tile.improvement,
             text: 'build farm',
         });
         actions.push({
             path: '/unitOrders/buildMine/' + unit._id,
-            hidden: !onHill || inCity || unit.orders == 'build mine' || tile.improvement == 'mine',
-            disabled: inForest || !inOwnTerritory || !playerHasTech('mining'),
+            hidden: inCity || unit.orders == 'build mine' || tile.improvement == 'mine' || !onHill,
+            disabled: inForest || !inOwnTerritory || !playerHasTech('mining') || tile.improvement,
             text: 'build mine',
         });
         actions.push({
@@ -48,7 +47,7 @@
             disabled: inRivalTerritory || !playerHasTech('bronze working'),
             text: 'chop forest',
         });
-        if (tile.improvement) {
+        if (tile.improvement && !inCity) {
             actions.push({
                 path: '/unitOrders/removeImprovement/' + unit._id,
                 disabled: !inOwnTerritory,
