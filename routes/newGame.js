@@ -4,7 +4,6 @@ const Game = require('../models/game');
 const Player = require('../models/player');
 const Tile = require('../models/tile');
 const Unit = require('../models/unit');
-const mapPatterns = require('../models/mapPatterns');
 const createUnit = require('./createUnit');
 const createMap = require('./createMap');
 const helpers = require('./helpers');

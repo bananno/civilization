@@ -14,6 +14,8 @@ function createMap(game) {
     addLandPattern();
   }
 
+  addTerrainFeatures();
+
   return tiles;
 }
 
@@ -75,6 +77,32 @@ function addLandPattern() {
       }
     }
   }
+}
+
+function addTerrainFeatures() {
+  tiles.forEach(tile => {
+    const water = tile.terrain.water;
+    const mountain = helpers.booleanByPercentage(water ? 1 : 5);
+
+    if (mountain) {
+      tile.terrain.mountain = true;
+      tile.terrain.water = false;
+      tile.terrain.ground = 'grassland';
+      tile.production.food = 0;
+      tile.production.gold = 0;
+      tile.production.labor = 0;
+    }
+
+    if (water || mountain) {
+      return;
+    }
+
+    const hill = helpers.booleanByPercentage(25);
+    const forest = helpers.booleanByPercentage(hill ? 20 : 40);
+
+    tile.terrain.hill = hill;
+    tile.terrain.forest = forest;
+  });
 }
 
 module.exports = createMap;
