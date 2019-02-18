@@ -81,10 +81,13 @@ function endRound(res, data) {
             orders = 'build farm';
             tileData.project = 'build farm';
           }
+          unitData.orders = orders;
         }
-      } else {
-        return completeUpdate();
       }
+    }
+
+    if (orders == null) {
+      return completeUpdate();
     }
 
     if (orders == 'skip turn') {
