@@ -98,7 +98,7 @@ function addTerrainFeatures() {
     }
 
     const hill = helpers.booleanByPercentage(25);
-    const forest = helpers.booleanByPercentage(hill ? 20 : 40);
+    const forest = helpers.booleanByPercentage(40);
 
     tile.terrain.hill = hill;
     tile.terrain.forest = forest;
