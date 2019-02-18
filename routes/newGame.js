@@ -133,10 +133,11 @@ function chooseUnitLocations(tiles, numPlayers) {
 
     while (!foundGoodPlace) {
       let tileNum = helpers.getRandomInt(0, passableTiles.length - 1);
-      let [r, c] = passableTiles[tileNum].location;
+      let [r1, c1] = passableTiles[tileNum].location;
+      let r2 = r1;
+      let c2 = helpers.getColumn(numCols, c1 + 1);
 
-      locations.push([r, c]);
-      locations.push([r, helpers.getColumn(numCols, c + 1)]);
+      locations.push([[r1, c1], [r1, c2]]);
 
       foundGoodPlace = true;
     }
