@@ -109,6 +109,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
               // Remove any terrain features (forest) automatically.
               // Automatically build a road in the city.
               if (helpers.sameLocation(city.location, [r, c])) {
+                tileObj.improvement = 'city';
                 tileObj.worked = city;
                 if (tile.terrain.forest) {
                   tileObj.terrain = tile.terrain;
