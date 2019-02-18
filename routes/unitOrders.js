@@ -22,7 +22,7 @@ router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
       unitData.orders = 'skip turn';
     } else if (orders == 'sleep') {
       unitData.orders = 'sleep';
-    } else if (orders == 'automate' && unit.unitType.name == 'worker') {
+    } else if (orders == 'automate' && unit.templateName == 'worker') {
       unitData.orders = null;
       unitData.automate = true;
     } else if (orders == 'wake' || orders == 'cancel') {
@@ -61,7 +61,7 @@ function improveLand(res, next, data, unit, orders) {
 
   let tile = helpers.findTile(data.tiles, unit.location);
 
-  let unitType = unit.unitType.name;
+  let unitType = unit.templateName;
   let inForest = tile.terrain.forest;
   let onHill = tile.terrain.hill;
   let inOwnTerritory = '' + tile.player == '' + data.turnPlayerId;

@@ -240,7 +240,7 @@
           continue;
         }
 
-        if (unit.unitType.name == 'galley') {
+        if (unit.templateName == 'galley') {
           if (!map[r][c].tile.terrain.water && map[r][c].tile.improvement != 'city') {
             continue;
           }

@@ -127,7 +127,7 @@
         <% units.forEach(unit => { %>
             <% let [r, c] = unit.location; %>
             units['<%= unit._id %>'] = {
-                name: '<%= unit.unitType.name %>',
+                name: '<%= unit.templateName %>',
                 location: [<%= r %>, <%= c %>],
             };
             tiles[<%= r %>][<%= c %>].unitsCities.push('<%= unit._id %>');

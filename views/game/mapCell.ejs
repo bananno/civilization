@@ -102,7 +102,7 @@
 
         if (cell.myUnit || cell.rivalUnit) {
             let unit = unitsById[cell.unitId];
-            let unitName = unit.unitType.name;
+            let unitName = unit.templateName;
             tileStack.push('unit unit-' + unitName);
         }
 
@@ -125,7 +125,7 @@
         } else if (cell.myUnit) {
             if (cell.tile.terrain.water) {
                 const waterUnit = helpers.findUnit(units, cell.unitId);
-                if (waterUnit.unitType.name != 'galley') {
+                if (waterUnit.templateName != 'galley') {
                     allowTileEntry = false;
                 }
             } else {
