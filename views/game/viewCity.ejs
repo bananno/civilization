@@ -115,38 +115,38 @@
         <h3>CHOOSE PROJECT</h3>
         units:
         <ul>
-            <% unitList.forEach((unitType, i) => { %>
+            <% unitList.forEach((unitTemplate, i) => { %>
                 <%
-                    if (city.population == 1 && unitType.name == 'settler') {
+                    if (city.population == 1 && unitTemplate.name == 'settler') {
                         return;
                     }
-                    if (!unitType.isAvailable) {
+                    if (!unitTemplate.isAvailable) {
                         return;
                     }
                     const path = '/chooseProject/' + city._id + '/unit/' + i;
-                    const turns = getTurns('unit', unitType, i);
+                    const turns = getTurns('unit', unitTemplate, i);
                 %>
                 <li>
-                    <a href="<%= path %>"><%= unitType.name %></a>
+                    <a href="<%= path %>"><%= unitTemplate.name %></a>
                     (<%= turns %> turns)
                 </li>
             <% }); %>
         </ul>
         buildings:
         <ul>
-            <% buildingList.forEach((buildingType, i) => { %>
+            <% buildingList.forEach((buildingTemplate, i) => { %>
                 <%
                     if (city.buildings.indexOf(i) >= 0) {
                         return;
                     }
-                    if (!buildingType.isAvailable) {
+                    if (!buildingTemplate.isAvailable) {
                         return;
                     }
                     const path = '/chooseProject/' + city._id + '/building/' + i;
-                    const turns = getTurns('building', buildingType, i);
+                    const turns = getTurns('building', buildingTemplate, i);
                 %>
                 <li>
-                    <a href="<%= path %>"><%= buildingType.name %></a>
+                    <a href="<%= path %>"><%= buildingTemplate.name %></a>
                     (<%= turns %> turns)
                 </li>
             <% }); %>

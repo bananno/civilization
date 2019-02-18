@@ -1,5 +1,5 @@
 <%
-    const unitType = unit.unitType.name;
+    const unitType = unit.templateName;
     const movesRemaining = unit.movesRemaining > 0;
     const noMoves = unit.movesRemaining == 0;
     const tile = findTile(unit.location);
@@ -94,7 +94,7 @@
     <div class="close">X</div>
     <div>
         <b>type:</b>
-        <%= unit.unitType.name %>
+        <%= unit.templateName %>
     </div>
     <div>
         <b>moves:</b>
