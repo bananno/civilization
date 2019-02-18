@@ -10,7 +10,7 @@
 <div id="next-action">
     <% currentTurnUnits.forEach(unit => { %>
         <%
-            if (actionsRemaining || unit.orders || unit.movesRemaining == 0) {
+            if (actionsRemaining || unit.orders || unit.movesRemaining == 0 || unit.automate) {
                 return;
             }
             actionsRemaining = true;
