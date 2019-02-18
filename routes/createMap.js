@@ -14,6 +14,15 @@ function createMap(game) {
     addLandPattern();
   }
 
+  const numLandTiles = tiles.filter(tile => !tile.terrain.water).length;
+  const landPercentage = (numLandTiles * 100) / (numRows * numCols);
+
+  if (landPercentage < 40) {
+    for (let count = 0; count < 10; count++) {
+      addLandPattern();
+    }
+  }
+
   addTerrainFeatures();
 
   return tiles;
