@@ -74,6 +74,12 @@ function endRound(res, data) {
           if (tile.terrain.forest) {
             orders = 'chop forest';
             tileData.project = 'chop forest';
+          } else if (tile.terrain.hill) {
+            orders = 'build mine';
+            tileData.project = 'build mine';
+          } else {
+            orders = 'build farm';
+            tileData.project = 'build farm';
           }
         }
       } else {
