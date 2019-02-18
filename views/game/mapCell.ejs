@@ -120,8 +120,17 @@
             onClick = 'clickMapCell(' + r + ', ' + c + ')';
         }
 
-        if (cell.myUnit || cell.rivalUnit || cell.rivalCity) {
+        if (cell.rivalUnit || cell.rivalCity) {
             allowTileEntry = false;
+        } else if (cell.myUnit) {
+            if (cell.tile.terrain.water) {
+                const waterUnit = helpers.findUnit(units, cell.unitId);
+                if (waterUnit.unitType.name != 'galley') {
+                    allowTileEntry = false;
+                }
+            } else {
+                allowTileEntry = false;
+            }
         }
     } else {
         className += ' notDiscovered';

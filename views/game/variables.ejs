@@ -243,7 +243,12 @@
             continue;
           }
         } else if (map[r][c].tile.terrain.water) {
-          continue;
+          const boat = units.filter(unit => {
+            return helpers.sameLocation(unit.location, [r, c]);
+          })[0];
+          if (!boat) {
+            continue;
+          }
         }
 
         map[r][c].moves.push({
