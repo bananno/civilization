@@ -88,6 +88,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       unitData.location = [newRow, newCol];
       unitData.movesRemaining = unit.movesRemaining - movesUsed;
       unitData.orders = null;
+      unitData.automate = false;
 
       if (unitData.movesRemaining < 0) {
         unitData.movesRemaining = 0;
