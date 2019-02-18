@@ -10,15 +10,18 @@ function createMap(game) {
 
   createBasicMap(game);
 
-  for (let count = 0; count < 10; count++) {
+  let numIslands = (numRows * numCols) / 200;
+
+  for (let count = 0; count < numIslands; count++) {
     addLandPattern();
   }
 
   const numLandTiles = tiles.filter(tile => !tile.terrain.water).length;
   const landPercentage = (numLandTiles * 100) / (numRows * numCols);
 
-  if (landPercentage < 40) {
-    for (let count = 0; count < 10; count++) {
+  if (landPercentage < 30) {
+    console.log('Land percentage is too low.');
+    for (let count = 0; count < numIslands; count++) {
       addLandPattern();
     }
   }
@@ -61,10 +64,9 @@ function createBasicMap(game) {
 function addLandPattern() {
   const patternNumber = helpers.getRandomInt(0, mapPatterns.land.length - 1);
   const pattern = mapPatterns.land[patternNumber];
-  const startRangeRow = 0 - pattern.length;
-  const endRangeRow = numRows + pattern.length;
+  const endRangeRow = numRows - pattern.length - 1;
 
-  const startRow = helpers.getRandomInt(startRangeRow, endRangeRow);
+  const startRow = helpers.getRandomInt(1, endRangeRow);
   const startCol = helpers.getRandomInt(0, numCols);
 
   for (let r1 = 0; r1 < pattern.length; r1++) {
