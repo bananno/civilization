@@ -69,7 +69,7 @@ function endRound(res, data) {
     let orders = unit.orders;
 
     if (orders == null) {
-      if (unit.automate && unit.unitType.name == 'worker') {
+      if (unit.automate && unit.templateName == 'worker') {
         if (tile.improvement == null) {
           if (tile.terrain.forest) {
             orders = 'chop forest';
@@ -233,7 +233,7 @@ function endRound(res, data) {
           game: city.game,
           player: city.player,
           location: city.location.concat(),
-          unitTypeIndex: projectIndex,
+          templateIndex: projectIndex,
         };
         return createUnit(unitData, completeUpdate);
       }

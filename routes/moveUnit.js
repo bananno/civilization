@@ -59,7 +59,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
         return false;
       }
 
-      if (unit.unitType.name == 'galley') {
+      if (unit.templateName == 'galley') {
         return newTile.terrain.water || newTile.improvement == 'city';
       } else {
         return !newTile.terrain.water;
@@ -74,7 +74,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       let movesUsed = 1;
 
       if (newTile.terrain.hill || newTile.terrain.forest) {
-        if (unit.unitType.name != 'scout') {
+        if (unit.templateName != 'scout') {
           movesUsed += 1;
         }
       }

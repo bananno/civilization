@@ -13,7 +13,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
     let unit = helpers.findUnit(data.units, unitId);
 
-    if (unit == null || unit.unitType.name != 'settler' || unit.movesRemaining == 0
+    if (unit == null || unit.templateName != 'settler' || unit.movesRemaining == 0
         || '' + unit.player != '' + data.turnPlayerId) {
       console.log('invalid unit action');
       return res.redirect('/');
