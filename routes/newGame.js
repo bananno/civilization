@@ -124,22 +124,27 @@ function chooseUnitLocations(tiles, numPlayers) {
   const numCols = tiles[0].length;
   const locations = [];
 
-  const passableTiles = tiles.filter(tile => {
-    return !(tile.terrain.water || tile.terrain.mountain);
+  const passableTiles = tiles.filter((tile, i) => {
+    if (tile.terrain.water || tile.terrain.mountain) {
+      return false;
+    }
+    const nextTile = tiles[i + 1];
+    if (nextTile == null || nextTile.terrain.water || nextTile.terrain.mountain) {
+      return false;
+    }
+    return true;
   });
 
   for (let i = 0; i < numPlayers; i++) {
-    let foundGoodPlace = false;
-
-    while (!foundGoodPlace) {
+    while (true) {
       let tileNum = helpers.getRandomInt(0, passableTiles.length - 1);
       let [r1, c1] = passableTiles[tileNum].location;
-      let r2 = r1;
-      let c2 = helpers.getColumn(numCols, c1 + 1);
+      let [r2, c2] = [r1, helpers.getColumn(numCols, c1 + 1)];
 
-      locations.push([[r1, c1], [r1, c2]]);
-
-      foundGoodPlace = true;
+      if (true) {
+        locations.push([[r1, c1], [r1, c2]]);
+        break;
+      }
     }
   }
 
