@@ -47,11 +47,11 @@ router.post('/newGame', (req, res, next) => {
               science: 0,
             },
             terrain: {
-              ground: 'grassland',
+              ground: null,
               forest: false,
               hill: false,
               mountain: false,
-              water: false,
+              water: true,
             },
           };
 
@@ -76,8 +76,8 @@ router.post('/newGame', (req, res, next) => {
       }
 
       for (let count = 0; count < 10; count++) {
-        let patternNumber = helpers.getRandomInt(0, mapPatterns.water.length - 1);
-        let pattern = mapPatterns.water[patternNumber];
+        let patternNumber = helpers.getRandomInt(0, mapPatterns.land.length - 1);
+        let pattern = mapPatterns.land[patternNumber];
         let startRangeRow = 0 - pattern.length;
         let endRangeRow = game.mapSize[0] + pattern.length;
 
@@ -95,10 +95,8 @@ router.post('/newGame', (req, res, next) => {
           for (let c1 = 0; c1 < pattern[0].length; c1++) {
             if (pattern[r1][c1] == 1) {
               let c = helpers.getColumn(game.mapSize[1], startCol + c1);
-              tempRefMap[r][c].terrain.ground = null;
-              tempRefMap[r][c].terrain.water = true;
-              tempRefMap[r][c].terrain.hill = false;
-              tempRefMap[r][c].terrain.forest = false;
+              tempRefMap[r][c].terrain.ground = 'grassland';
+              tempRefMap[r][c].terrain.water = false;
             }
           }
         }

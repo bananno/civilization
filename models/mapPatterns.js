@@ -1,9 +1,9 @@
 
 const mapPatterns = {
-  water: [],
+  land: [],
 };
 
-mapPatterns.water.push([
+mapPatterns.land.push([
   [ 0, 0, 1, 0, 0, 0 ],
   [ 1, 1, 1, 1, 1, 0 ],
   [ 1, 1, 1, 1, 1, 1 ],
@@ -11,14 +11,14 @@ mapPatterns.water.push([
   [ 0, 1, 1, 1, 0, 0 ],
 ]);
 
-mapPatterns.water.push([
+mapPatterns.land.push([
   [ 0, 0, 1 ],
   [ 1, 1, 1 ],
   [ 1, 1, 1 ],
   [ 1, 1, 0 ],
 ]);
 
-mapPatterns.water.push([
+mapPatterns.land.push([
   [ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 ],
   [ 0, 0, 0, 0, 1, 1, 0, 0, 0, 0 ],
   [ 0, 0, 1, 1, 1, 1, 0, 1, 1, 0 ],
