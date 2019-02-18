@@ -6,6 +6,7 @@ const Tile = require('../models/tile');
 const Unit = require('../models/unit');
 const mapPatterns = require('../models/mapPatterns');
 const createUnit = require('./createUnit');
+const createMap = require('./createMap');
 const helpers = require('./helpers');
 const getVisibleTilesFunction = require('./getVisibleTiles');
 
@@ -29,78 +30,7 @@ router.post('/newGame', (req, res, next) => {
       const tempUnitLocations = [[3, 0], [2, 6], [6, 9], [9, 5]];
       let tempUnitLocationCount = 0;
 
-      let tileList = [];
-      let tempRefMap = [];
-
-      for (let r = 0; r < game.mapSize[0]; r++) {
-        tempRefMap[r] = [];
-        for (let c = 0; c < game.mapSize[1]; c++) {
-          let tileData = {
-            game: game,
-            location: [r, c],
-            discovered: [],
-            production: {
-              food: 1,
-              gold: 1,
-              labor: 1,
-              culture: 0,
-              science: 0,
-            },
-            terrain: {
-              ground: null,
-              forest: false,
-              hill: false,
-              mountain: false,
-              water: true,
-            },
-          };
-
-          let mountain = helpers.booleanByPercentage(5);
-
-          if (mountain) {
-            tileData.terrain.mountain = true;
-            tileData.production.food = 0;
-            tileData.production.gold = 0;
-            tileData.production.labor = 0;
-          } else {
-            let hill = helpers.booleanByPercentage(25);
-            let forest = helpers.booleanByPercentage(40);
-            tileData.terrain.hill = hill;
-            tileData.terrain.forest = forest;
-          }
-
-          tempRefMap[r][c] = tileData;
-
-          tileList.push(tileData);
-        }
-      }
-
-      for (let count = 0; count < 10; count++) {
-        let patternNumber = helpers.getRandomInt(0, mapPatterns.land.length - 1);
-        let pattern = mapPatterns.land[patternNumber];
-        let startRangeRow = 0 - pattern.length;
-        let endRangeRow = game.mapSize[0] + pattern.length;
-
-        let startRow = helpers.getRandomInt(startRangeRow, endRangeRow);
-        let startCol = helpers.getRandomInt(0, game.mapSize[1]);
-
-        for (let r1 = 0; r1 < pattern.length; r1++) {
-          let r = startRow + r1;
-          if (r < 0) {
-            continue;
-          }
-          if (r >= game.mapSize[0]) {
-            break;
-          }
-          for (let c1 = 0; c1 < pattern[0].length; c1++) {
-            if (pattern[r1][c1] == 1) {
-              let c = helpers.getColumn(game.mapSize[1], startCol + c1);
-              tempRefMap[r][c].terrain.ground = 'grassland';
-              tempRefMap[r][c].terrain.water = false;
-            }
-          }
-        }
-      }
+      let tileList = createMap(game);
 
       const getVisibleTiles = getVisibleTilesFunction({
         game: { mapSize: game.mapSize },
