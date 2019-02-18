@@ -66,7 +66,7 @@ function endRound(res, data) {
 
     unitData.movesRemaining = unit.moves;
 
-    const orders = unit.orders;
+    let orders = unit.orders;
 
     if (orders == null) {
       if (unit.automate && unit.unitType.name == 'worker') {
