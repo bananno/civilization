@@ -10,9 +10,24 @@ const helpers = require('./helpers');
 const getVisibleTilesFunction = require('./getVisibleTiles');
 
 router.post('/newGame', (req, res, next) => {
-  var gameData = {
+  let numRows = parseInt(req.body.rows || 0);
+  let numCols = parseInt(req.body.columns || 0);
+
+  if (numRows < 10) {
+    numRows = 10;
+  } else if (numRows > 30) {
+    numRows = 30;
+  }
+
+  if (numCols < 20) {
+    numCols = 20;
+  } else if (numCols > 50) {
+    numCols = 50;
+  }
+
+  const gameData = {
     name: req.body.name || '',
-    mapSize: [parseInt(req.body.rows), parseInt(req.body.columns)],
+    mapSize: [numRows, numCols],
   };
 
   if (gameData.name.length === 0) {
