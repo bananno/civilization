@@ -15,9 +15,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
     let numMapRows = data.game.mapSize[0];
     let numMapCols = data.game.mapSize[1];
 
-    let unit = data.units.filter(unit => {
-      return unit._id == unitId;
-    })[0];
+    const unit = helpers.findUnit(data.units, unitId);
 
     let oldRow = unit.location[0];
     let oldCol = unit.location[1];
@@ -57,8 +55,14 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
 
       newTile = helpers.findTile(data.tiles, newRow, newCol);
 
-      if (newTile.terrain.mountain || newTile.terrain.water) {
+      if (newTile.terrain.mountain) {
         return false;
+      }
+
+      if (unit.unitType.name == 'galley') {
+        return newTile.terrain.water;
+      } else {
+        return !newTile.terrain.water;
       }
 
       return true;
