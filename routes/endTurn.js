@@ -71,6 +71,34 @@ function endRound(res, data) {
     if (unit.orders == 'skip turn') {
       unitData.orders = null;
       completeUpdate();
+    } else if (unit.orders == 'automate' && unit.unitType.name == 'worker') {
+      let tile = helpers.findTile(data.tiles, unit.location);
+      let tileData = {};
+
+      if (tile.improvement == null) {
+        if (tile.terrain.forest) {
+          if (tile.project == 'chop forest') {
+            tileData.progress = tile.progress + unit.movesRemaining;
+            if (tileData.progress >= 5) {
+              tileData.terrain = tile.terrain;
+              tileData.terrain.forest = false;
+              tileData.project = null;
+              tileData.progress = 0;
+            }
+          } else {
+            tileData.project = 'chop forest';
+            tileData.progress = unit.movesRemaining;
+          }
+        }
+      }
+
+      tile.update(tileData, error => {
+        if (error) {
+          return next(error);
+        }
+        return completeUpdate();
+      });
+
     } else if (unit.orders.match('build') || unit.orders.match('remove')
         || unit.orders == 'chop forest') {
       let tile = helpers.findTile(data.tiles, unit.location);
