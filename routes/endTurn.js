@@ -51,7 +51,9 @@ function endRound(res, data) {
     }
 
     let unit = data.units[i];
+    let tile = helpers.findTile(data.tiles, unit.location);
     let unitData = {};
+    let tileData = {};
 
     const completeUpdate = () => {
       unit.update(unitData, (error, unit) => {
@@ -64,82 +66,65 @@ function endRound(res, data) {
 
     unitData.movesRemaining = unit.moves;
 
-    if (unit.orders == null) {
-      return completeUpdate();
-    }
+    const orders = unit.orders;
 
-    if (unit.orders == 'skip turn') {
-      unitData.orders = null;
-      completeUpdate();
-    } else if (unit.orders == 'automate' && unit.unitType.name == 'worker') {
-      let tile = helpers.findTile(data.tiles, unit.location);
-      let tileData = {};
-
-      if (tile.improvement == null) {
-        if (tile.terrain.forest) {
-          if (tile.project == 'chop forest') {
-            tileData.progress = tile.progress + unit.movesRemaining;
-            if (tileData.progress >= 5) {
-              tileData.terrain = tile.terrain;
-              tileData.terrain.forest = false;
-              tileData.project = null;
-              tileData.progress = 0;
-            }
-          } else {
+    if (orders == null) {
+      if (unit.automate && unit.unitType.name == 'worker') {
+        if (tile.improvement == null) {
+          if (tile.terrain.forest) {
+            orders = 'chop forest';
             tileData.project = 'chop forest';
-            tileData.progress = unit.movesRemaining;
           }
         }
-      }
-
-      tile.update(tileData, error => {
-        if (error) {
-          return next(error);
-        }
+      } else {
         return completeUpdate();
-      });
+      }
+    }
 
-    } else if (unit.orders.match('build') || unit.orders.match('remove')
-        || unit.orders == 'chop forest') {
+    if (orders == 'skip turn') {
+      unitData.orders = null;
+      completeUpdate();
+    } else if (orders.match('build') || orders.match('remove')
+        || orders == 'chop forest') {
       let tile = helpers.findTile(data.tiles, unit.location);
       let tileData = {};
 
       let projectDone = false;
 
-      if (unit.orders == 'build farm' || unit.orders == 'build mine'
-          || unit.orders == 'chop forest') {
+      if (orders == 'build farm' || orders == 'build mine'
+          || orders == 'chop forest') {
         tileData.progress = tile.progress + unit.movesRemaining;
-      } else if (unit.orders == 'build road') {
+      } else if (orders == 'build road') {
         tileData.roadProgress = tile.roadProgress + unit.movesRemaining;
       }
 
-      if (unit.orders == 'build farm' && tileData.progress >= 10) {
+      if (orders == 'build farm' && tileData.progress >= 10) {
         projectDone = true;
         tileData.improvement = 'farm';
         tileData.production = tile.production;
         tileData.production.food += 1;
         unitData.orders = null;
-      } else if (unit.orders == 'build mine' && tileData.progress >= 12) {
+      } else if (orders == 'build mine' && tileData.progress >= 12) {
         projectDone = true;
         tileData.improvement = 'mine';
         tileData.production = tile.production;
         tileData.production.labor += 1;
         unitData.orders = null;
-      } else if (unit.orders == 'chop forest' && tileData.progress >= 5) {
+      } else if (orders == 'chop forest' && tileData.progress >= 5) {
         projectDone = true;
         tileData.terrain = tile.terrain;
         tileData.terrain.forest = false;
-      } else if (unit.orders == 'remove farm' && unit.movesRemaining > 0) {
+      } else if (orders == 'remove farm' && unit.movesRemaining > 0) {
         projectDone = true;
         tileData.improvement = null;
         tileData.production = tile.production;
         tileData.production.food -= 1;
-      } else if (unit.orders == 'remove mine' && unit.movesRemaining > 0) {
+      } else if (orders == 'remove mine' && unit.movesRemaining > 0) {
         projectDone = true;
         tileData.improvement = null;
         tileData.production = tile.production;
         tileData.production.labor -= 1;
-      } else if (unit.orders == 'build road' && tileData.roadProgress >= 5) {
+      } else if (orders == 'build road' && tileData.roadProgress >= 5) {
         tileData.road = true;
         unitData.orders = null;
       }
