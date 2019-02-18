@@ -124,14 +124,14 @@ router.post('/newGame', (req, res, next) => {
             game: game,
             player: player,
             location: tempUnitLocations[tempUnitLocationCount],
-            unitTypeIndex: 0,
+            templateName: 'settler',
           };
 
           var tempUnit2 = {
             game: game,
             player: player,
             location: tempUnitLocations[tempUnitLocationCount + 1],
-            unitTypeIndex: 1,
+            templateName: 'scout',
           };
 
           tempUnitLocationCount += 2;

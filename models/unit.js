@@ -14,11 +14,7 @@ var UnitSchema = new mongoose.Schema({
   location: {
     type: Array,
   },
-  unitType: {
-    name: {
-      type: String,
-    },
-  },
+  templateName: String,
   moves: {
     type: Number,
     default: 1,
