@@ -141,10 +141,17 @@ function chooseUnitLocations(tiles, numPlayers) {
       let [r1, c1] = passableTiles[tileNum].location;
       let [r2, c2] = [r1, helpers.getColumn(numCols, c1 + 1)];
 
-      if (true) {
-        locations.push([[r1, c1], [r1, c2]]);
-        break;
+      const otherPlayersNearby = locations.filter(pair => {
+        let [r3, c3] = pair[0];
+        return Math.abs(r1 - r3) < 6 && Math.abs(c1 - c3) < 6;
+      });
+
+      if (otherPlayersNearby.length > 0) {
+        continue;
       }
+
+      locations.push([[r1, c1], [r1, c2]]);
+      break;
     }
   }
 
