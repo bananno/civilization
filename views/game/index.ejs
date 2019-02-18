@@ -24,7 +24,7 @@
     let activeCity = null;
 
     let activeUnit = currentTurnUnits.filter(unit => {
-        return unit.movesRemaining > 0 && unit.orders == null;
+        return unit.movesRemaining > 0 && unit.orders == null && !unit.automate;
     })[0];
 
     let map = [];

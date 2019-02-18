@@ -1,7 +1,7 @@
 <%
     let className = 'unit-roster';
 
-    if (unit.movesRemaining == 0 || unit.orders) {
+    if (unit.movesRemaining == 0 || unit.orders || unit.automate) {
         className += ' done';
     }
 
@@ -33,6 +33,11 @@
         <% if (projectTurns) { %>
             (<%= projectTurns %>)
         <% } %>
+        <% if (unit.automate) { %>
+            <br/> automate
+        <% } %>
+    <% } else if (unit.automate) { %>
+        <br/> automate
     <% } else if (unit.movesRemaining) { %>
         <br/>
         <span class="red">needs orders</span>
