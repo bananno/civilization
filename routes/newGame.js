@@ -120,11 +120,27 @@ router.post('/newGame', (req, res, next) => {
   });
 });
 
-function chooseUnitLocations(map, numPlayers) {
+function chooseUnitLocations(tiles, numPlayers) {
+  const numCols = tiles[0].length;
   const locations = [];
 
-  locations.push([[3, 0], [2, 6]]);
-  locations.push([[6, 9], [9, 5]]);
+  const passableTiles = tiles.filter(tile => {
+    return !(tile.terrain.water || tile.terrain.mountain);
+  });
+
+  for (let i = 0; i < numPlayers; i++) {
+    let foundGoodPlace = false;
+
+    while (!foundGoodPlace) {
+      let tileNum = helpers.getRandomInt(0, passableTiles.length - 1);
+      let [r, c] = passableTiles[tileNum].location;
+
+      locations.push([r, c]);
+      locations.push([r, helpers.getColumn(numCols, c + 1)]);
+
+      foundGoodPlace = true;
+    }
+  }
 
   return locations;
 }
