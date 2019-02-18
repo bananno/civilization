@@ -60,7 +60,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       }
 
       if (unit.unitType.name == 'galley') {
-        return newTile.terrain.water;
+        return newTile.terrain.water || newTile.improvement == 'city';
       } else {
         return !newTile.terrain.water;
       }

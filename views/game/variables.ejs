@@ -239,7 +239,7 @@
         }
 
         if (unit.unitType.name == 'galley') {
-          if (!map[r][c].tile.terrain.water) {
+          if (!map[r][c].tile.terrain.water && map[r][c].tile.improvement != 'city') {
             continue;
           }
         } else if (map[r][c].tile.terrain.water) {
