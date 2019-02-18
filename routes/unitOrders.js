@@ -16,13 +16,14 @@ router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
     }
 
     let unitData = {};
+    unitData.automate = false;
 
     if (orders == 'skipTurn') {
       unitData.orders = 'skip turn';
     } else if (orders == 'sleep') {
       unitData.orders = 'sleep';
     } else if (orders == 'automate' && unit.unitType.name == 'worker') {
-      unitData.orders = 'automate';
+      unitData.automate = true;
     } else if (orders == 'wake' || orders == 'cancel') {
       unitData.orders = null;
     } else if (orders == 'buildFarm' || orders == 'buildMine' || orders == 'buildRoad'

@@ -26,7 +26,7 @@
     } else if (unitType == 'worker') {
         actions.push({
             path: '/unitOrders/automate/' + unit._id,
-            hidden: unit.orders == 'automate',
+            hidden: unit.automate,
             text: 'automate',
         });
         actions.push({
@@ -69,7 +69,7 @@
         });
     }
 
-    if (unit.orders) {
+    if (unit.orders || unit.automate) {
         actions.push({
             path: '/unitOrders/cancel/' + unit._id,
             hidden: unit.orders == 'sleep' || unit.orders == 'skip turn',

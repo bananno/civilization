@@ -31,6 +31,10 @@ var UnitSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  automate: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 var Unit = mongoose.model('Unit', UnitSchema);
