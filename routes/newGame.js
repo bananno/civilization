@@ -41,10 +41,10 @@ router.post('/newGame', (req, res, next) => {
       req.session.gameId = game._id;
 
       const numPlayers = 2;
-      const tempUnitLocations = [[3, 0], [2, 6], [6, 9], [9, 5]];
-      let tempUnitLocationCount = 0;
 
       let tileList = createMap(game);
+
+      const unitLocations = chooseUnitLocations(tileList, numPlayers);
 
       const getVisibleTiles = getVisibleTilesFunction({
         game: { mapSize: game.mapSize },
@@ -65,18 +65,16 @@ router.post('/newGame', (req, res, next) => {
           var tempUnit1 = {
             game: game,
             player: player,
-            location: tempUnitLocations[tempUnitLocationCount],
+            location: unitLocations[i][0],
             templateName: 'settler',
           };
 
           var tempUnit2 = {
             game: game,
             player: player,
-            location: tempUnitLocations[tempUnitLocationCount + 1],
+            location: unitLocations[i][1],
             templateName: 'scout',
           };
-
-          tempUnitLocationCount += 2;
 
           let revealedTiles = [];
 
@@ -121,5 +119,14 @@ router.post('/newGame', (req, res, next) => {
     }
   });
 });
+
+function chooseUnitLocations(map, numPlayers) {
+  const locations = [];
+
+  locations.push([[3, 0], [2, 6]]);
+  locations.push([[6, 9], [9, 5]]);
+
+  return locations;
+}
 
 module.exports = router;
