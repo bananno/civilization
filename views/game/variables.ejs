@@ -186,6 +186,8 @@
       map[r][c].lit = true;
     });
 
+    const inShiftedRow = row % 2 == 0;
+
     for (r = row - 2; r <= row + 2; r++) {
       if (r < 0) {
         continue;
@@ -207,34 +209,34 @@
         }
 
         let moveDirection = (() => {
-          if (col == c) {
-            if (r == row + 1) {
-              if (row % 2 == 0) {
-                return 'down-left';
-              } else {
-                return 'down-right';
-              }
+          if (row == r) {
+            if (cTemp == col - 1) {
+              return 'left';
             }
-            if (r == row - 1) {
-              if (row % 2 == 0) {
-                return 'up-left';
-              } else {
-                return 'up-right';
-              }
+
+            if (cTemp == col + 1) {
+              return 'right';
             }
+
             return false;
           }
 
-          if (row != r) {
-            return false;
-          }
+          let shift = inShiftedRow ? 1 : 0;
 
-          if (c == col -1 || (c == game.mapSize[1] - 1 && col == 0)) {
-            return 'left';
-          }
-
-          if (c == col + 1 || (col == game.mapSize[1] - 1 && c == 0)) {
-            return 'right';
+          if (r == row - 1) {
+            if (c == col + shift - 1) {
+              return 'up-left';
+            }
+            if (c == col + shift) {
+              return 'up-right';
+            }
+          } else if (r == row + 1) {
+            if (c == col + shift - 1) {
+              return 'down-left';
+            }
+            if (c == col + shift) {
+              return 'down-right';
+            }
           }
 
           return false;
