@@ -77,6 +77,8 @@ router.post('/foundCity/:unitId', (req, res, next) => {
         let startCol = startColCity - 1;
         let endCol = endColCity + 1;
 
+        const shiftBackwards = city.location[0] % 2 == 0;
+
         for (let r = startRow; r <= endRow; r++) {
           if (r < 0) {
             continue;
@@ -85,7 +87,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
             break;
           }
 
-          let rowIsInCitySquare = r >= startRowCity && r <= endRowCity;
+          let rowIsInCityBorders = r >= startRowCity && r <= endRowCity;
 
           for (let cTemp = startCol; cTemp <= endCol; cTemp++) {
             let c = helpers.getColumn(numMapCols, cTemp);
@@ -97,8 +99,22 @@ router.post('/foundCity/:unitId', (req, res, next) => {
               tileObj.discovered = tile.discovered;
               tileObj.discovered.push(city.player);
 
-              if (rowIsInCitySquare) {
-                if (cTemp >= startColCity && cTemp <= endColCity) {
+              if (rowIsInCityBorders) {
+                let colIsInCityBorders = cTemp >= startColCity && cTemp <= endColCity;
+
+                if (colIsInCityBorders && r != city.location[0]) {
+                  if (shiftBackwards) {
+                    if (cTemp == city.location[1] - 1) {
+                      colIsInCityBorders = false;
+                    }
+                  } else {
+                    if (cTemp == city.location[1] + 1) {
+                      colIsInCityBorders = false;
+                    }
+                  }
+                }
+
+                if (colIsInCityBorders) {
                   if (tile.player == null) {
                     tileObj.player = city.player;
                   }
