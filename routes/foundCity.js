@@ -79,6 +79,25 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
         const shiftBackwards = city.location[0] % 2 == 0;
 
+        const tileIsInNewCityBorders = (tile, r, cTemp) => {
+          if (r < startRowCity || r > endRowCity
+              || cTemp < startColCity || cTemp > endColCity) {
+            return false;
+          }
+          if (r != city.location[0]) {
+            if (city.location[0] % 2 == 0) {
+              if (cTemp == city.location[1] - 1) {
+                return false;
+              }
+            } else {
+              if (cTemp == city.location[1] + 1) {
+                return false;
+              }
+            }
+          }
+          return tile.player == null;
+        };
+
         for (let r = startRow; r <= endRow; r++) {
           if (r < 0) {
             continue;
@@ -86,8 +105,6 @@ router.post('/foundCity/:unitId', (req, res, next) => {
           if (r >= numMapRows) {
             break;
           }
-
-          let rowIsInCityBorders = r >= startRowCity && r <= endRowCity;
 
           for (let cTemp = startCol; cTemp <= endCol; cTemp++) {
             let c = helpers.getColumn(numMapCols, cTemp);
@@ -99,26 +116,8 @@ router.post('/foundCity/:unitId', (req, res, next) => {
               tileObj.discovered = tile.discovered;
               tileObj.discovered.push(city.player);
 
-              if (rowIsInCityBorders) {
-                let colIsInCityBorders = cTemp >= startColCity && cTemp <= endColCity;
-
-                if (colIsInCityBorders && r != city.location[0]) {
-                  if (shiftBackwards) {
-                    if (cTemp == city.location[1] - 1) {
-                      colIsInCityBorders = false;
-                    }
-                  } else {
-                    if (cTemp == city.location[1] + 1) {
-                      colIsInCityBorders = false;
-                    }
-                  }
-                }
-
-                if (colIsInCityBorders) {
-                  if (tile.player == null) {
-                    tileObj.player = city.player;
-                  }
-                }
+              if (tileIsInNewCityBorders(tile, r, cTemp)) {
+                tileObj.player = city.player;
               }
 
               // The city tile itself is automatically worked by the city.
