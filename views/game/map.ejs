@@ -34,6 +34,9 @@
 <div id="map">
     <% map.forEach((row, r) => { %>
         <div class="map-row" row="<%= r %>">
+            <% if (r % 2 == 0) { %>
+                <div class="map-shift"> ! </div>
+            <% } %>
             <% for (let boardnum = 0; boardnum < 3; boardnum++) { %>
                 <% row.forEach((cell, c) => { %>
                     <% include ./mapCell %>
