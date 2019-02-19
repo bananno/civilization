@@ -227,14 +227,14 @@ form.move-unit:hover {
   opacity: 1;
 }
 
-form.move-unit.up {
-  -webkit-transform: rotate(270deg);
-  transform: rotate(270deg);
+form.move-unit.up-left {
+  -webkit-transform: rotate(235deg);
+  transform: rotate(235deg);
 }
 
-form.move-unit.down {
-  -webkit-transform: rotate(90deg);
-  transform: rotate(90deg);
+form.move-unit.down-left {
+  -webkit-transform: rotate(125deg);
+  transform: rotate(125deg);
 }
 
 form.move-unit.left {
