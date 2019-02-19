@@ -15,6 +15,7 @@ div#map {
 
 .map-row {
   display: none;
+  white-space: nowrap;
 }
 
 .map-cell {
