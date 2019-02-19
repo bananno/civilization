@@ -13,10 +13,6 @@ div#map {
   text-align: center;
 }
 
-#map table {
-  margin: auto;
-}
-
 .map-row {
   display: none;
 }
