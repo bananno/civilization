@@ -209,10 +209,18 @@
         let moveDirection = (() => {
           if (col == c) {
             if (r == row + 1) {
-              return 'down-left';
+              if (row % 2 == 0) {
+                return 'down-left';
+              } else {
+                return 'down-right';
+              }
             }
             if (r == row - 1) {
-              return 'up-left';
+              if (row % 2 == 0) {
+                return 'up-left';
+              } else {
+                return 'up-right';
+              }
             }
             return false;
           }

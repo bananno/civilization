@@ -227,9 +227,15 @@ form.move-unit:hover {
   opacity: 1;
 }
 
-form.move-unit.up-left {
-  -webkit-transform: rotate(235deg);
-  transform: rotate(235deg);
+form.move-unit.right {
+  /* for some reason, the hover effect is broken for this direction when this code is absent */
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
+form.move-unit.down-right {
+  -webkit-transform: rotate(35deg);
+  transform: rotate(35deg);
 }
 
 form.move-unit.down-left {
@@ -242,10 +248,14 @@ form.move-unit.left {
   transform: rotate(180deg);
 }
 
-form.move-unit.right {
-  /* for some reason, the hover effect is broken for this direction when this code is absent */
-  -webkit-transform: rotate(0deg);
-  transform: rotate(0deg);
+form.move-unit.up-left {
+  -webkit-transform: rotate(235deg);
+  transform: rotate(235deg);
+}
+
+form.move-unit.up-right {
+  -webkit-transform: rotate(325deg);
+  transform: rotate(325deg);
 }
 
 form.work-tile {
