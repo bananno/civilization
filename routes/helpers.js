@@ -38,4 +38,32 @@ helpers.booleanByPercentage = (percentage) => {
   return helpers.getRandomInt(0, 100) <= percentage;
 };
 
+helpers.isTileAdjacent = (numCols, oldRow, oldCol, newRow, newCol) => {
+  let colDistance = oldCol - newCol;
+
+  if (colDistance == numCols - 1) {
+    colDistance = -1;
+  } else if (colDistance == -(numCols - 1)) {
+    colDistance = 1;
+  }
+
+  if (newRow == oldRow) {
+    return Math.abs(colDistance) == 1;
+  }
+
+  if (Math.abs(oldRow - newRow) != 1) {
+    return false;
+  }
+
+  if (colDistance == 0) {
+    return true;
+  }
+
+  if (oldRow % 2 == 0) {
+    return colDistance == 1;
+  }
+
+  return colDistance == -1;
+};
+
 module.exports = helpers;

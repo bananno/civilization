@@ -11,6 +11,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
 
   getData(req, res, next, (data) => {
     const getVisibleTiles = getVisibleTilesFunction(data);
+    const numCols = data.game.mapSize[1];
 
     let numMapRows = data.game.mapSize[0];
     let numMapCols = data.game.mapSize[1];
@@ -31,16 +32,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
         return false;
       }
 
-      if (newRow != oldRow && newCol != oldCol) {
-        return false;
-      }
-
-      let wrapColumn = (oldCol == 0 && newCol == numMapCols - 1)
-        || (oldCol == numMapCols - 1 && newCol == 0);
-      let oneColAway = Math.abs(oldCol - newCol) == 1 || wrapColumn;
-      let oneRowAway = Math.abs(oldRow - newRow) == 1;
-
-      if (!(oneColAway || wrapColumn) && !oneRowAway) {
+      if (!helpers.isTileAdjacent(numCols, oldRow, oldCol, newRow, newCol)) {
         return false;
       }
 
