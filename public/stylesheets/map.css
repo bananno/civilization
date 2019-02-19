@@ -233,9 +233,19 @@ form.move-unit.right {
   transform: rotate(0deg);
 }
 
+form.move-unit.left {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
 form.move-unit.down-right {
-  -webkit-transform: rotate(35deg);
-  transform: rotate(35deg);
+  -webkit-transform: rotate(55deg);
+  transform: rotate(55deg);
+}
+
+form.move-unit.up-right {
+  -webkit-transform: rotate(-55deg);
+  transform: rotate(-55deg);
 }
 
 form.move-unit.down-left {
@@ -243,19 +253,9 @@ form.move-unit.down-left {
   transform: rotate(125deg);
 }
 
-form.move-unit.left {
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
-}
-
 form.move-unit.up-left {
-  -webkit-transform: rotate(235deg);
-  transform: rotate(235deg);
-}
-
-form.move-unit.up-right {
-  -webkit-transform: rotate(325deg);
-  transform: rotate(325deg);
+  -webkit-transform: rotate(-125deg);
+  transform: rotate(-125deg);
 }
 
 form.work-tile {
