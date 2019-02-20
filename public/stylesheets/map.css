@@ -61,19 +61,19 @@ div#map {
 }
 
 .layer-curve-top-left {
-  border-top-left-radius: 20px;
+  border-top-left-radius: 12px;
 }
 
 .layer-curve-top-right {
-  border-top-right-radius: 20px;
+  border-top-right-radius: 12px;
 }
 
 .layer-curve-bottom-left {
-  border-bottom-left-radius: 20px;
+  border-bottom-left-radius: 12px;
 }
 
 .layer-curve-bottom-right {
-  border-bottom-right-radius: 20px;
+  border-bottom-right-radius: 12px;
 }
 
 .layer-ground.ground-grassland {
