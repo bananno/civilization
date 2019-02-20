@@ -316,31 +316,23 @@ form.work-tile.working-false {
 form.work-tile.working-disabled {
   background-image: url(/images/worktile-disabled.png); }
 
-.layer-edge-side-dark {
+.layer-edge-dark {
   background-image: url(/images/map/edge.png);
   background-size: 51px; }
 
-.layer-edge-corner-dark {
-  background-image: url(/images/map/edge-corner.png);
-  background-size: 60px; }
-
-.corner-bottom-left,
 .side-left {
   -webkit-transform: rotate(0deg);
   transform: rotate(0deg); }
 
-.corner-top-left,
-.side-top {
-  -webkit-transform: rotate(90deg);
-  transform: rotate(90deg); }
-
-.corner-top-right,
 .side-right {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg); }
 
-.corner-bottom-right,
-.side-bottom {
+.side-top-left {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg); }
+
+.side-bottom-left {
   -webkit-transform: rotate(270deg);
   transform: rotate(270deg); }
 
