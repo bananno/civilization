@@ -1,5 +1,7 @@
 <%
-  const allTilesLitForTesting = true;
+  testing.lightAllTiles = false;
+  testing.hideFogTiles = false;
+  testing.showMapCellBorders = false;
 
   for (let r = 0; r < numRows; r++) {
     map[r] = [];
@@ -12,7 +14,7 @@
         rivalUnit: false,
         moves: [],
         workTiles: [],
-        lit: false || allTilesLitForTesting,
+        lit: false || testing.lightAllTiles,
         discovered: false,
         edges: [],
         roads: [],

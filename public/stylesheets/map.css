@@ -32,6 +32,10 @@ div#map {
   margin-bottom: -3px;
 }
 
+.map-cell.off-screen {
+  display: none;
+}
+
 .map-cell.clickable, .map-cell.clickable div {
   cursor: pointer;
 }

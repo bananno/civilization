@@ -1,11 +1,6 @@
-<%
-    let testShowFullMap = false;
-    let testShowSectionBorders = false;
-    let testHideFogTiles = false;
-%>
 
 <style>
-<% if (testShowSectionBorders) { %>
+<% if (testing.showMapCellBorders) { %>
     .map-cell.boardnum-1 {
       border: 1px solid white;
     }
@@ -25,13 +20,7 @@
     }
 <% } %>
 
-<% if (!testShowFullMap) { %>
-    .map-cell.off-screen {
-      display: none;
-    }
-<% } %>
-
-<% if (testHideFogTiles) { %>
+<% if (testing.hideFogTiles) { %>
     .layer-fog {
       background-color: rgba(0, 0, 0, 1);
     }
