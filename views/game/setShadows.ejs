@@ -1,5 +1,8 @@
 <%
   const isDark = (row, col) => {
+    if (row < 0 || row >= numRows) {
+      return true;
+    }
     return !map[row][col].discovered;
   };
 
@@ -19,16 +22,8 @@
       let c1 = helpers.getColumn(numCols, c - 1);
       let c2 = helpers.getColumn(numCols, c + 1);
 
-      if (r == 0) {
-        edges[0] = [true, true, true];
-        edges[2] = [isDark(r + 1, c1), isDark(r + 1, c), isDark(r + 1, c2)];
-      } else if (r == numRows - 1) {
-        edges[0] = [isDark(r - 1, c1), isDark(r - 1, c), isDark(r - 1, c2)];
-        edges[2] = [true, true, true];
-      } else {
-        edges[2] = [isDark(r + 1, c1), isDark(r + 1, c), isDark(r + 1, c2)];
-        edges[0] = [isDark(r - 1, c1), isDark(r - 1, c), isDark(r - 1, c2)];
-      }
+      edges[2] = [isDark(r + 1, c1), isDark(r + 1, c), isDark(r + 1, c2)];
+      edges[0] = [isDark(r - 1, c1), isDark(r - 1, c), isDark(r - 1, c2)];
 
       edges[1][0] = isDark(r, c1);
       edges[1][2] = isDark(r, c2);
