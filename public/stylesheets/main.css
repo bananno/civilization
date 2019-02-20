@@ -180,7 +180,7 @@ div#map {
 
 .layer-water {
   background-image: url(/images/map/water.png);
-  background-size: 90px; }
+  background-size: 51px; }
 
 .layer-ground.ground-grassland {
   background-image: url(/images/map/grassland.png);

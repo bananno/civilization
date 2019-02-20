@@ -62,7 +62,7 @@ div#map {
 
 .layer-water {
   background-image: url(/images/map/water.png);
-  background-size: 90px;
+  background-size: $hexBackgroundSize;
 }
 
 .layer-ground.ground-grassland {
