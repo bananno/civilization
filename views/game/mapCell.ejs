@@ -20,32 +20,55 @@
     if (cell.lit || cell.owned || cell.discovered) {
         const [r, c] = tile.location;
 
-        const c1 = helpers.getColumn(numCols, c - 1);
-        const c2 = helpers.getColumn(numCols, c + 1);
+        const inWater = tileRef[r][c].terrain.water;
 
-        const leftCoast = tileRef[r][c].terrain.water != tileRef[r][c1].terrain.water;
-        const rightCoast = tileRef[r][c].terrain.water != tileRef[r][c2].terrain.water;
+        let c1 = helpers.getColumn(numCols, c - 1);
+        let c2 = helpers.getColumn(numCols, c + 1);
+
+        const coast = {
+            left: false,
+            right: false,
+            topLeft: false,
+            bottomLeft: false,
+            topRight: false,
+            bottomRight: false,
+        };
+
+        coast.left = inWater != tileRef[r][c1].terrain.water;
+        coast.right = inWater != tileRef[r][c2].terrain.water;
+
+        if (shiftRow) {
+            c1 = c;
+        } else {
+            c2 = c;
+        }
+
+        if (r > 0) {
+            coast.topLeft = inWater != tileRef[r - 1][c1].terrain.water;
+            coast.topRight = inWater != tileRef[r - 1][c2].terrain.water;
+        }
+
+        if (r < numRows - 1) {
+            coast.bottomLeft = inWater != tileRef[r + 1][c1].terrain.water;
+            coast.bottomRight = inWater != tileRef[r + 1][c2].terrain.water;
+        }
 
         const cornerCoasts = [];
 
-        if (r > 0 && tileRef[r][c].terrain.water != tileRef[r - 1][c].terrain.water) {
-            if (leftCoast) {
+        if (coast.left) {
+            if (coast.topLeft) {
                 cornerCoasts.push('layer-curve-top-left');
             }
-            if (rightCoast) {
-                if (tileRef[r - 1][c].terrain.water == tileRef[r - 1][c2].terrain.water) {
-                    cornerCoasts.push('layer-curve-top-right');
-                }
+            if (coast.bottomLeft) {
+                cornerCoasts.push('layer-curve-bottom-left');
             }
         }
 
-        if (r < numRows - 1 && tileRef[r][c].terrain.water != tileRef[r + 1][c].terrain.water) {
-            if (leftCoast) {
-                if (tileRef[r + 1][c].terrain.water == tileRef[r + 1][c1].terrain.water) {
-                    cornerCoasts.push('layer-curve-bottom-left');
-                }
+        if (coast.right) {
+            if (coast.topRight) {
+                cornerCoasts.push('layer-curve-top-right');
             }
-            if (rightCoast) {
+            if (coast.bottomRight) {
                 cornerCoasts.push('layer-curve-bottom-right');
             }
         }

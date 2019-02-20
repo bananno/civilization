@@ -34,7 +34,8 @@
 <div id="map">
     <% map.forEach((row, r) => { %>
         <div class="map-row" row="<%= r %>">
-            <% if (r % 2 == 0) { %>
+            <% const shiftRow = r % 2 == 0; %>
+            <% if (shiftRow) { %>
                 <div class="map-shift"> ! </div>
             <% } %>
             <% for (let boardnum = 0; boardnum < 3; boardnum++) { %>
