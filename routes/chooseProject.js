@@ -37,6 +37,11 @@ router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
       return res.redirect('/');
     }
 
+    if (!city.isCoastal && projectTemplate && projectTemplate.name == 'galley') {
+      console.log('This project requires a coastal city.');
+      return res.redirect('/');
+    }
+
     let cityData = {
       project: {
         category: project,
