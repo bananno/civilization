@@ -27,19 +27,21 @@ router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
       projectTemplate = data.unitList[index];
     }
 
-    if (projectTemplate && !projectTemplate.isAvailable) {
-      console.log('Required technology is not yet discovered for this project.');
-      return res.redirect('/');
-    }
+    if (projectTemplate) {
+      if (!projectTemplate.isAvailable) {
+        console.log('Required technology is not yet discovered for this project.');
+        return res.redirect('/');
+      }
 
-    if (city.population == 1 && projectTemplate && projectTemplate.name == 'settler') {
-      console.log('Cannot train settlers in city with population of 1.');
-      return res.redirect('/');
-    }
+      if (city.population == 1 && projectTemplate.name == 'settler') {
+        console.log('Cannot train settlers in city with population of 1.');
+        return res.redirect('/');
+      }
 
-    if (!city.isCoastal && projectTemplate && projectTemplate.name == 'galley') {
-      console.log('This project requires a coastal city.');
-      return res.redirect('/');
+      if (!city.isCoastal && projectTemplate.name == 'galley') {
+        console.log('This project requires a coastal city.');
+        return res.redirect('/');
+      }
     }
 
     let cityData = {
