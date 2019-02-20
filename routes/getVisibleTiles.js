@@ -91,28 +91,40 @@ const getVisibleTiles = (numRows, numCols, tiles, row, column) => {
     visible[farR][farC] = true;
   };
 
+  // unit tile
   visible[0][0] = true;
 
+  // directly left and right, and beyond
   visible[0][1] = true;
-  compareTiles(0, 1, 0, 2);
-
   visible[0][-1] = true;
+  compareTiles(0, 1, 0, 2);
   compareTiles(0, -1, 0, -2);
 
-  visible[-1][0] = true;
-  compareTiles(-1, 0, -2, -1);
-
-  visible[1][0] = true;
-  compareTiles(1, 0, 2, -1);
-
   if (row % 2 == 0) {
-    visible[-1][1] = true;
-    compareTiles(-1, 1, -2, 1);
-    visible[1][1] = true;
-    compareTiles(1, 1, 2, 1);
   } else {
+    // top left
     visible[-1][-1] = true;
+    compareTiles(-1, -1, -2, -1);
+
+    // top right
+    visible[-1][0] = true;
+    compareTiles(-1, 0, -2, 1);
+
+    // bottom left
     visible[1][-1] = true;
+    compareTiles(1, -1, 2, -1);
+
+    // bottom right
+    visible[1][0] = true;
+    compareTiles(1, 0, 2, 1);
+
+    // between top left and top right
+    compareTiles(-1, -1, -2, 0);
+    compareTiles(-1, 0, -2, 0);
+
+    // between bottom left and bottom right
+    compareTiles(1, -1, 2, 0);
+    compareTiles(1, 0, 2, 0);
   }
 
   // Return all pairs that are still true.
