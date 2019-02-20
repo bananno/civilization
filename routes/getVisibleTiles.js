@@ -91,6 +91,8 @@ const getVisibleTiles = (numRows, numCols, tiles, row, column) => {
     visible[farR][farC] = true;
   };
 
+  let s = -(row % 2); // shift columns of adjacent rows by 0 or -1
+
   // unit tile
   visible[0][0] = true;
 
@@ -100,48 +102,45 @@ const getVisibleTiles = (numRows, numCols, tiles, row, column) => {
   compareTiles(0, 1, 0, 2);
   compareTiles(0, -1, 0, -2);
 
-  if (row % 2 == 0) {
-  } else {
-    // top left
-    visible[-1][-1] = true;
-    compareTiles(-1, -1, -2, -1);
+  // top left
+  visible[-1][s] = true;
+  compareTiles(-1, s, -2, -1);
 
-    // top right
-    visible[-1][0] = true;
-    compareTiles(-1, 0, -2, 1);
+  // top right
+  visible[-1][s + 1] = true;
+  compareTiles(-1, s + 1, -2, 1);
 
-    // bottom left
-    visible[1][-1] = true;
-    compareTiles(1, -1, 2, -1);
+  // bottom left
+  visible[1][s] = true;
+  compareTiles(1, s, 2, -1);
 
-    // bottom right
-    visible[1][0] = true;
-    compareTiles(1, 0, 2, 1);
+  // bottom right
+  visible[1][s + 1] = true;
+  compareTiles(1, s + 1, 2, 1);
 
-    // // between top left and top right
-    compareTiles(-1, -1, -2, 0);
-    compareTiles(-1, 0, -2, 0);
+  // between top left and top right
+  compareTiles(-1, -1, -2, 0);
+  compareTiles(-1, 0, -2, 0);
 
-    // // between bottom left and bottom right
-    compareTiles(1, -1, 2, 0);
-    compareTiles(1, 0, 2, 0);
+  // between bottom left and bottom right
+  compareTiles(1, -1, 2, 0);
+  compareTiles(1, 0, 2, 0);
 
-    // // between top left and direct left
-    compareTiles(0, -1, -1, -2);
-    compareTiles(-1, -1, -1, -2);
+  // between top left and direct left
+  compareTiles(0, s - 1, -1, -2);
+  compareTiles(-1, s - 1, -1, -2);
 
-    // // between top right and direct right
-    compareTiles(-1, 0, -1, 1);
-    compareTiles(0, 1, -1, 1);
+  // between top right and direct right
+  compareTiles(-1, 0, -1, 1);
+  compareTiles(0, 1, -1, 1);
 
-    // between bottom left and direct left
-    compareTiles(1, -1, 1, -2);
-    compareTiles(1, -1, 1, -2);
+  // between bottom left and direct left
+  compareTiles(1, -1, 1, -2);
+  compareTiles(1, -1, 1, -2);
 
-    // between bottom right and direct right
-    compareTiles(0, -1, 1, 1);
-    compareTiles(1, 0, 1, 1);
-  }
+  // between bottom right and direct right
+  compareTiles(0, -1, 1, 1);
+  compareTiles(1, 0, 1, 1);
 
   // Return all pairs that are still true.
 
