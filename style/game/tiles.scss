@@ -65,3 +65,15 @@
 .layer-territory.territory-2 {
   background-color: rgba(250, 10, 150, 0.5);
 }
+
+/* FOG */
+
+.layer-fog {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#map.test-hide-fog-tiles {
+  .layer-fog {
+    background-color: rgba(0, 0, 0, 1);
+  }
+}

@@ -157,21 +157,21 @@ div#map {
 .map-cell.clickable, .map-cell.clickable div {
   cursor: pointer; }
 
-#map.show-test-borders .map-cell.boardnum-1 {
+#map.test-show-tile-borders .map-cell.boardnum-1 {
   border: 1px solid white; }
 
-#map.show-test-borders .map-cell.boardnum-0,
-#map.show-test-borders .map-cell.boardnum-2 {
+#map.test-show-tile-borders .map-cell.boardnum-0,
+#map.test-show-tile-borders .map-cell.boardnum-2 {
   border: 1px solid red; }
 
-#map.show-test-borders .map-cell.off-screen.boardnum-1 {
+#map.test-show-tile-borders .map-cell.off-screen.boardnum-1 {
   border-color: #555; }
 
-#map.show-test-borders .map-cell.off-screen.boardnum-0,
-#map.show-test-borders .map-cell.off-screen.boardnum-2 {
+#map.test-show-tile-borders .map-cell.off-screen.boardnum-0,
+#map.test-show-tile-borders .map-cell.off-screen.boardnum-2 {
   border-color: pink; }
 
-#map.show-test-borders .map-cell.center {
+#map.test-show-tile-borders .map-cell.center {
   border-color: blue; }
 
 /* TILE STACK APPLIES TO ALL "layer-" DIVS */
@@ -224,6 +224,13 @@ div#map {
 
 .layer-territory.territory-2 {
   background-color: rgba(250, 10, 150, 0.5); }
+
+/* FOG */
+.layer-fog {
+  background-color: rgba(0, 0, 0, 0.5); }
+
+#map.test-hide-fog-tiles .layer-fog {
+  background-color: black; }
 
 /* FEATURES ABOVE TERRAIN */
 .layer-mountain {

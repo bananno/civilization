@@ -1,21 +1,17 @@
 
-<style>
-<% if (testing.hideFogTiles) { %>
-    .layer-fog {
-      background-color: rgba(0, 0, 0, 1);
-    }
-<% } else { %>
-    .layer-fog {
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-<% } %>
-</style>
+<%
+    let mapClassName = '';
 
-<% if (testing.showMapCellBorders) { %>
-    <div id="map" class="show-test-borders">
-<% } else { %>
-    <div id="map">
-<% } %>
+    if (testing.showMapCellBorders) {
+        mapClassName += ' test-show-tile-borders';
+    }
+
+    if (testing.hideFogTiles) {
+        mapClassName += ' test-hide-fog-tiles';
+    }
+%>
+
+<div id="map" class="<%= mapClassName %>">
     <% map.forEach((row, r) => { %>
         <div class="map-row" row="<%= r %>">
             <% const shiftRow = r % 2 == 0; %>
