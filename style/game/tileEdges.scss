@@ -15,11 +15,21 @@
 }
 
 .side-top-left {
-  -webkit-transform: rotate(90deg);
-  transform: rotate(90deg);
+  -webkit-transform: rotate(60deg);
+  transform: rotate(60deg);
+}
+
+.side-top-right {
+  -webkit-transform: rotate(120deg);
+  transform: rotate(120deg);
 }
 
 .side-bottom-left {
-  -webkit-transform: rotate(270deg);
-  transform: rotate(270deg);
+  -webkit-transform: rotate(-60deg);
+  transform: rotate(-60deg);
+}
+
+.side-bottom-right {
+  -webkit-transform: rotate(-120deg);
+  transform: rotate(-120deg);
 }
