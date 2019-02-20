@@ -34,9 +34,6 @@ Terrain:
 
 */
 
-const immediateCorners = [[-1, -1], [-1, 1], [1, 1], [1, -1]];
-const immediateEdges = [[-1, 0], [0, 1], [1, 0], [0, -1]];
-
 const helpers = require('./helpers');
 
 const getVisibleTiles = (numRows, numCols, tiles, row, column) => {
@@ -96,21 +93,27 @@ const getVisibleTiles = (numRows, numCols, tiles, row, column) => {
 
   visible[0][0] = true;
 
-  immediateEdges.forEach(pair => {
-    let [r, c] = pair;
-    visible[r][c] = true;
-    compareTiles(r, c, r * 2, c * 2);
-    compareTiles(r, c, r * 2 || -1, c * 2 || -1);
-    compareTiles(r, c, r * 2 || 1, c * 2 || 1);
-  });
+  visible[0][1] = true;
+  compareTiles(0, 1, 0, 2);
 
-  immediateCorners.forEach(pair => {
-    let [r, c] = pair;
-    visible[r][c] = true;
-    compareTiles(r, c, r * 2, c * 2);
-    compareTiles(r, c, r * 2, c);
-    compareTiles(r, c, r, c * 2);
-  });
+  visible[0][-1] = true;
+  compareTiles(0, -1, 0, -2);
+
+  visible[-1][0] = true;
+  compareTiles(-1, 0, -2, -1);
+
+  visible[1][0] = true;
+  compareTiles(1, 0, 2, -1);
+
+  if (row % 2 == 0) {
+    visible[-1][1] = true;
+    compareTiles(-1, 1, -2, 1);
+    visible[1][1] = true;
+    compareTiles(1, 1, 2, 1);
+  } else {
+    visible[-1][-1] = true;
+    visible[1][-1] = true;
+  }
 
   // Return all pairs that are still true.
 
