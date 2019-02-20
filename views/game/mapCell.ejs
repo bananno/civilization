@@ -76,14 +76,14 @@
             tileStack.push('unit unit-' + unitName);
         }
 
-        if (!cell.lit) {
+        if (cell.lit) {
+            cell.edges.fog.forEach(edge => {
+                tileStack.push(edge);
+            });
+        } else {
             className += ' fog';
             tileStack.push('fog');
         }
-
-        cell.edges.fog.forEach(edge => {
-            tileStack.push(edge);
-        });
 
         cell.edges.dark.forEach(edge => {
             tileStack.push(edge);
