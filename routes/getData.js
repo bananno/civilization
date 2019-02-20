@@ -4,6 +4,7 @@ const Tile = require('../models/tile');
 const City = require('../models/city');
 const Unit = require('../models/unit');
 
+const helpers = require('./helpers');
 const buildingList = require('../models/buildingList');
 const unitList = require('../models/unitList');
 const technologyList = require('../models/technologyList');
@@ -47,6 +48,15 @@ function getData(req, res, next, callback) {
         culture: 0,
         science: 0,
       };
+
+      city.isCoastal = false;
+
+      helpers.forEachAdjacentTile(data.game.mapSize[0], data.game.mapSize[1], data.tiles,
+          city.location[0], city.location[1], (tile) => {
+        if (tile.terrain.water) {
+          city.isCoastal = true;
+        }
+      });
 
       let extraLaborPercentage = 0;
 

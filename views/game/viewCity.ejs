@@ -120,6 +120,9 @@
                     if (city.population == 1 && unitTemplate.name == 'settler') {
                         return;
                     }
+                    if (!city.isCoastal && unitTemplate.name == 'galley') {
+                        return;
+                    }
                     if (!unitTemplate.isAvailable) {
                         return;
                     }
