@@ -41,14 +41,14 @@
       }
 
       edgeNames.forEach(edgeName => {
-        if (dark[edgeNames]) {
-          map[r][c].edge.dark.push('edge-dark-' + edgeName);
+        if (dark[edgeName]) {
+          map[r][c].edges.dark.push('edge-dark side-' + edgeName);
         }
-        if (fog[edgeNames]) {
-          map[r][c].edge.fog.push('edge-fog-' + edgeName);
+        if (fog[edgeName]) {
+          map[r][c].edges.fog.push('edge-fog side-' + edgeName);
         }
-        if (coast[edgeNames]) {
-          map[r][c].edge.coast.push('edge-coast-' + edgeName);
+        if (coast[edgeName]) {
+          map[r][c].edges.coast.push('edge-coast side-' + edgeName);
         }
       });
     }
