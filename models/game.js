@@ -17,6 +17,10 @@ var GameSchema = new mongoose.Schema({
   mapSize: {
     type: Array,
   },
+  zoom: {
+    type: Number,
+    default: 1,
+  },
 });
 
 var Game = mongoose.model('Game', GameSchema);
