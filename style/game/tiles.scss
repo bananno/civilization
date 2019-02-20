@@ -69,11 +69,12 @@
 /* FOG */
 
 .layer-fog {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url(/images/map/dark.png);
+  opacity: 0.5;
 }
 
 #map.test-hide-fog-tiles {
   .layer-fog {
-    background-color: rgba(0, 0, 0, 1);
+    opacity: 1;
   }
 }
