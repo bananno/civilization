@@ -6,7 +6,7 @@
 @import "load";
 
 /* GAME PLAY */
-@import "game";
-@import "map";
-@import "menu";
-@import "viewCity";
+@import "game/game";
+@import "game/map";
+@import "game/menu";
+@import "game/viewCity";
