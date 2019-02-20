@@ -25,7 +25,7 @@
         dark[dir + 'left'] = !map[r][c1].discovered;
         dark[dir + 'right'] = !map[r][c2].discovered;
         fog[dir + 'left'] = !dark.left && !map[r][c1].lit;
-        fog[dir + 'right'] = !dark.right && !map[r][c1].lit;
+        fog[dir + 'right'] = !dark.right && !map[r][c2].lit;
         coast[dir + 'left'] = inWater != map[r][c1].tile.terrain.water;
         coast[dir + 'right'] = inWater != map[r][c2].tile.terrain.water;
       };
