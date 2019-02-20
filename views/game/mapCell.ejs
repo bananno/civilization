@@ -20,6 +20,7 @@
     if (cell.lit || cell.owned || cell.discovered) {
         const [r, c] = tile.location;
 
+        /* [UPDATE FOR HEX]
         const c1 = helpers.getColumn(numCols, c - 1);
         const c2 = helpers.getColumn(numCols, c + 1);
 
@@ -48,14 +49,19 @@
             if (rightCoast) {
                 cornerCoasts.push('layer-curve-bottom-right');
             }
-        }
+        }*/
 
         if (tile.terrain.water) {
+            /* [UPDATE FOR HEX]
             tileStack.push('ground ground-grassland');
-            tileStack.push('water ' + cornerCoasts.join(' '));
-        } else {
+            tileStack.push('water ' + cornerCoasts.join(' ')); */
             tileStack.push('water');
-            tileStack.push('ground ground-' + tile.terrain.ground + ' ' + cornerCoasts.join(' '));
+        } else {
+            /* [UPDATE FOR HEX]
+            tileStack.push('water');
+            tileStack.push('ground ground-' + tile.terrain.ground + ' '
+                + cornerCoasts.join(' ')); */
+            tileStack.push('ground ground-' + tile.terrain.ground);
         }
 
         if (cell.player) {
@@ -111,9 +117,10 @@
             tileStack.push('fog');
         }
 
+        /* [UPDATE FOR HEX]
         cell.edges.forEach(edge => {
             tileStack.push('edge-' + edge);
-        });
+        });*/
 
         if (clickable) {
             className += ' clickable';
