@@ -53,13 +53,7 @@ const getVisibleTiles = (numRows, numCols, tiles, row, column) => {
     tileGroup[r1] = [];
 
     for (let c1 = -2; c1 <= 2; c1++) {
-      let c = column + c1;
-
-      if (c < 0) {
-        c += numCols;
-      } else if (c >= numCols) {
-        c -= numCols;
-      }
+      let c = helpers.getColumn(numCols, column + c1);
 
       tileGroup[r1][c1] = {
         mountain: false,
@@ -132,12 +126,7 @@ const getVisibleTiles = (numRows, numCols, tiles, row, column) => {
     }
     for (let c1 = -2; c1 <= 2; c1++) {
       if (visible[r1][c1]) {
-        let c = column + c1;
-        if (c < 0) {
-          c += numCols;
-        } else if (c >= numCols) {
-          c -= numCols;
-        }
+        let c = helpers.getColumn(numCols, column + c1);
         coords.push([r, c]);
       }
     }
