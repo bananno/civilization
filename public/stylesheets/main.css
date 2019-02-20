@@ -344,18 +344,6 @@ form.work-tile.working-disabled {
   -webkit-transform: rotate(270deg);
   transform: rotate(270deg); }
 
-.layer-curve-top-left {
-  border-top-left-radius: 12px; }
-
-.layer-curve-top-right {
-  border-top-right-radius: 12px; }
-
-.layer-curve-bottom-left {
-  border-bottom-left-radius: 12px; }
-
-.layer-curve-bottom-right {
-  border-bottom-right-radius: 12px; }
-
 #menu-link-container {
   position: absolute;
   top: 35px;
