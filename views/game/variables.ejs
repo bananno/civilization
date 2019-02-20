@@ -72,19 +72,9 @@
       if (isCurrentTurnPlayer(tile.player)) {
         map[r][c].owned = true;
 
-        for (let r1 = r - 1; r1 <= r + 1; r1++) {
-          for (let cTemp = c - 1; cTemp <= c + 1; cTemp++) {
-            let c1 = cTemp;
-            if (c1 < 0) {
-              c1 += numCols;
-            } else if (c1 >= numCols) {
-              c1 -= numCols;
-            }
-            if (map[r1] && map[r1][c1]) {
-              map[r1][c1].lit = true;
-            }
-          }
-        }
+        helpers.forEachAdjacentTile(numRows, numCols, tiles, r, c, (_, r1, c1) => {
+          map[r1][c1].lit = true;
+        });
       }
     }
 
