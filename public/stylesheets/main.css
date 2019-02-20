@@ -339,11 +339,13 @@ form.work-tile.working-disabled {
 
 .side-bottom-left {
   -webkit-transform: rotate(-60deg);
-  transform: rotate(-60deg); }
+  transform: rotate(-60deg);
+  margin-left: -2px; }
 
 .side-bottom-right {
   -webkit-transform: rotate(-120deg);
-  transform: rotate(-120deg); }
+  transform: rotate(-120deg);
+  margin-left: 2px; }
 
 #menu-link-container {
   position: absolute;
