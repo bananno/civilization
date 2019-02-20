@@ -173,8 +173,8 @@ div#map {
   background-color: black; }
 
 .tile-stack {
-  height: 50px;
   width: 50px;
+  height: 60px;
   position: absolute; }
 
 .tile-stack {
@@ -235,7 +235,7 @@ div#map {
 /* FOG & EDGES */
 .layer-edge-side-dark {
   background-image: url(/images/map/edge.png);
-  background-size: 60px; }
+  background-size: 51px; }
 
 .layer-edge-corner-dark {
   background-image: url(/images/map/edge-corner.png);
