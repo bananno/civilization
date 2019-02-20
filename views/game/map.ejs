@@ -1,25 +1,5 @@
 
 <style>
-<% if (testing.showMapCellBorders) { %>
-    .map-cell.boardnum-1 {
-      border: 1px solid white;
-    }
-    .map-cell.boardnum-0,
-    .map-cell.boardnum-2 {
-      border: 1px solid red;
-    }
-    .map-cell.off-screen.boardnum-1 {
-      border-color: #555;
-    }
-    .map-cell.off-screen.boardnum-0,
-    .map-cell.off-screen.boardnum-2 {
-      border-color: pink;
-    }
-    .map-cell.center {
-      border-color: blue;
-    }
-<% } %>
-
 <% if (testing.hideFogTiles) { %>
     .layer-fog {
       background-color: rgba(0, 0, 0, 1);
@@ -31,7 +11,11 @@
 <% } %>
 </style>
 
-<div id="map">
+<% if (testing.showMapCellBorders) { %>
+    <div id="map" class="show-test-borders">
+<% } else { %>
+    <div id="map">
+<% } %>
     <% map.forEach((row, r) => { %>
         <div class="map-row" row="<%= r %>">
             <% const shiftRow = r % 2 == 0; %>

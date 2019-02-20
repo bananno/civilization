@@ -34,3 +34,27 @@ div#map {
 .map-cell.clickable, .map-cell.clickable div {
   cursor: pointer;
 }
+
+#map.show-test-borders {
+  .map-cell.boardnum-1 {
+    border: 1px solid white;
+  }
+
+  .map-cell.boardnum-0,
+  .map-cell.boardnum-2 {
+    border: 1px solid red;
+  }
+
+  .map-cell.off-screen.boardnum-1 {
+    border-color: #555;
+  }
+
+  .map-cell.off-screen.boardnum-0,
+  .map-cell.off-screen.boardnum-2 {
+    border-color: pink;
+  }
+
+  .map-cell.center {
+    border-color: blue;
+  }
+}
