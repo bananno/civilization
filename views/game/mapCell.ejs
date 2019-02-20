@@ -25,6 +25,10 @@
             tileStack.push('ground ground-' + tile.terrain.ground);
         }
 
+        cell.edges.coast.forEach(edge => {
+            tileStack.push(edge);
+        });
+
         if (cell.player) {
             className += ' player' + cell.player;
             tileStack.push('territory territory-' + cell.player);
@@ -78,8 +82,12 @@
             tileStack.push('fog');
         }
 
-        cell.edges.forEach(edge => {
-            tileStack.push('edge-' + edge);
+        cell.edges.fog.forEach(edge => {
+            tileStack.push(edge);
+        });
+
+        cell.edges.dark.forEach(edge => {
+            tileStack.push(edge);
         });
 
         if (clickable) {

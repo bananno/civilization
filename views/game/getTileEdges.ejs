@@ -1,4 +1,6 @@
 <%
+  const edgeNames = ['left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'];
+
   for (let r = 0; r < numRows; r++) {
     const shiftRow = r % 2 == 0;
     for (let c = 0; c < numCols; c++) {
@@ -9,71 +11,46 @@
 
       const inWater = map[r][c].tile.terrain.water;
 
-      let c1 = helpers.getColumn(numCols, c - 1);
-      let c2 = helpers.getColumn(numCols, c + 1);
+      const c1 = helpers.getColumn(numCols, c - 1);
+      const c2 = helpers.getColumn(numCols, c + 1);
 
-      const edges = {};
-      const coasts = {};
+      const dark = {};
+      const fog = {};
+      const coast = {};
 
-      edges.left = !map[r][c1].discovered;
-      edges.right = !map[r][c2].discovered;
+      const findEdges = (dir, r, c1, c2) => {
+        if (r < 0 || r >= numRows) {
+          return;
+        }
+        dark[dir + 'left'] = !map[r][c1].discovered;
+        dark[dir + 'right'] = !map[r][c2].discovered;
+        fog[dir + 'left'] = !dark.left && !map[r][c1].lit;
+        fog[dir + 'right'] = !dark.right && !map[r][c1].lit;
+        coast[dir + 'left'] = inWater != map[r][c1].tile.terrain.water;
+        coast[dir + 'right'] = inWater != map[r][c2].tile.terrain.water;
+      };
 
-      coasts.left = inWater != map[r][c1].tile.terrain.water;
-      coasts.right = inWater != map[r][c2].tile.terrain.water;
+      findEdges('', r, c1, c2);
 
       if (shiftRow) {
-        c1 = c;
+        findEdges('top-', r - 1, c, c2);
+        findEdges('bottom-', r + 1, c, c2);
       } else {
-        c2 = c;
+        findEdges('top-', r - 1, c1, c);
+        findEdges('bottom-', r + 1, c1, c);
       }
 
-      if (r > 0) {
-        edges.topLeft = !map[r - 1][c1].discovered;
-        edges.topRight = !map[r - 1][c2].discovered;
-        coasts.topLeft = inWater != map[r - 1][c1].tile.terrain.water;
-        coasts.topRight = inWater != map[r - 1][c2].tile.terrain.water;
-      }
-
-      if (r < numRows - 1) {
-        edges.bottomLeft = !map[r + 1][c1].discovered;
-        edges.bottomRight = !map[r + 1][c2].discovered;
-        coasts.bottomLeft = inWater != map[r + 1][c1].tile.terrain.water;
-        coasts.bottomRight = inWater != map[r + 1][c2].tile.terrain.water;
-      }
-
-      if (edges.topLeft && edges.topRight) {
-        map[r][c].edges.push('side-dark side-top');
-      }
-
-      if (edges.left) {
-        map[r][c].edges.push('side-dark side-left');
-      }
-
-      if (edges.bottomLeft && edges.bottomRight) {
-        map[r][c].edges.push('side-dark side-bottom');
-      }
-
-      if (edges.right) {
-        map[r][c].edges.push('side-dark side-right');
-      }
-
-      if (coasts.left) {
-        if (coasts.topLeft) {
-          map[r][c].coasts.push('coast-top-left');
+      edgeNames.forEach(edgeName => {
+        if (dark[edgeNames]) {
+          map[r][c].edge.dark.push('edge-dark-' + edgeName);
         }
-        if (coasts.bottomLeft) {
-          map[r][c].coasts.push('coast-bottom-left');
+        if (fog[edgeNames]) {
+          map[r][c].edge.fog.push('edge-fog-' + edgeName);
         }
-      }
-
-      if (coasts.right) {
-        if (coasts.topRight) {
-          map[r][c].coasts.push('coast-top-right');
+        if (coast[edgeNames]) {
+          map[r][c].edge.coast.push('edge-coast-' + edgeName);
         }
-        if (coasts.bottomRight) {
-          map[r][c].coasts.push('coast-bottom-right');
-        }
-      }
+      });
     }
   }
 %>
