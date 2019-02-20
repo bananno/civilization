@@ -21,7 +21,7 @@
         if (tile.terrain.water) {
             tileStack.push('water');
         } else {
-            tileStack.push('ground ground-' + tile.terrain.ground);
+            tileStack.push(tile.terrain.ground);
         }
 
         cell.edges.coast.forEach(edge => {

@@ -151,6 +151,13 @@ div#map {
   display: inline-block;
   width: 20px; }
 
+.map-cell.off-screen {
+  display: none; }
+
+.map-cell.clickable, .map-cell.clickable div {
+  cursor: pointer; }
+
+/* TILE STACK APPLIES TO ALL "layer-" DIVS */
 .map-cell {
   display: inline-block;
   width: 50px;
@@ -160,31 +167,23 @@ div#map {
   margin-bottom: -3px;
   margin-top: -15px; }
 
-.map-cell.off-screen {
-  display: none; }
-
-.map-cell.clickable, .map-cell.clickable div {
-  cursor: pointer; }
+.tile-stack {
+  width: 50px;
+  height: 60px;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 51px; }
 
 .map-cell.notDiscovered {
   background-color: black; }
 
-.tile-stack {
-  width: 50px;
-  height: 60px;
-  position: absolute; }
-
-.tile-stack {
-  background-repeat: no-repeat;
-  background-position: center; }
-
+/* TERRAIN */
 .layer-water {
-  background-image: url(/images/map/water.png);
-  background-size: 51px; }
+  background-image: url(/images/map/water.png); }
 
-.layer-ground.ground-grassland {
-  background-image: url(/images/map/grassland.png);
-  background-size: 51px; }
+.layer-grassland {
+  background-image: url(/images/map/grassland.png); }
 
 /* ROAD */
 .layer-road {
@@ -205,19 +204,14 @@ div#map {
 .layer-road.road-bottom {
   background-image: url(/images/map/road/bottom.png); }
 
-/* */
+/* PLAYER TERRITORY */
 .layer-territory.territory-1 {
   background-color: rgba(250, 60, 250, 0.5); }
 
 .layer-territory.territory-2 {
   background-color: rgba(250, 10, 150, 0.5); }
 
-.layer-unit {
-  background-size: auto 45px; }
-
-.map-cell.fog .layer-unit {
-  display: none; }
-
+/* FEATURES ABOVE TERRAIN */
 .layer-mountain {
   background-image: url(/images/map/mountain.png);
   background-size: 60px; }
@@ -242,6 +236,13 @@ div#map {
   background-image: url(/images/map/mine.png);
   background-size: 50px; }
 
+/* UNITS */
+.layer-unit {
+  background-size: auto 45px; }
+
+.map-cell.fog .layer-unit {
+  display: none; }
+
 .layer-unit.unit-worker {
   background-image: url(/images/units/worker.png); }
 
@@ -254,10 +255,12 @@ div#map {
 .layer-unit.unit-galley {
   background-image: url(/images/units/galley.png); }
 
+/* ACTIVE UNIT OR CITY */
 .map-cell.active .layer-highlight {
   background-image: url(/images/spinning.gif);
   background-size: 45px; }
 
+/* UNIT MOVEMENT FORMS */
 form.move-unit {
   height: 98%;
   width: 98%;
@@ -296,6 +299,7 @@ form.move-unit.up-left {
   -webkit-transform: rotate(-125deg);
   transform: rotate(-125deg); }
 
+/* CITY TILE FORMS */
 form.work-tile {
   display: none;
   position: absolute;

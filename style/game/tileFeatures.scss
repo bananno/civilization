@@ -1,4 +1,6 @@
 
+/* FEATURES ABOVE TERRAIN */
+
 .layer-mountain {
   background-image: url(/images/map/mountain.png);
   background-size: 60px;
@@ -29,6 +31,16 @@
   background-size: 50px;
 }
 
+/* UNITS */
+
+.layer-unit {
+  background-size: auto 45px;
+}
+
+.map-cell.fog .layer-unit {
+  display: none;
+}
+
 .layer-unit.unit-worker {
   background-image: url(/images/units/worker.png);
 }
@@ -45,10 +57,14 @@
   background-image: url(/images/units/galley.png);
 }
 
+/* ACTIVE UNIT OR CITY */
+
 .map-cell.active .layer-highlight {
   background-image: url(/images/spinning.gif);
   background-size: 45px;
 }
+
+/* UNIT MOVEMENT FORMS */
 
 form.move-unit {
   height: 98%;
@@ -95,6 +111,8 @@ form.move-unit.up-left {
   -webkit-transform: rotate(-125deg);
   transform: rotate(-125deg);
 }
+
+/* CITY TILE FORMS */
 
 form.work-tile {
   display: none;
