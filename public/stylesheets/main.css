@@ -175,9 +175,6 @@ div#map {
   background-position: center;
   background-size: 51px; }
 
-.map-cell.notDiscovered {
-  background-color: black; }
-
 /* TERRAIN */
 .layer-water {
   background-image: url(/images/map/water.png); }
