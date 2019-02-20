@@ -119,28 +119,28 @@ const getVisibleTiles = (numRows, numCols, tiles, row, column) => {
   compareTiles(1, s + 1, 2, 1);
 
   // between top left and top right
-  compareTiles(-1, -1, -2, 0);
-  compareTiles(-1, 0, -2, 0);
+  compareTiles(-1, s, -2, 0);
+  compareTiles(-1, s + 1, -2, 0);
 
   // between bottom left and bottom right
-  compareTiles(1, -1, 2, 0);
-  compareTiles(1, 0, 2, 0);
+  compareTiles(1, s, 2, 0);
+  compareTiles(1, s + 1, 2, 0);
 
   // between top left and direct left
-  compareTiles(0, s - 1, -1, -2);
-  compareTiles(-1, s - 1, -1, -2);
+  compareTiles(-1, s, -1, s - 1);
+  compareTiles(0, 1, -1, s - 1);
 
   // between top right and direct right
-  compareTiles(-1, 0, -1, 1);
-  compareTiles(0, 1, -1, 1);
+  compareTiles(-1, s + 1, -1, s + 2);
+  compareTiles(0, 1, -1, s + 2);
 
   // between bottom left and direct left
-  compareTiles(1, -1, 1, -2);
-  compareTiles(1, -1, 1, -2);
+  compareTiles(1, s, 1, s - 1);
+  compareTiles(1, -1, 1, s - 1);
 
   // between bottom right and direct right
-  compareTiles(0, -1, 1, 1);
-  compareTiles(1, 0, 1, 1);
+  compareTiles(1, s + 1, 1, s + 2);
+  compareTiles(0, 1, 1, s + 2);
 
   // Return all pairs that are still true.
 
