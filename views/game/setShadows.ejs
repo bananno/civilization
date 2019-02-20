@@ -6,45 +6,52 @@
     return !map[row][col].discovered;
   };
 
+  let shiftRow = false;
+
   for (let r = 0; r < numRows; r++) {
+    shiftRow = !shiftRow;
     for (let c = 0; c < numCols; c++) {
 
       if (isDark(r, c)) {
         continue;
       }
 
-      let edges = [
-        [false, false, false],
-        [false, null, false],
-        [false, false, false]
-      ];
-
       let c1 = helpers.getColumn(numCols, c - 1);
       let c2 = helpers.getColumn(numCols, c + 1);
 
-      edges[2] = [isDark(r + 1, c1), isDark(r + 1, c), isDark(r + 1, c2)];
-      edges[0] = [isDark(r - 1, c1), isDark(r - 1, c), isDark(r - 1, c2)];
+      const edges = {};
 
-      edges[1][0] = isDark(r, c1);
-      edges[1][2] = isDark(r, c2);
+      edges.left = isDark(r, c1);
+      edges.right = isDark(r, c2);
 
-      if (edges[0][1]) {
+      if (shiftRow) {
+        c1 = c;
+      } else {
+        c2 = c;
+      }
+
+      edges.topLeft = isDark(r - 1, c1);
+      edges.topRight = isDark(r - 1, c2);
+      edges.bottomLeft = isDark(r + 1, c1);
+      edges.bottomRight = isDark(r + 1, c2);
+
+      if (edges.topLeft && edges.topRight) {
         map[r][c].edges.push('side-dark side-top');
       }
 
-      if (edges[1][0]) {
+      if (edges.left) {
         map[r][c].edges.push('side-dark side-left');
       }
 
-      if (edges[2][1]) {
+      if (edges.bottomLeft && edges.bottomRight) {
         map[r][c].edges.push('side-dark side-bottom');
       }
 
-      if (edges[1][2]) {
+      if (edges.right) {
         map[r][c].edges.push('side-dark side-right');
       }
 
-      if (edges[0][0] && !edges[0][1] && !edges[1][0]) {
+      /*if (edges[0][0] && !edges[0][1] && !edges[1][0]) {
         map[r][c].edges.push('corner-dark corner-top-left');
       }
 
@@ -58,7 +65,7 @@
 
       if (edges[2][2] && !edges[2][1] && !edges[1][2]) {
         map[r][c].edges.push('corner-dark corner-bottom-right');
-      }
+      }*/
     }
   }
 %>
