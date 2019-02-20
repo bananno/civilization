@@ -195,9 +195,8 @@ div#map {
   border-bottom-right-radius: 12px; }
 
 .layer-ground.ground-grassland {
-  background-image: url(/images/map/hex.png);
-  background-size: 51px;
-  background-repeat: no-repeat; }
+  background-image: url(/images/map/grassland.png);
+  background-size: 51px; }
 
 /* ROAD */
 .layer-road {

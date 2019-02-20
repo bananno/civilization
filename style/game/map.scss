@@ -82,12 +82,8 @@ div#map {
 }
 
 .layer-ground.ground-grassland {
-  // background-image: url(/images/map/grassland.png);
-  // background-size: 90px;
-
-  background-image: url(/images/map/hex.png);
+  background-image: url(/images/map/grassland.png);
   background-size: $hexBackgroundSize;
-  background-repeat: no-repeat;
 }
 
 /* ROAD */
