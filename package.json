@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "css": "node-sass --include-path sass style/game.scss public/stylesheets/game.css"
+    "css": "node-sass --include-path sass style/compile.scss public/stylesheets/main.css"
   },
   "dependencies": {
     "connect-mongo": "^2.0.3",
