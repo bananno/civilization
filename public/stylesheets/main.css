@@ -182,18 +182,6 @@ div#map {
   background-image: url(/images/map/water.png);
   background-size: 90px; }
 
-.layer-curve-top-left {
-  border-top-left-radius: 12px; }
-
-.layer-curve-top-right {
-  border-top-right-radius: 12px; }
-
-.layer-curve-bottom-left {
-  border-bottom-left-radius: 12px; }
-
-.layer-curve-bottom-right {
-  border-bottom-right-radius: 12px; }
-
 .layer-ground.ground-grassland {
   background-image: url(/images/map/grassland.png);
   background-size: 51px; }
@@ -216,35 +204,6 @@ div#map {
 
 .layer-road.road-bottom {
   background-image: url(/images/map/road/bottom.png); }
-
-/* FOG & EDGES */
-.layer-edge-side-dark {
-  background-image: url(/images/map/edge.png);
-  background-size: 51px; }
-
-.layer-edge-corner-dark {
-  background-image: url(/images/map/edge-corner.png);
-  background-size: 60px; }
-
-.corner-bottom-left,
-.side-left {
-  -webkit-transform: rotate(0deg);
-  transform: rotate(0deg); }
-
-.corner-top-left,
-.side-top {
-  -webkit-transform: rotate(90deg);
-  transform: rotate(90deg); }
-
-.corner-top-right,
-.side-right {
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg); }
-
-.corner-bottom-right,
-.side-bottom {
-  -webkit-transform: rotate(270deg);
-  transform: rotate(270deg); }
 
 /* */
 .layer-territory.territory-1 {
@@ -356,6 +315,46 @@ form.work-tile.working-false {
 
 form.work-tile.working-disabled {
   background-image: url(/images/worktile-disabled.png); }
+
+.layer-edge-side-dark {
+  background-image: url(/images/map/edge.png);
+  background-size: 51px; }
+
+.layer-edge-corner-dark {
+  background-image: url(/images/map/edge-corner.png);
+  background-size: 60px; }
+
+.corner-bottom-left,
+.side-left {
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg); }
+
+.corner-top-left,
+.side-top {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg); }
+
+.corner-top-right,
+.side-right {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg); }
+
+.corner-bottom-right,
+.side-bottom {
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg); }
+
+.layer-curve-top-left {
+  border-top-left-radius: 12px; }
+
+.layer-curve-top-right {
+  border-top-right-radius: 12px; }
+
+.layer-curve-bottom-left {
+  border-bottom-left-radius: 12px; }
+
+.layer-curve-bottom-right {
+  border-bottom-right-radius: 12px; }
 
 #menu-link-container {
   position: absolute;
