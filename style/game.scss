@@ -1,16 +1,20 @@
+
 html, body {
-  overflow: hidden; }
+  overflow: hidden;
+}
 
 #next-action {
   position: absolute;
   z-index: 150;
   top: 40px;
-  left: 260px; }
+  left: 260px;
+}
 
 #next-action button {
   padding: 5px 8px;
   cursor: pointer;
-  border-radius: 10px; }
+  border-radius: 10px;
+}
 
 .view-unit {
   position: absolute;
@@ -21,7 +25,8 @@ html, body {
   border: 2px solid gray;
   margin-top: 10px;
   padding: 10px;
-  color: #fce8cc; }
+  color: #fce8cc;
+}
 
 .city-roster,
 .unit-roster {
@@ -29,11 +34,13 @@ html, body {
   padding: 5px 8px;
   border-radius: 10px;
   cursor: pointer;
-  margin-bottom: 5px; }
+  margin-bottom: 5px;
+}
 
 .city-roster.done,
 .unit-roster.done {
-  background-color: #999; }
+  background-color: #999;
+}
 
 #tile-details {
   display: none;
@@ -45,10 +52,12 @@ html, body {
   background-color: gray;
   margin: 10px;
   padding: 10px;
-  border-radius: 10px; }
+  border-radius: 10px;
+}
 
 img.production-icon {
-  height: 20px; }
+  height: 20px;
+}
 
 #game-header {
   position: absolute;
@@ -61,38 +70,47 @@ img.production-icon {
   justify-content: space-between;
   box-sizing: border-box;
   padding-right: 50px;
-  cursor: default; }
+  cursor: default;
+}
 
 .header-image, .header-text {
   display: inline-block;
   height: 100%;
-  vertical-align: top; }
+  vertical-align: top;
+}
 
 .header-image img {
   height: 20px;
-  margin: 5px 0 0 10px; }
+  margin: 5px 0 0 10px;
+}
 
 .header-text {
   color: #fce8cc;
   font-size: 14px;
   line-height: 30px;
-  margin-right: 5px; }
+  margin-right: 5px;
+}
 
 .header-science {
-  color: #82ddff; }
+  color: #82ddff;
+}
 
 .header-money {
-  color: yellow; }
+  color: yellow;
+}
 
 .header-culture {
-  color: #ff00ff; }
+  color: #ff00ff;
+}
 
 .info-box {
   padding: 10px;
   color: #fce8cc;
   border: 2px solid gray;
   border-radius: 10px;
-  background-color: black; }
+  background-color: black;
+}
 
 .info-box ul {
-  margin-left: 20px; }
+  margin-left: 20px;
+}
