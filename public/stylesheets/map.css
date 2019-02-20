@@ -120,10 +120,6 @@ div#map {
 
 /* FOG & EDGES */
 
-.layer-fog {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
 .layer-edge-side-dark {
   background-image: url(/images/map/edge.png);
   background-size: 60px;
