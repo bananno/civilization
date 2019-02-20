@@ -39,7 +39,7 @@ helpers.booleanByPercentage = (percentage) => {
 };
 
 helpers.isTileAdjacent = (numCols, oldRow, oldCol, newRow, newCol) => {
-  let colDistance = oldCol - newCol;
+  let colDistance = newCol - oldCol;
 
   if (colDistance == numCols - 1) {
     colDistance = -1;
