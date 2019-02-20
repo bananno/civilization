@@ -158,10 +158,7 @@ div#map {
   text-align: center;
   margin-left: -5px;
   margin-bottom: -3px;
-  margin-top: -15px;
-  background-image: url(/images/map/hex.png);
-  background-size: 51px;
-  background-repeat: no-repeat; }
+  margin-top: -15px; }
 
 .map-cell.off-screen {
   display: none; }
@@ -198,8 +195,9 @@ div#map {
   border-bottom-right-radius: 12px; }
 
 .layer-ground.ground-grassland {
-  background-image: url(/images/map/grassland.png);
-  background-size: 90px; }
+  background-image: url(/images/map/hex.png);
+  background-size: 51px;
+  background-repeat: no-repeat; }
 
 /* ROAD */
 .layer-road {

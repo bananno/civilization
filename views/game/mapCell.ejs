@@ -18,9 +18,9 @@
     }
 
     if (cell.lit || cell.owned || cell.discovered) {
-        /*if (tile.terrain.water) {
+        /*if (tile.terrain.water) {*/
             tileStack.push('ground ground-grassland');
-            tileStack.push('water ' + cell.coasts.join(' '));
+            /*tileStack.push('water ' + cell.coasts.join(' '));
         } else {
             tileStack.push('water');
             tileStack.push('ground ground-' + tile.terrain.ground + ' '

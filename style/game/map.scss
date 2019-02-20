@@ -35,10 +35,6 @@ div#map {
   margin-left: -5px;
   margin-bottom: -3px;
   margin-top: -15px;
-
-  background-image: url(/images/map/hex.png);
-  background-size: $hexBackgroundSize;
-  background-repeat: no-repeat;
 }
 
 .map-cell.off-screen {
@@ -86,8 +82,12 @@ div#map {
 }
 
 .layer-ground.ground-grassland {
-  background-image: url(/images/map/grassland.png);
-  background-size: 90px;
+  // background-image: url(/images/map/grassland.png);
+  // background-size: 90px;
+
+  background-image: url(/images/map/hex.png);
+  background-size: $hexBackgroundSize;
+  background-repeat: no-repeat;
 }
 
 /* ROAD */
