@@ -117,9 +117,20 @@ helpers.forEachAdjacentTile = (numRows, numCols, tiles, row, col, callback) => {
   });
 };
 
+function isSamePlayer(player1, player2) {
+  if (player1 == null || player2 == null) {
+    return player1 == null && player2 == null;
+  }
+  return '' + (player1._id || player1) == '' + (player2._id || player2);
+}
+
 helpers.makeHelperFunctions = (data) => {
   const newHelpers = {};
   const [numRows, numCols] = data.game.mapSize;
+
+  newHelpers.isCurrentPlayer = (player) => {
+    return isSamePlayer(player, data.currentPlayer);
+  };
 
   newHelpers.getColumn = (col) => {
     return helpers.getColumn(numCols, col);

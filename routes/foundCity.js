@@ -18,39 +18,12 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
     const tile = data.tileRef[unit.location[0]][unit.location[1]];
 
-    if (tile.player) {
-      if ('' + tile.player != '' + data.turnPlayerId) {
-        console.log('Cannot build a city in another player\'s territory.');
-        return res.redirect('/');
-      }
+    if (tile.player && !data.help.isCurrentPlayer(tile.player)) {
+      console.log('Cannot build a city in another player\'s territory.');
+      return res.redirect('/');
     }
 
-    const cityData = {
-      game: data.game,
-      player: unit.player,
-      location: unit.location,
-      buildings: [],
-      project: {
-        category: null,
-        index: null,
-      },
-      projectProgress: {
-        unit: [],
-        building: [],
-      },
-      storage: {
-        food: 0,
-        labor: 0,
-      },
-    };
-
-    const playerCities = data.cities.filter(city => {
-      return city.player == unit.player;
-    });
-
-    if (playerCities.length == 0) {
-      cityData.buildings.push(0);
-    }
+    const cityData = getNewCityObject(data, unit.player, unit.location);
 
     City.create(cityData, (error, city) => {
       if (error) {
@@ -147,5 +120,40 @@ router.post('/foundCity/:unitId', (req, res, next) => {
     });
   });
 });
+
+function getNewCityObject(data, player, location) {
+  const newCity = {
+    game: data.game,
+    player: player,
+    location: location,
+    buildings: [],
+    project: {
+      category: null,
+      index: null,
+    },
+    projectProgress: {
+      unit: [],
+      building: [],
+    },
+    storage: {
+      food: 0,
+      labor: 0,
+    },
+  };
+
+  if (playerHasNoCitiesYet(data, player)) {
+    newCity.buildings.push(0);
+  }
+
+  return newCity;
+}
+
+function playerHasNoCitiesYet(data, player) {
+  const playerCities = data.cities.filter(city => {
+    return city.player == player;
+  });
+
+  return playerCities.length == 0;
+}
 
 module.exports = router;
