@@ -237,6 +237,8 @@ function zoom(direction) {
     data: {
       direction: direction,
     },
-    // success: success,
+    success: () => {
+      console.log('success');
+    },
   });
 }

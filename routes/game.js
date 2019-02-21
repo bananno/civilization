@@ -94,7 +94,7 @@ function zoom(req, res, next) {
       if (error) {
         return next(error);
       }
-      res.redirect('/');
+      res.send();
     });
   });
 }
