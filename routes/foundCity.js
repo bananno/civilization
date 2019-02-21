@@ -105,7 +105,7 @@ function deleteSettler(unit, next) {
   });
 }
 
-function determineTileUpdates(data, city, cityTile) {
+function determineTileUpdates(data, city, cityTile, next) {
   const tilesToUpdate = [];
   const tileAlreadyCovered = {};
 
@@ -154,7 +154,7 @@ function determineTileUpdates(data, city, cityTile) {
     });
   });
 
-  return tilesToUpdate;
+  return next(tilesToUpdate);
 }
 
 function finishTileUpdates(tileList, next, i) {
