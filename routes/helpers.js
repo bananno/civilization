@@ -66,6 +66,48 @@ helpers.isTileAdjacent = (numCols, oldRow, oldCol, newRow, newCol) => {
   return colDistance == -1;
 };
 
+helpers.getSurroundingCoords = (numRows, numCols, row, col, range, blocker) => {
+  const shift = -(row % 2);
+  const pairs = [
+    [-1, shift],
+    [-1, 1 + shift],
+    [0, -1],
+    [0, 1],
+    [1, shift],
+    [1, 1 + shift],
+  ];
+
+  blocker = blocker || {};
+
+  let coords = pairs.map(pair => {
+    let r = pair[0] + row;
+    let c = helpers.getColumn(numCols, pair[1] + col);
+
+    if (r < 0 || r >= numRows) {
+      return null;
+    }
+
+    if (blocker[r + ',' + c]) {
+      return null;
+    }
+
+    blocker[r + ',' + c] = true;
+
+    return [r, c];
+  }).filter(pair => pair != null);
+
+  if (range > 1) {
+    const tempCoords = [...coords];
+    tempCoords.forEach(pair => {
+      let [r, c] = pair;
+      const newCoords = helpers.getSurroundingCoords(numRows, numCols, r, c, range - 1, blocker);
+      coords = coords.concat(newCoords);
+    });
+  }
+
+  return coords;
+};
+
 helpers.forEachAdjacentTile = (numRows, numCols, tiles, row, col, callback) => {
   const shift = -(row % 2);
   const pairs = [
