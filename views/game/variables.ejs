@@ -1,5 +1,5 @@
 <%
-  testing.lightAllTiles = false;
+  testing.lightAllTiles = true;
   testing.hideFogTiles = false;
   testing.showMapCellBorders = false;
 
@@ -97,73 +97,69 @@
 
     let atMaxWork = cityTilesWorked.length >= city.population + 1;
 
-    const addWorkingTile = (r, c1) => {
-      if (Math.abs(row - r) > 3 || Math.abs(col - c1) > 3) {
-        return;
-      }
+    let adjTiles = [[], [], []];
 
-      if (r < 0 || r >= game.mapSize[0]) {
-        return;
-      }
+    helpers.forEachAdjacentTile(numRows, numCols, tiles, row, col, (tile, r, c) => {
+      adjTiles[0].push([tile, r, c]);
+    });
 
-      let c = c1;
-
-      if (c < 0) {
-        c += game.mapSize[1];
-      } else if (c >= game.mapSize[1]) {
-        c -= game.mapSize[1];
-      }
-
-      if (alreadyCovered[r + ',' + c]) {
-        return;
-      }
-
-      alreadyCovered[r + ',' + c] = true;
-
-      if (!map[r][c].owned) {
-        return;
-      }
-
-      let workable = true;
-
-      if (map[r][c].cityId) {
-        workable = false;
-      }
-
-      let tileOutput = 0;
-
-      ['gold', 'food', 'labor', 'culture', 'science'].forEach(prod => {
-        tileOutput +=  map[r][c].tile.production[prod];
+    for (let i = 0; i < 2; i++) {
+      adjTiles[i].forEach(arr => {
+        let [tile, r, c] = arr;
+        helpers.forEachAdjacentTile(numRows, numCols, tiles, r, c, (tile, r, c) => {
+          adjTiles[i + 1].push([tile, r, c]);
+        });
       });
+    }
 
-      if (tileOutput == 0) {
-        workable = false;
-      }
+    for (let i = 0; i < 3; i++) {
+      adjTiles[i].forEach(arr => {
+        let [tile, r, c] = arr;
 
-      if (workable) {
-        let tile = map[r][c].tile;
-        let working = false;
-
-        if ('' + tile.worked == '' + city._id) {
-          working = true;
-        } else if (atMaxWork) {
-          working = 'disabled';
+        if (alreadyCovered[r + ',' + c]) {
+          return;
         }
 
-        map[r][c].workTiles.push({
-          cityId: city._id,
-          path: '/workTile/' + city._id + '/' + tile._id,
-          working: working,
-        });
-      }
+        alreadyCovered[r + ',' + c] = true;
 
-      addWorkingTile(r - 1, c1);
-      addWorkingTile(r + 1, c1);
-      addWorkingTile(r, c1 - 1);
-      addWorkingTile(r, c1 + 1);
-    };
+        if (!map[r][c].owned) {
+          return;
+        }
 
-    addWorkingTile(row, col);
+        let workable = true;
+
+        if (map[r][c].cityId) {
+          workable = false;
+        } else {
+          let tileOutput = 0;
+
+          ['gold', 'food', 'labor', 'culture', 'science'].forEach(prod => {
+            tileOutput += tile.production[prod];
+          });
+
+          if (tileOutput == 0) {
+            workable = false;
+          }
+        }
+
+        if (workable) {
+          let working = false;
+
+          if ('' + tile.worked == '' + city._id) {
+            working = true;
+          } else if (atMaxWork) {
+            working = 'disabled';
+          }
+
+          map[r][c].workTiles.push({
+            cityId: city._id,
+            path: '/workTile/' + city._id + '/' + tile._id,
+            working: working,
+          });
+        }
+
+      });
+    }
   });
 
   let count1 = 0;
