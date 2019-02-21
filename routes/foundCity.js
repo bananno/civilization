@@ -36,38 +36,34 @@ router.post('/foundCity/:unitId', (req, res, next) => {
         }
 
         const tilesToUpdate = [];
-        const tileAlreadyCovered = {};
+        const coverTileTrack = {};
+
+        const alreadyCoveredTile = ([r, c]) => {
+          if (coverTileTrack[r + ',' + c]) {
+            return true;
+          }
+          coverTileTrack[r + ',' + c] = true;
+          return false;
+        };
 
         // UPDATE THE TILE WHERE THE CITY IS BUILT.
         // The city tile itself is automatically worked by the city.
         // Remove any terrain features (forest) automatically.
         // Automatically build a road in the city.
 
-        let tileUpdate = {
-          improvement: 'city',
-          worked: city,
-          road: true,
-          player: city.player,
-        };
-
-        if (tile.terrain.forest) {
-          tileUpdate.terrain = tile.terrain;
-          tileUpdate.terrain.forest = false;
-        }
-
         tilesToUpdate.push({
           tile: tile,
-          update: tileUpdate,
+          update: getCityTileUpdate(tile, city),
         });
 
-        tileAlreadyCovered[city.location.join(',')] = true;
+        alreadyCoveredTile(city.location);
 
         // CLAIM THE 6 TILES AROUND THE CITY IF THEY ARE AVAILABLE.
 
         const cityBorderCoords = [];
 
         data.help.forEachAdjacentTile(city.location, (tile, r, c) => {
-          tileAlreadyCovered[r + ',' + c] = true;
+          alreadyCoveredTile([r, c]);
           if (tile.player) {
             return;
           }
@@ -84,10 +80,9 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
         cityBorderCoords.forEach(tileCoords => {
           data.help.forEachAdjacentTile(tileCoords, (tile, r, c) => {
-            if (tileAlreadyCovered[r + ',' + c]) {
+            if (alreadyCoveredTile([r, c])) {
               return;
             }
-            tileAlreadyCovered[r + ',' + c] = true;
             tilesToUpdate.push({
               tile: tile,
               update: {
@@ -154,6 +149,22 @@ function playerHasNoCitiesYet(data, player) {
   });
 
   return playerCities.length == 0;
+}
+
+function getCityTileUpdate(tile, city) {
+  let tileUpdate = {
+    improvement: 'city',
+    worked: city,
+    road: true,
+    player: city.player,
+  };
+
+  if (tile.terrain.forest) {
+    tileUpdate.terrain = tile.terrain;
+    tileUpdate.terrain.forest = false;
+  }
+
+  return tileUpdate;
 }
 
 module.exports = router;
