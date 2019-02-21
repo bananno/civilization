@@ -31,6 +31,9 @@ button:disabled {
   padding: 30px; }
 
 /* GAME PLAY */
+html, body {
+  overflow: hidden; }
+
 #next-action {
   position: absolute;
   z-index: 150;
