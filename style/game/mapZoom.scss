@@ -11,54 +11,27 @@ $hexWidth3: 300px;
 $hexHeight3: 180px;
 $hexBackgroundSize3: 152px;
 
-.map-cell {
-  width: $hexWidth1;
-  height: $hexHeight1;
-}
-
+.map-cell,
 .tile-stack {
   width: $hexWidth1;
   height: $hexHeight1;
   background-size: $hexBackgroundSize1;
 }
 
-.layer-edge-dark,
-.layer-edge-fog {
-  background-size: $hexBackgroundSize1;
-}
-
 div#map.map-zoom-2 {
-  .map-cell {
-    width: $hexWidth2;
-    height: $hexHeight2;
-  }
-
+  .map-cell,
   .tile-stack {
     width: $hexWidth2;
     height: $hexHeight2;
-    background-size: $hexBackgroundSize2;
-  }
-
-  .layer-edge-dark,
-  .layer-edge-fog {
     background-size: $hexBackgroundSize2;
   }
 }
 
 div#map.map-zoom-3 {
-  .map-cell {
-    width: $hexWidth3;
-    height: $hexHeight3;
-  }
-
+  .map-cell,
   .tile-stack {
     width: $hexWidth3;
     height: $hexHeight3;
-    background-size: $hexBackgroundSize3;
-  }
-
-  .layer-edge-dark,
-  .layer-edge-fog {
     background-size: $hexBackgroundSize3;
   }
 }
