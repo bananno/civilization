@@ -12,10 +12,13 @@ router.get('/loadGame/:gameId', loadGamePost);
 router.get('/exitGame', exitGame);
 router.post('/zoom/:direction', zoom);
 
+const zoomLimit = [1, 3];
+
 function getHomePage(req, res, next) {
   getData(req, res, next, (data) => {
     data.helpers = helpers;
     data.getVisibleTiles = getVisibleTilesFunction(data);
+    data.zoomLimit = zoomLimit;
     res.render('game/index', data);
   });
 }
@@ -82,7 +85,7 @@ function zoom(req, res, next) {
 
     const newZoom = game.zoom + direction;
 
-    if (newZoom < 0 || newZoom > 2) {
+    if (newZoom < zoomLimit[0] || newZoom > zoomLimit[1]) {
       console.log('Zoom is out of range.');
       return res.redirect('/');
     }

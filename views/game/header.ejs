@@ -48,7 +48,7 @@
 
     <div class="header-text">
         <form action="/zoom/0" method="post">
-            <% if (game.zoom == 1) { %>
+            <% if (game.zoom == zoomLimit[0]) { %>
                 <button disabled="disabled">-</button>
             <% } else { %>
                 <button type="submit">-</button>
@@ -58,7 +58,7 @@
 
     <div class="header-text">
         <form action="/zoom/1" method="post">
-            <% if (game.zoom == 2) { %>
+            <% if (game.zoom == zoomLimit[1]) { %>
                 <button disabled="disabled">+</button>
             <% } else { %>
                 <button type="submit">+</button>
