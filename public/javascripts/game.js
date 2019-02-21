@@ -33,9 +33,12 @@ function setup() {
 }
 
 function resizeWindow() {
-  let windowWidth = $(window).width();
-  let numCols = windowWidth / tileSize;
+  const windowWidth = $(window).width();
+  const windowHeight = $(window).height();
+  const numCols = windowWidth / tileSize;
+  const numRows = windowHeight / tileSize;
   colRadius = Math.floor(numCols / 2) + 1;
+  rowRadius = Math.floor(numRows / 2) + 1;
   centerMap();
 }
 
