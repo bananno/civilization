@@ -18,12 +18,20 @@ $hexBackgroundSize3: 152px;
   background-size: $hexBackgroundSize1;
 }
 
+.map-shift {
+  width: 20px;
+}
+
 div#map.map-zoom-2 {
   .map-cell,
   .tile-stack {
     width: $hexWidth2;
     height: $hexHeight2;
     background-size: $hexBackgroundSize2;
+  }
+
+  .map-shift {
+    width: 45px;
   }
 }
 
@@ -33,5 +41,9 @@ div#map.map-zoom-3 {
     width: $hexWidth3;
     height: $hexHeight3;
     background-size: $hexBackgroundSize3;
+  }
+
+  .map-shift {
+    width: 80px;
   }
 }
