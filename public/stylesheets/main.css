@@ -115,6 +115,8 @@ img.production-icon {
   font-size: 14px;
   line-height: 30px;
   margin-right: 5px; }
+  .header-text form {
+    padding-top: 5px; }
 
 .header-science {
   color: #82ddff; }
