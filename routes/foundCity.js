@@ -64,116 +64,80 @@ router.post('/foundCity/:unitId', (req, res, next) => {
           return next(error);
         }
 
-        let cityTiles = [];
+        let tilesToUpdate = [];
+        let tileAlreadyCovered = {};
 
-        let tilesInCity = [];
-        let tilesAroundCity = [];
+        // UPDATE THE TILE WHERE THE CITY IS BUILT.
+        // The city tile itself is automatically worked by the city.
+        // Remove any terrain features (forest) automatically.
+        // Automatically build a road in the city.
 
-        let covered = {};
-        covered[city.location.join(',')] = true;
+        let cityTile = helpers.findTile(data.tiles, city.location);
+        let tileUpdate = {
+          improvement: 'city',
+          worked: city,
+          road: true,
+        };
+
+        if (cityTile.terrain.forest) {
+          tileUpdate.terrain = tile.terrain;
+          tileUpdate.terrain.forest = false;
+        }
+
+        tilesToUpdate.push({
+          tile: cityTile,
+          update: tileUpdate,
+        });
+
+        tileAlreadyCovered[city.location.join(',')] = true;
+
+        // CLAIM THE 6 TILES AROUND THE CITY IF THEY ARE AVAILABLE.
+
+        let cityBorderCoords = [];
 
         helpers.forEachAdjacentTile(numRows, numCols, data.tiles, city.location[0],
             city.location[1], (tile, r, c) => {
-          covered[r + ',' + c] = true;
-          tilesInCity.push([tile, r, c]);
-        });
-
-        tilesInCity.forEach(arr => {
-          let [tile, r, c] = arr;
-
-          helpers.forEachAdjacentTile(numRows, numCols, data.tiles, r, c, (tile, r, c) => {
-            if (covered[r + ',' + c]) {
-              return;
-            }
-            covered[r + ',' + c] = true;
-            tilesAroundCity.push([tile, r, c]);
+          tileAlreadyCovered[r + ',' + c] = true;
+          if (tile.player) {
+            return;
+          }
+          cityBorderCoords.push([r, c]);
+          tilesToUpdate.push({
+            tile: tile,
+            update: {
+              player: city.player,
+            },
           });
         });
 
-        console.log(tilesInCity.length)
-        console.log(tilesAroundCity.length)
+        // DISCOVER THE 12 TILES ADJACENT TO THE CITY BORDERS.
 
-        let startRowCity = city.location[0] - 1;
-        let endRowCity = city.location[0] + 1;
-        let startColCity = city.location[1] - 1;
-        let endColCity = city.location[1] + 1;
+        cityBorderCoords.forEach(pair => {
+          let [r, c] = pair;
 
-        let startRow = startRowCity - 1;
-        let endRow = endRowCity + 1;
-        let startCol = startColCity - 1;
-        let endCol = endColCity + 1;
-
-        const shiftBackwards = city.location[0] % 2 == 0;
-
-        const tileIsInNewCityBorders = (tile, r, cTemp) => {
-          if (r < startRowCity || r > endRowCity
-              || cTemp < startColCity || cTemp > endColCity) {
-            return false;
-          }
-          if (r != city.location[0]) {
-            if (city.location[0] % 2 == 0) {
-              if (cTemp == city.location[1] - 1) {
-                return false;
-              }
-            } else {
-              if (cTemp == city.location[1] + 1) {
-                return false;
-              }
+          helpers.forEachAdjacentTile(numRows, numCols, data.tiles, r, c, (tile, r, c) => {
+            if (tileAlreadyCovered[r + ',' + c]) {
+              return;
             }
-          }
-          return tile.player == null;
-        };
+            tileAlreadyCovered[r + ',' + c] = true;
+            tilesToUpdate.push({
+              tile: tile,
+              update: {
+                discovered: tile.discovered.concat(city.player),
+              },
+            });
+          });
+        });
 
-        for (let r = startRow; r <= endRow; r++) {
-          if (r < 0) {
-            continue;
-          }
-          if (r >= numRows) {
-            break;
-          }
-
-          for (let cTemp = startCol; cTemp <= endCol; cTemp++) {
-            let c = helpers.getColumn(numCols, cTemp);
-            let tile = helpers.findTile(data.tiles, r, c);
-
-            if (tile) {
-              let tileObj = {};
-
-              tileObj.discovered = tile.discovered;
-              tileObj.discovered.push(city.player);
-
-              if (tileIsInNewCityBorders(tile, r, cTemp)) {
-                tileObj.player = city.player;
-              }
-
-              // The city tile itself is automatically worked by the city.
-              // Remove any terrain features (forest) automatically.
-              // Automatically build a road in the city.
-              if (helpers.sameLocation(city.location, [r, c])) {
-                tileObj.improvement = 'city';
-                tileObj.worked = city;
-                if (tile.terrain.forest) {
-                  tileObj.terrain = tile.terrain;
-                  tileObj.terrain.forest = false;
-                }
-                tileObj.road = true;
-              }
-
-              cityTiles.push({
-                tile: tile,
-                update: tileObj,
-              });
-            }
-          }
-        }
+        // UPDATE ALL THE TILES IN THE LIST.
 
         const claimTile = (i) => {
-          if (i >= cityTiles.length) {
+          if (i >= tilesToUpdate.length) {
             return res.redirect('/');
           }
 
-          let tile = cityTiles[i].tile;
-          let tileData = cityTiles[i].update;
+          let tile = tilesToUpdate[i].tile;
+          let tileData = tilesToUpdate[i].update;
 
           tile.update(tileData, error => {
             if (error) {
