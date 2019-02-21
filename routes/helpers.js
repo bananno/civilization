@@ -109,22 +109,9 @@ helpers.getSurroundingCoords = (numRows, numCols, row, col, range, blocker) => {
 };
 
 helpers.forEachAdjacentTile = (numRows, numCols, tiles, row, col, callback) => {
-  const shift = -(row % 2);
-  const pairs = [
-    [-1, shift],
-    [-1, 1 + shift],
-    [0, -1],
-    [0, 1],
-    [1, shift],
-    [1, 1 + shift],
-  ];
-
-  pairs.forEach(pair => {
-    const r = row + pair[0];
-    if (r < 0 || r >= numRows) {
-      return;
-    }
-    const c = helpers.getColumn(numCols, col + pair[1]);
+  const coords = helpers.getSurroundingCoords(numRows, numCols, row, col, 1);
+  coords.forEach(pair => {
+    const [r, c] = pair;
     const tile = helpers.findTile(tiles, r, c);
     callback(tile, r, c);
   });
