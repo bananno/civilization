@@ -78,23 +78,9 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
         // UPDATE ALL THE TILES IN THE LIST.
 
-        const updateNextTile = (i) => {
-          if (i >= tilesToUpdate.length) {
-            return res.redirect('/');
-          }
-
-          const tile = tilesToUpdate[i].tile;
-          const tileData = tilesToUpdate[i].update;
-
-          tile.update(tileData, error => {
-            if (error) {
-              return next(error);
-            }
-            updateNextTile(i + 1);
-          });
-        }
-
-        updateNextTile(0);
+        finishTileUpdates(tilesToUpdate, () => {
+          return res.redirect('/');
+        });
       });
     });
   });
@@ -166,6 +152,24 @@ function deleteSettler(unit, next) {
       return next(error);
     }
     next();
+  });
+}
+
+function finishTileUpdates(tileList, next, i) {
+  i = i || 0;
+
+  if (i >= tileList.length) {
+    return next();
+  }
+
+  const tile = tileList[i].tile;
+  const tileData = tileList[i].update;
+
+  tile.update(tileData, error => {
+    if (error) {
+      return next(error);
+    }
+    finishTileUpdates(tileList, next, i + 1);
   });
 }
 
