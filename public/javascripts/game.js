@@ -1,4 +1,5 @@
 
+const minTileSize = 50;
 let tileSize = 50;
 let rowRadius = 6;
 let colRadius = 10;
@@ -247,7 +248,9 @@ function changeZoom(direction) {
     },
     success: () => {
       zoom.current = newZoom;
+      tileSize = minTileSize * newZoom;
       showZoomOptions();
+      resizeWindow();
     },
   });
 }
