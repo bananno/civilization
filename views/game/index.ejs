@@ -144,18 +144,18 @@
         let numRows = <%= numRows %>;
         let numCols = <%= numCols %>;
 
+        const zoom = {
+            current: <%= game.zoom %>,
+            min: <%= zoomLimit[0] %>,
+            max: <%= zoomLimit[1] %>,
+        };
+
         setup();
 
         if (activeUnitOrCityId == null) {
             setActiveCity('<%= activeCity ? activeCity._id : null %>');
             setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
         }
-
-        const zoom = {
-            current: <%= game.zoom %>,
-            min: <%= zoomLimit[0] %>,
-            max: <%= zoomLimit[1] %>,
-        };
     </script>
 </body>
 </html>
