@@ -230,7 +230,13 @@ function hoverMapCell(row, column) {
   $('#tile-details').html(values.join('<br>'));
 }
 
-function zoom(direction) {
+function changeZoom(direction) {
+  let newZoom = zoom.current + (direction || -1);
+
+  if (newZoom < zoom.min || newZoom > zoom.max) {
+    return;
+  }
+
   $.ajax({
     type: 'POST',
     url: '/zoom',
@@ -238,7 +244,8 @@ function zoom(direction) {
       direction: direction,
     },
     success: () => {
-      console.log('success');
+      zoom.current = newZoom;
+      console.log(newZoom);
     },
   });
 }

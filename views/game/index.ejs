@@ -150,6 +150,12 @@
             setActiveCity('<%= activeCity ? activeCity._id : null %>');
             setActiveUnit('<%= activeUnit ? activeUnit._id : null %>');
         }
+
+        const zoom = {
+            current: <%= game.zoom %>,
+            min: <%= zoomLimit[0] %>,
+            max: <%= zoomLimit[1] %>,
+        };
     </script>
 </body>
 </html>
