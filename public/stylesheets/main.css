@@ -179,6 +179,9 @@ div#map {
 #map.test-show-tile-borders .map-cell.center {
   border-color: blue; }
 
+.map-cell {
+  margin-top: -15px; }
+
 .map-cell,
 .tile-stack {
   width: 50px;
@@ -187,6 +190,9 @@ div#map {
 
 .map-shift {
   width: 20px; }
+
+div#map.map-zoom-2 .map-cell {
+  margin-top: -31px; }
 
 div#map.map-zoom-2 .map-cell,
 div#map.map-zoom-2 .tile-stack {
@@ -197,22 +203,24 @@ div#map.map-zoom-2 .tile-stack {
 div#map.map-zoom-2 .map-shift {
   width: 45px; }
 
+div#map.map-zoom-3 .map-cell {
+  margin-top: -48px; }
+
 div#map.map-zoom-3 .map-cell,
 div#map.map-zoom-3 .tile-stack {
-  width: 300px;
+  width: 150px;
   height: 180px;
   background-size: 152px; }
 
 div#map.map-zoom-3 .map-shift {
-  width: 80px; }
+  width: 70px; }
 
 /* TILE STACK APPLIES TO ALL "layer-" DIVS */
 .map-cell {
   display: inline-block;
   text-align: center;
   margin-left: -5px;
-  margin-bottom: -3px;
-  margin-top: -15px; }
+  margin-bottom: -3px; }
 
 .tile-stack {
   position: absolute;

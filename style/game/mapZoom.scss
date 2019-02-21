@@ -7,9 +7,13 @@ $hexWidth2: 100px;
 $hexHeight2: 120px;
 $hexBackgroundSize2: 102px;
 
-$hexWidth3: 300px;
+$hexWidth3: 150px;
 $hexHeight3: 180px;
 $hexBackgroundSize3: 152px;
+
+.map-cell {
+  margin-top: -15px;
+}
 
 .map-cell,
 .tile-stack {
@@ -23,6 +27,10 @@ $hexBackgroundSize3: 152px;
 }
 
 div#map.map-zoom-2 {
+  .map-cell {
+    margin-top: -31px;
+  }
+
   .map-cell,
   .tile-stack {
     width: $hexWidth2;
@@ -36,6 +44,10 @@ div#map.map-zoom-2 {
 }
 
 div#map.map-zoom-3 {
+  .map-cell {
+    margin-top: -48px;
+  }
+
   .map-cell,
   .tile-stack {
     width: $hexWidth3;
@@ -44,6 +56,6 @@ div#map.map-zoom-3 {
   }
 
   .map-shift {
-    width: 80px;
+    width: 70px;
   }
 }
