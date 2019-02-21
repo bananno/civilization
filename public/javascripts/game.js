@@ -259,4 +259,12 @@ function showZoomOptions() {
   $('#zoom-current').text(zoom.current);
   $('button#zoom-out').prop('disabled', zoom.current == zoom.min);
   $('button#zoom-in').prop('disabled', zoom.current == zoom.max);
+
+  $('#map').addClass('map-zoom-' + zoom.current);
+
+  for (let z = zoom.min; z < zoom.max; z++) {
+    if (z != zoom.current) {
+      $('#map').removeClass('map-zoom-' + z);
+    }
+  }
 }
