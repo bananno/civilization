@@ -11,6 +11,8 @@ $hexWidth3: 150px;
 $hexHeight3: 180px;
 $hexBackgroundSize3: 152px;
 
+/* ZOOM LEVEL 1 */
+
 .map-cell {
   margin-top: -15px;
 }
@@ -25,6 +27,16 @@ $hexBackgroundSize3: 152px;
 .map-shift {
   width: 20px;
 }
+
+form.work-tile {
+  width: $hexWidth1/2;
+  height: $hexHeight1/2;
+  background-size: $hexBackgroundSize1/2;
+  margin: $hexHeight1/4 $hexWidth1/4;
+  border-radius: $hexHeight1/4 $hexWidth1/4;
+}
+
+/* ZOOM LEVEL 2 */
 
 div#map.map-zoom-2 {
   .map-cell {
@@ -41,7 +53,17 @@ div#map.map-zoom-2 {
   .map-shift {
     width: 45px;
   }
+
+  form.work-tile {
+    width: $hexWidth2/2;
+    height: $hexHeight2/2;
+    background-size: $hexBackgroundSize2/2;
+    margin: $hexHeight2/4 $hexWidth2/4;
+    border-radius: $hexHeight2/4 $hexWidth2/4;
+  }
 }
+
+/* ZOOM LEVEL 3 */
 
 div#map.map-zoom-3 {
   .map-cell {
@@ -57,5 +79,13 @@ div#map.map-zoom-3 {
 
   .map-shift {
     width: 70px;
+  }
+
+  form.work-tile {
+    width: $hexWidth3/2;
+    height: $hexHeight3/2;
+    background-size: $hexBackgroundSize3/2;
+    margin: $hexHeight3/4 $hexWidth3/4;
+    border-radius: $hexHeight3/4 $hexWidth3/4;
   }
 }

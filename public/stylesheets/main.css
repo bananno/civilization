@@ -182,6 +182,7 @@ div#map {
 #map.test-show-tile-borders .map-cell.center {
   border-color: blue; }
 
+/* ZOOM LEVEL 1 */
 .map-cell {
   margin-top: -15px; }
 
@@ -194,6 +195,14 @@ div#map {
 .map-shift {
   width: 20px; }
 
+form.work-tile {
+  width: 25px;
+  height: 30px;
+  background-size: 25.5px;
+  margin: 15px 12.5px;
+  border-radius: 15px 12.5px; }
+
+/* ZOOM LEVEL 2 */
 div#map.map-zoom-2 .map-cell {
   margin-top: -31px; }
 
@@ -206,6 +215,14 @@ div#map.map-zoom-2 .tile-stack {
 div#map.map-zoom-2 .map-shift {
   width: 45px; }
 
+div#map.map-zoom-2 form.work-tile {
+  width: 50px;
+  height: 60px;
+  background-size: 51px;
+  margin: 30px 25px;
+  border-radius: 30px 25px; }
+
+/* ZOOM LEVEL 3 */
 div#map.map-zoom-3 .map-cell {
   margin-top: -48px; }
 
@@ -217,6 +234,13 @@ div#map.map-zoom-3 .tile-stack {
 
 div#map.map-zoom-3 .map-shift {
   width: 70px; }
+
+div#map.map-zoom-3 form.work-tile {
+  width: 75px;
+  height: 90px;
+  background-size: 76px;
+  margin: 45px 37.5px;
+  border-radius: 45px 37.5px; }
 
 /* TILE STACK APPLIES TO ALL "layer-" DIVS */
 .map-cell {
@@ -363,9 +387,6 @@ form.move-unit.up-left {
 form.work-tile {
   display: none;
   position: absolute;
-  height: 50px;
-  width: 50px;
-  background-size: 30px;
   background-repeat: no-repeat;
   background-position: center; }
 
