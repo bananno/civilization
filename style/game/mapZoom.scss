@@ -3,6 +3,14 @@ $hexWidth1: 50px;
 $hexHeight1: 60px;
 $hexBackgroundSize1: 51px;
 
+$hexWidth2: 100px;
+$hexHeight2: 120px;
+$hexBackgroundSize2: 102px;
+
+$hexWidth3: 300px;
+$hexHeight3: 180px;
+$hexBackgroundSize3: 152px;
+
 .map-cell {
   width: $hexWidth1;
   height: $hexHeight1;
@@ -21,5 +29,36 @@ $hexBackgroundSize1: 51px;
 
 div#map.map-zoom-2 {
   .map-cell {
+    width: $hexWidth2;
+    height: $hexHeight2;
+  }
+
+  .tile-stack {
+    width: $hexWidth2;
+    height: $hexHeight2;
+    background-size: $hexBackgroundSize2;
+  }
+
+  .layer-edge-dark,
+  .layer-edge-fog {
+    background-size: $hexBackgroundSize2;
+  }
+}
+
+div#map.map-zoom-3 {
+  .map-cell {
+    width: $hexWidth3;
+    height: $hexHeight3;
+  }
+
+  .tile-stack {
+    width: $hexWidth3;
+    height: $hexHeight3;
+    background-size: $hexBackgroundSize3;
+  }
+
+  .layer-edge-dark,
+  .layer-edge-fog {
+    background-size: $hexBackgroundSize3;
   }
 }
