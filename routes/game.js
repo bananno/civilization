@@ -10,7 +10,7 @@ router.get('/newGame', newGameGet);
 router.get('/loadGame', loadGameGet);
 router.get('/loadGame/:gameId', loadGamePost);
 router.get('/exitGame', exitGame);
-router.post('/zoom/:direction', zoom);
+router.post('/zoom', zoom);
 
 const zoomLimit = [1, 3];
 
@@ -69,7 +69,7 @@ function exitGame(req, res, next) {
 
 function zoom(req, res, next) {
   const gameId = req.session.gameId;
-  let direction = parseInt(req.params.direction);
+  let direction = parseInt(req.body.direction);
 
   if (direction == 0) {
     direction = -1;

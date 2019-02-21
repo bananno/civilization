@@ -233,8 +233,10 @@ function hoverMapCell(row, column) {
 function zoom(direction) {
   $.ajax({
     type: 'POST',
-    url: '/zoom/' + direction,
-    // data: {},
+    url: '/zoom',
+    data: {
+      direction: direction,
+    },
     // success: success,
   });
 }
