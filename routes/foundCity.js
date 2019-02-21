@@ -8,9 +8,7 @@ const City = require('../models/city');
 router.post('/foundCity/:unitId', (req, res, next) => {
   let unitId = req.params.unitId;
   getData(req, res, next, (data) => {
-    let [numRows, numCols] = data.game.mapSize;
-
-    let unit = data.unitRef[unitId];
+    const unit = data.unitRef[unitId];
 
     if (unit == null || unit.templateName != 'settler' || unit.movesRemaining == 0
         || '' + unit.player != '' + data.turnPlayerId) {
@@ -18,7 +16,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    let tile = data.tileRef[unit.location[0]][unit.location[1]];
+    const tile = data.tileRef[unit.location[0]][unit.location[1]];
 
     if (tile.player) {
       if ('' + tile.player != '' + data.turnPlayerId) {
@@ -27,7 +25,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       }
     }
 
-    let cityData = {
+    const cityData = {
       game: data.game,
       player: unit.player,
       location: unit.location,
@@ -46,7 +44,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       },
     };
 
-    let playerCities = data.cities.filter(city => {
+    const playerCities = data.cities.filter(city => {
       return city.player == unit.player;
     });
 
@@ -64,28 +62,28 @@ router.post('/foundCity/:unitId', (req, res, next) => {
           return next(error);
         }
 
-        let tilesToUpdate = [];
-        let tileAlreadyCovered = {};
+        const tilesToUpdate = [];
+        const tileAlreadyCovered = {};
 
         // UPDATE THE TILE WHERE THE CITY IS BUILT.
         // The city tile itself is automatically worked by the city.
         // Remove any terrain features (forest) automatically.
         // Automatically build a road in the city.
 
-        let cityTile = helpers.findTile(data.tiles, city.location);
         let tileUpdate = {
           improvement: 'city',
           worked: city,
           road: true,
+          player: city.player,
         };
 
-        if (cityTile.terrain.forest) {
+        if (tile.terrain.forest) {
           tileUpdate.terrain = tile.terrain;
           tileUpdate.terrain.forest = false;
         }
 
         tilesToUpdate.push({
-          tile: cityTile,
+          tile: tile,
           update: tileUpdate,
         });
 
@@ -93,7 +91,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
         // CLAIM THE 6 TILES AROUND THE CITY IF THEY ARE AVAILABLE.
 
-        let cityBorderCoords = [];
+        const cityBorderCoords = [];
 
         data.help.forEachAdjacentTile(city.location, (tile, r, c) => {
           tileAlreadyCovered[r + ',' + c] = true;
@@ -128,23 +126,23 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
         // UPDATE ALL THE TILES IN THE LIST.
 
-        const claimTile = (i) => {
+        const updateNextTile = (i) => {
           if (i >= tilesToUpdate.length) {
             return res.redirect('/');
           }
 
-          let tile = tilesToUpdate[i].tile;
-          let tileData = tilesToUpdate[i].update;
+          const tile = tilesToUpdate[i].tile;
+          const tileData = tilesToUpdate[i].update;
 
           tile.update(tileData, error => {
             if (error) {
               return next(error);
             }
-            claimTile(i + 1);
+            updateNextTile(i + 1);
           });
         }
 
-        claimTile(0);
+        updateNextTile(0);
       });
     });
   });
