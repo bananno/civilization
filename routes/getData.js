@@ -16,6 +16,7 @@ function getData(req, res, next, callback) {
     data.playerRef = {};
     data.cityRef = {};
     data.tileRef = {};
+    data.unitRef = {};
 
     const [numRows, numCols] = data.game.mapSize;
 
@@ -112,6 +113,11 @@ function getData(req, res, next, callback) {
       if (prod == 'gold' || prod == 'culture' || prod == 'science') {
         player.production[prod] += Math.floor(city.production.labor / 2);
       }
+    });
+
+    // Create ref object to easily find units by ID.
+    data.units.forEach(unit => {
+      data.unitRef[unit._id] = unit;
     });
 
     callback(data);

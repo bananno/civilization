@@ -10,7 +10,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
   getData(req, res, next, (data) => {
     let [numRows, numCols] = data.game.mapSize;
 
-    let unit = helpers.findUnit(data.units, unitId);
+    let unit = data.unitRef[unitId];
 
     if (unit == null || unit.templateName != 'settler' || unit.movesRemaining == 0
         || '' + unit.player != '' + data.turnPlayerId) {
@@ -18,7 +18,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    let tile = helpers.findTile(data.tiles, unit.location);
+    let tile = data.tileRef[unit.location[0]][unit.location[1]];
 
     if (tile.player) {
       if ('' + tile.player != '' + data.turnPlayerId) {
