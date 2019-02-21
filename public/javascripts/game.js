@@ -229,3 +229,12 @@ function hoverMapCell(row, column) {
   tile.labor ? values.push('labor: ' + tile.labor) : null;
   $('#tile-details').html(values.join('<br>'));
 }
+
+function zoom(direction) {
+  $.ajax({
+    type: 'POST',
+    url: '/zoom/' + direction,
+    // data: {},
+    // success: success,
+  });
+}

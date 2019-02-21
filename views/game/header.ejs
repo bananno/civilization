@@ -47,23 +47,19 @@
     </div>
 
     <div class="header-text">
-        <form action="/zoom/0" method="post">
-            <% if (game.zoom == zoomLimit[0]) { %>
-                <button disabled="disabled">-</button>
-            <% } else { %>
-                <button type="submit">-</button>
-            <% } %>
-        </form>
+        <% if (game.zoom == zoomLimit[0]) { %>
+            <button disabled="disabled">-</button>
+        <% } else { %>
+            <button onClick="zoom(0)">-</button>
+        <% } %>
     </div>
 
     <div class="header-text">
-        <form action="/zoom/1" method="post">
-            <% if (game.zoom == zoomLimit[1]) { %>
-                <button disabled="disabled">+</button>
-            <% } else { %>
-                <button type="submit">+</button>
-            <% } %>
-        </form>
+        <% if (game.zoom == zoomLimit[1]) { %>
+            <button disabled="disabled">+</button>
+        <% } else { %>
+            <button onClick="zoom(1)">+</button>
+        <% } %>
     </div>
 </div>
 
