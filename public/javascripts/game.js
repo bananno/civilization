@@ -262,7 +262,7 @@ function showZoomOptions() {
 
   $('#map').addClass('map-zoom-' + zoom.current);
 
-  for (let z = zoom.min; z < zoom.max; z++) {
+  for (let z = zoom.min; z <= zoom.max; z++) {
     if (z != zoom.current) {
       $('#map').removeClass('map-zoom-' + z);
     }
