@@ -78,6 +78,11 @@ img.production-icon {
     width: 14px;
     cursor: pointer;
   }
+
+  button:disabled {
+    color: #dfdfdf;
+    cursor: default;
+  }
 }
 
 .header-image, .header-text {
