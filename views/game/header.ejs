@@ -43,23 +43,15 @@
 
 <div>
     <div class="header-text">
-        zoom (x<%= game.zoom %>)
+        zoom (x<span id="zoom-current"></span>)
     </div>
 
     <div class="header-text">
-        <% if (game.zoom == zoomLimit[0]) { %>
-            <button disabled="disabled">-</button>
-        <% } else { %>
-            <button onClick="changeZoom(0)">-</button>
-        <% } %>
+        <button id="zoom-out" onClick="changeZoom(0)">-</button>
     </div>
 
     <div class="header-text">
-        <% if (game.zoom == zoomLimit[1]) { %>
-            <button disabled="disabled">+</button>
-        <% } else { %>
-            <button onClick="changeZoom(1)">+</button>
-        <% } %>
+        <button id="zoom-in" onClick="changeZoom(1)">+</button>
     </div>
 </div>
 

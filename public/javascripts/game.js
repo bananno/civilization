@@ -27,6 +27,8 @@ function setup() {
   });
 
   goToNextAction(false);
+
+  showZoomOptions();
 }
 
 function resizeWindow() {
@@ -245,7 +247,13 @@ function changeZoom(direction) {
     },
     success: () => {
       zoom.current = newZoom;
-      console.log(newZoom);
+      showZoomOptions();
     },
   });
+}
+
+function showZoomOptions() {
+  $('#zoom-current').text(zoom.current);
+  $('button#zoom-out').prop('disabled', zoom.current == zoom.min);
+  $('button#zoom-in').prop('disabled', zoom.current == zoom.max);
 }
