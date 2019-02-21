@@ -184,23 +184,31 @@ div#map {
 #map.test-show-tile-borders .map-cell.center {
   border-color: blue; }
 
+.map-cell {
+  width: 50px;
+  height: 60px; }
+
+.tile-stack {
+  width: 50px;
+  height: 60px;
+  background-size: 51px; }
+
+.layer-edge-dark,
+.layer-edge-fog {
+  background-size: 51px; }
+
 /* TILE STACK APPLIES TO ALL "layer-" DIVS */
 .map-cell {
   display: inline-block;
-  width: 50px;
-  height: 60px;
   text-align: center;
   margin-left: -5px;
   margin-bottom: -3px;
   margin-top: -15px; }
 
 .tile-stack {
-  width: 50px;
-  height: 60px;
   position: absolute;
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: 51px; }
+  background-position: center; }
 
 /* TERRAIN */
 .layer-water {
@@ -354,8 +362,7 @@ form.work-tile.working-disabled {
 
 .layer-edge-dark,
 .layer-edge-fog {
-  background-image: url(/images/map/edge.png);
-  background-size: 51px; }
+  background-image: url(/images/map/edge.png); }
 
 .layer-edge-fog {
   opacity: 0.5; }

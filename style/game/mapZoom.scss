@@ -1,0 +1,25 @@
+
+$hexWidth1: 50px;
+$hexHeight1: 60px;
+$hexBackgroundSize1: 51px;
+
+.map-cell {
+  width: $hexWidth1;
+  height: $hexHeight1;
+}
+
+.tile-stack {
+  width: $hexWidth1;
+  height: $hexHeight1;
+  background-size: $hexBackgroundSize1;
+}
+
+.layer-edge-dark,
+.layer-edge-fog {
+  background-size: $hexBackgroundSize1;
+}
+
+div#map.map-zoom-2 {
+  .map-cell {
+  }
+}

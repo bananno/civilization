@@ -8,6 +8,7 @@
 /* GAME PLAY */
 @import "game/game";
 @import "game/map"; // General map-related; not related to size/shape of individual tiles.
+@import "game/mapZoom";
 @import "game/tiles"; // Items in this file must be carefully fit to the hex shape.
 @import "game/tileFeatures"; // Items in this file are less sensitive; can be loosely centered.
 @import "game/tileEdges";

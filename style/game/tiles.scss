@@ -3,8 +3,6 @@
 
 .map-cell {
   display: inline-block;
-  width: $hexWidth;
-  height: $hexHeight;
   text-align: center;
   margin-left: -5px;
   margin-bottom: -3px;
@@ -12,12 +10,9 @@
 }
 
 .tile-stack {
-  width: $hexWidth;
-  height: $hexHeight;
   position: absolute;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: $hexBackgroundSize;
 }
 
 /* TERRAIN */
