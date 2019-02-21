@@ -8,8 +8,7 @@ const City = require('../models/city');
 router.post('/foundCity/:unitId', (req, res, next) => {
   let unitId = req.params.unitId;
   getData(req, res, next, (data) => {
-    let numMapRows = data.game.mapSize[0];
-    let numMapCols = data.game.mapSize[1];
+    let [numRows, numCols] = data.game.mapSize;
 
     let unit = helpers.findUnit(data.units, unitId);
 
@@ -67,6 +66,33 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
         let cityTiles = [];
 
+        let tilesInCity = [];
+        let tilesAroundCity = [];
+
+        let covered = {};
+        covered[city.location.join(',')] = true;
+
+        helpers.forEachAdjacentTile(numRows, numCols, data.tiles, city.location[0],
+            city.location[1], (tile, r, c) => {
+          covered[r + ',' + c] = true;
+          tilesInCity.push([tile, r, c]);
+        });
+
+        tilesInCity.forEach(arr => {
+          let [tile, r, c] = arr;
+
+          helpers.forEachAdjacentTile(numRows, numCols, data.tiles, r, c, (tile, r, c) => {
+            if (covered[r + ',' + c]) {
+              return;
+            }
+            covered[r + ',' + c] = true;
+            tilesAroundCity.push([tile, r, c]);
+          });
+        });
+
+        console.log(tilesInCity.length)
+        console.log(tilesAroundCity.length)
+
         let startRowCity = city.location[0] - 1;
         let endRowCity = city.location[0] + 1;
         let startColCity = city.location[1] - 1;
@@ -102,12 +128,12 @@ router.post('/foundCity/:unitId', (req, res, next) => {
           if (r < 0) {
             continue;
           }
-          if (r >= numMapRows) {
+          if (r >= numRows) {
             break;
           }
 
           for (let cTemp = startCol; cTemp <= endCol; cTemp++) {
-            let c = helpers.getColumn(numMapCols, cTemp);
+            let c = helpers.getColumn(numCols, cTemp);
             let tile = helpers.findTile(data.tiles, r, c);
 
             if (tile) {
