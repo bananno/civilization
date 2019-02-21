@@ -17,6 +17,10 @@ function getData(req, res, next, callback) {
     data.cityRef = {};
     data.tileRef = {};
 
+    const [numRows, numCols] = data.game.mapSize;
+
+    data.help = helpers.makeHelperFunctions(data);
+
     // Initialize player production.
     data.players.forEach(player => {
       data.playerRef[player._id] = player;

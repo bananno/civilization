@@ -117,4 +117,23 @@ helpers.forEachAdjacentTile = (numRows, numCols, tiles, row, col, callback) => {
   });
 };
 
+helpers.makeHelperFunctions = (data) => {
+  const newHelpers = {};
+  const [numRows, numCols] = data.game.mapSize;
+
+  newHelpers.getColumn = (col) => {
+    return helpers.getColumn(numCols, col);
+  };
+
+  newHelpers.forEachAdjacentTile = (row, col, callback) => {
+    if (row.constructor == Array) {
+      callback = col;
+      [row, col] = row;
+    }
+    return helpers.forEachAdjacentTile(numRows, numCols, data.tiles, row, col, callback);
+  };
+
+  return newHelpers;
+};
+
 module.exports = helpers;
