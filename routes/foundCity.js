@@ -95,8 +95,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
         let cityBorderCoords = [];
 
-        helpers.forEachAdjacentTile(numRows, numCols, data.tiles, city.location[0],
-            city.location[1], (tile, r, c) => {
+        data.help.forEachAdjacentTile(city.location, (tile, r, c) => {
           tileAlreadyCovered[r + ',' + c] = true;
           if (tile.player) {
             return;
@@ -112,10 +111,8 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
         // DISCOVER THE 12 TILES ADJACENT TO THE CITY BORDERS.
 
-        cityBorderCoords.forEach(pair => {
-          let [r, c] = pair;
-
-          helpers.forEachAdjacentTile(numRows, numCols, data.tiles, r, c, (tile, r, c) => {
+        cityBorderCoords.forEach(tileCoords => {
+          data.help.forEachAdjacentTile(tileCoords, (tile, r, c) => {
             if (tileAlreadyCovered[r + ',' + c]) {
               return;
             }
