@@ -25,15 +25,8 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
     const cityData = getNewCityObject(data, unit.player, unit.location);
 
-    City.create(cityData, (error, city) => {
-      if (error) {
-        return next(error);
-      }
-
-      Unit.deleteOne(unit, error => {
-        if (error) {
-          return next(error);
-        }
+    createCity(cityData, city => {
+      deleteSettler(unit, () => {
 
         const tilesToUpdate = [];
         const tileAlreadyCovered = {};
@@ -156,6 +149,24 @@ function getCityTileUpdate(tile, city) {
   }
 
   return tileUpdate;
+}
+
+function createCity(cityData, next) {
+  City.create(cityData, (error, city) => {
+    if (error) {
+      return next(error);
+    }
+    next(city);
+  });
+}
+
+function deleteSettler(unit, next) {
+  Unit.deleteOne(unit, error => {
+    if (error) {
+      return next(error);
+    }
+    next();
+  });
 }
 
 module.exports = router;
