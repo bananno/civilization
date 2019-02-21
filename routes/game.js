@@ -66,29 +66,33 @@ function exitGame(req, res, next) {
 
 function zoom(req, res, next) {
   const gameId = req.session.gameId;
-  const direction = parseInt(req.params.direction);
+  let direction = parseInt(req.params.direction);
+
+  if (direction == 0) {
+    direction = -1;
+  } else if (direction != 1) {
+    console.log('Invalid input.');
+    return res.redirect('/');
+  }
+
   Game.findById(gameId, (error, game) => {
     if (error) {
       return next(error);
     }
-    if (direction == 0) {
-      if (game.zoom == 1) {
-        console.log('Zoom is already at the minimum.');
-        return res.redirect('/');
-      }
-      console.log('Zoom out');
+
+    const newZoom = game.zoom + direction;
+
+    if (newZoom < 0 || newZoom > 2) {
+      console.log('Zoom is out of range.');
       return res.redirect('/');
     }
-    if (direction == 1) {
-      if (game.zoom == 2) {
-        console.log('Zoom is already at the maximum.');
-        return res.redirect('/');
+
+    game.update({ zoom: newZoom }, error => {
+      if (error) {
+        return next(error);
       }
-      console.log('Zoom in');
-      return res.redirect('/');
-    }
-    console.log('Invalid input.');
-    return res.redirect('/');
+      res.redirect('/');
+    });
   });
 }
 
