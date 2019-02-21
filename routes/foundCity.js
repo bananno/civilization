@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
-const helpers = require('./helpers');
 const Unit = require('../models/unit');
 const City = require('../models/city');
 
@@ -27,59 +26,10 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
     createCity(cityData, city => {
       deleteSettler(unit, () => {
-
-        const tilesToUpdate = [];
-        const tileAlreadyCovered = {};
-
-        const addTile = (tile, tileData) => {
-          const [r, c] = tile.location;
-
-          if (tileAlreadyCovered[r + ',' + c]) {
-            return;
-          }
-
-          tileAlreadyCovered[r + ',' + c] = true;
-
-          tileData.discovered = tile.discovered;
-          tileData.discovered.push(city.player);
-
-          tilesToUpdate.push({
-            tile: tile,
-            update: tileData,
+        determineTileUpdates(data, city, tile, (tileList) => {
+          finishTileUpdates(tileList, () => {
+            return res.redirect('/');
           });
-        };
-
-        // UPDATE THE TILE WHERE THE CITY IS BUILT.
-        // The city tile itself is automatically worked by the city.
-        // Remove any terrain features (forest) automatically.
-        // Automatically build a road in the city.
-
-        addTile(tile, getCityTileUpdate(tile, city));
-
-        // CLAIM THE 6 TILES AROUND THE CITY IF THEY ARE AVAILABLE.
-
-        const cityBorderCoords = [];
-
-        data.help.forEachAdjacentTile(city.location, (tile, r, c) => {
-          if (tile.player) {
-            return;
-          }
-          cityBorderCoords.push([r, c]);
-          addTile(tile, { player: city.player });
-        });
-
-        // DISCOVER THE 12 TILES ADJACENT TO THE CITY BORDERS.
-
-        cityBorderCoords.forEach(tileCoords => {
-          data.help.forEachAdjacentTile(tileCoords, (tile, r, c) => {
-            addTile(tile, {});
-          });
-        });
-
-        // UPDATE ALL THE TILES IN THE LIST.
-
-        finishTileUpdates(tilesToUpdate, () => {
-          return res.redirect('/');
         });
       });
     });
@@ -153,6 +103,58 @@ function deleteSettler(unit, next) {
     }
     next();
   });
+}
+
+function determineTileUpdates(data, city, cityTile) {
+  const tilesToUpdate = [];
+  const tileAlreadyCovered = {};
+
+  const addTile = (tile, tileData) => {
+    const [r, c] = tile.location;
+
+    if (tileAlreadyCovered[r + ',' + c]) {
+      return;
+    }
+
+    tileAlreadyCovered[r + ',' + c] = true;
+
+    tileData.discovered = tile.discovered;
+    tileData.discovered.push(city.player);
+
+    tilesToUpdate.push({
+      tile: tile,
+      update: tileData,
+    });
+  };
+
+  // UPDATE THE TILE WHERE THE CITY IS BUILT.
+  // The city tile itself is automatically worked by the city.
+  // Remove any terrain features (forest) automatically.
+  // Automatically build a road in the city.
+
+  addTile(cityTile, getCityTileUpdate(cityTile, city));
+
+  // CLAIM THE 6 TILES AROUND THE CITY IF THEY ARE AVAILABLE.
+
+  const cityBorderCoords = [];
+
+  data.help.forEachAdjacentTile(city.location, (tile, r, c) => {
+    if (tile.player) {
+      return;
+    }
+    cityBorderCoords.push([r, c]);
+    addTile(tile, { player: city.player });
+  });
+
+  // DISCOVER THE 12 TILES ADJACENT TO THE CITY BORDERS.
+
+  cityBorderCoords.forEach(tileCoords => {
+    data.help.forEachAdjacentTile(tileCoords, (tile, r, c) => {
+      addTile(tile, {});
+    });
+  });
+
+  return tilesToUpdate;
 }
 
 function finishTileUpdates(tileList, next, i) {
