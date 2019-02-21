@@ -81,6 +81,8 @@ function getData(req, res, next, callback) {
       data.tileRef[tile.location[0]] = data.tileRef[tile.location[0]] || [];
       data.tileRef[tile.location[0]][tile.location[1]] = tile;
 
+      tile.isDiscovered = tile.discovered.indexOf(data.currentPlayer._id) >= 0;
+
       if (tile.worked) {
         let city = data.cityRef[tile.worked];
         city.production.gold += tile.production.gold;

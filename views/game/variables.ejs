@@ -66,6 +66,7 @@
     map[r][c].food = tile.production.food;
     map[r][c].gold = tile.production.gold;
     map[r][c].labor = tile.production.labor;
+    map[r][c].discovered = tile.isDiscovered;
 
     if (tile.player) {
       map[r][c].player = playerNums[tile.player] + 1;
@@ -76,10 +77,6 @@
           map[r1][c1].lit = true;
         });
       }
-    }
-
-    if (tile.discovered.indexOf(turnPlayerId) >= 0) {
-      map[r][c].discovered = true;
     }
 
     if (tile.road) {
