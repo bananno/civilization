@@ -154,7 +154,11 @@ function getCityWorkableTiles(data, city, newHelpers) {
 
       alreadyCovered[tile._id] = true;
 
-      if (newHelpers.isCurrentPlayer(tile.player)) {
+      if (!newHelpers.isCurrentPlayer(tile.player)) {
+        return;
+      }
+
+      if (tile.worked && ('' + tile.worked != '' + city._id)) {
         return;
       }
 
