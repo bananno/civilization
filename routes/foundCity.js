@@ -34,10 +34,17 @@ async function foundCity(data, player, location, tile, next) {
   const city = await createCity(data, player, location);
 
   const tileAlreadyCovered = {};
+  const borderTiles = [];
+
+  tileAlreadyCovered[location.join(',')] = true;
 
   updateCityTile(tile, city);
-  claimBorderTiles();
-  discoverNearbyTiles();
+
+  data.help.forEachAdjacentTile(location, (tile, r, c) => {
+    borderTiles.push(tile);
+    claimBorderTile(tile, player);
+    tileAlreadyCovered[tile.location.join(',')] = true;
+  });
 
   determineTileUpdates(data, city, tile, (tileList) => {
     finishTileUpdates(tileList, next);
@@ -133,11 +140,12 @@ function determineTileUpdates(data, city, cityTile, next) {
   const cityBorderCoords = [];
 
   data.help.forEachAdjacentTile(city.location, (tile, r, c) => {
-    if (tile.player) {
-      return;
-    }
+    // if (tile.player) {
+    //   return;
+    // }
     cityBorderCoords.push([r, c]);
-    addTile(tile, { player: city.player });
+    tileAlreadyCovered[tile.location.join(',')] = true;
+    // addTile(tile, { player: city.player });
   });
 
   // DISCOVER THE 12 TILES ADJACENT TO THE CITY BORDERS.
@@ -185,12 +193,16 @@ async function updateCityTile(tile, city) {
   await tile.update(tileUpdate);
 }
 
-async function claimBorderTiles() {
+async function claimBorderTile(tile, player) {
+  if (tile.player) {
+    return;
+  }
 
-}
+  let tileUpdate = {
+    player: player,
+  };
 
-async function discoverNearbyTiles() {
-
+  await tile.update(tileUpdate);
 }
 
 async function deleteSettler(unit) {
