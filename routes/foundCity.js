@@ -32,23 +32,41 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
 async function foundCity(data, player, location, tile, next) {
   const city = await createCity(data, player, location);
-
   const tileAlreadyCovered = {};
   const borderTiles = [];
 
-  tileAlreadyCovered[location.join(',')] = true;
+  const checkDuplicate = (location) => {
+    if (tileAlreadyCovered[location.join(',')]) {
+      return true;
+    }
+    tileAlreadyCovered[location.join(',')] = true;
+  }
 
+  // Update the tile which now contains the city.
   updateCityTile(tile, city);
+  checkDuplicate(tile.location);
 
-  data.help.forEachAdjacentTile(location, (tile, r, c) => {
+  // Claim border tiles if they are available.
+  data.help.forEachAdjacentTile(location, tile => {
     borderTiles.push(tile);
-    claimBorderTile(tile, player);
-    tileAlreadyCovered[tile.location.join(',')] = true;
+    checkDuplicate(tile.location);
+    asyncUpdate(tile, {
+      player: player,
+    });
   });
 
-  determineTileUpdates(data, city, tile, (tileList) => {
-    finishTileUpdates(tileList, next);
+  // Discover nearby tiles.
+  borderTiles.forEach(tile => {
+    data.help.forEachAdjacentTile(tile.location, tile => {
+      if (!checkDuplicate(tile.location)) {
+        asyncUpdate(tile, {
+          discovered: tile.discovered.concat(player),
+        });
+      }
+    });
   });
+
+  next();
 }
 
 async function createCity(data, player, location) {
@@ -90,93 +108,6 @@ function playerHasNoCitiesYet(data, player) {
   return playerCities.length == 0;
 }
 
-function getCityTileUpdate(tile, city) {
-  let tileUpdate = {
-    improvement: 'city',
-    worked: city,
-    road: true,
-    player: city.player,
-  };
-
-  if (tile.terrain.forest) {
-    tileUpdate.terrain = tile.terrain;
-    tileUpdate.terrain.forest = false;
-  }
-
-  return tileUpdate;
-}
-
-function determineTileUpdates(data, city, cityTile, next) {
-  const tilesToUpdate = [];
-  const tileAlreadyCovered = {};
-
-  const addTile = (tile, tileData) => {
-    const [r, c] = tile.location;
-
-    if (tileAlreadyCovered[r + ',' + c]) {
-      return;
-    }
-
-    tileAlreadyCovered[r + ',' + c] = true;
-
-    tileData.discovered = tile.discovered;
-    tileData.discovered.push(city.player);
-
-    tilesToUpdate.push({
-      tile: tile,
-      update: tileData,
-    });
-  };
-
-  tileAlreadyCovered[city.location.join(',')] = true;
-
-  // UPDATE THE TILE WHERE THE CITY IS BUILT.
-  // The city tile itself is automatically worked by the city.
-  // Remove any terrain features (forest) automatically.
-  // Automatically build a road in the city.
-
-  // CLAIM THE 6 TILES AROUND THE CITY IF THEY ARE AVAILABLE.
-
-  const cityBorderCoords = [];
-
-  data.help.forEachAdjacentTile(city.location, (tile, r, c) => {
-    // if (tile.player) {
-    //   return;
-    // }
-    cityBorderCoords.push([r, c]);
-    tileAlreadyCovered[tile.location.join(',')] = true;
-    // addTile(tile, { player: city.player });
-  });
-
-  // DISCOVER THE 12 TILES ADJACENT TO THE CITY BORDERS.
-
-  cityBorderCoords.forEach(tileCoords => {
-    data.help.forEachAdjacentTile(tileCoords, (tile, r, c) => {
-      addTile(tile, {});
-    });
-  });
-
-  return next(tilesToUpdate);
-}
-
-function finishTileUpdates(tileList, next, i) {
-  i = i || 0;
-
-  if (i >= tileList.length) {
-    return next();
-  }
-
-  const tile = tileList[i].tile;
-  const tileData = tileList[i].update;
-
-  tile.update(tileData, error => {
-    if (error) {
-      return next(error);
-    }
-    finishTileUpdates(tileList, next, i + 1);
-  });
-}
-
 async function updateCityTile(tile, city) {
   let tileUpdate = {
     improvement: 'city',
@@ -193,20 +124,12 @@ async function updateCityTile(tile, city) {
   await tile.update(tileUpdate);
 }
 
-async function claimBorderTile(tile, player) {
-  if (tile.player) {
-    return;
-  }
-
-  let tileUpdate = {
-    player: player,
-  };
-
-  await tile.update(tileUpdate);
-}
-
 async function deleteSettler(unit) {
   await Unit.deleteOne(unit);
+}
+
+async function asyncUpdate(obj, data) {
+  await obj.update(data);
 }
 
 module.exports = router;
