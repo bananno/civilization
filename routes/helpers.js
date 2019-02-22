@@ -124,6 +124,51 @@ function isSamePlayer(player1, player2) {
   return '' + (player1._id || player1) == '' + (player2._id || player2);
 }
 
+function getCityWorkableTiles(data, city, newHelpers) {
+  const adjacentTiles = [[], [], []];
+  const workableTiles = [];
+  const alreadyCovered = {};
+
+  const cityTile = data.tileRef[city.location[0]][city.location[1]];
+
+  alreadyCovered[cityTile._id] = true;
+
+  newHelpers.forEachAdjacentTile(city.location, tile => {
+    adjacentTiles[0].push(tile);
+  });
+
+  for (let i = 0; i < 2; i++) {
+    adjacentTiles[i].forEach(tile => {
+      newHelpers.forEachAdjacentTile(tile.location, tile => {
+        adjacentTiles[i + 1].push(tile);
+      });
+    });
+  }
+
+  for (let i = 0; i < 3; i++) {
+    adjacentTiles[i].forEach(tile => {
+
+      if (alreadyCovered[tile._id]) {
+        return;
+      }
+
+      alreadyCovered[tile._id] = true;
+
+      if (newHelpers.isCurrentPlayer(tile.player)) {
+        return;
+      }
+
+      if (newHelpers.getTileTotalProduction(tile) == 0) {
+        return;
+      }
+
+      workableTiles.push(tile);
+    });
+  }
+
+  return workableTiles;
+}
+
 helpers.makeHelperFunctions = (data) => {
   const newHelpers = {};
   const [numRows, numCols] = data.game.mapSize;
@@ -149,6 +194,10 @@ helpers.makeHelperFunctions = (data) => {
       return total + tile.production[prod];
     }, 0);
   }
+
+  newHelpers.getCityWorkableTiles = (city) => {
+    return getCityWorkableTiles(data, city, newHelpers);
+  };
 
   return newHelpers;
 };

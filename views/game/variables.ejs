@@ -88,78 +88,27 @@
   });
 
   currentTurnCities.forEach(city => {
-    let [row, col] = city.location;
-    let alreadyCovered = {};
-
-    let cityTilesWorked = tiles.filter(tile => {
+    const cityTilesWorked = tiles.filter(tile => {
       return '' + tile.worked == '' + city._id;
     });
+    const atMaxWork = cityTilesWorked.length >= city.population + 1;
 
-    let atMaxWork = cityTilesWorked.length >= city.population + 1;
+    help.getCityWorkableTiles(city).forEach(tile => {
+      let [r, c] = tile.location;
+      let working = false;
 
-    let adjTiles = [[], [], []];
+      if ('' + tile.worked == '' + city._id) {
+        working = true;
+      } else if (atMaxWork) {
+        working = 'disabled';
+      }
 
-    helpers.forEachAdjacentTile(numRows, numCols, tiles, row, col, (tile, r, c) => {
-      adjTiles[0].push([tile, r, c]);
+      map[r][c].workTiles.push({
+        cityId: city._id,
+        path: '/workTile/' + city._id + '/' + tile._id,
+        working: working,
+      });
     });
-
-    for (let i = 0; i < 2; i++) {
-      adjTiles[i].forEach(arr => {
-        let [tile, r, c] = arr;
-        helpers.forEachAdjacentTile(numRows, numCols, tiles, r, c, (tile, r, c) => {
-          adjTiles[i + 1].push([tile, r, c]);
-        });
-      });
-    }
-
-    for (let i = 0; i < 3; i++) {
-      adjTiles[i].forEach(arr => {
-        let [tile, r, c] = arr;
-
-        if (alreadyCovered[r + ',' + c]) {
-          return;
-        }
-
-        alreadyCovered[r + ',' + c] = true;
-
-        if (!map[r][c].owned) {
-          return;
-        }
-
-        let workable = true;
-
-        if (map[r][c].cityId) {
-          workable = false;
-        } else {
-          let tileOutput = 0;
-
-          ['gold', 'food', 'labor', 'culture', 'science'].forEach(prod => {
-            tileOutput += tile.production[prod];
-          });
-
-          if (tileOutput == 0) {
-            workable = false;
-          }
-        }
-
-        if (workable) {
-          let working = false;
-
-          if ('' + tile.worked == '' + city._id) {
-            working = true;
-          } else if (atMaxWork) {
-            working = 'disabled';
-          }
-
-          map[r][c].workTiles.push({
-            cityId: city._id,
-            path: '/workTile/' + city._id + '/' + tile._id,
-            working: working,
-          });
-        }
-
-      });
-    }
   });
 
   let count1 = 0;
