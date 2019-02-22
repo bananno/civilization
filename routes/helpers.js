@@ -144,6 +144,12 @@ helpers.makeHelperFunctions = (data) => {
     return helpers.forEachAdjacentTile(numRows, numCols, data.tiles, row, col, callback);
   };
 
+  newHelpers.getTileTotalProduction = (tile) => {
+    return ['gold', 'food', 'labor', 'culture', 'science'].reduce((total, prod) => {
+      return total + tile.production[prod];
+    }, 0);
+  }
+
   return newHelpers;
 };
 

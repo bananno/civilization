@@ -32,9 +32,7 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
         return res.redirect('/');
       }
 
-      const tileOutput = ['gold', 'food', 'labor', 'culture', 'science'].reduce((total, prod) => {
-        return total + tile.production[prod];
-      });
+      const tileOutput =  data.help.getTileTotalProduction(tile);
 
       if (tileOutput == 0) {
         console.log('Cannot work tiles with 0 production value.');
