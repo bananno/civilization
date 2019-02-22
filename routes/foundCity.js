@@ -33,6 +33,12 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 async function foundCity(data, player, location, tile, next) {
   const city = await createCity(data, player, location);
 
+  const tileAlreadyCovered = {};
+
+  updateCityTile(tile, city);
+  claimBorderTiles();
+  discoverNearbyTiles();
+
   determineTileUpdates(data, city, tile, (tileList) => {
     finishTileUpdates(tileList, next);
   });
@@ -64,7 +70,7 @@ async function createCity(data, player, location) {
 
   return await new Promise((resolve, reject) => {
     City.create(cityData, (error, city) => {
-      resolve(city)
+      resolve(city);
     });
   });
 }
@@ -115,12 +121,12 @@ function determineTileUpdates(data, city, cityTile, next) {
     });
   };
 
+  tileAlreadyCovered[city.location.join(',')] = true;
+
   // UPDATE THE TILE WHERE THE CITY IS BUILT.
   // The city tile itself is automatically worked by the city.
   // Remove any terrain features (forest) automatically.
   // Automatically build a road in the city.
-
-  addTile(cityTile, getCityTileUpdate(cityTile, city));
 
   // CLAIM THE 6 TILES AROUND THE CITY IF THEY ARE AVAILABLE.
 
@@ -161,6 +167,30 @@ function finishTileUpdates(tileList, next, i) {
     }
     finishTileUpdates(tileList, next, i + 1);
   });
+}
+
+async function updateCityTile(tile, city) {
+  let tileUpdate = {
+    improvement: 'city',
+    worked: city,
+    road: true,
+    player: city.player,
+  };
+
+  if (tile.terrain.forest) {
+    tileUpdate.terrain = tile.terrain;
+    tileUpdate.terrain.forest = false;
+  }
+
+  await tile.update(tileUpdate);
+}
+
+async function claimBorderTiles() {
+
+}
+
+async function discoverNearbyTiles() {
+
 }
 
 async function deleteSettler(unit) {
