@@ -4,12 +4,12 @@ const getData = require('./getData');
 const workTile = require('./support/workTile');
 
 router.post('/workTile/:cityId/:tileId', (req, res, next) => {
-  let cityId = req.params.cityId;
-  let tileId = req.params.tileId;
+  const cityId = req.params.cityId;
+  const tileId = req.params.tileId;
 
   getData(req, res, next, (data) => {
-    let city = data.cityRef[cityId];
-    let tile = data.tileRef[tileId]
+    const city = data.cityRef[cityId];
+    const tile = data.tileRef[tileId]
 
     if (city == null || tile == null
         || !data.help.isCurrentPlayer(city.player)
@@ -18,12 +18,12 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    let alreadyWorkingTile = '' + tile.worked == '' + city._id;
+    const alreadyWorkingTile = '' + tile.worked == '' + city._id;
 
     if (alreadyWorkingTile) {
       workTile.update(null, tile);
     } else {
-      let cityTilesWorked = data.tiles.filter(nextTile => {
+      const cityTilesWorked = data.tiles.filter(nextTile => {
         return '' + nextTile.worked == '' + city._id;
       });
 
@@ -32,10 +32,8 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
         return res.redirect('/');
       }
 
-      let tileOutput = 0;
-
-      ['gold', 'food', 'labor', 'culture', 'science'].forEach(prod => {
-        tileOutput += tile.production[prod];
+      const tileOutput = ['gold', 'food', 'labor', 'culture', 'science'].reduce((total, prod) => {
+        return total + tile.production[prod];
       });
 
       if (tileOutput == 0) {
