@@ -22,19 +22,23 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return res.redirect('/');
     }
 
+    deleteSettler(unit);
+
     const cityData = getNewCityObject(data, unit.player, unit.location);
 
     createCity(cityData, city => {
-      deleteSettler(unit, () => {
-        determineTileUpdates(data, city, tile, (tileList) => {
-          finishTileUpdates(tileList, () => {
-            return res.redirect('/');
-          });
+      determineTileUpdates(data, city, tile, (tileList) => {
+        finishTileUpdates(tileList, () => {
+          return res.redirect('/');
         });
       });
     });
   });
 });
+
+async function deleteSettler(unit) {
+  await Unit.deleteOne(unit);
+}
 
 function getNewCityObject(data, player, location) {
   const newCity = {
@@ -93,15 +97,6 @@ function createCity(cityData, next) {
       return next(error);
     }
     next(city);
-  });
-}
-
-function deleteSettler(unit, next) {
-  Unit.deleteOne(unit, error => {
-    if (error) {
-      return next(error);
-    }
-    next();
   });
 }
 
