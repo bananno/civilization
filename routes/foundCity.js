@@ -32,21 +32,22 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
 async function foundCity(data, player, location, tile, next) {
   const city = await createCity(data, player, location);
-  const tileAlreadyCovered = {};
-  const borderTiles = [];
 
+  // Prevent city and border tiles from begin revisited in the "nearby" tiles section.
+  const tileAlreadyCovered = {};
   const checkDuplicate = (location) => {
     if (tileAlreadyCovered[location.join(',')]) {
       return true;
     }
     tileAlreadyCovered[location.join(',')] = true;
-  }
+  };
 
   // Update the tile which now contains the city.
   updateCityTile(tile, city);
   checkDuplicate(tile.location);
 
   // Claim border tiles if they are available.
+  const borderTiles = [];
   data.help.forEachAdjacentTile(location, tile => {
     borderTiles.push(tile);
     checkDuplicate(tile.location);
