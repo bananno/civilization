@@ -22,15 +22,15 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    foundCity(data, unit, unit.player, unit.location, tile, () => {
+    foundCity(data, unit.player, unit.location, tile, () => {
       res.redirect('/');
     });
+
+    deleteSettler(unit);
   });
 });
 
-async function foundCity(data, unit, player, location, tile, next) {
-  deleteSettler(unit);
-
+async function foundCity(data, player, location, tile, next) {
   const city = await createCity(data, player, location);
 
   determineTileUpdates(data, city, tile, (tileList) => {
@@ -38,12 +38,8 @@ async function foundCity(data, unit, player, location, tile, next) {
   });
 }
 
-async function deleteSettler(unit) {
-  await Unit.deleteOne(unit);
-}
-
-function getNewCityObject(data, player, location) {
-  const newCity = {
+async function createCity(data, player, location) {
+  const cityData = {
     game: data.game,
     player: player,
     location: location,
@@ -63,10 +59,14 @@ function getNewCityObject(data, player, location) {
   };
 
   if (playerHasNoCitiesYet(data, player)) {
-    newCity.buildings.push(0);
+    cityData.buildings.push(0);
   }
 
-  return newCity;
+  return await new Promise((resolve, reject) => {
+    City.create(cityData, (error, city) => {
+      resolve(city)
+    });
+  });
 }
 
 function playerHasNoCitiesYet(data, player) {
@@ -91,20 +91,6 @@ function getCityTileUpdate(tile, city) {
   }
 
   return tileUpdate;
-}
-
-async function createCity(data, player, location) {
-
-  const cityData = getNewCityObject(data, player, location);
-
-  let promise = new Promise((resolve, reject) => {
-    City.create(cityData, (error, city) => {
-      resolve(city)
-    });
-
-  });
-
-  return await promise;
 }
 
 function determineTileUpdates(data, city, cityTile, next) {
@@ -175,6 +161,10 @@ function finishTileUpdates(tileList, next, i) {
     }
     finishTileUpdates(tileList, next, i + 1);
   });
+}
+
+async function deleteSettler(unit) {
+  await Unit.deleteOne(unit);
 }
 
 module.exports = router;
