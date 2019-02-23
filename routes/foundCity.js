@@ -48,18 +48,7 @@ async function foundCity(data, player, location, tile, next) {
   checkDuplicate(tile.location);
 
   // Claim border tiles if they are available.
-  const borderTiles = [];
-
-  await new Promise((resolve, reject) => {
-    data.help.forEachAdjacentTile(location, tile => {
-      borderTiles.push(tile);
-      checkDuplicate(tile.location);
-      asyncUpdate(tile, {
-        player: player,
-      }, true);
-    });
-    resolve();
-  });
+  const borderTiles = claimBorderTiles(data, location, player, checkDuplicate);
 
   // Discover nearby tiles.
   borderTiles.forEach(tile => {
@@ -114,6 +103,20 @@ function playerHasNoCitiesYet(data, player) {
   });
 
   return playerCities.length == 0;
+}
+
+async function claimBorderTiles(data, location, player, checkDuplicate) {
+  const borderTiles = [];
+  return await new Promise(resolve => {
+    data.help.forEachAdjacentTile(location, tile => {
+      borderTiles.push(tile);
+      checkDuplicate(tile.location);
+      asyncUpdate(tile, {
+        player: player,
+      });
+    });
+    resolve(borderTiles);
+  });
 }
 
 async function updateCityTile(tile, city) {
