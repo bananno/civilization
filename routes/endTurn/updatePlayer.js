@@ -5,7 +5,7 @@ Update player production progress:
 - Food & labor are not considered because each city produces them for itself only.
 */
 
-async function updatePlayer(data) {
+function updatePlayer(data) {
   const player = data.currentPlayer;
   const playerData = {};
 

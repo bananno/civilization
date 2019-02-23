@@ -1,5 +1,5 @@
 
-async function updateUnits(data) {
+function updateUnits(data) {
   data.units.forEach(unit => {
     if (!data.help.isCurrentPlayer(unit.player)) {
       return;
@@ -9,9 +9,9 @@ async function updateUnits(data) {
     const unitData = {};
     const tileData = {};
 
-    const completeUpdate = () => {
-      unit.update(unitData);
-      tile.update(tileData);
+    const completeUpdate = async () => {
+      await unit.update(unitData);
+      await tile.update(tileData);
     };
 
     unitData.movesRemaining = unit.moves;
