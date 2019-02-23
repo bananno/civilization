@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const getData = require('../getData');
-const createUnit = require('../createUnit');
-
 const updateUnits = require('./updateUnits');
 const updateCities = require('./updateCities');
 const updatePlayer = require('./updatePlayer');

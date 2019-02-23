@@ -1,7 +1,7 @@
 const Unit = require('../models/unit');
 const unitList = require('../models/unitList');
 
-const createUnit = (unitData, callback) => {
+async function createUnit(unitData, callback) {
   let unitTemplate;
 
   if (unitData.templateIndex) {
@@ -16,14 +16,14 @@ const createUnit = (unitData, callback) => {
   unitData.moves = unitData.moves || unitTemplate.moves;
   unitData.movesRemaining = unitData.movesRemaining || unitTemplate.moves;
 
-  Unit.create(unitData, (error, unit) => {
+  await Unit.create(unitData, (error, unit) => {
     if (error) {
       console.log('Error creating unit');
       console.log(error);
-    } else {
+    } else if (callback) {
       callback();
     }
   });
-};
+}
 
 module.exports = createUnit;

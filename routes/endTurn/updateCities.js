@@ -1,3 +1,4 @@
+const createUnit = require('../createUnit');
 
 const cityGrowthRate = [0, 15, 22, 30, 40, 51, 63, 76, 90, 105, 121, 138, 155, 174, 194, 214,
   235, 258, 280, 304, 329, 354, 380, 407, 435, 464, 493, 523, 554, 585, 617, 650, 684, 719, 754,
@@ -72,13 +73,12 @@ function updateCities(data) {
         cityData.buildings = data.cities[i].buildings;
         cityData.buildings.push(projectIndex);
       } else if (projectCategory == 'unit') {
-        let unitData = {
+        createUnit({
           game: city.game,
           player: city.player,
           location: city.location.concat(),
           templateIndex: projectIndex,
-        };
-        return createUnit(unitData, completeUpdate);
+        });
       }
     }
 
