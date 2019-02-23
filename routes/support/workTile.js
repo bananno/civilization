@@ -1,13 +1,13 @@
 
 // Automatically chooses a tile and then updates it.
-function automaticallyChooseTileToWork(data, city) {
+function automaticallyChooseTileToWork(data, city, tileOptions) {
   const unemployedCitizens = data.help.numCityUnemployedCitizens(city);
 
   if (unemployedCitizens <= 0) {
     return;
   }
 
-  const tileOptions = data.help.getCityWorkableTiles(city);
+  tileOptions = tileOptions || data.help.getCityWorkableTiles(city);
 
   let maxProductionFound = 0;
   let selectedTile;
