@@ -9,27 +9,33 @@ const cityGrowthRate = [0, 15, 22, 30, 40, 51, 63, 76, 90, 105, 121, 138, 155, 1
   790, 826, 863, 901, 940, 979];
 
 router.post('/endTurn', (req, res, next) => {
+  const done = () => {
+    res.redirect('/');
+  };
+
   getData(req, res, next, (data) => {
-    endTurn(res, data);
+    endTurn(data, done);
   });
 });
 
-async function endTurn(res, data) {
+async function endTurn(data, done) {
   if (!allCitiesHaveProject(data.currentPlayer, data.cities)) {
     console.log('All cities must have a project to end turn.');
-    return res.redirect('/');
+    return done();
   }
 
   if (playerNeedsResearch(data.currentPlayer, data.technologyList)) {
     console.log('Player must choose research before ending turn.');
-    return res.redirect('/');
+    return done();
   }
 
-  await updateGame(res, data);
-  await updatePlayer(res, data, null);
+  await updateGame(data);
+  await updatePlayer(data);
+
+  done();
 }
 
-function updateGame(res, data) {
+function updateGame(data) {
   let gameData = {};
   let endOfRound = false;
 
@@ -45,18 +51,16 @@ function updateGame(res, data) {
     if (error) {
       next(error);
     } else if (endOfRound) {
-      endRound(res, data);
-    } else {
-      res.redirect('/');
+      endRound(data);
     }
   });
 }
 
-async function updatePlayer(res, data, player) {
+async function updatePlayer(data, player) {
 
 }
 
-function endRound(res, data) {
+function endRound(data) {
   // reset moves & skips for all units
   const updateUnit = (i) => {
     if (i >= data.units.length) {
@@ -305,7 +309,7 @@ function endRound(res, data) {
       count += 1;
       functionList[count](0);
     } else {
-      res.redirect('/');
+
     }
   };
 
