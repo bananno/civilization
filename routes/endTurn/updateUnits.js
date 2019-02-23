@@ -1,3 +1,4 @@
+
 async function updateUnits(data) {
   data.units.forEach(unit => {
     if (!data.help.isCurrentPlayer(unit.player)) {
