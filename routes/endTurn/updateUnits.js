@@ -19,25 +19,14 @@ function updateUnits(data) {
     let orders = unit.orders;
 
     if (orders == null) {
-      if (unit.automate && unit.templateName == 'worker') {
-        if (tile.improvement == null) {
-          if (tile.terrain.forest) {
-            orders = 'chop forest';
-            tileData.project = 'chop forest';
-          } else if (tile.terrain.hill) {
-            orders = 'build mine';
-            tileData.project = 'build mine';
-          } else {
-            orders = 'build farm';
-            tileData.project = 'build farm';
-          }
-          unitData.orders = orders;
-        }
+      const newOrders = getAutomaticOrders(unit);
+      if (newOrders) {
+        orders = newOrders;
+        tileData.project = newOrders;
+        unitData.orders = orders;
+      } else {
+        return completeUpdate();
       }
-    }
-
-    if (orders == null) {
-      return completeUpdate();
     }
 
     if (orders == 'skip turn') {
@@ -55,6 +44,7 @@ function updateUnits(data) {
       if (tileData.roadProgress >= 5) {
         tileData.road = true;
         unitData.orders = null;
+        tileData.roadProgress = 0;
       }
 
       return completeUpdate();
@@ -120,8 +110,32 @@ function updateUnits(data) {
       return projectIsDone();
     }
 
-    completeUpdate();
+    return completeUpdate();
   });
+}
+
+function getAutomaticOrders(unit, tile) {
+  if (!unit.automate) {
+    return false;
+  }
+
+  if (unit.templateName != 'worker') {
+    return false;
+  }
+
+  if (tile.improvement) {
+    return false;
+  }
+
+  if (tile.terrain.forest) {
+    return 'chop forest';
+  }
+
+  if (tile.terrain.hill) {
+    return 'build mine';
+  }
+
+  return 'build farm';
 }
 
 module.exports = updateUnits;
