@@ -72,7 +72,7 @@ async function foundCity(data, player, location, tile, next) {
     });
   });
 
-  await workTile.auto(data, city, borderTiles);
+  workTile.auto(data, city, borderTiles);
 
   next();
 }
