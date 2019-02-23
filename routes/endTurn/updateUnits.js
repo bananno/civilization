@@ -1,12 +1,10 @@
-const helpers = require('../helpers');
-
 async function updateUnits(data) {
   data.units.forEach(unit => {
     if (!data.help.isCurrentPlayer(unit.player)) {
       return;
     }
 
-    const tile = helpers.findTile(data.tiles, unit.location);
+    const tile = data.help.findTile(unit.location);
     const unitData = {};
     const tileData = {};
 

@@ -185,6 +185,17 @@ helpers.makeHelperFunctions = (data) => {
     return helpers.getColumn(numCols, col);
   };
 
+  newHelpers.findTile = (row, col) => {
+    if (row.constructor == Array) {
+      [row, col] = row;
+      return data.tileRef[row][col];
+    }
+    if (col) {
+      return data.tileRef[row][col];
+    }
+    return data.tileRef[row];
+  };
+
   newHelpers.forEachAdjacentTile = (row, col, callback) => {
     if (row.constructor == Array) {
       callback = col;
