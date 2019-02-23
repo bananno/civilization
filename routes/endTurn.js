@@ -10,38 +10,51 @@ const cityGrowthRate = [0, 15, 22, 30, 40, 51, 63, 76, 90, 105, 121, 138, 155, 1
 
 router.post('/endTurn', (req, res, next) => {
   getData(req, res, next, (data) => {
-    let gameData = {};
-    let endOfRound = false;
-
-    if (!allCitiesHaveProject(data.players[data.game.nextPlayer], data.cities)) {
-      console.log('All cities must have a project to end turn.');
-      return res.redirect('/');
-    }
-
-    if (playerNeedsResearch(data.players[data.game.nextPlayer], data.technologyList)) {
-      console.log('Player must choose research before ending turn.');
-      return res.redirect('/');
-    }
-
-    if (data.game.nextPlayer < data.players.length - 1) {
-      gameData.nextPlayer = data.game.nextPlayer + 1;
-    } else {
-      gameData.nextPlayer = 0;
-      gameData.turn = data.game.turn + 1;
-      endOfRound = true;
-    }
-
-    data.game.update(gameData, (error, game) => {
-      if (error) {
-        next(error);
-      } else if (endOfRound) {
-        endRound(res, data);
-      } else {
-        res.redirect('/');
-      }
-    });
+    endTurn(res, data);
   });
 });
+
+async function endTurn(res, data) {
+  if (!allCitiesHaveProject(data.currentPlayer, data.cities)) {
+    console.log('All cities must have a project to end turn.');
+    return res.redirect('/');
+  }
+
+  if (playerNeedsResearch(data.currentPlayer, data.technologyList)) {
+    console.log('Player must choose research before ending turn.');
+    return res.redirect('/');
+  }
+
+  await updateGame(res, data);
+  await updatePlayer(res, data, null);
+}
+
+function updateGame(res, data) {
+  let gameData = {};
+  let endOfRound = false;
+
+  if (data.game.nextPlayer < data.players.length - 1) {
+    gameData.nextPlayer = data.game.nextPlayer + 1;
+  } else {
+    gameData.nextPlayer = 0;
+    gameData.turn = data.game.turn + 1;
+    endOfRound = true;
+  }
+
+  data.game.update(gameData, (error, game) => {
+    if (error) {
+      next(error);
+    } else if (endOfRound) {
+      endRound(res, data);
+    } else {
+      res.redirect('/');
+    }
+  });
+}
+
+async function updatePlayer(res, data, player) {
+
+}
 
 function endRound(res, data) {
   // reset moves & skips for all units
