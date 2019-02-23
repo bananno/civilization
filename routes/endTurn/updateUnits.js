@@ -45,52 +45,79 @@ function updateUnits(data) {
       return completeUpdate();
     }
 
-    if (orders.match('build') || orders.match('remove') || orders == 'chop forest') {
-      let projectDone = false;
+    if (unit.templateName != 'worker') {
+      return completeUpdate();
+    }
 
-      if (orders == 'build farm' || orders == 'build mine'
-          || orders == 'chop forest') {
-        tileData.progress = tile.progress + unit.movesRemaining;
-      } else if (orders == 'build road') {
-        tileData.roadProgress = tile.roadProgress + unit.movesRemaining;
-      }
+    if (orders == 'build road') {
+      tileData.roadProgress = tile.roadProgress + unit.movesRemaining;
 
-      if (orders == 'build farm' && tileData.progress >= 10) {
-        projectDone = true;
-        tileData.improvement = 'farm';
-        tileData.production = tile.production;
-        tileData.production.food += 1;
-        unitData.orders = null;
-      } else if (orders == 'build mine' && tileData.progress >= 12) {
-        projectDone = true;
-        tileData.improvement = 'mine';
-        tileData.production = tile.production;
-        tileData.production.labor += 1;
-        unitData.orders = null;
-      } else if (orders == 'chop forest' && tileData.progress >= 5) {
-        projectDone = true;
-        tileData.terrain = tile.terrain;
-        tileData.terrain.forest = false;
-      } else if (orders == 'remove farm' && unit.movesRemaining > 0) {
-        projectDone = true;
-        tileData.improvement = null;
-        tileData.production = tile.production;
-        tileData.production.food -= 1;
-      } else if (orders == 'remove mine' && unit.movesRemaining > 0) {
-        projectDone = true;
-        tileData.improvement = null;
-        tileData.production = tile.production;
-        tileData.production.labor -= 1;
-      } else if (orders == 'build road' && tileData.roadProgress >= 5) {
+      if (tileData.roadProgress >= 5) {
         tileData.road = true;
         unitData.orders = null;
       }
 
-      if (projectDone) {
-        unitData.orders = null;
-        tileData.project = null;
-        tileData.progress = 0;
+      return completeUpdate();
+    }
+
+    const incrementProgress = () => {
+      tileData.progress = tile.progress + unit.movesRemaining;
+    };
+
+    const projectIsDone = () => {
+      unitData.orders = null;
+      tileData.project = null;
+      tileData.progress = 0;
+      completeUpdate();
+    };
+
+    if (orders.match('remove')) {
+      if (unit.movesRemaining < 1) {
+        return completeUpdate();
       }
+
+      tileData.improvement = null;
+      tileData.production = tile.production;
+
+      if (orders == 'remove farm') {
+        tileData.production.food -= 1;
+      } else if (orders == 'remove mine') {
+        tileData.production.labor -= 1;
+      }
+
+      return projectIsDone();
+    }
+
+    if (orders == 'build farm') {
+      incrementProgress();
+      if (tileData.progress < 10) {
+        return completeUpdate();
+      }
+      tileData.improvement = 'farm';
+      tileData.production = tile.production;
+      tileData.production.food += 1;
+      return projectIsDone();
+    }
+
+    if (orders == 'build mine') {
+      incrementProgress();
+      if (tileData.progress < 12) {
+        return completeUpdate();
+      }
+      tileData.improvement = 'mine';
+      tileData.production = tile.production;
+      tileData.production.labor += 1;
+      return projectIsDone();
+    }
+
+    if (orders == 'chop forest') {
+      incrementProgress();
+      if (tileData.progress < 5) {
+        return completeUpdate();
+      }
+      tileData.terrain = tile.terrain;
+      tileData.terrain.forest = false;
+      return projectIsDone();
     }
 
     completeUpdate();
