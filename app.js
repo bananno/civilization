@@ -43,7 +43,7 @@ const routeFiles = [
   'chooseResearch',
   'unitOrders',
   'workTile',
-  'endTurn',
+  'endTurn/main',
 ];
 
 routeFiles.forEach(filename => {
