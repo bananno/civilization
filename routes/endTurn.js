@@ -30,7 +30,7 @@ async function endTurn(data, done) {
   }
 
   await updateGame(data);
-  await updatePlayer(data);
+  await updateUnits(data);
 
   done();
 }
@@ -56,29 +56,19 @@ function updateGame(data) {
   });
 }
 
-async function updatePlayer(data, player) {
-
-}
-
-function endRound(data) {
-  // reset moves & skips for all units
-  const updateUnit = (i) => {
-    if (i >= data.units.length) {
-      return goToNext();
+async function updateUnits(data) {
+  data.units.forEach(unit => {
+    if (!data.help.isCurrentPlayer(unit.player)) {
+      return;
     }
 
-    let unit = data.units[i];
-    let tile = helpers.findTile(data.tiles, unit.location);
-    let unitData = {};
-    let tileData = {};
+    const tile = helpers.findTile(data.tiles, unit.location);
+    const unitData = {};
+    const tileData = {};
 
     const completeUpdate = () => {
-      unit.update(unitData, (error, unit) => {
-        if (error) {
-          return next(error);
-        }
-        updateUnit(i + 1);
-      });
+      unit.update(unitData);
+      tile.update(tileData);
     };
 
     unitData.movesRemaining = unit.moves;
@@ -109,12 +99,10 @@ function endRound(data) {
 
     if (orders == 'skip turn') {
       unitData.orders = null;
-      completeUpdate();
-    } else if (orders.match('build') || orders.match('remove')
-        || orders == 'chop forest') {
-      let tile = helpers.findTile(data.tiles, unit.location);
-      let tileData = {};
+      return completeUpdate();
+    }
 
+    if (orders.match('build') || orders.match('remove') || orders == 'chop forest') {
       let projectDone = false;
 
       if (orders == 'build farm' || orders == 'build mine'
@@ -160,17 +148,13 @@ function endRound(data) {
         tileData.project = null;
         tileData.progress = 0;
       }
-
-      tile.update(tileData, (error, tile) => {
-        if (error) {
-          return next(error);
-        }
-        completeUpdate();
-      });
-    } else {
-      completeUpdate();
     }
-  };
+
+    completeUpdate();
+  });
+}
+
+function endRound(data) {
 
   // increment project & growth progress for all cities
   const updateCity = (i) => {
@@ -301,7 +285,7 @@ function endRound(data) {
     });
   };
 
-  const functionList = [updateUnit, updateCity, updatePlayer];
+  const functionList = [updateCity, updatePlayer];
   let count = -1;
 
   const goToNext = () => {
