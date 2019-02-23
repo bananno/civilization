@@ -3,6 +3,7 @@ const router = express.Router();
 const getData = require('./getData');
 const Unit = require('../models/unit');
 const City = require('../models/city');
+const workTile = require('./support/workTile');
 
 router.post('/foundCity/:unitId', (req, res, next) => {
   let unitId = req.params.unitId;
@@ -66,6 +67,8 @@ async function foundCity(data, player, location, tile, next) {
       }
     });
   });
+
+  workTile.auto(data, city);
 
   next();
 }

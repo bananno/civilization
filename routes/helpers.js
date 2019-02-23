@@ -203,6 +203,13 @@ helpers.makeHelperFunctions = (data) => {
     return getCityWorkableTiles(data, city, newHelpers);
   };
 
+  newHelpers.numCityUnemployedCitizens = (city) => {
+    const cityTilesWorked = data.tiles.filter(tile => {
+      return '' + tile.worked == '' + city._id;
+    });
+    return city.population - cityTilesWorked.length + 1;
+  }
+
   return newHelpers;
 };
 

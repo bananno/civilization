@@ -88,10 +88,7 @@
   });
 
   currentTurnCities.forEach(city => {
-    const cityTilesWorked = tiles.filter(tile => {
-      return '' + tile.worked == '' + city._id;
-    });
-    const atMaxWork = cityTilesWorked.length >= city.population + 1;
+    const unemployedCitizens = help.numCityUnemployedCitizens(city);
 
     help.getCityWorkableTiles(city).forEach(tile => {
       let [r, c] = tile.location;
@@ -99,7 +96,7 @@
 
       if ('' + tile.worked == '' + city._id) {
         working = true;
-      } else if (atMaxWork) {
+      } else if (unemployedCitizens <= 0) {
         working = 'disabled';
       }
 
