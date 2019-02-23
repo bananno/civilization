@@ -48,7 +48,7 @@ async function foundCity(data, player, location, tile, next) {
   checkDuplicate(tile.location);
 
   // Claim border tiles if they are available.
-  const borderTiles = claimBorderTiles(data, location, player, checkDuplicate);
+  const borderTiles = await claimBorderTiles(data, location, player, checkDuplicate);
 
   // Discover nearby tiles.
   borderTiles.forEach(tile => {
