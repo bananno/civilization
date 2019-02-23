@@ -31,6 +31,7 @@ async function endTurn(data, done) {
 
   await updateGame(data);
   await updateUnits(data);
+  await updateCities(data);
 
   done();
 }
@@ -154,29 +155,22 @@ async function updateUnits(data) {
   });
 }
 
-function endRound(data) {
-
-  // increment project & growth progress for all cities
-  const updateCity = (i) => {
-    if (i >= data.cities.length) {
-      return goToNext();
+async function updateCities(data) {
+  data.cities.forEach(city => {
+    if (!data.help.isCurrentPlayer(city.player)) {
+      return;
     }
 
-    let city = data.cities[i];
-    let cityData = {};
-    cityData.storage = city.storage;
+    const cityData = {};
 
     const completeUpdate = () => {
-      city.update(cityData, error => {
-        if (error) {
-          return next(error);
-        }
-        updateCity(i + 1);
-      });
+      city.update(cityData);
     };
 
-    let projectCategory = city.project.category;
-    let projectIndex = city.project.index;
+    cityData.storage = city.storage;
+
+    const projectCategory = city.project.category;
+    const projectIndex = city.project.index;
 
     let laborSoFar = 0;
     let laborNeeded = 0;
@@ -241,7 +235,10 @@ function endRound(data) {
     }
 
     completeUpdate();
-  }
+  });
+}
+
+function endRound(data) {
 
   // increment production for all players
   const updatePlayer = (i) => {
@@ -285,7 +282,7 @@ function endRound(data) {
     });
   };
 
-  const functionList = [updateCity, updatePlayer];
+  const functionList = [updatePlayer];
   let count = -1;
 
   const goToNext = () => {
