@@ -6,8 +6,12 @@ Update player production progress:
 */
 
 async function updatePlayer(data) {
-  const player = data.currentPlayer
+  const player = data.currentPlayer;
   const playerData = {};
+
+  const completeUpdate = async () => {
+    await player.update(playerData);
+  };
 
   playerData.storage = player.storage;
   playerData.researchProgress = player.researchProgress;
@@ -17,7 +21,7 @@ async function updatePlayer(data) {
 
   if (player.researchCurrent == null) {
     playerData.storage.science += player.production.science;
-    return await player.update(playerData);
+    return completeUpdate();
   }
 
   const scienceCost = data.technologyList[player.researchCurrent].scienceCost;
@@ -37,7 +41,7 @@ async function updatePlayer(data) {
     playerData.researchProgress[player.researchCurrent] = researchProgress;
   }
 
-  await player.update(playerData);
+  completeUpdate();
 }
 
 module.exports = updatePlayer;
