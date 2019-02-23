@@ -39,24 +39,16 @@ async function endTurn(data, done) {
 }
 
 function updateGame(data) {
-  let gameData = {};
-  let endOfRound = false;
+  const gameData = {};
 
   if (data.game.nextPlayer < data.players.length - 1) {
     gameData.nextPlayer = data.game.nextPlayer + 1;
   } else {
     gameData.nextPlayer = 0;
     gameData.turn = data.game.turn + 1;
-    endOfRound = true;
   }
 
-  data.game.update(gameData, (error, game) => {
-    if (error) {
-      next(error);
-    } else if (endOfRound) {
-      endRound(data);
-    }
-  });
+  data.game.update(gameData);
 }
 
 async function updateCities(data) {
