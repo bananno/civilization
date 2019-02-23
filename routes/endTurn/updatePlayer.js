@@ -1,23 +1,23 @@
+/*
+Update player production progress:
+- Gold & culture go directly into storage for spending during turn.
+- Research is applied to the current technology.
+- Food & labor are not considered because each city produces them for itself only.
+*/
 
 async function updatePlayer(data) {
   const player = data.currentPlayer
   const playerData = {};
 
-  const completeUpdate = () => {
-    player.update(playerData);
-  };
-
   playerData.storage = player.storage;
   playerData.researchProgress = player.researchProgress;
 
-  // gold & culture go directly into storage for spending during turn
   playerData.storage.gold += player.production.gold;
   playerData.storage.culture += player.production.culture;
 
-  // research progress is applied to the current technology
   if (player.researchCurrent == null) {
     playerData.storage.science += player.production.science;
-    return completeUpdate();
+    return await player.update(playerData);
   }
 
   const scienceCost = data.technologyList[player.researchCurrent].scienceCost;
@@ -37,7 +37,7 @@ async function updatePlayer(data) {
     playerData.researchProgress[player.researchCurrent] = researchProgress;
   }
 
-  completeUpdate();
+  await player.update(playerData);
 }
 
 module.exports = updatePlayer;
