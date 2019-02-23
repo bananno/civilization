@@ -32,6 +32,7 @@ async function endTurn(data, done) {
   await updateGame(data);
   await updateUnits(data);
   await updateCities(data);
+  await updatePlayer(data);
 
   done();
 }
@@ -238,63 +239,45 @@ async function updateCities(data) {
   });
 }
 
-function endRound(data) {
+async function updatePlayer(data) {
+  const player = data.currentPlayer
+  const playerData = {};
 
-  // increment production for all players
-  const updatePlayer = (i) => {
-    if (i >= data.players.length) {
-      return goToNext();
-    }
-    const player = data.players[i];
-    const playerData = {};
-
-    playerData.storage = player.storage;
-    playerData.researchProgress = player.researchProgress;
-
-    // gold & culture go directly into storage for spending during turn
-    playerData.storage.gold += player.production.gold;
-    playerData.storage.culture += player.production.culture;
-
-    // research progress is applied to the current technology
-    if (player.researchCurrent != null) {
-      const scienceCost = data.technologyList[player.researchCurrent].scienceCost;
-      let researchProgress = 0;
-
-      researchProgress += playerData.researchProgress[player.researchCurrent];
-      researchProgress += player.production.science;
-      researchProgress += player.storage.science;
-
-      if (researchProgress >= scienceCost) {
-        playerData.storage.science = researchProgress - scienceCost;
-        playerData.technologies = player.technologies;
-        playerData.technologies.push(player.researchCurrent);
-        playerData.researchCurrent = null;
-      } else {
-        playerData.storage.science = 0;
-        playerData.researchProgress[player.researchCurrent] = researchProgress;
-      }
-    } else {
-      playerData.storage.science += player.production.science;
-    }
-
-    player.update(playerData, error => {
-      updatePlayer(i + 1);
-    });
+  const completeUpdate = () => {
+    player.update(playerData);
   };
 
-  const functionList = [updatePlayer];
-  let count = -1;
+  playerData.storage = player.storage;
+  playerData.researchProgress = player.researchProgress;
 
-  const goToNext = () => {
-    if (count < functionList.length - 1) {
-      count += 1;
-      functionList[count](0);
-    } else {
+  // gold & culture go directly into storage for spending during turn
+  playerData.storage.gold += player.production.gold;
+  playerData.storage.culture += player.production.culture;
 
-    }
-  };
+  // research progress is applied to the current technology
+  if (player.researchCurrent == null) {
+    playerData.storage.science += player.production.science;
+    return completeUpdate();
+  }
 
-  goToNext();
+  const scienceCost = data.technologyList[player.researchCurrent].scienceCost;
+  let researchProgress = 0;
+
+  researchProgress += playerData.researchProgress[player.researchCurrent];
+  researchProgress += player.production.science;
+  researchProgress += player.storage.science;
+
+  if (researchProgress >= scienceCost) {
+    playerData.storage.science = researchProgress - scienceCost;
+    playerData.technologies = player.technologies;
+    playerData.technologies.push(player.researchCurrent);
+    playerData.researchCurrent = null;
+  } else {
+    playerData.storage.science = 0;
+    playerData.researchProgress[player.researchCurrent] = researchProgress;
+  }
+
+  completeUpdate();
 }
 
 function allCitiesHaveProject(player, cities) {
