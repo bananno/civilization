@@ -36,6 +36,10 @@ form.work-tile {
   border-radius: $hexHeight1/4 $hexWidth1/4;
 }
 
+.layer-unit {
+  background-size: auto 45px;
+}
+
 /* ZOOM LEVEL 2 */
 
 div#map.map-zoom-2 {
@@ -60,6 +64,10 @@ div#map.map-zoom-2 {
     background-size: $hexBackgroundSize2/2;
     margin: $hexHeight2/4 $hexWidth2/4;
     border-radius: $hexHeight2/4 $hexWidth2/4;
+  }
+
+  .layer-unit {
+    background-size: auto 90px;
   }
 }
 
@@ -87,5 +95,9 @@ div#map.map-zoom-3 {
     background-size: $hexBackgroundSize3/2;
     margin: $hexHeight3/4 $hexWidth3/4;
     border-radius: $hexHeight3/4 $hexWidth3/4;
+  }
+
+  .layer-unit {
+    background-size: auto 135px;
   }
 }
