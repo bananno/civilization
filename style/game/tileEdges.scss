@@ -1,4 +1,6 @@
 
+// DARK & FOG
+
 .layer-edge-dark,
 .layer-edge-fog {
   background-image: url(/images/map/edge.png);
@@ -7,6 +9,18 @@
 .layer-edge-fog {
   opacity: 0.5;
 }
+
+// PLAYER TERRITORY
+
+.layer-edge-territory.territory-1 {
+  background-image: url(/images/map/player1.png);
+}
+
+.layer-edge-territory.territory-2 {
+  background-image: url(/images/map/player2.png);
+}
+
+// ROTATIONS
 
 .side-left {
   -webkit-transform: rotate(0deg);

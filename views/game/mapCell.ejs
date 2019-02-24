@@ -30,7 +30,9 @@
 
         if (cell.player) {
             className += ' player' + cell.player;
-            tileStack.push('territory territory-' + cell.player);
+            cell.edges.territory.forEach(edge => {
+                tileStack.push(edge);
+            });
         }
 
         if (tile.terrain.mountain) {

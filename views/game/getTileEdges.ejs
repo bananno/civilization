@@ -10,6 +10,7 @@
       }
 
       const inWater = map[r][c].tile.terrain.water;
+      const player = map[r][c].player;
 
       const c1 = helpers.getColumn(numCols, c - 1);
       const c2 = helpers.getColumn(numCols, c + 1);
@@ -17,6 +18,7 @@
       const dark = {};
       const fog = {};
       const coast = {};
+      const territory = {};
 
       const findEdges = (dir, r, c1, c2) => {
         if (r < 0 || r >= numRows) {
@@ -28,6 +30,10 @@
         fog[dir + 'right'] = !dark.right && !map[r][c2].lit;
         coast[dir + 'left'] = inWater != map[r][c1].tile.terrain.water;
         coast[dir + 'right'] = inWater != map[r][c2].tile.terrain.water;
+        if (player) {
+          territory[dir + 'left'] = player != map[r][c1].player;
+          territory[dir + 'right'] = player != map[r][c2].player;
+        }
       };
 
       findEdges('', r, c1, c2);
@@ -51,6 +57,15 @@
           map[r][c].edges.coast.push('edge-coast side-' + edgeName);
         }
       });
+
+      if (player) {
+        edgeNames.forEach(edgeName => {
+          if (territory[edgeName]) {
+            map[r][c].edges.territory.push('edge-territory side-' + edgeName
+              + ' territory-' + map[r][c].player);
+          }
+        });
+      }
     }
   }
 %>

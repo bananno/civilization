@@ -289,13 +289,6 @@ div#map.map-zoom-3 .layer-unit {
 .layer-road.road-bottom {
   background-image: url(/images/map/road/bottom.png); }
 
-/* PLAYER TERRITORY */
-.layer-territory.territory-1 {
-  background-image: url(/images/map/player1.png); }
-
-.layer-territory.territory-2 {
-  background-image: url(/images/map/player2.png); }
-
 /* FOG */
 .layer-fog {
   background-image: url(/images/map/dark.png);
@@ -413,6 +406,12 @@ form.work-tile.working-disabled {
 
 .layer-edge-fog {
   opacity: 0.5; }
+
+.layer-edge-territory.territory-1 {
+  background-image: url(/images/map/player1.png); }
+
+.layer-edge-territory.territory-2 {
+  background-image: url(/images/map/player2.png); }
 
 .side-left {
   -webkit-transform: rotate(0deg);
