@@ -143,14 +143,14 @@
     <% }); %>
 
     <% cell.buyTiles.forEach(buyTile => { %>
-        <form
+        <form action="<%= buyTile.path %>" method="post"
             class="buy-tile"
             city-id="<%= buyTile.cityId %>"
-            <% if (false) { %>
+            <% if (true) { %>
                 onClick="$(this).submit()"
             <% } %>
             >
-            100
+            <%= buyTile.price %>
         </form>
     <% }); %>
 </div>
