@@ -25,7 +25,11 @@
     let growthTurns = 0;
 
     if (foodSurplusPerTurn > 0) {
-        growthTurns = Math.ceil((foodNeededForGrowth - city.storage.food) / foodSurplusPerTurn);
+        if (city.storage.food > foodNeededForGrowth) {
+            growthTurns = 1;
+        } else {
+            growthTurns = Math.ceil((foodNeededForGrowth - city.storage.food) / foodSurplusPerTurn);
+        }
     }
 
     let currentProject = '_______';
