@@ -16,6 +16,8 @@
 
     let foodSurplusPerTurn = city.production.food - (city.population * 2);
 
+    const numUnemployed = help.numCityUnemployedCitizens(city);
+
     let tilesWorked = tiles.filter(tile => {
         return '' + tile.worked == '' + city._id;
     });
@@ -91,10 +93,10 @@
         Citizens:
         <ul>
             <li>
-                <%= tilesWorked.length - 1 %> working
+                <%= city.population - numUnemployed %> working
             </li>
             <li>
-                <%= city.population - tilesWorked.length + 1 %> unemployed
+                <%= numUnemployed %> unemployed
             </li>
         </ul>
     </div>
