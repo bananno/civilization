@@ -70,7 +70,7 @@ function updateCities(data) {
       };
 
       if (projectCategory == 'building') {
-        cityData.buildings = data.cities[i].buildings;
+        cityData.buildings = city.buildings;
         cityData.buildings.push(projectIndex);
       } else if (projectCategory == 'unit') {
         createUnit({
