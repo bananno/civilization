@@ -1,4 +1,5 @@
 const createUnit = require('../createUnit');
+const workTile = require('../support/workTile');
 
 const cityGrowthRate = [0, 15, 22, 30, 40, 51, 63, 76, 90, 105, 121, 138, 155, 174, 194, 214,
   235, 258, 280, 304, 329, 354, 380, 407, 435, 464, 493, 523, 554, 585, 617, 650, 684, 719, 754,
@@ -14,6 +15,10 @@ function updateCities(data) {
 
     const completeUpdate = async () => {
       await city.update(cityData);
+    };
+
+    const workNewTile = async () => {
+      await workTile.auto(data, city);
     };
 
     cityData.storage = city.storage;
@@ -59,6 +64,8 @@ function updateCities(data) {
     if (cityData.storage.food >= cityGrowthRate[city.population] && foodSurplus >= 2) {
       cityData.population = city.population + 1;
       cityData.storage.food -= cityGrowthRate[city.population];
+
+      workNewTile();
     }
 
     if (projectIsComplete) {
