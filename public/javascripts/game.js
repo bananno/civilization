@@ -107,6 +107,7 @@ function deactivateAll() {
   $('.view-unit').hide();
   $('form.move-unit').hide();
   $('form.work-tile').hide();
+  $('form.buy-tile').hide();
 
   activeUnitOrCityId = null;
 
@@ -119,6 +120,7 @@ function setActiveCity(id) {
   activeUnitOrCityId = id;
 
   $('form.work-tile[city-id="' + id + '"]').show();
+  $('form.buy-tile[city-id="' + id + '"]').show();
   $('.view-city[city-id="' + id + '"]').show();
 
   if (id && id.length && id != 'null') {

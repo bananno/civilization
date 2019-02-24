@@ -113,7 +113,10 @@
           return;
         }
         const [r1, c1] = outerTile.location;
-        map[r1][c1].buyTiles.push('buy');
+        map[r1][c1].buyTiles.push({
+          cityId: city._id,
+          path: '/buyTile/' + city._id + '/' + tile._id,
+        });
       });
     });
   });

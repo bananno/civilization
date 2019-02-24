@@ -110,19 +110,17 @@ form.move-unit.up-left {
 
 /* CITY TILE FORMS */
 
-form.work-tile {
+form.work-tile,
+form.buy-tile {
   display: none;
   position: absolute;
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
 }
 
 form.buy-tile {
-  position: absolute;
-  background-repeat: no-repeat;
-  background-position: top center;
   background-image: url(/images/gold.png);
-  cursor: pointer;
   color: white;
   font-weight: bold;
 }
@@ -130,7 +128,6 @@ form.buy-tile {
 form.work-tile.working-true,
 form.work-tile.working-false:hover {
   background-image: url(/images/worktile-true.png);
-  cursor: pointer;
 }
 
 form.work-tile.working-false {
