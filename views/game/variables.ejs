@@ -91,6 +91,7 @@
 
   currentTurnCities.forEach(city => {
     const unemployedCitizens = help.numCityUnemployedCitizens(city);
+    const alreadyCoveredBuyableTile = {};
 
     help.getCityWorkableTiles(city).forEach(tile => {
       let [r, c] = tile.location;
@@ -109,9 +110,10 @@
       });
 
       help.forEachAdjacentTile(tile.location, outerTile => {
-        if (outerTile.player) {
+        if (outerTile.player || alreadyCoveredBuyableTile[outerTile._id]) {
           return;
         }
+        alreadyCoveredBuyableTile[outerTile._id] = true;
         const [r1, c1] = outerTile.location;
         map[r1][c1].buyTiles.push({
           cityId: city._id,
