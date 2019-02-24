@@ -1,3 +1,5 @@
+const chooseAutoResearch = require('../support/chooseAutoResearch');
+
 /*
 Update player production progress:
 - Gold & culture go directly into storage for spending during turn.
@@ -31,14 +33,27 @@ function updatePlayer(data) {
   researchProgress += player.production.science;
   researchProgress += player.storage.science;
 
-  if (researchProgress >= scienceCost) {
-    playerData.storage.science = researchProgress - scienceCost;
-    playerData.technologies = player.technologies;
-    playerData.technologies.push(player.researchCurrent);
-    playerData.researchCurrent = null;
-  } else {
+  if (researchProgress < scienceCost) {
     playerData.storage.science = 0;
     playerData.researchProgress[player.researchCurrent] = researchProgress;
+    return completeUpdate();
+  }
+
+  playerData.storage.science = researchProgress - scienceCost;
+  playerData.technologies = player.technologies;
+  playerData.technologies.push(player.researchCurrent);
+
+  if (player.researchAutomate) {
+    let index = chooseAutoResearch(data);
+    playerData.researchCurrent = index;
+    if (index) {
+      playerData.researchProgress = data.currentPlayer.researchProgress;
+      playerData.researchProgress[index] = playerData.researchProgress[index] || 0;
+      playerData.researchProgress[index] += playerData.storage.science;
+      playerData.storage.science = 0;
+    }
+  } else {
+    playerData.researchCurrent = null;
   }
 
   completeUpdate();

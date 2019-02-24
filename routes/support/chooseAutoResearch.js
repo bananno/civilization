@@ -1,9 +1,5 @@
 
-function chooseAutoResearch(data, shouldAutomate) {
-  if (!shouldAutomate) {
-    return null;
-  }
-
+function chooseAutoResearch(data) {
   const availableTechs = data.technologyList.filter(tech => tech.isAvailable);
 
   if (availableTechs.length == 0) {

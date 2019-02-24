@@ -10,7 +10,7 @@ router.get('/chooseResearch/:index', (req, res, next) => {
 
     if (index == 'automate') {
       playerData.researchAutomate = !data.currentPlayer.researchAutomate;
-      index = chooseAutoResearch(data, playerData.researchAutomate);
+      index = playerData.researchAutomate ? chooseAutoResearch(data) : null;
     } else {
       index = parseInt(req.params.index);
       const technology = data.technologyList[index];
