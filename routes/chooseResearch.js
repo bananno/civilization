@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
+const chooseAutoResearch = require('./support/chooseAutoResearch');
 
 router.get('/chooseResearch/:index', (req, res, next) => {
   getData(req, res, next, (data) => {
@@ -9,7 +10,7 @@ router.get('/chooseResearch/:index', (req, res, next) => {
 
     if (index == 'automate') {
       playerData.researchAutomate = !data.currentPlayer.researchAutomate;
-      index = chooseNextAutoTechnology(data, playerData.researchAutomate);
+      index = chooseAutoResearch(data, playerData.researchAutomate);
     } else {
       index = parseInt(req.params.index);
       const technology = data.technologyList[index];
@@ -34,19 +35,5 @@ router.get('/chooseResearch/:index', (req, res, next) => {
     });
   });
 });
-
-function chooseNextAutoTechnology(data, shouldAutomate) {
-  if (!shouldAutomate) {
-    return null;
-  }
-
-  const availableTechs = data.technologyList.filter(tech => tech.isAvailable);
-
-  if (availableTechs.length == 0) {
-    return null;
-  }
-
-  return availableTechs[0].index;
-}
 
 module.exports = router;
