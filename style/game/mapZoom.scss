@@ -36,6 +36,14 @@ form.work-tile {
   border-radius: $hexHeight1/4 $hexWidth1/4;
 }
 
+form.buy-tile {
+  width: $hexWidth1;
+  background-size: $hexBackgroundSize1/2;
+  margin-top: 10px;
+  border-radius: $hexHeight1/4 $hexWidth1/4;
+  padding-top: 20px;
+}
+
 .layer-unit {
   background-size: auto 45px;
 }
@@ -64,6 +72,14 @@ div#map.map-zoom-2 {
     background-size: $hexBackgroundSize2/2;
     margin: $hexHeight2/4 $hexWidth2/4;
     border-radius: $hexHeight2/4 $hexWidth2/4;
+  }
+
+  form.buy-tile {
+    width: 60px;
+    background-size: $hexBackgroundSize2/2;
+    margin: 25px 20px 20px;
+    border-radius: $hexHeight2/4 $hexWidth2/4;
+    padding-top: 50px;
   }
 
   .layer-unit {
@@ -95,6 +111,14 @@ div#map.map-zoom-3 {
     background-size: $hexBackgroundSize3/2;
     margin: $hexHeight3/4 $hexWidth3/4;
     border-radius: $hexHeight3/4 $hexWidth3/4;
+  }
+
+  form.buy-tile {
+    width: $hexWidth3/2;
+    background-size: $hexBackgroundSize3/3;
+    margin: $hexHeight3/4 $hexWidth3/4;
+    border-radius: 60px;
+    padding-top: 50px;
   }
 
   .layer-unit {

@@ -141,4 +141,16 @@
             >
         </form>
     <% }); %>
+
+    <% cell.buyTiles.forEach(buyTile => { %>
+        <form
+            class="buy-tile"
+            city-id="<%= buyTile.cityId %>"
+            <% if (false) { %>
+                onClick="$(this).submit()"
+            <% } %>
+            >
+            100
+        </form>
+    <% }); %>
 </div>

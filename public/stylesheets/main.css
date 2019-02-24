@@ -202,6 +202,13 @@ form.work-tile {
   margin: 15px 12.5px;
   border-radius: 15px 12.5px; }
 
+form.buy-tile {
+  width: 50px;
+  background-size: 25.5px;
+  margin-top: 10px;
+  border-radius: 15px 12.5px;
+  padding-top: 20px; }
+
 .layer-unit {
   background-size: auto 45px; }
 
@@ -225,6 +232,13 @@ div#map.map-zoom-2 form.work-tile {
   margin: 30px 25px;
   border-radius: 30px 25px; }
 
+div#map.map-zoom-2 form.buy-tile {
+  width: 60px;
+  background-size: 51px;
+  margin: 25px 20px 20px;
+  border-radius: 30px 25px;
+  padding-top: 50px; }
+
 div#map.map-zoom-2 .layer-unit {
   background-size: auto 90px; }
 
@@ -247,6 +261,13 @@ div#map.map-zoom-3 form.work-tile {
   background-size: 76px;
   margin: 45px 37.5px;
   border-radius: 45px 37.5px; }
+
+div#map.map-zoom-3 form.buy-tile {
+  width: 75px;
+  background-size: 50.66667px;
+  margin: 45px 37.5px;
+  border-radius: 60px;
+  padding-top: 50px; }
 
 div#map.map-zoom-3 .layer-unit {
   background-size: auto 135px; }
@@ -388,6 +409,15 @@ form.work-tile {
   position: absolute;
   background-repeat: no-repeat;
   background-position: center; }
+
+form.buy-tile {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-image: url(/images/gold.png);
+  cursor: pointer;
+  color: white;
+  font-weight: bold; }
 
 form.work-tile.working-true,
 form.work-tile.working-false:hover {

@@ -14,6 +14,7 @@
         rivalUnit: false,
         moves: [],
         workTiles: [],
+        buyTiles: [],
         lit: false || testing.lightAllTiles,
         discovered: false,
         edges: {
@@ -105,6 +106,14 @@
         cityId: city._id,
         path: '/workTile/' + city._id + '/' + tile._id,
         working: working,
+      });
+
+      help.forEachAdjacentTile(tile.location, outerTile => {
+        if (outerTile.player) {
+          return;
+        }
+        const [r1, c1] = outerTile.location;
+        map[r1][c1].buyTiles.push('buy');
       });
     });
   });

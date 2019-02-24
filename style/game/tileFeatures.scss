@@ -117,6 +117,16 @@ form.work-tile {
   background-position: center;
 }
 
+form.buy-tile {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-image: url(/images/gold.png);
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
 form.work-tile.working-true,
 form.work-tile.working-false:hover {
   background-image: url(/images/worktile-true.png);
