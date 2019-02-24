@@ -10,7 +10,15 @@
         : technologyList[currentPlayer.researchCurrent];
 %>
 
-Current research:
+<% if (currentPlayer.researchAutomate) { %>
+    <a href="/chooseResearch/automate">stop automation</a>
+<% } else { %>
+    <a href="/chooseResearch/automate">choose automatically</a>
+<% } %>
+
+<p>
+    Current research:
+</p>
 <ul>
     <li>
         <% if (currentTech) { %>

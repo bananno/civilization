@@ -24,6 +24,7 @@ var PlayerSchema = new mongoose.Schema({
     },
   },
   technologies: [],
+  researchAutomate: Boolean,
   researchCurrent: Number,
   researchProgress: [],
 });
