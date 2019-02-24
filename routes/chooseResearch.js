@@ -9,11 +9,7 @@ router.get('/chooseResearch/:index', (req, res, next) => {
 
     if (index == 'automate') {
       playerData.researchAutomate = !data.currentPlayer.researchAutomate;
-      if (playerData.researchAutomate) {
-        index = chooseNextAutoTechnology(data);
-      } else {
-        index = null;
-      }
+      index = chooseNextAutoTechnology(data, playerData.researchAutomate);
     } else {
       index = parseInt(req.params.index);
       const technology = data.technologyList[index];
@@ -24,9 +20,8 @@ router.get('/chooseResearch/:index', (req, res, next) => {
       }
     }
 
-    playerData.researchCurrent = index;
-
     if (index != null) {
+      playerData.researchCurrent = index;
       playerData.researchProgress = data.currentPlayer.researchProgress;
       playerData.researchProgress[index] = playerData.researchProgress[index] || 0;
     }
@@ -40,7 +35,11 @@ router.get('/chooseResearch/:index', (req, res, next) => {
   });
 });
 
-function chooseNextAutoTechnology(data) {
+function chooseNextAutoTechnology(data, shouldAutomate) {
+  if (!shouldAutomate) {
+    return null;
+  }
+
   const availableTechs = data.technologyList.filter(tech => tech.isAvailable);
 
   if (availableTechs.length == 0) {
