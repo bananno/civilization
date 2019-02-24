@@ -291,10 +291,10 @@ div#map.map-zoom-3 .layer-unit {
 
 /* PLAYER TERRITORY */
 .layer-territory.territory-1 {
-  background-color: rgba(250, 60, 250, 0.5); }
+  background-image: url(/images/map/player1.png); }
 
 .layer-territory.territory-2 {
-  background-color: rgba(250, 10, 150, 0.5); }
+  background-image: url(/images/map/player2.png); }
 
 /* FOG */
 .layer-fog {
