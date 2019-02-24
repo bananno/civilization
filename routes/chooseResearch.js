@@ -9,7 +9,11 @@ router.get('/chooseResearch/:index', (req, res, next) => {
 
     if (index == 'automate') {
       playerData.researchAutomate = !data.currentPlayer.researchAutomate;
-      index = chooseNextAutoTechnology(data);
+      if (playerData.researchAutomate) {
+        index = chooseNextAutoTechnology(data);
+      } else {
+        index = null;
+      }
     } else {
       index = parseInt(req.params.index);
       const technology = data.technologyList[index];
@@ -20,8 +24,9 @@ router.get('/chooseResearch/:index', (req, res, next) => {
       }
     }
 
+    playerData.researchCurrent = index;
+
     if (index != null) {
-      playerData.researchCurrent = index;
       playerData.researchProgress = data.currentPlayer.researchProgress;
       playerData.researchProgress[index] = playerData.researchProgress[index] || 0;
     }
