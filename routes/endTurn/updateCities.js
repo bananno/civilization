@@ -1,5 +1,6 @@
 const createUnit = require('../createUnit');
 const workTile = require('../support/workTile');
+const claimTile = require('../support/claimTile');
 
 const cityGrowthRate = [0, 15, 22, 30, 40, 51, 63, 76, 90, 105, 121, 138, 155, 174, 194, 214,
   235, 258, 280, 304, 329, 354, 380, 407, 435, 464, 493, 523, 554, 585, 617, 650, 684, 719, 754,
@@ -13,6 +14,8 @@ function updateCities(data) {
 
     const cityData = {};
 
+    cityData.storage = city.storage;
+
     const completeUpdate = async () => {
       await city.update(cityData);
     };
@@ -21,7 +24,9 @@ function updateCities(data) {
       await workTile.auto(data, city);
     };
 
-    cityData.storage = city.storage;
+    const claimNewTile = async (runSuccess) => {
+      await claimTile.auto(data, city, runSuccess);
+    };
 
     // LABOR & PROJECT
 
@@ -61,9 +66,10 @@ function updateCities(data) {
     const cultureNeededForGrowth = cityGrowthRate[city.borderExpansions + 1];
 
     if (cityData.storage.culture >= cultureNeededForGrowth) {
-      console.log('EXPAND BORDERS');
-      cityData.storage.culture -= cultureNeededForGrowth;
-      cityData.borderExpansions = city.borderExpansions + 1;
+      claimNewTile(() => {
+        cityData.storage.culture -= cultureNeededForGrowth;
+        cityData.borderExpansions = city.borderExpansions + 1;
+      });
     }
 
     // FOOD
