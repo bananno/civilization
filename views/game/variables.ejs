@@ -102,6 +102,42 @@
 
   let count1 = 0;
 
+  const addUnitMovementForms = (unit) => {
+    if (unit.movesRemaining == 0) {
+      return;
+    }
+
+    help.forEachAdjacentTile(unit.location, tile => {
+      if (tile.terrain.mountain) {
+        return;
+      }
+
+      const aquaticUnit = unit.templateName == 'galley';
+
+      if (aquaticUnit) {
+        if (!tile.terrain.water && tile.improvement != 'city') {
+          return;
+        }
+      } else if (tile.terrain.water) {
+        const tileBoatUnits = currentTurnUnits.filter(otherUnit => {
+          return help.sameLocation(tile.location, otherUnit.location);
+        });
+
+        if (tileBoatUnits.length == 0) {
+          return;
+        }
+      }
+
+      const [r, c] = tile.location;
+
+      map[r][c].moves.push({
+        unitId: unit._id,
+        path: '/moveUnit/' + unit._id + '/' + r + '/' + c,
+        direction: help.getAdjacentDirection(unit.location, tile.location),
+      });
+    });
+  };
+
   currentTurnUnits.forEach(unit => {
     let [row, col] = unit.location;
     map[row][col].myUnit = true;
@@ -114,90 +150,7 @@
       map[r][c].lit = true;
     });
 
-    const inShiftedRow = row % 2 == 0;
-
-    for (r = row - 2; r <= row + 2; r++) {
-      if (r < 0) {
-        continue;
-      }
-      if (r == game.mapSize[0]) {
-        break;
-      }
-      for (cTemp = col - 2; cTemp <= col + 2; cTemp++) {
-        let c = cTemp;
-
-        if (c < 0) {
-          c += game.mapSize[1];
-        } else if (c >= game.mapSize[1]) {
-          c -= game.mapSize[1];
-        }
-
-        if (unit.movesRemaining == 0) {
-          continue;
-        }
-
-        let moveDirection = (() => {
-          if (row == r) {
-            if (cTemp == col - 1) {
-              return 'left';
-            }
-
-            if (cTemp == col + 1) {
-              return 'right';
-            }
-
-            return false;
-          }
-
-          let shift = inShiftedRow ? 1 : 0;
-
-          if (r == row - 1) {
-            if (c == col + shift - 1) {
-              return 'up-left';
-            }
-            if (c == col + shift) {
-              return 'up-right';
-            }
-          } else if (r == row + 1) {
-            if (c == col + shift - 1) {
-              return 'down-left';
-            }
-            if (c == col + shift) {
-              return 'down-right';
-            }
-          }
-
-          return false;
-        })();
-
-        if (!moveDirection) {
-          continue;
-        }
-
-        if (map[r][c].tile.terrain.mountain) {
-          continue;
-        }
-
-        if (unit.templateName == 'galley') {
-          if (!map[r][c].tile.terrain.water && map[r][c].tile.improvement != 'city') {
-            continue;
-          }
-        } else if (map[r][c].tile.terrain.water) {
-          const boat = units.filter(unit => {
-            return helpers.sameLocation(unit.location, [r, c]);
-          })[0];
-          if (!boat) {
-            continue;
-          }
-        }
-
-        map[r][c].moves.push({
-          unitId: unit._id,
-          path: '/moveUnit/' + unit._id + '/' + r + '/' + c,
-          direction: moveDirection,
-        });
-      }
-    }
+    addUnitMovementForms(unit);
   });
 
   rivalUnits.forEach(unit => {

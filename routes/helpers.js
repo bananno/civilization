@@ -39,6 +39,14 @@ helpers.booleanByPercentage = (percentage) => {
 };
 
 function getAdjacentDirection(numCols, fromRow, fromCol, toRow, toCol) {
+  if (fromRow.constructor == Array) {
+    [toRow, toCol] = [fromCol, toRow];
+    [fromRow, fromCol] = fromRow;
+  }
+  if (toRow.constructor == Array) {
+    [toRow, toCol] = toRow;
+  }
+
   if (toCol == 0 && fromCol == numCols - 1) {
     toCol = numCols;
   } else if (fromCol == 0 && toCol == numCols - 1) {
@@ -231,6 +239,10 @@ function getCityClaimableTiles(data, city, newHelpers) {
 helpers.makeHelperFunctions = (data) => {
   const newHelpers = {};
   const [numRows, numCols] = data.game.mapSize;
+
+  newHelpers.sameLocation = (arr1, arr2) => {
+    return arr1[0] == arr2[0] && arr1[1] == arr2[1];
+  };
 
   newHelpers.isCurrentPlayer = (player) => {
     return isSamePlayer(player, data.currentPlayer);
