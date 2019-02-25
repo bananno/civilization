@@ -38,6 +38,46 @@ helpers.booleanByPercentage = (percentage) => {
   return helpers.getRandomInt(0, 100) <= percentage;
 };
 
+function getAdjacentDirection(numCols, fromRow, fromCol, toRow, toCol) {
+  if (toCol == 0 && fromCol == numCols - 1) {
+    toCol = numCols;
+  } else if (fromCol == 0 && toCol == numCols - 1) {
+    toCol = -1;
+  }
+
+  if (toRow == fromRow) {
+    if (toCol == fromCol - 1) {
+      return 'left';
+    }
+
+    if (toCol == fromCol + 1) {
+      return 'right';
+    }
+
+    return null;
+  }
+
+  let shift = fromRow % 2;
+
+  if (toRow == fromRow - 1) {
+    if (toCol == fromCol - shift + 1) {
+      return 'up-right';
+    }
+    if (toCol == fromCol - shift) {
+      return 'up-left';
+    }
+  } else if (toRow == fromRow + 1) {
+    if (toCol == fromCol - shift + 1) {
+      return 'down-right';
+    }
+    if (toCol == fromCol - shift) {
+      return 'down-left';
+    }
+  }
+
+  return null;
+}
+
 helpers.isTileAdjacent = (numCols, oldRow, oldCol, newRow, newCol) => {
   let colDistance = newCol - oldCol;
 
@@ -238,7 +278,11 @@ helpers.makeHelperFunctions = (data) => {
       return '' + tile.worked == '' + city._id;
     });
     return city.population - cityTilesWorked.length + 1;
-  }
+  };
+
+  newHelpers.getAdjacentDirection = (fromRow, fromCol, toRow, toCol) => {
+    return getAdjacentDirection(numCols, fromRow, fromCol, toRow, toCol);
+  };
 
   return newHelpers;
 };
