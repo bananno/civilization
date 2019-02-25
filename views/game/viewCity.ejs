@@ -56,6 +56,13 @@
         currentProject = project;
         convertingLabor = true;
     }
+
+    let cultureNeeded = growthRate[city.borderExpansions + 1];
+    let cultureStorage = city.storage.culture;
+    let cultureProgress = city.production.culture;
+
+    let borderExpansionTurns = cultureProgress == 0 ? null
+        : Math.ceil((cultureNeeded - cultureStorage) / cultureProgress);
 %>
 
 <div class="view-city view-city-top" city-id="<%= city._id %>">
@@ -64,12 +71,26 @@
 
 <div class="view-city view-city-left info-box" city-id="<%= city._id %>">
     <div class="section">
-        population: <%= city.population %><br/>
-        (<%= city.storage.food %> / <%= foodNeededForGrowth %>)<br/>
+        population: <%= city.population %> citizens<br/>
+        population growth:
+        <%= city.storage.food %> / <%= foodNeededForGrowth %><br/>
+        +<%= foodSurplusPerTurn %> food surplus per turn
+        <br/>
         <% if (growthTurns) { %>
-            <%= growthTurns %> turns
+            (<%= growthTurns %> turns till growth)
         <% } else { %>
-            no growth
+            (no growth)
+        <% } %>
+    </div>
+
+    <div class="section">
+        border expansion:
+        <%= cultureStorage %> / <%= cultureNeeded %><br/>
+        +<%= cultureProgress %> culture per turn<br/>
+        <% if (borderExpansionTurns == null) { %>
+            (no growth)
+        <% } else { %>
+            (<%= borderExpansionTurns %> turns till expansion)
         <% } %>
     </div>
 
