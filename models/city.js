@@ -38,6 +38,10 @@ var CitySchema = new mongoose.Schema({
     labor: Number,
     culture: Number,
   },
+  borderExpansions: {
+    type: Number,
+    default: 0,
+  },
 });
 
 var City = mongoose.model('City', CitySchema);

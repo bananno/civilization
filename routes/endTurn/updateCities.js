@@ -58,6 +58,14 @@ function updateCities(data) {
 
     cityData.storage.culture += city.production.culture;
 
+    const cultureNeededForGrowth = cityGrowthRate[city.borderExpansions + 1];
+
+    if (cityData.storage.culture >= cultureNeededForGrowth) {
+      console.log('EXPAND BORDERS');
+      cityData.storage.culture -= cultureNeededForGrowth;
+      cityData.borderExpansions = city.borderExpansions + 1;
+    }
+
     // FOOD
 
     let foodEatenPerTurn = city.population * 2;
