@@ -43,15 +43,7 @@
             tileStack.push('hill');
         }
 
-        if (tile.road) {
-            if (cell.roads.length == 0) {
-                tileStack.push('road road-lone');
-            } else {
-                cell.roads.forEach(road => {
-                    tileStack.push('road road-' + road);
-                });
-            }
-        }
+        tileStack = tileStack.concat(cell.edges.road);
 
         if (tile.terrain.forest) {
             tileStack.push('forest');

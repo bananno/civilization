@@ -24,7 +24,6 @@
           territory: [],
           road: [],
         },
-        roads: [],
         player: null,
         owned: false,
       };
@@ -48,18 +47,6 @@
     }
   });
 
-  const addRoad = (row, column, direction) => {
-    if (row < 0 || row > numRows) {
-      return;
-    }
-    if (column < 0) {
-      column += numCols;
-    } else if (column >= numCols) {
-      column -= numCols;
-    }
-    map[row][column].roads.push(direction);
-  };
-
   tiles.forEach(tile => {
     let [r, c] = tile.location;
 
@@ -79,13 +66,6 @@
           map[r1][c1].lit = true;
         });
       }
-    }
-
-    if (tile.road) {
-      addRoad(r - 1, c, 'bottom');
-      addRoad(r, c - 1, 'right');
-      addRoad(r + 1, c, 'top');
-      addRoad(r, c + 1, 'left');
     }
   });
 
