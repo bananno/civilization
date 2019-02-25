@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
+const claimTile = require('./support/claimTile');
 
 router.post('/buyTile/:cityId/:tileId', (req, res, next) => {
   const cityId = req.params.cityId;
@@ -21,13 +22,13 @@ router.post('/buyTile/:cityId/:tileId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    claimTile(data, tile);
+    buyTile(data, tile);
 
     res.redirect('/');
   });
 });
 
-async function claimTile(data, tile) {
+async function buyTile(data, tile) {
   const playerUpdate = {};
 
   playerUpdate.storage = data.currentPlayer.storage;
@@ -35,9 +36,7 @@ async function claimTile(data, tile) {
 
   await data.currentPlayer.update(playerUpdate);
 
-  await tile.update({
-    player: data.currentPlayer,
-  });
+  await claimTile.claim(data, tile);
 
   data.help.forEachAdjacentTile(tile.location, tile => {
     (async () => {
