@@ -21,12 +21,19 @@ router.post('/buyTile/:cityId/:tileId', (req, res, next) => {
       return res.redirect('/');
     }
 
+    const playerUpdate = {};
+
+    playerUpdate.storage = data.currentPlayer.storage;
+    playerUpdate.storage.gold -= 10;;
+
     const tileUpdate = {
       player: data.currentPlayer,
     };
 
     tile.update(tileUpdate, () => {
-      res.redirect('/');
+      data.currentPlayer.update(playerUpdate, () => {
+        res.redirect('/');
+      });
     });
   });
 });
