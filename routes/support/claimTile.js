@@ -1,5 +1,5 @@
 
-function automaticallyChooseTile(data, city, runSuccess) {
+function automaticallyChooseTile(data, city) {
   let maxValueFound = 0;
   let selectedTile;
 
@@ -19,14 +19,14 @@ function automaticallyChooseTile(data, city, runSuccess) {
   if (selectedTile) {
     console.log('CLAIM TILE');
     console.log(selectedTile.location);
-    claimGivenTile(data, selectedTile, runSuccess);
+    claimGivenTile(data, selectedTile);
   }
 }
 
-async function claimGivenTile(data, tile, runSuccess) {
+async function claimGivenTile(data, tile) {
   await tile.update({
     player: data.currentPlayer,
-  }, runSuccess);
+  });
 }
 
 module.exports = {

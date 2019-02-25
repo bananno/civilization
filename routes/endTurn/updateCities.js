@@ -66,10 +66,9 @@ function updateCities(data) {
     const cultureNeededForGrowth = cityGrowthRate[city.borderExpansions + 1];
 
     if (cityData.storage.culture >= cultureNeededForGrowth) {
-      claimNewTile(() => {
-        cityData.storage.culture -= cultureNeededForGrowth;
-        cityData.borderExpansions = city.borderExpansions + 1;
-      });
+      claimNewTile();
+      cityData.storage.culture -= cultureNeededForGrowth;
+      cityData.borderExpansions = city.borderExpansions + 1;
     }
 
     // FOOD
