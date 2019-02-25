@@ -23,6 +23,8 @@ function updateCities(data) {
 
     cityData.storage = city.storage;
 
+    // LABOR & PROJECT
+
     const projectCategory = city.project.category;
     const projectIndex = city.project.index;
 
@@ -51,6 +53,12 @@ function updateCities(data) {
 
       projectIsComplete = laborSoFar >= laborNeeded;
     }
+
+    // CULTURE
+
+    cityData.storage.culture += city.production.culture;
+
+    // FOOD
 
     let foodEatenPerTurn = city.population * 2;
     let foodSurplus = city.production.food - foodEatenPerTurn;
@@ -88,6 +96,8 @@ function updateCities(data) {
         });
       }
     }
+
+    // DONE
 
     completeUpdate();
   });

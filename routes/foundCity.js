@@ -83,6 +83,7 @@ async function createCity(data, player, location) {
     storage: {
       food: 0,
       labor: 0,
+      culture: 0,
     },
   };
 
