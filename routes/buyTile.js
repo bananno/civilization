@@ -21,13 +21,13 @@ router.post('/buyTile/:cityId/:tileId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    claimTile(data, city, tile);
+    claimTile(data, tile);
 
     res.redirect('/');
   });
 });
 
-async function claimTile(data, city, tile) {
+async function claimTile(data, tile) {
   const playerUpdate = {};
 
   playerUpdate.storage = data.currentPlayer.storage;
@@ -35,11 +35,18 @@ async function claimTile(data, city, tile) {
 
   await data.currentPlayer.update(playerUpdate);
 
-  const tileUpdate = {
+  await tile.update({
     player: data.currentPlayer,
-  };
+  });
 
-  await tile.update(tileUpdate);
+  data.help.forEachAdjacentTile(tile.location, tile => {
+    (async () => {
+      const tileUpdate = {};
+      tileUpdate.discovered = tile.discovered;
+      tileUpdate.discovered.push(data.currentPlayer);
+      await tile.update(tileUpdate);
+    })();
+  });
 }
 
 module.exports = router;
