@@ -15,6 +15,8 @@ router.get('/chooseResearch/:index', (req, res, next) => {
       index = parseInt(req.params.index);
       const technology = data.technologyList[index];
 
+      playerData.researchAutomate = false;
+
       if (!technology.isAvailable) {
         console.log('Technology is not available.');
         return res.redirect('/');
