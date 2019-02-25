@@ -21,6 +21,13 @@ div#map {
   display: inline-block;
 }
 
+.map-cell {
+  display: inline-block;
+  text-align: center;
+  margin-left: -5px;
+  margin-bottom: -3px;
+}
+
 .map-cell.off-screen {
   display: none;
 }
@@ -51,4 +58,10 @@ div#map {
   .map-cell.center {
     border-color: blue;
   }
+}
+
+.tile-stack {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
 }

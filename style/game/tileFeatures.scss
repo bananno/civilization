@@ -1,4 +1,27 @@
 
+/* FOG */
+
+.layer-fog {
+  background-image: url(/images/map/dark.png);
+  opacity: 0.5;
+}
+
+#map.test-hide-fog-tiles {
+  .layer-fog {
+    opacity: 1;
+  }
+}
+
+/* TERRAIN */
+
+.layer-water {
+  background-image: url(/images/map/water.png);
+}
+
+.layer-grassland {
+  background-image: url(/images/map/grassland.png);
+}
+
 /* FEATURES ABOVE TERRAIN */
 
 .layer-mountain {

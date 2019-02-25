@@ -53,3 +53,33 @@
   transform: rotate(-120deg);
   margin-left: 2px;
 }
+
+// ROADS (SEPARATE IMAGES INSTEAD OF ROTATION)
+
+.layer-road-lone {
+  background-image: url(/images/map/road/lone.png);
+}
+
+.layer-road-left {
+  background-image: url(/images/map/road/left.png);
+}
+
+.layer-road-right {
+  background-image: url(/images/map/road/right.png);
+}
+
+.layer-road-top-left {
+  background-image: url(/images/map/road/top-left.png);
+}
+
+.layer-road-top-right {
+  background-image: url(/images/map/road/top-right.png);
+}
+
+.layer-road-bottom-left {
+  background-image: url(/images/map/road/bottom-left.png);
+}
+
+.layer-road-bottom-right {
+  background-image: url(/images/map/road/bottom-right.png);
+}

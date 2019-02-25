@@ -159,6 +159,12 @@ div#map {
 .map-shift {
   display: inline-block; }
 
+.map-cell {
+  display: inline-block;
+  text-align: center;
+  margin-left: -5px;
+  margin-bottom: -3px; }
+
 .map-cell.off-screen {
   display: none; }
 
@@ -181,6 +187,11 @@ div#map {
 
 #map.test-show-tile-borders .map-cell.center {
   border-color: blue; }
+
+.tile-stack {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center; }
 
 /* ZOOM LEVEL 1 */
 .map-cell {
@@ -272,44 +283,6 @@ div#map.map-zoom-3 form.buy-tile {
 div#map.map-zoom-3 .layer-unit {
   background-size: auto 135px; }
 
-/* TILE STACK APPLIES TO ALL "layer-" DIVS */
-.map-cell {
-  display: inline-block;
-  text-align: center;
-  margin-left: -5px;
-  margin-bottom: -3px; }
-
-.tile-stack {
-  position: absolute;
-  background-repeat: no-repeat;
-  background-position: center; }
-
-/* TERRAIN */
-.layer-water {
-  background-image: url(/images/map/water.png); }
-
-.layer-grassland {
-  background-image: url(/images/map/grassland.png); }
-
-/* ROAD */
-.layer-road {
-  background-size: 60px; }
-
-.layer-road.road-lone {
-  background-image: url(/images/map/road/lone.png); }
-
-.layer-road.road-left {
-  background-image: url(/images/map/road/left.png); }
-
-.layer-road.road-right {
-  background-image: url(/images/map/road/right.png); }
-
-.layer-road.road-top {
-  background-image: url(/images/map/road/top.png); }
-
-.layer-road.road-bottom {
-  background-image: url(/images/map/road/bottom.png); }
-
 /* FOG */
 .layer-fog {
   background-image: url(/images/map/dark.png);
@@ -317,6 +290,13 @@ div#map.map-zoom-3 .layer-unit {
 
 #map.test-hide-fog-tiles .layer-fog {
   opacity: 1; }
+
+/* TERRAIN */
+.layer-water {
+  background-image: url(/images/map/water.png); }
+
+.layer-grassland {
+  background-image: url(/images/map/grassland.png); }
 
 /* FEATURES ABOVE TERRAIN */
 .layer-mountain {
@@ -469,6 +449,27 @@ form.buy-tile.is-false {
   -webkit-transform: rotate(-120deg);
   transform: rotate(-120deg);
   margin-left: 2px; }
+
+.layer-road-lone {
+  background-image: url(/images/map/road/lone.png); }
+
+.layer-road-left {
+  background-image: url(/images/map/road/left.png); }
+
+.layer-road-right {
+  background-image: url(/images/map/road/right.png); }
+
+.layer-road-top-left {
+  background-image: url(/images/map/road/top-left.png); }
+
+.layer-road-top-right {
+  background-image: url(/images/map/road/top-right.png); }
+
+.layer-road-bottom-left {
+  background-image: url(/images/map/road/bottom-left.png); }
+
+.layer-road-bottom-right {
+  background-image: url(/images/map/road/bottom-right.png); }
 
 #menu-link-container {
   position: absolute;
