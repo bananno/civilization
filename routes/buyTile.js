@@ -21,21 +21,25 @@ router.post('/buyTile/:cityId/:tileId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    const playerUpdate = {};
+    claimTile(data, city, tile);
 
-    playerUpdate.storage = data.currentPlayer.storage;
-    playerUpdate.storage.gold -= 10;;
-
-    const tileUpdate = {
-      player: data.currentPlayer,
-    };
-
-    tile.update(tileUpdate, () => {
-      data.currentPlayer.update(playerUpdate, () => {
-        res.redirect('/');
-      });
-    });
+    res.redirect('/');
   });
 });
+
+async function claimTile(data, city, tile) {
+  const playerUpdate = {};
+
+  playerUpdate.storage = data.currentPlayer.storage;
+  playerUpdate.storage.gold -= 10;
+
+  await data.currentPlayer.update(playerUpdate);
+
+  const tileUpdate = {
+    player: data.currentPlayer,
+  };
+
+  await tile.update(tileUpdate);
+}
 
 module.exports = router;
