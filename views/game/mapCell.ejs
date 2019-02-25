@@ -143,10 +143,11 @@
     <% }); %>
 
     <% cell.buyTiles.forEach(buyTile => { %>
+        <% const affordable = currentPlayer.storage.gold >= buyTile.price; %>
         <form action="<%= buyTile.path %>" method="post"
-            class="buy-tile"
+            class="buy-tile is-<%= affordable %>"
             city-id="<%= buyTile.cityId %>"
-            <% if (true) { %>
+            <% if (affordable) { %>
                 onClick="$(this).submit()"
             <% } %>
             >

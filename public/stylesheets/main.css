@@ -427,6 +427,10 @@ form.work-tile.working-false {
 form.work-tile.working-disabled {
   background-image: url(/images/worktile-disabled.png); }
 
+form.buy-tile.is-false {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%); }
+
 .layer-edge-dark,
 .layer-edge-fog {
   background-image: url(/images/map/edge.png); }

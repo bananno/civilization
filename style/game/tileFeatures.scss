@@ -137,3 +137,8 @@ form.work-tile.working-false {
 form.work-tile.working-disabled {
   background-image: url(/images/worktile-disabled.png);
 }
+
+form.buy-tile.is-false {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
