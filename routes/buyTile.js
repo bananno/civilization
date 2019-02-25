@@ -16,9 +16,18 @@ router.post('/buyTile/:cityId/:tileId', (req, res, next) => {
       return res.redirect('/');
     }
 
-    console.log('BUY TILE');
+    if (data.currentPlayer.storage.gold < 10) {
+      console.log('Cannot afford to buy tile.');
+      return res.redirect('/');
+    }
 
-    res.redirect('/');
+    const tileUpdate = {
+      player: data.currentPlayer,
+    };
+
+    tile.update(tileUpdate, () => {
+      res.redirect('/');
+    });
   });
 });
 
