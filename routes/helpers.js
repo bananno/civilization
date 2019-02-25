@@ -173,6 +173,21 @@ function getCityWorkableTiles(data, city, newHelpers) {
   return workableTiles;
 }
 
+function getCityClaimableTiles(data, city, newHelpers) {
+  const alreadyCovered = {};
+  const claimableTiles = [];
+  newHelpers.getCityWorkableTiles(city).forEach(ownedTile => {
+    newHelpers.forEachAdjacentTile(ownedTile.location, outerTile => {
+      if (outerTile.player || alreadyCovered[outerTile._id]) {
+        return;
+      }
+      alreadyCovered[outerTile._id] = true;
+      claimableTiles.push(outerTile);
+    });
+  });
+  return claimableTiles;
+}
+
 helpers.makeHelperFunctions = (data) => {
   const newHelpers = {};
   const [numRows, numCols] = data.game.mapSize;
@@ -208,10 +223,14 @@ helpers.makeHelperFunctions = (data) => {
     return ['gold', 'food', 'labor', 'culture', 'science'].reduce((total, prod) => {
       return total + tile.production[prod];
     }, 0);
-  }
+  };
 
   newHelpers.getCityWorkableTiles = (city) => {
     return getCityWorkableTiles(data, city, newHelpers);
+  };
+
+  newHelpers.getCityClaimableTiles = (city) => {
+    return getCityClaimableTiles(data, city, newHelpers);
   };
 
   newHelpers.numCityUnemployedCitizens = (city) => {

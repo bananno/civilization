@@ -108,18 +108,14 @@
         path: '/workTile/' + city._id + '/' + tile._id,
         working: working,
       });
+    });
 
-      help.forEachAdjacentTile(tile.location, outerTile => {
-        if (outerTile.player || alreadyCoveredBuyableTile[outerTile._id]) {
-          return;
-        }
-        alreadyCoveredBuyableTile[outerTile._id] = true;
-        const [r1, c1] = outerTile.location;
-        map[r1][c1].buyTiles.push({
-          cityId: city._id,
-          path: '/buyTile/' + city._id + '/' + outerTile._id,
-          price: 10,
-        });
+    help.getCityClaimableTiles(city).forEach(tile => {
+      const [r, c] = tile.location;
+      map[r][c].buyTiles.push({
+        cityId: city._id,
+        path: '/buyTile/' + city._id + '/' + tile._id,
+        price: 10,
       });
     });
   });
