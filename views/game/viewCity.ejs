@@ -5,7 +5,7 @@
 
     const getTurns = (project, template, index) => {
         const totalCost = template.laborCost,
-              progress = city.projectProgress[index] || 0,
+              progress = city.projectProgress[project][index] || 0,
               rollover = city.storage.labor,
               perTurn = city.production.labor;
 
