@@ -5,8 +5,14 @@
     const shiftRow = r % 2 == 0;
     for (let c = 0; c < numCols; c++) {
 
+      let tileDiscovered = true;
+
       if (!map[r][c].discovered) {
-        continue;
+        if (testing.lightAllTiles) {
+          tileDiscovered = false;
+        } else {
+          continue;
+        }
       }
 
       const inWater = map[r][c].tile.terrain.water;
@@ -52,13 +58,19 @@
         findEdges('bottom-', r + 1, c1, c);
       }
 
+
+      if (tileDiscovered) {
+        edgeNames.forEach(edgeName => {
+          if (dark[edgeName]) {
+            map[r][c].edges.dark.push('edge-dark side-' + edgeName);
+          }
+          if (fog[edgeName]) {
+            map[r][c].edges.fog.push('edge-fog side-' + edgeName);
+          }
+        });
+      }
+
       edgeNames.forEach(edgeName => {
-        if (dark[edgeName]) {
-          map[r][c].edges.dark.push('edge-dark side-' + edgeName);
-        }
-        if (fog[edgeName]) {
-          map[r][c].edges.fog.push('edge-fog side-' + edgeName);
-        }
         if (coast[edgeName]) {
           map[r][c].edges.coast.push('edge-coast side-' + edgeName);
         }

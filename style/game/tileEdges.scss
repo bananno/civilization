@@ -1,6 +1,4 @@
 
-// DARK & FOG
-
 .layer-edge-dark,
 .layer-edge-fog {
   background-image: url(/images/map/edge.png);
@@ -10,7 +8,9 @@
   opacity: 0.5;
 }
 
-// PLAYER TERRITORY
+.layer-edge-coast {
+  background-image: url(/images/map/coast.png);
+}
 
 .layer-edge-territory.territory-1 {
   background-image: url(/images/map/player1.png);

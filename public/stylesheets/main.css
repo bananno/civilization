@@ -418,6 +418,9 @@ form.buy-tile.is-false {
 .layer-edge-fog {
   opacity: 0.5; }
 
+.layer-edge-coast {
+  background-image: url(/images/map/coast.png); }
+
 .layer-edge-territory.territory-1 {
   background-image: url(/images/map/player1.png); }
 
