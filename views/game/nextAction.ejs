@@ -22,8 +22,12 @@
             if (city.project.category) {
                 return;
             }
+            let cityButtonClass = 'next-action';
+            if (city.projectAutomate) {
+                cityButtonClass += ' action-finished';
+            }
         %>
-        <div class="next-action" city-id="<%= city._id %>">
+        <div class="<%= cityButtonClass %>" city-id="<%= city._id %>">
             <button onClick="setActiveCity('<%= city._id %>')">city needs project</button>
         </div>
     <% }); %>
