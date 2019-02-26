@@ -277,15 +277,15 @@ function showZoomOptions() {
 
 function toggleCityAutoProject(cityId) {
   const $checkbox = $('#auto-project-' + cityId);
-  const checked = $checkbox.is(':checked');
-  const $nextAction = $('.next-action[city-id="' + cityId + '"]');
+  const checkedNow = $checkbox.is(':checked');
 
   $.ajax({
     type: 'POST',
     url: '/automateProjects/' + cityId,
     success: success => {
       if (success) {
-        if (checked) {
+        const $nextAction = $('.next-action[city-id="' + cityId + '"]');
+        if (checkedNow) {
           $nextAction.addClass('action-finished');
         } else {
           $nextAction.removeClass('action-finished');
@@ -293,7 +293,7 @@ function toggleCityAutoProject(cityId) {
         toggleNextAction();
       } else {
         console.log('POST request failed.');
-        $checkbox.prop('checked', !checked);
+        $checkbox.prop('checked', !checkedNow);
       }
     },
   });
