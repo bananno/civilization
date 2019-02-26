@@ -140,6 +140,13 @@
     </div>
     <div class="section">
         <h3>CHOOSE PROJECT</h3>
+        <p>
+            <input type="checkbox" id="auto-project-<%= city._id %>"
+                onChange="toggleCityAutoProject('<%= city._id %>')"/>
+            <label for="auto-project-<%= city._id %>">
+                choose projects automatically
+            </label>
+        </p>
         units:
         <ul>
             <% unitList.forEach((unitTemplate, i) => { %>

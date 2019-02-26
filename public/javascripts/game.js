@@ -273,3 +273,7 @@ function showZoomOptions() {
     }
   }
 }
+
+function toggleCityAutoProject(cityId) {
+  console.log(cityId);
+}
