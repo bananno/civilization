@@ -46,7 +46,7 @@ function allCitiesHaveProject(data) {
   for (let i = 0; i < data.cities.length; i++) {
     const city = data.cities[i];
 
-    if (!data.help.isCurrentPlayer(city)) {
+    if (!data.help.isCurrentPlayer(city.player)) {
       continue;
     }
 
