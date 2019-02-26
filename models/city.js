@@ -33,6 +33,7 @@ var CitySchema = new mongoose.Schema({
     unit: [],
     building: [],
   },
+  projectAutomate: Boolean,
   storage: {
     food: Number,
     labor: Number,

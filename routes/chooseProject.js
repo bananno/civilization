@@ -6,8 +6,24 @@ router.post('/automateProjects/:cityId', (req, res, next) => {
   let cityId = req.params.cityId;
 
   getData(req, res, next, (data) => {
-    console.log('automate projects ' + cityId);
-    res.send();
+    const city = data.cityRef[cityId];
+
+    if (city == null || !data.help.isCurrentPlayer(city.player)) {
+      console.log('Invalid city action.');
+      return res.send();
+    }
+
+    const cityData = {
+      projectAutomate: !city.projectAutomate,
+    };
+
+    city.update(cityData, error => {
+      if (error) {
+        console.log('ERROR');
+        console.log(error);
+      }
+      res.send();
+    });
   });
 });
 
