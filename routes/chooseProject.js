@@ -3,18 +3,14 @@ const router = express.Router();
 const getData = require('./getData');
 
 router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
-  let cityId = req.params.cityId;
-  let project = req.params.project;
-  let index = req.params.index;
+  const cityId = req.params.cityId;
+  const project = req.params.project;
+  const index = req.params.index;
 
   getData(req, res, next, (data) => {
-    let turnPlayerId = data.players[data.game.nextPlayer]._id;
+    const city = data.cityRef[cityId];
 
-    let city = data.cities.filter(city => {
-      return city._id == cityId && '' + city.player == '' + turnPlayerId;
-    })[0];
-
-    if (city == null) {
+    if (city == null || !data.help.isCurrentPlayer(city.player)) {
       console.log('Invalid city action.');
       return res.redirect('/');
     }
@@ -44,7 +40,7 @@ router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
       }
     }
 
-    let cityData = {
+    const cityData = {
       project: {
         category: project,
         index: index,
