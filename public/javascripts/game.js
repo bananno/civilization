@@ -30,6 +30,7 @@ function setup() {
   goToNextAction(false);
 
   showZoomOptions();
+  toggleNextAction();
 }
 
 function resizeWindow() {
@@ -275,5 +276,30 @@ function showZoomOptions() {
 }
 
 function toggleCityAutoProject(cityId) {
-  $.post('/automateProjects/' + cityId);
+  const $checkbox = $('#auto-project-' + cityId);
+  const checked = $checkbox.is(':checked');
+  const $nextAction = $('.next-action[city-id="' + cityId + '"]');
+
+  $.ajax({
+    type: 'POST',
+    url: '/automateProjects/' + cityId,
+    success: success => {
+      if (success) {
+        if (checked) {
+          $nextAction.addClass('action-finished');
+        } else {
+          $nextAction.removeClass('action-finished');
+        }
+        toggleNextAction();
+      } else {
+        console.log('POST request failed.');
+        $checkbox.prop('checked', !checked);
+      }
+    },
+  });
+}
+
+function toggleNextAction() {
+  $('.next-action').hide();
+  $('.next-action').not('.action-finished').first().show();
 }

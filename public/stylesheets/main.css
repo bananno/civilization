@@ -45,6 +45,9 @@ html, body {
   cursor: pointer;
   border-radius: 10px; }
 
+.next-action {
+  display: none; }
+
 .view-unit {
   position: absolute;
   bottom: 10px;

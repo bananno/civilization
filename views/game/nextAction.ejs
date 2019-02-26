@@ -1,8 +1,6 @@
 
 <%
-    let actionsRemaining = false;
-
-    let needsResearch = playerRef[turnPlayerId].researchCurrent == null
+    const needsResearch = playerRef[turnPlayerId].researchCurrent == null
         && playerRef[turnPlayerId].production.science > 0
         && technologyList.filter(tech => tech.isAvailable).length > 0;
 %>
@@ -10,40 +8,33 @@
 <div id="next-action">
     <% currentTurnUnits.forEach(unit => { %>
         <%
-            if (actionsRemaining || unit.orders || unit.movesRemaining == 0 || unit.automate) {
+            if (unit.orders || unit.movesRemaining == 0 || unit.automate) {
                 return;
             }
-            actionsRemaining = true;
         %>
-        <div>
+        <div class="next-action" unit-id="<%= unit._id %>">
             <button onClick="setActiveUnit('<%= unit._id %>')">unit needs orders</button>
         </div>
     <% }); %>
 
-    <% if (!actionsRemaining) { %>
-        <% currentTurnCities.forEach(city => { %>
-            <%
-                if (actionsRemaining || city.project.category) {
-                    return;
-                }
-                actionsRemaining = true;
-            %>
-            <div>
-                <button onClick="setActiveCity('<%= city._id %>')">city needs project</button>
-            </div>
-        <% }); %>
-    <% } %>
+    <% currentTurnCities.forEach(city => { %>
+        <%
+            if (city.project.category) {
+                return;
+            }
+        %>
+        <div class="next-action" city-id="<%= city._id %>">
+            <button onClick="setActiveCity('<%= city._id %>')">city needs project</button>
+        </div>
+    <% }); %>
 
-    <% if (!actionsRemaining && needsResearch) { %>
-        <% actionsRemaining = true; %>
-        <div>
+    <% if (needsResearch) { %>
+        <div class="next-action">
             <button onClick="openMenu('research')">choose research</button>
         </div>
     <% } %>
 
-    <% if (!actionsRemaining) { %>
-        <form id="end-turn" action="/endTurn" method="POST">
-            <button type="submit">end turn</button>
-        </form>
-    <% } %>
+    <form id="end-turn" class="next-action" action="/endTurn" method="POST">
+        <button type="submit">end turn</button>
+    </form>
 </div>

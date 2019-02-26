@@ -10,7 +10,7 @@ router.post('/automateProjects/:cityId', (req, res, next) => {
 
     if (city == null || !data.help.isCurrentPlayer(city.player)) {
       console.log('Invalid city action.');
-      return res.send();
+      return res.send(false);
     }
 
     const cityData = {
@@ -19,10 +19,9 @@ router.post('/automateProjects/:cityId', (req, res, next) => {
 
     city.update(cityData, error => {
       if (error) {
-        console.log('ERROR');
-        console.log(error);
+        return res.send(false);
       }
-      res.send();
+      res.send(true);
     });
   });
 });
