@@ -2,6 +2,15 @@ const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
 
+router.post('/automateProjects/:cityId', (req, res, next) => {
+  let cityId = req.params.cityId;
+
+  getData(req, res, next, (data) => {
+    console.log('automate projects ' + cityId);
+    res.send();
+  });
+});
+
 router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
   const cityId = req.params.cityId;
   const project = req.params.project;

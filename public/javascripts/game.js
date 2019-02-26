@@ -275,5 +275,5 @@ function showZoomOptions() {
 }
 
 function toggleCityAutoProject(cityId) {
-  console.log(cityId);
+  $.post('/automateProjects/' + cityId);
 }
