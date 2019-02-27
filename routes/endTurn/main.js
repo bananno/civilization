@@ -50,7 +50,8 @@ function allCitiesHaveProject(data) {
       continue;
     }
 
-    if (city.project == null || city.project.category == null || city.project.category == '') {
+    if (!city.projectAutomate && (city.project == null || city.project.category == null
+        || city.project.category == '')) {
       return false;
     }
   }

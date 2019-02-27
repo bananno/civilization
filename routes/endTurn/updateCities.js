@@ -24,19 +24,32 @@ function updateCities(data) {
       await workTile.auto(data, city);
     };
 
-    const claimNewTile = async (runSuccess) => {
-      await claimTile.auto(data, city, runSuccess);
+    const claimNewTile = async () => {
+      await claimTile.auto(data, city);
     };
 
     // LABOR & PROJECT
 
-    const projectCategory = city.project.category;
-    const projectIndex = city.project.index;
+    let projectCategory = city.project.category;
+    let projectIndex = city.project.index;
 
     let laborSoFar = 0;
     let laborNeeded = 0;
     let projectIsComplete = false;
     let allowGrowth = true;
+
+    if (city.projectAutomate && (projectCategory == null || projectCategory == 'gold'
+        || projectCategory == 'science' || projectCategory == 'culture')) {
+      const newProject = chooseNextProject(data, city);
+      projectCategory = newProject.category;
+      projectIndex = newProject.index;
+      cityData.project = {
+        category: projectCategory,
+        index: projectIndex,
+      };
+      cityData.projectProgress[projectCategory][projectIndex]
+        = cityData.projectProgress[projectCategory][projectIndex] || 0;
+    }
 
     if (projectCategory == 'unit' || projectCategory == 'building') {
       cityData.projectProgress = city.projectProgress;
@@ -114,6 +127,33 @@ function updateCities(data) {
 
     completeUpdate();
   });
+}
+
+function chooseNextProject(data, city) {
+  for (let i = 0; i < data.buildingList.length; i++) {
+    if (city.buildings.indexOf(i) >= 0) {
+      continue;
+    }
+    if (!data.buildingList[i].isAvailable) {
+      continue;
+    }
+    return { category: 'building', index: i };
+  }
+
+  const existingWorkers = data.units.filter(unit => {
+    return data.help.isCurrentPlayer(unit.player)
+      && unit.templateName == 'worker';
+  });
+
+  if (existingWorkers.length == 0) {
+    for (let i = 0; i < data.unitList.length; i++) {
+      if (data.unitList[i].name == 'worker') {
+        return { category: 'unit', index: i };
+      }
+    }
+  }
+
+  return { category: 'gold', index: 0 };
 }
 
 module.exports = updateCities;
