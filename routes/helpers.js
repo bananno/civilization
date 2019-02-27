@@ -244,6 +244,10 @@ helpers.makeHelperFunctions = (data) => {
     return arr1[0] == arr2[0] && arr1[1] == arr2[1];
   };
 
+  newHelpers.isSamePlayer = (player1, player2) => {
+    return isSamePlayer(player1, player2);
+  };
+
   newHelpers.isCurrentPlayer = (player) => {
     return isSamePlayer(player, data.currentPlayer);
   };
