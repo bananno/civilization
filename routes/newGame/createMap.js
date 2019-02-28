@@ -1,5 +1,5 @@
-const mapPatterns = require('../models/mapPatterns');
-const helpers = require('./helpers');
+const mapPatterns = require('../../models/mapPatterns');
+const helpers = require('../helpers');
 
 const map = [];
 const tiles = [];

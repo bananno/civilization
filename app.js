@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const routeFiles = [
   'game',
-  'newGame',
+  'newGame/main',
   'moveUnit',
   'foundCity',
   'chooseProject',
