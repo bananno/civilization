@@ -9,7 +9,9 @@ const createMap = require('./createMap');
 const helpers = require('./helpers');
 const getVisibleTilesFunction = require('./getVisibleTiles');
 
-router.post('/newGame', (req, res, next) => {
+router.post('/newGame', newGame);
+
+async function newGame(req, res, next) {
   let numRows = parseInt(req.body.rows || 0);
   let numCols = parseInt(req.body.columns || 0);
 
@@ -118,7 +120,7 @@ router.post('/newGame', (req, res, next) => {
       createPlayer(0);
     }
   });
-});
+}
 
 function chooseUnitLocations(tiles, numPlayers) {
   const numCols = tiles[0].length;
