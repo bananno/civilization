@@ -7,7 +7,7 @@ const Unit = require('../../models/unit');
 const createUnit = require('../createUnit');
 const createMap = require('./createMap');
 const helpers = require('../helpers');
-const getVisibleTilesFunction = require('../getVisibleTiles');
+const getVisibleTilesFunction = require('../support/getVisibleTiles');
 
 router.post('/newGame', newGame);
 

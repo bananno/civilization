@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
 const helpers = require('./helpers');
-const getVisibleTilesFunction = require('./getVisibleTiles');
+const getVisibleTilesFunction = require('./support/getVisibleTiles');
 
 router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
   let unitId = req.params.unitId;

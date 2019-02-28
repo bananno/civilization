@@ -25,7 +25,7 @@ Effects of terrain:
 
 */
 
-const helpers = require('./helpers');
+const helpers = require('../helpers');
 
 const getVisibleTiles = (numRows, numCols, tiles, row, column) => {
   if (row.constructor == Array) {
