@@ -8,6 +8,7 @@
     "css": "node-sass --include-path sass style/compile.scss public/stylesheets/main.css"
   },
   "dependencies": {
+    "chai": "^4.2.0",
     "connect-mongo": "^2.0.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
