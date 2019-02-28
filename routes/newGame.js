@@ -12,34 +12,8 @@ const getVisibleTilesFunction = require('./getVisibleTiles');
 router.post('/newGame', newGame);
 
 async function newGame(req, res, next) {
-  let numRows = parseInt(req.body.rows || 0);
-  let numCols = parseInt(req.body.columns || 0);
+  const game = await createGame(req.body);
 
-  if (numRows < 10) {
-    numRows = 10;
-  } else if (numRows > 30) {
-    numRows = 30;
-  }
-
-  if (numCols < 20) {
-    numCols = 20;
-  } else if (numCols > 50) {
-    numCols = 50;
-  }
-
-  const gameData = {
-    name: req.body.name || '',
-    mapSize: [numRows, numCols],
-  };
-
-  if (gameData.name.length === 0) {
-    return res.send({ message: 'All fields are required.' });
-  }
-
-  Game.create(gameData, (error, game) => {
-    if (error) {
-      res.send({ message: 'ERROR: ' + error });
-    } else {
       req.session.gameId = game._id;
 
       const numPlayers = 2;
@@ -118,7 +92,34 @@ async function newGame(req, res, next) {
       }
 
       createPlayer(0);
-    }
+}
+
+async function createGame(params) {
+  let numRows = parseInt(params.rows || 0);
+  let numCols = parseInt(params.columns || 0);
+  let gameName = (params.name || '').trim() || ('Game' + ('' + Math.random()).slice(2, 10));
+
+  if (numRows < 10) {
+    numRows = 10;
+  } else if (numRows > 30) {
+    numRows = 30;
+  }
+
+  if (numCols < 20) {
+    numCols = 20;
+  } else if (numCols > 50) {
+    numCols = 50;
+  }
+
+  const gameData = {
+    name: gameName,
+    mapSize: [numRows, numCols],
+  };
+
+  return await new Promise(resolve => {
+    Game.create(gameData, (error, game) => {
+      resolve(game);
+    });
   });
 }
 
