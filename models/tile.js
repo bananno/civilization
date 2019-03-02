@@ -1,13 +1,14 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var TileSchema = new mongoose.Schema({
+const TileSchema = new Schema({
   game: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Game',
     required: true,
   },
   player: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Player',
     required: false,
     default: null,
@@ -16,11 +17,11 @@ var TileSchema = new mongoose.Schema({
     type: Array,
   },
   discovered: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Player',
   }],
   worked: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'City',
   },
   improvement: {
@@ -70,5 +71,11 @@ var TileSchema = new mongoose.Schema({
   },
 });
 
-var Tile = mongoose.model('Tile', TileSchema);
+TileSchema.methods.getTotalProduction = function() {
+  return ['gold', 'food', 'labor', 'culture', 'science'].reduce((total, prod) => {
+    return this.production[prod] + total;
+  }, 0);
+};
+
+const Tile = mongoose.model('Tile', TileSchema);
 module.exports = Tile;
