@@ -42,6 +42,7 @@ const routeFiles = [
   'chooseProject',
   'chooseResearch',
   'unitOrders',
+  'deleteUnit',
   'workTile',
   'buyTile',
   'endTurn/main',
