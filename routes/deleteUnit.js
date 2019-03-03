@@ -21,7 +21,7 @@ router.post('/deleteUnit/:unitId', (req, res, next) => {
       return next(error);
     }
 
-    Unit.findByIdAndRemove(unitId, (error, res2) => {
+    Unit.deleteOne(unit, (error, res2) => {
       if (error) {
         return next(error);
       }

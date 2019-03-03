@@ -56,7 +56,7 @@ describe('Delete unit', () => {
     sinon.stub(Tile, 'find');
     sinon.stub(City, 'find');
     sinon.stub(Unit, 'find');
-    sinon.stub(Unit, 'findByIdAndRemove');
+    sinon.stub(Unit, 'deleteOne');
   });
 
   afterEach(() => {
@@ -65,7 +65,7 @@ describe('Delete unit', () => {
     Tile.find.restore();
     City.find.restore();
     Unit.find.restore();
-    Unit.findByIdAndRemove.restore();
+    Unit.deleteOne.restore();
   });
 
   it('is executed when unit has moves remaining', done => {
@@ -74,12 +74,12 @@ describe('Delete unit', () => {
     Tile.find.yields(null, []);
     City.find.yields(null, []);
     Unit.find.yields(null, [mockUnit]);
-    Unit.findByIdAndRemove.yields(null, {});
+    Unit.deleteOne.yields(null, {});
 
     request(app)
       .post('/deleteUnit/' + mockUnit._id)
       .expect(res => {
-        sinon.assert.calledOnce(Unit.findByIdAndRemove);
+        sinon.assert.calledOnce(Unit.deleteOne);
       })
     .expect(200, done);
   });
@@ -92,12 +92,12 @@ describe('Delete unit', () => {
     Tile.find.yields(null, []);
     City.find.yields(null, []);
     Unit.find.yields(null, [mockUnit]);
-    Unit.findByIdAndRemove.yields(null, {});
+    Unit.deleteOne.yields(null, {});
 
     request(app)
       .post('/deleteUnit/' + mockUnit._id)
       .expect(res => {
-        sinon.assert.notCalled(Unit.findByIdAndRemove);
+        sinon.assert.notCalled(Unit.deleteOne);
         const errorMsg = JSON.parse(res.error.text).message;
         expect(errorMsg).to.equal('Cannot delete a unit that has no moves left.');
       })
@@ -113,12 +113,12 @@ describe('Delete unit', () => {
     Tile.find.yields(null, []);
     City.find.yields(null, []);
     Unit.find.yields(null, [mockUnit]);
-    Unit.findByIdAndRemove.yields(null, {});
+    Unit.deleteOne.yields(null, {});
 
     request(app)
       .post('/deleteUnit/' + mockUnit._id)
       .expect(res => {
-        sinon.assert.notCalled(Unit.findByIdAndRemove);
+        sinon.assert.notCalled(Unit.deleteOne);
         const errorMsg = JSON.parse(res.error.text).message;
         expect(errorMsg).to.equal('Current player does not own this unit.');
       })
