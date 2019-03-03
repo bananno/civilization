@@ -10,7 +10,13 @@ router.get('/units', (req, res, next) => {
 });
 
 router.post('/deleteUnit/:unitId', (req, res, next) => {
-  return res.redirect('/');
+  const unitId = req.params.unitId;
+  Unit.findByIdAndRemove(unitId, (error, res2) => {
+    if (error) {
+      return next(error);
+    }
+    return res.json(res2);
+  });
 });
 
 module.exports = router;

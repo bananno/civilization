@@ -49,3 +49,23 @@ describe('Unit router ', function() {
       .expect(200, done);
   });
 });
+
+describe('Delete user', function () {
+  beforeEach(function() {
+    sinon.stub(Unit, 'findByIdAndRemove');
+  });
+
+  afterEach(function() {
+    Unit.findByIdAndRemove.restore();
+  });
+
+  it('is executed when unit has moves remaining', function (done) {
+    Unit.findByIdAndRemove.yields(null, {});
+    request(app)
+      .post('/deleteUnit/' + mockUnit._id)
+      .expect(function(res) {
+        sinon.assert.calledOnce(Unit.findByIdAndRemove);
+      })
+    .expect(200, done);
+  });
+});
