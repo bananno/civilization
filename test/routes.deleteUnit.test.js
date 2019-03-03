@@ -27,30 +27,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-describe('Unit router ', function() {
-  beforeEach(function() {
-    sinon.stub(Unit, 'find');
-    sinon.stub(Unit, 'findById');
-  });
-
-  afterEach(function() {
-    Unit.find.restore();
-    Unit.findById.restore();
-  });
-
-  it('returns unit object array on GET /units', function (done) {
-    var expectedResult = [ mockUnit ];
-    Unit.find.yields(null, expectedResult);
-    request(app)
-      .get('/units')
-      .expect(function (res) {
-        expect(res.body).to.be.an('array');
-      })
-      .expect(200, done);
-  });
-});
-
-describe('Delete user', function () {
+describe('Delete unit', function () {
   beforeEach(function() {
     sinon.stub(Unit, 'findByIdAndRemove');
   });
