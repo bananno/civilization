@@ -12,7 +12,9 @@ router.post('/deleteUnit/:unitId', (req, res, next) => {
     }
 
     if (unit.movesRemaining < 1) {
-      return res.json(null);
+      error = new Error('Cannot delete a unit that has no moves left.');
+      error.status = 412;
+      return next(error);
     }
 
     Unit.findByIdAndRemove(unitId, (error, res2) => {
