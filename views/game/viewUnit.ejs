@@ -130,5 +130,11 @@
                 <% } %>
             </form>
         <% }); %>
+
+        <% if (movesRemaining) { %>
+            <button onClick="deleteUnit('<%= unit._id %>')">delete</button>
+        <% } else { %>
+            <button disabled="disabled">delete</button>
+        <% } %>
     </div>
 </div>

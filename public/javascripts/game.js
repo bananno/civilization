@@ -303,3 +303,14 @@ function toggleNextAction() {
   $('.next-action').hide();
   $('.next-action').not('.action-finished').first().show();
 }
+
+function deleteUnit(unitId) {
+  $.ajax({
+    type: 'POST',
+    url: '/deleteUnit/' + unitId,
+    success: () => {
+      deactivateAll();
+      $('[unit-id="' + unitId + '"]').remove();
+    },
+  });
+}
