@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const request = require('supertest');
 const express = require('express');
 
-var deleteUnitRoute = require('../routes/deleteUnit');
+var unitRouter = require('../routes/deleteUnit');
 var Player = require('../models/player');
 var Unit = require('../models/unit');
 
@@ -17,7 +17,7 @@ var mockUnit = {
 };
 
 var app = express()
-app.use('/', deleteUnitRoute);
+app.use('/', unitRouter);
 
 //define error handler
 app.use(function(err, req, res, next) {
@@ -27,3 +27,25 @@ app.use(function(err, req, res, next) {
   });
 });
 
+describe('Unit router ', function() {
+  beforeEach(function() {
+    sinon.stub(Unit, 'find');
+    sinon.stub(Unit, 'findById');
+  });
+
+  afterEach(function() {
+    Unit.find.restore();
+    Unit.findById.restore();
+  });
+
+  it('returns unit object array on GET /units', function (done) {
+    var expectedResult = [ mockUnit ];
+    Unit.find.yields(null, expectedResult);
+    request(app)
+      .get('/units')
+      .expect(function (res) {
+        expect(res.body).to.be.an('array');
+      })
+      .expect(200, done);
+  });
+});
