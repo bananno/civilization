@@ -15,6 +15,12 @@ router.post('/deleteUnit/:unitId', (req, res, next) => {
       return next(error);
     }
 
+    if (!data.help.isCurrentPlayer(unit.player)) {
+      error = new Error('Current player does not own this unit.');
+      error.status = 412;
+      return next(error);
+    }
+
     Unit.findByIdAndRemove(unitId, (error, res2) => {
       if (error) {
         return next(error);

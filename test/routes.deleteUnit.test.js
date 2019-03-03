@@ -19,8 +19,14 @@ const mockGame = {
   nextPlayer: 0,
 };
 
-const mockPlayer = {
+const mockPlayer1 = {
   _id: '507f1f77bcf86cd799439011',
+  game: '9039411cd791f77bcf507f86',
+  technologies: [],
+};
+
+const mockPlayer2 = {
+  _id: '95079011d794f1f77bcf86c3',
   game: '9039411cd791f77bcf507f86',
   technologies: [],
 };
@@ -64,7 +70,7 @@ describe('Delete unit', () => {
 
   it('is executed when unit has moves remaining', done => {
     Game.findById.yields(null, mockGame);
-    Player.find.yields(null, [mockPlayer]);
+    Player.find.yields(null, [mockPlayer1, mockPlayer2]);
     Tile.find.yields(null, []);
     City.find.yields(null, []);
     Unit.find.yields(null, [mockUnit]);
@@ -82,7 +88,26 @@ describe('Delete unit', () => {
     mockUnit.movesRemaining = 0;
 
     Game.findById.yields(null, mockGame);
-    Player.find.yields(null, [mockPlayer]);
+    Player.find.yields(null, [mockPlayer1, mockPlayer2]);
+    Tile.find.yields(null, []);
+    City.find.yields(null, []);
+    Unit.find.yields(null, [mockUnit]);
+    Unit.findByIdAndRemove.yields(null, {});
+
+    request(app)
+      .post('/deleteUnit/' + mockUnit._id)
+      .expect(res => {
+        sinon.assert.notCalled(Unit.findByIdAndRemove);
+      })
+      .expect(412, done);
+  });
+
+  it('fails if current turn player does not own unit', done => {
+    mockUnit.movesRemaining = 2;
+    mockUnit.player = mockPlayer2._id;
+
+    Game.findById.yields(null, mockGame);
+    Player.find.yields(null, [mockPlayer1, mockPlayer2]);
     Tile.find.yields(null, []);
     City.find.yields(null, []);
     Unit.find.yields(null, [mockUnit]);
