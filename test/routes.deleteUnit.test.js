@@ -3,20 +3,26 @@ const sinon = require('sinon');
 const request = require('supertest');
 const express = require('express');
 
-var unitRouter = require('../routes/deleteUnit');
-var Player = require('../models/player');
-var Unit = require('../models/unit');
+const unitRouter = require('../routes/deleteUnit');
+const Player = require('../models/player');
+const Unit = require('../models/unit');
 
-var mockPlayer = {
-  _id: '507f1f77bcf86cd799439011',
+const mockGame = {
+  _id: '9039411cd791f77bcf507f86',
 };
 
-var mockUnit = {
+const mockPlayer = {
+  _id: '507f1f77bcf86cd799439011',
+  game: '9039411cd791f77bcf507f86',
+};
+
+const mockUnit = {
   _id: '507f1f77bcf86cd799439012',
+  game: '9039411cd791f77bcf507f86',
   player: '507f1f77bcf86cd799439011',
 };
 
-var app = express()
+const app = express()
 app.use('/', unitRouter);
 
 //define error handler
