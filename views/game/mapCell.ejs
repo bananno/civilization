@@ -64,12 +64,6 @@
             tileStack.push('city');
         }
 
-        if (cell.myUnit || cell.rivalUnit) {
-            let unit = unitsById[cell.unitId];
-            let unitName = unit.templateName;
-            tileStack.push('unit unit-' + unitName);
-        }
-
         if (cell.lit) {
             cell.edges.fog.forEach(edge => {
                 tileStack.push(edge);
@@ -112,6 +106,14 @@
     <% tileStack.forEach(layer => { %>
         <div class="tile-stack layer-<%= layer %>"> </div>
     <% }); %>
+
+    <% if (cell.myUnit || cell.rivalUnit) { %>
+        <%
+            const unit = unitsById[cell.unitId];
+            const stackClass = 'tile-stack layer-unit unit-' + unit.templateName;
+        %>
+        <div class="<%= stackClass %>" unit-id="<%= cell.unitId %>"> </div>
+    <% } %>
 
     <% if (allowTileEntry) { %>
         <% cell.moves.forEach(move => { %>
