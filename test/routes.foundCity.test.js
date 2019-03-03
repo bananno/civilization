@@ -56,8 +56,17 @@ describe('Found city', () => {
     sinon.stub(Player, 'find');
     sinon.stub(Tile, 'find');
     sinon.stub(City, 'find');
+    sinon.stub(City, 'create');
     sinon.stub(Unit, 'find');
     sinon.stub(Unit, 'deleteOne');
+
+    Game.findById.yields(null, mockGame);
+    Player.find.yields(null, [mockPlayer1, mockPlayer2]);
+    Tile.find.yields(null, []);
+    City.find.yields(null, []);
+    City.create.yields(null, {});
+    Unit.find.yields(null, [mockUnit]);
+    Unit.deleteOne.yields(null, {});
   });
 
   afterEach(() => {
@@ -65,23 +74,38 @@ describe('Found city', () => {
     Player.find.restore();
     Tile.find.restore();
     City.find.restore();
+    City.create.restore();
     Unit.find.restore();
     Unit.deleteOne.restore();
+
+    mockUnit.movesRemaining = 2;
+    mockUnit.player = mockPlayer1._id;
+    mockUnit.templateName = 'settler';
   });
 
-  it('fails if unit has no moves remaining', done => {
-    mockUnit.movesRemaining = 0;
-
-    Game.findById.yields(null, mockGame);
-    Player.find.yields(null, [mockPlayer1, mockPlayer2]);
+  it('is executed', done => {
     Tile.find.yields(null, []);
     City.find.yields(null, []);
+    City.create.yields(null, {});
     Unit.find.yields(null, [mockUnit]);
     Unit.deleteOne.yields(null, {});
 
     request(app)
       .post('/foundCity/' + mockUnit._id)
       .expect(res => {
+        sinon.assert.calledOnce(City.create);
+        sinon.assert.calledOnce(Unit.deleteOne);
+      })
+      .expect(200, done);
+  });
+
+  it('fails if unit has no moves remaining', done => {
+    mockUnit.movesRemaining = 0;
+
+    request(app)
+      .post('/foundCity/' + mockUnit._id)
+      .expect(res => {
+        sinon.assert.notCalled(City.create);
         sinon.assert.notCalled(Unit.deleteOne);
         const errorMsg = JSON.parse(res.error.text).message;
         expect(errorMsg).to.equal('Unit has no moves left.');
@@ -90,19 +114,12 @@ describe('Found city', () => {
   });
 
   it('fails if current turn player does not own unit', done => {
-    mockUnit.movesRemaining = 2;
     mockUnit.player = mockPlayer2._id;
-
-    Game.findById.yields(null, mockGame);
-    Player.find.yields(null, [mockPlayer1, mockPlayer2]);
-    Tile.find.yields(null, []);
-    City.find.yields(null, []);
-    Unit.find.yields(null, [mockUnit]);
-    Unit.deleteOne.yields(null, {});
 
     request(app)
       .post('/foundCity/' + mockUnit._id)
       .expect(res => {
+        sinon.assert.notCalled(City.create);
         sinon.assert.notCalled(Unit.deleteOne);
         const errorMsg = JSON.parse(res.error.text).message;
         expect(errorMsg).to.equal('Current player does not own this unit.');
@@ -111,19 +128,12 @@ describe('Found city', () => {
   });
 
   it('fails if the unit is not a settler', done => {
-    mockUnit.player = mockPlayer1._id;
     mockUnit.templateName = 'scout';
-
-    Game.findById.yields(null, mockGame);
-    Player.find.yields(null, [mockPlayer1, mockPlayer2]);
-    Tile.find.yields(null, []);
-    City.find.yields(null, []);
-    Unit.find.yields(null, [mockUnit]);
-    Unit.deleteOne.yields(null, {});
 
     request(app)
       .post('/foundCity/' + mockUnit._id)
       .expect(res => {
+        sinon.assert.notCalled(City.create);
         sinon.assert.notCalled(Unit.deleteOne);
         const errorMsg = JSON.parse(res.error.text).message;
         expect(errorMsg).to.equal('This unit is not a settler.');
