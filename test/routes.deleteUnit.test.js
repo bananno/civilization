@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test';
+
 const expect = require('chai').expect;
 const sinon = require('sinon');
 const request = require('supertest');
@@ -36,18 +38,22 @@ app.use(function(err, req, res, next) {
 describe('Delete unit', function () {
   beforeEach(function() {
     sinon.stub(Unit, 'findByIdAndRemove');
+    sinon.stub(Unit, 'findById');
   });
 
   afterEach(function() {
     Unit.findByIdAndRemove.restore();
+    Unit.findById.restore();
   });
 
   it('is executed when unit has moves remaining', function (done) {
     Unit.findByIdAndRemove.yields(null, {});
+    Unit.findById.yields(null, {});
     request(app)
       .post('/deleteUnit/' + mockUnit._id)
       .expect(function(res) {
         sinon.assert.calledOnce(Unit.findByIdAndRemove);
+        sinon.assert.calledOnce(Unit.findById);
       })
     .expect(200, done);
   });
