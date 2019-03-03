@@ -22,6 +22,7 @@ const mockUnit = {
   _id: '507f1f77bcf86cd799439012',
   game: '9039411cd791f77bcf507f86',
   player: '507f1f77bcf86cd799439011',
+  movesRemaining: 2,
 };
 
 const app = express()
@@ -35,26 +36,44 @@ app.use(function(err, req, res, next) {
   });
 });
 
-describe('Delete unit', function () {
-  beforeEach(function() {
+describe('Delete unit', () => {
+  beforeEach(() => {
     sinon.stub(Unit, 'findByIdAndRemove');
     sinon.stub(Unit, 'findById');
+    sinon.stub(Unit, 'find');
   });
 
-  afterEach(function() {
+  afterEach(() => {
     Unit.findByIdAndRemove.restore();
     Unit.findById.restore();
+    Unit.find.restore();
   });
 
-  it('is executed when unit has moves remaining', function (done) {
+  it('is executed when unit has moves remaining', done => {
     Unit.findByIdAndRemove.yields(null, {});
-    Unit.findById.yields(null, {});
+    Unit.findById.yields(null, mockUnit);
+
     request(app)
       .post('/deleteUnit/' + mockUnit._id)
-      .expect(function(res) {
+      .expect(res => {
         sinon.assert.calledOnce(Unit.findByIdAndRemove);
         sinon.assert.calledOnce(Unit.findById);
       })
     .expect(200, done);
+  });
+
+  it('fails if unit has no moves remaining', done => {
+    mockUnit.movesRemaining = 0;
+
+    Unit.findByIdAndRemove.yields(null, null);
+    Unit.findById.yields(null, mockUnit);
+
+    request(app)
+      .post('/deleteUnit/' + mockUnit._id)
+      .expect(res => {
+        sinon.assert.notCalled(Unit.findByIdAndRemove);
+        sinon.assert.calledOnce(Unit.findById);
+      })
+      .expect(412, done);
   });
 });
