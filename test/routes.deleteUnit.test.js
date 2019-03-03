@@ -74,8 +74,6 @@ describe('Delete unit', () => {
       .post('/deleteUnit/' + mockUnit._id)
       .expect(res => {
         sinon.assert.calledOnce(Unit.findByIdAndRemove);
-        sinon.assert.calledOnce(Game.findById);
-        sinon.assert.calledOnce(Unit.findById);
       })
     .expect(200, done);
   });
@@ -83,14 +81,17 @@ describe('Delete unit', () => {
   it('fails if unit has no moves remaining', done => {
     mockUnit.movesRemaining = 0;
 
-    Unit.findByIdAndRemove.yields(null, null);
-    Unit.findById.yields(null, mockUnit);
+    Game.findById.yields(null, mockGame);
+    Player.find.yields(null, [mockPlayer]);
+    Tile.find.yields(null, []);
+    City.find.yields(null, []);
+    Unit.find.yields(null, [mockUnit]);
+    Unit.findByIdAndRemove.yields(null, {});
 
     request(app)
       .post('/deleteUnit/' + mockUnit._id)
       .expect(res => {
         sinon.assert.notCalled(Unit.findByIdAndRemove);
-        sinon.assert.calledOnce(Unit.findById);
       })
       .expect(412, done);
   });
