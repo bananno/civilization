@@ -315,6 +315,9 @@ function deleteUnit(unitId, row, col) {
       tile.unitsCities = tile.unitsCities.filter(id => {
         return id != unitId;
       });
+      if (tile.unitsCities.length == 0) {
+        $('.map-cell[row="' + row + '"][column="' + col + '"]').removeClass('clickable');
+      }
     },
   });
 }
