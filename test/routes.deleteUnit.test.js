@@ -6,7 +6,11 @@ const request = require('supertest');
 const express = require('express');
 
 const unitRouter = require('../routes/deleteUnit');
+
+const Game = require('../models/game');
 const Player = require('../models/player');
+const Tile = require('../models/tile');
+const City = require('../models/city');
 const Unit = require('../models/unit');
 
 const mockGame = {
@@ -38,25 +42,36 @@ app.use(function(err, req, res, next) {
 
 describe('Delete unit', () => {
   beforeEach(() => {
-    sinon.stub(Unit, 'findByIdAndRemove');
-    sinon.stub(Unit, 'findById');
+    sinon.stub(Game, 'findById');
+    sinon.stub(Player, 'find');
+    sinon.stub(Tile, 'find');
+    sinon.stub(City, 'find');
     sinon.stub(Unit, 'find');
+    sinon.stub(Unit, 'findByIdAndRemove');
   });
 
   afterEach(() => {
-    Unit.findByIdAndRemove.restore();
-    Unit.findById.restore();
+    Game.findById.restore();
+    Player.find.restore();
+    Tile.find.restore();
+    City.find.restore();
     Unit.find.restore();
+    Unit.findByIdAndRemove.restore();
   });
 
   it('is executed when unit has moves remaining', done => {
+    Game.findById.yields(null, mockGame);
+    Player.find.yields(null, [mockPlayer]);
+    Tile.find.yields(null, []);
+    City.find.yields(null, []);
+    Unit.find.yields(null, [mockUnit]);
     Unit.findByIdAndRemove.yields(null, {});
-    Unit.findById.yields(null, mockUnit);
 
     request(app)
       .post('/deleteUnit/' + mockUnit._id)
       .expect(res => {
         sinon.assert.calledOnce(Unit.findByIdAndRemove);
+        sinon.assert.calledOnce(Game.findById);
         sinon.assert.calledOnce(Unit.findById);
       })
     .expect(200, done);

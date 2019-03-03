@@ -125,7 +125,8 @@ function getData(req, res, next, callback) {
 }
 
 function collectFromDatabase(req, res, next, callback) {
-  Game.findById(req.session.gameId, (error, game) => {
+  const gameId = req.session ? req.session.gameId : null;
+  Game.findById(gameId, (error, game) => {
     if (error) {
       return next(error);
     }

@@ -6,10 +6,8 @@ const getData = require('./getData');
 router.post('/deleteUnit/:unitId', (req, res, next) => {
   const unitId = req.params.unitId;
 
-  Unit.findById(unitId, (error, unit) => {
-    if (error) {
-      return next(error);
-    }
+  getData(req, res, next, (data) => {
+    const unit = data.unitRef[unitId];
 
     if (unit.movesRemaining < 1) {
       error = new Error('Cannot delete a unit that has no moves left.');
