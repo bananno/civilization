@@ -15,11 +15,14 @@ const Unit = require('../models/unit');
 
 const mockGame = {
   _id: '9039411cd791f77bcf507f86',
+  mapSize: [0, 0],
+  nextPlayer: 0,
 };
 
 const mockPlayer = {
   _id: '507f1f77bcf86cd799439011',
   game: '9039411cd791f77bcf507f86',
+  technologies: [],
 };
 
 const mockUnit = {
