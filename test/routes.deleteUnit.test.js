@@ -98,6 +98,8 @@ describe('Delete unit', () => {
       .post('/deleteUnit/' + mockUnit._id)
       .expect(res => {
         sinon.assert.notCalled(Unit.findByIdAndRemove);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Cannot delete a unit that has no moves left.');
       })
       .expect(412, done);
   });
@@ -117,6 +119,8 @@ describe('Delete unit', () => {
       .post('/deleteUnit/' + mockUnit._id)
       .expect(res => {
         sinon.assert.notCalled(Unit.findByIdAndRemove);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Current player does not own this unit.');
       })
       .expect(412, done);
   });
