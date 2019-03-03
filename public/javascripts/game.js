@@ -315,6 +315,7 @@ function deleteUnit(unitId, row, col) {
     success: () => {
       deactivateAll();
       $('[unit-id="' + unitId + '"]').remove();
+      toggleNextAction();
       const tile = tiles[row][col];
       tile.unitsCities = tile.unitsCities.filter(id => {
         return id != unitId;
