@@ -305,6 +305,10 @@ function toggleNextAction() {
 }
 
 function deleteUnit(unitId, row, col) {
+  if (!confirm('Delete this unit?')) {
+    return;
+  }
+
   $.ajax({
     type: 'POST',
     url: '/deleteUnit/' + unitId,
