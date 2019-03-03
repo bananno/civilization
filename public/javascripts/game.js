@@ -304,13 +304,17 @@ function toggleNextAction() {
   $('.next-action').not('.action-finished').first().show();
 }
 
-function deleteUnit(unitId) {
+function deleteUnit(unitId, row, col) {
   $.ajax({
     type: 'POST',
     url: '/deleteUnit/' + unitId,
     success: () => {
       deactivateAll();
       $('[unit-id="' + unitId + '"]').remove();
+      const tile = tiles[row][col];
+      tile.unitsCities = tile.unitsCities.filter(id => {
+        return id != unitId;
+      });
     },
   });
 }

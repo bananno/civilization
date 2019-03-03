@@ -132,7 +132,7 @@
         <% }); %>
 
         <% if (movesRemaining) { %>
-            <button onClick="deleteUnit('<%= unit._id %>')">delete</button>
+            <button onClick="deleteUnit('<%= unit._id %>', <%= unit.location.join(',') %>)">delete</button>
         <% } else { %>
             <button disabled="disabled">delete</button>
         <% } %>
