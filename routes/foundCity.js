@@ -10,10 +10,12 @@ router.post('/foundCity/:unitId', (req, res, next) => {
   getData(req, res, next, (data) => {
     const unit = data.unitRef[unitId];
 
-    if (unit == null || unit.templateName != 'settler' || unit.movesRemaining == 0
-        || '' + unit.player != '' + data.turnPlayerId) {
-      console.log('invalid unit action');
-      return res.redirect('/');
+    const errorMsg = getFoundCityError(data, unit);
+
+    if (errorMsg) {
+      const error = new Error(errorMsg);
+      error.status = 412;
+      return next(error);
     }
 
     const tile = data.tileRef[unit.location[0]][unit.location[1]];
@@ -30,6 +32,26 @@ router.post('/foundCity/:unitId', (req, res, next) => {
     deleteSettler(unit);
   });
 });
+
+function getFoundCityError(data, unit) {
+  if (unit == null) {
+    return 'Unit is null.'
+  }
+
+  if (unit.templateName != 'settler') {
+    return 'This unit is not a settler.'
+  }
+
+  if (!data.help.isCurrentPlayer(unit.player)) {
+    return 'Current player does not own this unit.'
+  }
+
+  if (unit.movesRemaining == 0) {
+    return 'Unit has no moves left.'
+  }
+
+  return null;
+}
 
 async function foundCity(data, player, location, tile, next) {
   const city = await createCity(data, player, location);

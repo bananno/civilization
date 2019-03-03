@@ -36,6 +36,7 @@ const mockUnit = {
   game: '9039411cd791f77bcf507f86',
   player: '507f1f77bcf86cd799439011',
   movesRemaining: 2,
+  templateName: 'settler',
 };
 
 const app = express()
@@ -105,6 +106,27 @@ describe('Found city', () => {
         sinon.assert.notCalled(Unit.deleteOne);
         const errorMsg = JSON.parse(res.error.text).message;
         expect(errorMsg).to.equal('Current player does not own this unit.');
+      })
+      .expect(412, done);
+  });
+
+  it('fails if the unit is not a settler', done => {
+    mockUnit.player = mockPlayer1._id;
+    mockUnit.templateName = 'scout';
+
+    Game.findById.yields(null, mockGame);
+    Player.find.yields(null, [mockPlayer1, mockPlayer2]);
+    Tile.find.yields(null, []);
+    City.find.yields(null, []);
+    Unit.find.yields(null, [mockUnit]);
+    Unit.deleteOne.yields(null, {});
+
+    request(app)
+      .post('/foundCity/' + mockUnit._id)
+      .expect(res => {
+        sinon.assert.notCalled(Unit.deleteOne);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('This unit is not a settler.');
       })
       .expect(412, done);
   });
