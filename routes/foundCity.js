@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getData = require('./getData');
+const Tile = require('../models/tile');
 const Unit = require('../models/unit');
 const City = require('../models/city');
 const workTile = require('./support/workTile');
@@ -76,7 +77,7 @@ async function foundCity(data, player, location, tile, next) {
   borderTiles.forEach(tile => {
     data.help.forEachAdjacentTile(tile.location, tile => {
       if (!checkDuplicate(tile.location)) {
-        asyncUpdate(tile, {
+        asyncUpdateTile(tile, {
           discovered: tile.discovered.concat(player),
         });
       }
@@ -134,7 +135,7 @@ async function claimBorderTiles(data, location, player, checkDuplicate) {
     data.help.forEachAdjacentTile(location, tile => {
       borderTiles.push(tile);
       checkDuplicate(tile.location);
-      asyncUpdate(tile, {
+      asyncUpdateTile(tile, {
         player: player,
       });
     });
@@ -155,15 +156,15 @@ async function updateCityTile(tile, city) {
     tileUpdate.terrain.forest = false;
   }
 
-  await tile.update(tileUpdate);
+  asyncUpdateTile(tile, tileUpdate);
 }
 
 async function deleteSettler(unit) {
-  await Unit.deleteOne(unit);
+  await Unit.deleteOne(unit, () => {});
 }
 
-async function asyncUpdate(obj, data) {
-  await obj.update(data);
+async function asyncUpdateTile(tile, tileData) {
+  await Tile.update(tile, tileData, () => { });
 }
 
 module.exports = router;

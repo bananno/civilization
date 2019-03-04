@@ -161,7 +161,9 @@ helpers.forEachAdjacentTile = (numRows, numCols, tiles, row, col, callback) => {
   coords.forEach(pair => {
     const [r, c] = pair;
     const tile = helpers.findTile(tiles, r, c);
-    callback(tile, r, c);
+    if (tile) {
+      callback(tile, r, c);
+    }
   });
 };
 
