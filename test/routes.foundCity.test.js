@@ -134,7 +134,7 @@ describe('Found city', () => {
         sinon.assert.calledOnce(City.create);
         sinon.assert.calledOnce(Unit.deleteOne);
       })
-      .expect(200, done);
+      .expect(302, done);
   });
 
   it('fails if unit has no moves remaining', done => {
@@ -230,7 +230,7 @@ describe('Found city', () => {
         sinon.assert.calledOnce(City.create);
         sinon.assert.calledOnce(Unit.deleteOne);
       })
-      .expect(200, done);
+      .expect(302, done);
   });
 
   it('fails if the tile is owned by another player', done => {
