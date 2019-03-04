@@ -170,7 +170,7 @@ async function updateCityTile(tile, city) {
     tileUpdate.terrain.forest = false;
   }
 
-  asyncUpdateTile(tile, tileUpdate);
+  await asyncUpdateTile(tile, tileUpdate);
 }
 
 async function deleteSettler(unit) {
