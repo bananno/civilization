@@ -5,13 +5,13 @@ const sinon = require('sinon');
 const request = require('supertest');
 const express = require('express');
 
-const router = require('../routes/foundCity');
+const router = require('../../routes/foundCity');
 
-const Game = require('../models/game');
-const Player = require('../models/player');
-const Tile = require('../models/tile');
-const City = require('../models/city');
-const Unit = require('../models/unit');
+const Game = require('../../models/game');
+const Player = require('../../models/player');
+const Tile = require('../../models/tile');
+const City = require('../../models/city');
+const Unit = require('../../models/unit');
 
 /*
 Mock data:
