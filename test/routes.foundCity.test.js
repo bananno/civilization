@@ -15,8 +15,15 @@ const Unit = require('../models/unit');
 
 const mockGame = {
   _id: '9039411cd791f77bcf507f86',
-  mapSize: [0, 0],
+  mapSize: [20, 10],
   nextPlayer: 0,
+};
+
+const mockTile = {
+  _id: '07f7f5903941191f7cd7bc86',
+  location: [5, 6],
+  discovered: [],
+  terrain: {},
 };
 
 const mockPlayer1 = {
@@ -37,6 +44,7 @@ const mockUnit = {
   player: '507f1f77bcf86cd799439011',
   movesRemaining: 2,
   templateName: 'settler',
+  location: [5, 6],
 };
 
 const app = express()
@@ -55,6 +63,7 @@ describe('Found city', () => {
     sinon.stub(Game, 'findById');
     sinon.stub(Player, 'find');
     sinon.stub(Tile, 'find');
+    sinon.stub(Tile, 'update');
     sinon.stub(City, 'find');
     sinon.stub(City, 'create');
     sinon.stub(Unit, 'find');
@@ -62,7 +71,8 @@ describe('Found city', () => {
 
     Game.findById.yields(null, mockGame);
     Player.find.yields(null, [mockPlayer1, mockPlayer2]);
-    Tile.find.yields(null, []);
+    Tile.find.yields(null, [mockTile]);
+    Tile.update.yields(null, {});
     City.find.yields(null, []);
     City.create.yields(null, {});
     Unit.find.yields(null, [mockUnit]);
@@ -73,6 +83,7 @@ describe('Found city', () => {
     Game.findById.restore();
     Player.find.restore();
     Tile.find.restore();
+    Tile.update.restore();
     City.find.restore();
     City.create.restore();
     Unit.find.restore();
@@ -84,12 +95,6 @@ describe('Found city', () => {
   });
 
   it('is executed', done => {
-    Tile.find.yields(null, []);
-    City.find.yields(null, []);
-    City.create.yields(null, {});
-    Unit.find.yields(null, [mockUnit]);
-    Unit.deleteOne.yields(null, {});
-
     request(app)
       .post('/foundCity/' + mockUnit._id)
       .expect(res => {
