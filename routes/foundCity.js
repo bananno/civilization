@@ -19,14 +19,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
       return next(error);
     }
 
-    const tile = data.tileRef[unit.location[0]][unit.location[1]];
-
-    if (tile.player && !data.help.isCurrentPlayer(tile.player)) {
-      console.log('Cannot build a city in another player\'s territory.');
-      return res.redirect('/');
-    }
-
-    foundCity(data, unit.player, unit.location, tile, () => {
+    foundCity(data, unit.player, unit.location, () => {
       res.redirect(200, '/');
     });
 
@@ -36,26 +29,47 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
 function getFoundCityError(data, unit) {
   if (unit == null) {
-    return 'Unit is null.'
+    return 'Unit is null.';
   }
 
   if (unit.templateName != 'settler') {
-    return 'This unit is not a settler.'
+    return 'This unit is not a settler.';
   }
 
   if (!data.help.isCurrentPlayer(unit.player)) {
-    return 'Current player does not own this unit.'
+    return 'Current player does not own this unit.';
   }
 
   if (unit.movesRemaining == 0) {
-    return 'Unit has no moves left.'
+    return 'Unit has no moves left.';
+  }
+
+  const tile = data.tileRef[unit.location[0]][unit.location[1]];
+
+  if (tile.player) {
+    if (!data.help.isCurrentPlayer(tile.player)) {
+      return 'Cannot build a city in another player\'s territory.';
+    }
+
+    if (tile.improvement == 'city') {
+      return 'Cannot found a city in an existing city tile.';
+    }
+  }
+
+  if (tile.terrain.water) {
+    return 'Cannot found a city in a water tile.';
+  }
+
+  if (tile.terrain.mountain) {
+    return 'Cannot found a city in a mountain tile.';
   }
 
   return null;
 }
 
-async function foundCity(data, player, location, tile, next) {
+async function foundCity(data, player, location, next) {
   const city = await createCity(data, player, location);
+  const tile = data.tileRef[location[0]][location[1]];
 
   // Prevent city and border tiles from begin revisited in the "nearby" tiles section.
   const tileAlreadyCovered = {};
