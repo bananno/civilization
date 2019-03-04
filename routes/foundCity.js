@@ -27,7 +27,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
     }
 
     foundCity(data, unit.player, unit.location, tile, () => {
-      res.redirect('/');
+      res.redirect(200, '/');
     });
 
     deleteSettler(unit);
