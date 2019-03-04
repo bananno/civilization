@@ -59,6 +59,7 @@ const mockTile3 = new Tile({
   location: [2, 2],
   player: mockPlayer1._id,
   terrain: {},
+  improvement: 'city',
 });
 
 const mockCity = new City({

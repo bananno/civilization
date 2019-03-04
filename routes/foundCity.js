@@ -48,7 +48,7 @@ function getFoundCityError(data, unit) {
 
   if (tile.player) {
     if (!data.help.isCurrentPlayer(tile.player)) {
-      return 'Cannot build a city in another player\'s territory.';
+      return 'Cannot found a city in another player\'s territory.';
     }
 
     if (tile.improvement == 'city') {
