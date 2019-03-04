@@ -13,6 +13,20 @@ const Tile = require('../models/tile');
 const City = require('../models/city');
 const Unit = require('../models/unit');
 
+/*
+Mock data:
+
+  Players:
+    Player1 (current turn)
+    Player2
+  Tiles:
+    Tile1 (no owner; has Unit)
+    Tile2 (owned by Player2)
+    Tile3 (owned by Player1; has City)
+  Unit (owned by Player1; on Tile1)
+  City (owned by Player1; on Tile3)
+*/
+
 const mockGame = new Game({
   mapSize: [10, 20],
   nextPlayer: 0,
@@ -82,7 +96,7 @@ describe('Found city', () => {
 
     Game.findById.yields(null, mockGame);
     Player.find.yields(null, [mockPlayer1, mockPlayer2]);
-    Tile.find.yields(null, [mockTile1, mockTile2]);
+    Tile.find.yields(null, [mockTile1, mockTile2, mockTile3]);
     Tile.update.yields(null, {});
     City.find.yields(null, [mockCity]);
     City.create.yields(null, {});
@@ -156,6 +170,74 @@ describe('Found city', () => {
         sinon.assert.notCalled(Unit.deleteOne);
         const errorMsg = JSON.parse(res.error.text).message;
         expect(errorMsg).to.equal('This unit is not a settler.');
+      })
+      .expect(412, done);
+  });
+
+  it('fails if there is already a city in the tile', done => {
+    mockUnit.location = mockTile3.location;
+
+    request(app)
+      .post('/foundCity/' + mockUnit._id)
+      .expect(res => {
+        sinon.assert.notCalled(City.create);
+        sinon.assert.notCalled(Unit.deleteOne);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Cannot found a city in an existing city tile.');
+      })
+      .expect(412, done);
+  });
+
+  it('fails if the tile is water', done => {
+    mockTile1.terrain.water = true;
+
+    request(app)
+      .post('/foundCity/' + mockUnit._id)
+      .expect(res => {
+        sinon.assert.notCalled(City.create);
+        sinon.assert.notCalled(Unit.deleteOne);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Cannot found a city in a water tile.');
+      })
+      .expect(412, done);
+  });
+
+  it('fails if the tile is mountain', done => {
+    mockTile1.terrain.mountain = true;
+
+    request(app)
+      .post('/foundCity/' + mockUnit._id)
+      .expect(res => {
+        sinon.assert.notCalled(City.create);
+        sinon.assert.notCalled(Unit.deleteOne);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Cannot found a city in a mountain tile.');
+      })
+      .expect(412, done);
+  });
+
+  it('is executed if the tile is owned by current player', done => {
+    mockTile1.player = mockPlayer1._id;
+
+    request(app)
+      .post('/foundCity/' + mockUnit._id)
+      .expect(res => {
+        sinon.assert.calledOnce(City.create);
+        sinon.assert.calledOnce(Unit.deleteOne);
+      })
+      .expect(200, done);
+  });
+
+  it('fails if the tile is owned by another player', done => {
+    mockTile1.player = mockPlayer2._id;
+
+    request(app)
+      .post('/foundCity/' + mockUnit._id)
+      .expect(res => {
+        sinon.assert.notCalled(City.create);
+        sinon.assert.notCalled(Unit.deleteOne);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Cannot found a city in another player\'s territory.');
       })
       .expect(412, done);
   });
