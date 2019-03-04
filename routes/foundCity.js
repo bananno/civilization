@@ -20,7 +20,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
     }
 
     foundCity(data, unit.player, unit.location, () => {
-      res.redirect(200, '/');
+      res.redirect(302, '/');
     });
 
     deleteSettler(unit);
