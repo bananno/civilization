@@ -44,18 +44,21 @@ const mockTile1 = new Tile({
   game: mockGame._id,
   location: [5, 6],
   player: null,
+  terrain: {},
 });
 
 const mockTile2 = new Tile({
   game: mockGame._id,
   location: [3, 12],
   player: mockPlayer2._id,
+  terrain: {},
 });
 
 const mockTile3 = new Tile({
   game: mockGame._id,
   location: [2, 2],
   player: mockPlayer1._id,
+  terrain: {},
 });
 
 const mockCity = new City({
@@ -120,6 +123,7 @@ describe('Found city', () => {
     mockTile1.player = null;
     mockTile1.terrain.water = false;
     mockTile1.terrain.mountain = false;
+    mockUnit.location = [5, 6];
   });
 
   it('is executed', done => {
