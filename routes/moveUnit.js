@@ -16,11 +16,9 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
 
     const [oldRow, oldCol] = unit.location;
     const unitData = {};
-    const tileList = [];
 
     const oldTile = data.help.findTile(oldRow, oldCol);
     const newTile = data.help.findTile(newRow, newCol);
-
     const errorMsg = getMoveUnitError(data, unit, oldRow, oldCol, newRow, newCol, newTile);
 
     if (errorMsg) {
@@ -50,7 +48,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       unitData.movesRemaining = 0;
     }
 
-    tileList = getVisibleTiles(newRow, newCol);
+    const tileList = getVisibleTiles(newRow, newCol);
 
     const updateTile = (i) => {
       if (i >= tileList.length) {
