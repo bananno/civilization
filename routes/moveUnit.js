@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Unit = require('../models/unit');
 const getData = require('./getData');
 const helpers = require('./helpers');
 const getVisibleTilesFunction = require('./support/getVisibleTiles');
@@ -109,7 +110,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       });
     }
 
-    unit.update(unitData, (error, unit) => {
+    Unit.update(unit, unitData, (error, unit) => {
       if (error) {
         return next(error);
       }
