@@ -103,11 +103,10 @@ describe('Move unit', () => {
 
     mockUnit.movesRemaining = 2;
     mockUnit.player = mockPlayer1._id;
-    mockUnit.templateName = 'settler';
     mockTileOrigin.player = null;
     mockTileOrigin.terrain.water = false;
     mockTileOrigin.terrain.mountain = false;
-    mockUnit.location = [5, 6];
+    mockTileDestination.location = [5, 7];
   });
 
   it('is executed', done => {
@@ -117,5 +116,17 @@ describe('Move unit', () => {
         sinon.assert.calledOnce(Unit.update);
       })
       .expect(302, done);
+  });
+
+  it('fails when the destination tile is not adjacent', done => {
+    mockTileDestination.location[1] += 5;
+    request(app)
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
+      .expect(res => {
+        sinon.assert.notCalled(Unit.update);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Destination is not adjacent to origin.');
+      })
+      .expect(412, done);
   });
 });
