@@ -298,6 +298,10 @@ helpers.makeHelperFunctions = (data) => {
     return city.population - cityTilesWorked.length + 1;
   };
 
+  newHelpers.isTileAdjacent = (row1, col1, row2, col2) => {
+    return helpers.isTileAdjacent(numCols, oldRow, oldCol, newRow, newCol);
+  };
+
   newHelpers.getAdjacentDirection = (fromRow, fromCol, toRow, toCol) => {
     return getAdjacentDirection(numCols, fromRow, fromCol, toRow, toCol);
   };

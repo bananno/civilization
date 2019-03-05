@@ -3,7 +3,6 @@ const router = express.Router();
 const Unit = require('../models/unit');
 const Tile = require('../models/tile');
 const getData = require('./getData');
-const helpers = require('./helpers');
 const getVisibleTilesFunction = require('./support/getVisibleTiles');
 
 router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
@@ -13,7 +12,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
 
   getData(req, res, next, (data) => {
     const getVisibleTiles = getVisibleTilesFunction(data);
-    const unit = helpers.findUnit(data.units, unitId);
+    const unit = data.unitRef[unitId];
 
     let oldRow = unit.location[0];
     let oldCol = unit.location[1];
@@ -59,13 +58,13 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
         return res.redirect('/');
       }
 
-      let tile = helpers.findTile(data.tiles, tileList[i]);
+      const tile = data.help.findTile(tileList[i]);
 
       if (tile == null) {
         updateTile(i + 1);
       }
 
-      let tileData = {
+      const tileData = {
         discovered: tile.discovered
       };
 
@@ -99,7 +98,7 @@ function getMoveUnitError(data, unit, oldRow, oldCol, newRow, newCol, oldTile, n
     return 'Destination is not a valid location.';
   }
 
-  if (!helpers.isTileAdjacent(numCols, oldRow, oldCol, newRow, newCol)) {
+  if (!data.help.isTileAdjacent(numCols, oldRow, oldCol, newRow, newCol)) {
     return 'Destination is not adjacent to origin.';
   }
 
