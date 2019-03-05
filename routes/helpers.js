@@ -261,10 +261,10 @@ helpers.makeHelperFunctions = (data) => {
   newHelpers.findTile = (row, col) => {
     if (row.constructor == Array) {
       [row, col] = row;
-      return data.tileRef[row][col];
+      return data.tileRef[row] ? data.tileRef[row][col] : null;
     }
     if (col) {
-      return data.tileRef[row][col];
+      return data.tileRef[row] ? data.tileRef[row][col] : null;
     }
     return data.tileRef[row];
   };
