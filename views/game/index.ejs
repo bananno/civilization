@@ -31,7 +31,15 @@
 
     let map = [];
 
-    let mapCenter = currentTurnUnits[0].location;
+    let mapCenter;
+
+    if (currentTurnUnits[0]) {
+        mapCenter = currentTurnUnits[0].location;
+    } else if (currentTurnCities[0]) {
+        mapCenter = currentTurnCities[0].location;
+    } else {
+        mapCenter = [0, 0];
+    }
 
     let unitsById = [];
 
