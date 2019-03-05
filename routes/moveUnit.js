@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Unit = require('../models/unit');
+const Tile = require('../models/tile');
 const getData = require('./getData');
 const helpers = require('./helpers');
 const getVisibleTilesFunction = require('./support/getVisibleTiles');
@@ -97,12 +98,20 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       if (i >= tileList.length) {
         return res.redirect('/');
       }
+
       let tile = helpers.findTile(data.tiles, tileList[i]);
+
+      if (tile == null) {
+        updateTile(i + 1);
+      }
+
       let tileData = {
         discovered: tile.discovered
       };
+
       tileData.discovered.push(unit.player);
-      tile.update(tileData, error => {
+
+      Tile.update(tile, tileData, error => {
         if (error) {
           return next(error);
         }
@@ -110,7 +119,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       });
     }
 
-    Unit.update(unit, unitData, (error, unit) => {
+    Unit.update(unit, unitData, error => {
       if (error) {
         return next(error);
       }

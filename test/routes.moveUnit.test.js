@@ -26,16 +26,16 @@ const mockPlayer2 = new Player({
   game: mockGame._id,
 });
 
-const mockTile1 = new Tile({
+const mockTileOrigin = new Tile({
   game: mockGame._id,
   location: [5, 6],
   player: null,
   terrain: {},
 });
 
-const mockTile2 = new Tile({
+const mockTileDestination = new Tile({
   game: mockGame._id,
-  location: [3, 12],
+  location: [5, 7],
   player: mockPlayer2._id,
   terrain: {},
 });
@@ -78,13 +78,15 @@ describe('Move unit', () => {
     sinon.stub(Game, 'findById');
     sinon.stub(Player, 'find');
     sinon.stub(Tile, 'find');
+    sinon.stub(Tile, 'update');
     sinon.stub(City, 'find');
     sinon.stub(Unit, 'find');
     sinon.stub(Unit, 'update');
 
     Game.findById.yields(null, mockGame);
     Player.find.yields(null, [mockPlayer1, mockPlayer2]);
-    Tile.find.yields(null, [mockTile1, mockTile2, mockTile3]);
+    Tile.find.yields(null, [mockTileOrigin, mockTileDestination, mockTile3]);
+    Tile.update.yields(null);
     City.find.yields(null, [mockCity]);
     Unit.find.yields(null, [mockUnit]);
     Unit.update.yields(null);
@@ -94,6 +96,7 @@ describe('Move unit', () => {
     Game.findById.restore();
     Player.find.restore();
     Tile.find.restore();
+    Tile.update.restore();
     City.find.restore();
     Unit.find.restore();
     Unit.update.restore();
@@ -101,15 +104,15 @@ describe('Move unit', () => {
     mockUnit.movesRemaining = 2;
     mockUnit.player = mockPlayer1._id;
     mockUnit.templateName = 'settler';
-    mockTile1.player = null;
-    mockTile1.terrain.water = false;
-    mockTile1.terrain.mountain = false;
+    mockTileOrigin.player = null;
+    mockTileOrigin.terrain.water = false;
+    mockTileOrigin.terrain.mountain = false;
     mockUnit.location = [5, 6];
   });
 
   it('is executed', done => {
     request(app)
-      .post('/moveUnit/' + mockUnit._id + '/0/0')
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
       .expect(res => {
         sinon.assert.calledOnce(Unit.update);
       })
