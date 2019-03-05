@@ -100,8 +100,11 @@ describe('Move unit', () => {
     Unit.find.restore();
     Unit.update.restore();
 
+    mockUnit.templateName = 'scout';
+    mockUnit.location = [5, 6];
     mockUnit.movesRemaining = 2;
     mockUnit.player = mockPlayer1._id;
+    mockTileOrigin.location = [5, 6];
     mockTileDestination.terrain.water = false;
     mockTileDestination.terrain.mountain = false;
     mockTileDestination.location = [5, 7];
@@ -116,6 +119,32 @@ describe('Move unit', () => {
       .expect(302, done);
   });
 
+  it('fails when the unit has no moves left', done => {
+    mockUnit.movesRemaining = 0;
+    request(app)
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
+      .expect(res => {
+        sinon.assert.notCalled(Unit.update);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Unit has no moves left.');
+      })
+      .expect(412, done);
+  });
+
+  it('fails when the destination tile is off the board', done => {
+    mockUnit.location = [0, 5];
+    mockTileOrigin.location = [0, 5];
+    mockTileDestination.location = [-1, 5];
+    request(app)
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
+      .expect(res => {
+        sinon.assert.notCalled(Unit.update);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Destination is not a valid location.');
+      })
+      .expect(412, done);
+  });
+
   it('fails when the destination tile is not adjacent', done => {
     mockTileDestination.location[1] += 5;
     request(app)
@@ -128,7 +157,18 @@ describe('Move unit', () => {
       .expect(412, done);
   });
 
-  it('fails when the destination tile is water', done => {
+  it('executes when the destination tile is water and the unit is aquatic', done => {
+    mockTileDestination.terrain.water = true;
+    mockUnit.templateName = 'galley';
+    request(app)
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
+      .expect(res => {
+        sinon.assert.calledOnce(Unit.update);
+      })
+      .expect(302, done);
+  });
+
+  it('fails when the destination tile is water and the unit is not aquatic', done => {
     mockTileDestination.terrain.water = true;
     request(app)
       .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
@@ -136,6 +176,18 @@ describe('Move unit', () => {
         sinon.assert.notCalled(Unit.update);
         const errorMsg = JSON.parse(res.error.text).message;
         expect(errorMsg).to.equal('Water tile is impassable.');
+      })
+      .expect(412, done);
+  });
+
+  it('fails when the destination tile is not water and the unit is aquatic', done => {
+    mockUnit.templateName = 'galley';
+    request(app)
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
+      .expect(res => {
+        sinon.assert.notCalled(Unit.update);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Land tile is impassable.');
       })
       .expect(412, done);
   });
