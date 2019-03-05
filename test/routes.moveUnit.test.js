@@ -58,8 +58,14 @@ const mockUnit = new Unit({
   game: mockGame._id,
   player: mockPlayer1._id,
   movesRemaining: 2,
-  templateName: 'settler',
   location: [5, 6],
+});
+
+const mockRivalUnit = new Unit({
+  game: mockGame._id,
+  player: mockPlayer2._id,
+  movesRemaining: 2,
+  location: [5, 12],
 });
 
 const app = express()
@@ -87,7 +93,7 @@ describe('Move unit', () => {
     Tile.find.yields(null, [mockTileOrigin, mockTileDestination, mockTile3]);
     Tile.update.yields(null);
     City.find.yields(null, [mockCity]);
-    Unit.find.yields(null, [mockUnit]);
+    Unit.find.yields(null, [mockUnit, mockRivalUnit]);
     Unit.update.yields(null);
   });
 
@@ -108,6 +114,7 @@ describe('Move unit', () => {
     mockTileDestination.terrain.water = false;
     mockTileDestination.terrain.mountain = false;
     mockTileDestination.location = [5, 7];
+    mockRivalUnit.location = [5, 12];
   });
 
   it('is executed', done => {
@@ -200,6 +207,18 @@ describe('Move unit', () => {
         sinon.assert.notCalled(Unit.update);
         const errorMsg = JSON.parse(res.error.text).message;
         expect(errorMsg).to.equal('Mountain tile is impassable.');
+      })
+      .expect(412, done);
+  });
+
+  it('fails when there is another unit in the destination tile', done => {
+    mockRivalUnit.location = mockTileDestination.location;
+    request(app)
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
+      .expect(res => {
+        sinon.assert.notCalled(Unit.update);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Destination is already occupied by another unit.');
       })
       .expect(412, done);
   });
