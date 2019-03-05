@@ -97,7 +97,7 @@ function zoom(req, res, next) {
       if (error) {
         return next(error);
       }
-      res.sendStatus(302);
+      res.send({ success: true });
     });
   });
 }

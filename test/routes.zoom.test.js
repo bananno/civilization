@@ -66,7 +66,7 @@ describe('Zoom', () => {
           sinon.assert.calledOnce(Game.findById);
           sinon.assert.calledOnce(Game.update);
         })
-        .expect(302, done);
+        .expect(200, done);
     });
 
     it('fails when current zoom is not less than ' + zoomLimit[1], done => {
@@ -96,7 +96,7 @@ describe('Zoom', () => {
           sinon.assert.calledOnce(Game.findById);
           sinon.assert.calledOnce(Game.update);
         })
-        .expect(302, done);
+        .expect(200, done);
     });
 
     it('fails when current zoom is not greater than ' + zoomLimit[0], done => {
