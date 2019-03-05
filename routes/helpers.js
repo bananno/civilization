@@ -299,7 +299,7 @@ helpers.makeHelperFunctions = (data) => {
   };
 
   newHelpers.isTileAdjacent = (row1, col1, row2, col2) => {
-    return helpers.isTileAdjacent(numCols, oldRow, oldCol, newRow, newCol);
+    return helpers.isTileAdjacent(numCols, row1, col1, row2, col2);
   };
 
   newHelpers.getAdjacentDirection = (fromRow, fromCol, toRow, toCol) => {
