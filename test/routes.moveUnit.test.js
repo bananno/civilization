@@ -5,7 +5,7 @@ const sinon = require('sinon');
 const request = require('supertest');
 const express = require('express');
 
-const router = require('../routes/moveUnit');
+const router = require('../routes/moveUnit/main');
 
 const Game = require('../models/game');
 const Player = require('../models/player');

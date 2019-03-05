@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Unit = require('../models/unit');
-const Tile = require('../models/tile');
-const getData = require('./getData');
-const getVisibleTilesFunction = require('./support/getVisibleTiles');
+const Unit = require('../../models/unit');
+const Tile = require('../../models/tile');
+const getData = require('../getData');
+const getVisibleTilesFunction = require('../support/getVisibleTiles');
 
 router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
   const unitId = req.params.unitId;
