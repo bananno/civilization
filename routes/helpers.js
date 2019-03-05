@@ -242,7 +242,11 @@ helpers.makeHelperFunctions = (data) => {
   const newHelpers = {};
   const [numRows, numCols] = data.game.mapSize;
 
-  newHelpers.sameLocation = (arr1, arr2) => {
+  newHelpers.sameLocation = (arr1, arr2) => {//phase out
+    return arr1[0] == arr2[0] && arr1[1] == arr2[1];
+  };
+
+  newHelpers.isSameLocation = (arr1, arr2) => {
     return arr1[0] == arr2[0] && arr1[1] == arr2[1];
   };
 

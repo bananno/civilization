@@ -100,12 +100,21 @@ function getMoveUnitError(data, unit, oldRow, oldCol, newRow, newCol, newTile) {
   }
 
   const unitsInNewSpace = data.units.filter(otherUnit => {
-    return otherUnit.location[0] == newRow
-      && otherUnit.location[1] == newCol;
+    return data.help.isSameLocation(otherUnit.location, [newRow, newCol]);
   });
 
   if (unitsInNewSpace.length) {
     return 'Destination is already occupied by another unit.';
+  }
+
+  if (newTile.improvement == 'city') {
+    const cityInNewSpace = data.cities.filter(city => {
+      return data.help.isSameLocation(city.location, [newRow, newCol]);
+    })[0];
+
+    if (!data.help.isCurrentPlayer(cityInNewSpace.player)) {
+      return 'Unit cannot enter a rival city.';
+    }
   }
 
   if (newTile.terrain.mountain) {
