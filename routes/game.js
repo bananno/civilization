@@ -68,14 +68,16 @@ function exitGame(req, res, next) {
 }
 
 function zoom(req, res, next) {
-  const gameId = req.session.gameId;
+  const gameId = req.session ? req.session.gameId : null;
+
   let direction = parseInt(req.body.direction);
 
   if (direction == 0) {
     direction = -1;
   } else if (direction != 1) {
-    console.log('Invalid input.');
-    return res.redirect('/');
+    const error = new Error('Invalid zoom input.');
+    error.status = 412;
+    return next(error);
   }
 
   Game.findById(gameId, (error, game) => {
@@ -86,15 +88,16 @@ function zoom(req, res, next) {
     const newZoom = game.zoom + direction;
 
     if (newZoom < zoomLimit[0] || newZoom > zoomLimit[1]) {
-      console.log('Zoom is out of range.');
-      return res.redirect('/');
+      const error = new Error('Zoom is out of range.');
+      error.status = 412;
+      return next(error);
     }
 
-    game.update({ zoom: newZoom }, error => {
+    Game.update(game, { zoom: newZoom }, error => {
       if (error) {
         return next(error);
       }
-      res.send();
+      res.sendStatus(302);
     });
   });
 }
