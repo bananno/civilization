@@ -65,7 +65,6 @@ const mockUnit = new Unit({
 const app = express()
 app.use('/', router);
 
-//define error handler
 app.use(function(err, req, res, next) {
   res.status(err.status || 500).json({
     message: err.message,
@@ -103,9 +102,8 @@ describe('Move unit', () => {
 
     mockUnit.movesRemaining = 2;
     mockUnit.player = mockPlayer1._id;
-    mockTileOrigin.player = null;
-    mockTileOrigin.terrain.water = false;
-    mockTileOrigin.terrain.mountain = false;
+    mockTileDestination.terrain.water = false;
+    mockTileDestination.terrain.mountain = false;
     mockTileDestination.location = [5, 7];
   });
 
@@ -126,6 +124,30 @@ describe('Move unit', () => {
         sinon.assert.notCalled(Unit.update);
         const errorMsg = JSON.parse(res.error.text).message;
         expect(errorMsg).to.equal('Destination is not adjacent to origin.');
+      })
+      .expect(412, done);
+  });
+
+  it('fails when the destination tile is water', done => {
+    mockTileDestination.terrain.water = true;
+    request(app)
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
+      .expect(res => {
+        sinon.assert.notCalled(Unit.update);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Water tile is impassable.');
+      })
+      .expect(412, done);
+  });
+
+  it('fails when the destination tile is a mountain', done => {
+    mockTileDestination.terrain.mountain = true;
+    request(app)
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
+      .expect(res => {
+        sinon.assert.notCalled(Unit.update);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Mountain tile is impassable.');
       })
       .expect(412, done);
   });
