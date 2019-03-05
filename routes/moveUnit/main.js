@@ -5,6 +5,7 @@ const Tile = require('../../models/tile');
 const getData = require('../getData');
 const getVisibleTilesFunction = require('../support/getVisibleTiles');
 const getMoveUnitError = require('./getMoveUnitError');
+const getMovesUsed = require('./getMovesUsed');
 
 router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
   const unitId = req.params.unitId;
@@ -28,20 +29,8 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       return next(error);
     }
 
-    let movesUsed = 1;
-
-    if (newTile.terrain.hill || newTile.terrain.forest) {
-      if (unit.templateName != 'scout') {
-        movesUsed += 1;
-      }
-    }
-
-    if (newTile.road && oldTile.road) {
-      movesUsed = Math.ceil(movesUsed / 2);
-    }
-
     unitData.location = [newRow, newCol];
-    unitData.movesRemaining = unit.movesRemaining - movesUsed;
+    unitData.movesRemaining = unit.movesRemaining - getMovesUsed(unit, oldTile, newTile);
     unitData.orders = null;
     unitData.automate = false;
 
