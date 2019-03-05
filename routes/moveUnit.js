@@ -6,23 +6,22 @@ const getData = require('./getData');
 const getVisibleTilesFunction = require('./support/getVisibleTiles');
 
 router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
-  let unitId = req.params.unitId;
-  let newRow = parseInt(req.params.row);
-  let newCol = parseInt(req.params.col);
+  const unitId = req.params.unitId;
+  const newRow = parseInt(req.params.row);
+  const newCol = parseInt(req.params.col);
 
   getData(req, res, next, (data) => {
     const getVisibleTiles = getVisibleTilesFunction(data);
     const unit = data.unitRef[unitId];
 
-    let oldRow = unit.location[0];
-    let oldCol = unit.location[1];
-    let unitData = {};
-    let tileList = [];
+    const [oldRow, oldCol] = unit.location;
+    const unitData = {};
+    const tileList = [];
 
     const oldTile = data.help.findTile(oldRow, oldCol);
     const newTile = data.help.findTile(newRow, newCol);
 
-    const errorMsg = getMoveUnitError(data, unit, oldRow, oldCol, newRow, newCol, oldTile, newTile);
+    const errorMsg = getMoveUnitError(data, unit, oldRow, oldCol, newRow, newCol, newTile);
 
     if (errorMsg) {
       const error = new Error(errorMsg);
@@ -87,7 +86,7 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
   });
 });
 
-function getMoveUnitError(data, unit, oldRow, oldCol, newRow, newCol, oldTile, newTile) {
+function getMoveUnitError(data, unit, oldRow, oldCol, newRow, newCol, newTile) {
   const [numRows, numCols] = data.game.mapSize;
 
   if (unit.movesRemaining == 0) {
@@ -98,11 +97,11 @@ function getMoveUnitError(data, unit, oldRow, oldCol, newRow, newCol, oldTile, n
     return 'Destination is not a valid location.';
   }
 
-  if (!data.help.isTileAdjacent(numCols, oldRow, oldCol, newRow, newCol)) {
+  if (!data.help.isTileAdjacent(oldRow, oldCol, newRow, newCol)) {
     return 'Destination is not adjacent to origin.';
   }
 
-  let unitsInNewSpace = data.units.filter(otherUnit => {
+  const unitsInNewSpace = data.units.filter(otherUnit => {
     return otherUnit.location[0] == newRow
       && otherUnit.location[1] == newCol;
   });
