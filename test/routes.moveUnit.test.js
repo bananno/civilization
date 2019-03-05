@@ -40,18 +40,10 @@ const mockTileDestination = new Tile({
   terrain: {},
 });
 
-const mockTile3 = new Tile({
-  game: mockGame._id,
-  location: [2, 2],
-  player: mockPlayer1._id,
-  terrain: {},
-  improvement: 'city',
-});
-
 const mockCity = new City({
   game: mockGame._id,
   player: mockPlayer1._id,
-  location: mockTile3.location,
+  location: [6, 15],
 });
 
 const mockUnit = new Unit({
@@ -90,7 +82,7 @@ describe('Move unit', () => {
 
     Game.findById.yields(null, mockGame);
     Player.find.yields(null, [mockPlayer1, mockPlayer2]);
-    Tile.find.yields(null, [mockTileOrigin, mockTileDestination, mockTile3]);
+    Tile.find.yields(null, [mockTileOrigin, mockTileDestination]);
     Tile.update.yields(null);
     City.find.yields(null, [mockCity]);
     Unit.find.yields(null, [mockUnit, mockRivalUnit]);
@@ -114,10 +106,13 @@ describe('Move unit', () => {
     mockTileDestination.terrain.water = false;
     mockTileDestination.terrain.mountain = false;
     mockTileDestination.location = [5, 7];
+    mockTileDestination.improvement = null;
     mockRivalUnit.location = [5, 12];
+    mockCity.location = [6, 15];
+    mockCity.player = mockPlayer1._id;
   });
 
-  it('is executed', done => {
+  it('executes', done => {
     request(app)
       .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
       .expect(res => {
@@ -164,9 +159,46 @@ describe('Move unit', () => {
       .expect(412, done);
   });
 
+  it('executes when the destination tile contains a friendly city', done => {
+    mockTileDestination.improvement = 'city';
+    mockCity.location = mockTileDestination.location;
+    request(app)
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
+      .expect(res => {
+        sinon.assert.calledOnce(Unit.update);
+      })
+      .expect(302, done);
+  });
+
+  it('fails when the destination tile contains a rival city', done => {
+    mockTileDestination.improvement = 'city';
+    mockCity.location = mockTileDestination.location;
+    mockCity.player = mockPlayer2._id;
+    request(app)
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
+      .expect(res => {
+        sinon.assert.notCalled(Unit.update);
+        const errorMsg = JSON.parse(res.error.text).message;
+        expect(errorMsg).to.equal('Unit cannot enter a rival city.');
+      })
+      .expect(412, done);
+  });
+
   it('executes when the destination tile is water and the unit is aquatic', done => {
     mockTileDestination.terrain.water = true;
     mockUnit.templateName = 'galley';
+    request(app)
+      .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
+      .expect(res => {
+        sinon.assert.calledOnce(Unit.update);
+      })
+      .expect(302, done);
+  });
+
+  it('executes when the destination tile contains a city and the unit is aquatic', done => {
+    mockTileDestination.improvement = 'city';
+    mockUnit.templateName = 'galley';
+    mockCity.location = mockTileDestination.location;
     request(app)
       .post('/moveUnit/' + mockUnit._id + '/' + mockTileDestination.location.join('/'))
       .expect(res => {
