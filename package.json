@@ -17,7 +17,7 @@
     "express-session": "^1.15.6",
     "http-errors": "~1.6.2",
     "mocha": "^6.2.0",
-    "mongoose": "^5.4.9",
+    "mongoose": "^5.7.5",
     "morgan": "~1.9.0",
     "node-sass": "^4.11.0",
     "proxyquire": "^2.1.0",
