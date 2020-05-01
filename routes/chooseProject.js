@@ -1,11 +1,13 @@
 const {
-  express,
   getData,
 } = require('./import');
 
-const router = express.Router();
+module.exports = {
+  automateProjects,
+  chooseProject,
+};
 
-router.post('/automateProjects/:cityId', (req, res, next) => {
+function automateProjects(req, res, next) {
   let cityId = req.params.cityId;
 
   getData(req, res, next, (data) => {
@@ -27,9 +29,9 @@ router.post('/automateProjects/:cityId', (req, res, next) => {
       res.send(true);
     });
   });
-});
+}
 
-router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
+function chooseProject(req, res, next) {
   const cityId = req.params.cityId;
   const project = req.params.project;
   const index = req.params.index;
@@ -86,6 +88,4 @@ router.get('/chooseProject/:cityId/:project/:index', (req, res, next) => {
       res.redirect('/');
     });
   });
-});
-
-module.exports = router;
+}

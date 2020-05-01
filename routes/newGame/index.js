@@ -1,5 +1,4 @@
 const {
-  express,
   Game,
   Player,
   Tile,
@@ -9,12 +8,10 @@ const {
   getVisibleTilesFunction,
 } = require('../import');
 
-const router = express.Router();
-
 const createMap = require('./createMap');
 const chooseUnitLocations = require('./chooseUnitLocations');
 
-router.post('/newGame', newGame);
+module.exports = newGame;
 
 async function newGame(req, res, next) {
   const game = await createGame(req.body);
@@ -139,5 +136,3 @@ function getGameName(inputName) {
 
   return 'Game' + randomNumber;
 }
-
-module.exports = router;

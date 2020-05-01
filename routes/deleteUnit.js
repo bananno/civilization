@@ -1,12 +1,11 @@
 const {
-  express,
+  Unit,
+  getData,
 } = require('./import');
 
-const router = express.Router();
-const Unit = require('../models/unit');
-const getData = require('./getData');
+module.exports = deleteUnit;
 
-router.post('/deleteUnit/:unitId', (req, res, next) => {
+function deleteUnit(req, res, next) {
   const unitId = req.params.unitId;
 
   getData(req, res, next, (data) => {
@@ -31,6 +30,4 @@ router.post('/deleteUnit/:unitId', (req, res, next) => {
       return res.json(res2);
     });
   });
-});
-
-module.exports = router;
+}

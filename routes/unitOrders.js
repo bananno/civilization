@@ -1,12 +1,11 @@
 const {
-  express,
   getData,
   helpers,
 } = require('./import');
 
-const router = express.Router();
+module.exports = unitOrders;
 
-router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
+function unitOrders(req, res, next) {
   let orders = req.params.orders;
   let unitId = req.params.unitId;
 
@@ -45,7 +44,7 @@ router.post('/unitOrders/:orders/:unitId', (req, res, next) => {
       res.redirect('/');
     });
   });
-});
+}
 
 function improveLand(res, next, data, unit, orders) {
   const invalidAction = () => {
@@ -130,5 +129,3 @@ function improveLand(res, next, data, unit, orders) {
     });
   });
 }
-
-module.exports = router;

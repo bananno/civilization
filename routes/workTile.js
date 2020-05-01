@@ -1,12 +1,11 @@
 const {
-  express,
   getData,
   workTile,
 } = require('./import');
 
-const router = express.Router();
+module.exports = workTilePost;
 
-router.post('/workTile/:cityId/:tileId', (req, res, next) => {
+function workTilePost(req, res, next) {
   const cityId = req.params.cityId;
   const tileId = req.params.tileId;
 
@@ -47,6 +46,4 @@ router.post('/workTile/:cityId/:tileId', (req, res, next) => {
 
     res.redirect('/');
   });
-});
-
-module.exports = router;
+}

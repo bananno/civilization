@@ -1,12 +1,11 @@
 const {
-  express,
   getData,
   claimTile,
 } = require('./import');
 
-const router = express.Router();
+module.exports = buyTilePost;
 
-router.post('/buyTile/:cityId/:tileId', (req, res, next) => {
+function buyTilePost(req, res, next) {
   const cityId = req.params.cityId;
   const tileId = req.params.tileId;
 
@@ -29,7 +28,7 @@ router.post('/buyTile/:cityId/:tileId', (req, res, next) => {
 
     res.redirect('/');
   });
-});
+}
 
 async function buyTile(data, tile) {
   const playerUpdate = {};
@@ -50,5 +49,3 @@ async function buyTile(data, tile) {
     })();
   });
 }
-
-module.exports = router;

@@ -1,12 +1,11 @@
 const {
-  express,
+  getData,
+  chooseAutoResearch,
 } = require('./import');
 
-const router = express.Router();
-const getData = require('./getData');
-const chooseAutoResearch = require('./support/chooseAutoResearch');
+module.exports = chooseResearch;
 
-router.get('/chooseResearch/:index', (req, res, next) => {
+function chooseResearch(req, res, next) {
   getData(req, res, next, (data) => {
     let index = req.params.index;
     const playerData = {};
@@ -39,6 +38,4 @@ router.get('/chooseResearch/:index', (req, res, next) => {
       res.redirect('/');
     });
   });
-});
-
-module.exports = router;
+}

@@ -1,14 +1,13 @@
 const {
-  express,
   City,
   Tile,
   Unit,
   getData,
 } = require('./import');
 
-const router = express.Router();
+module.exports = foundCityPost;
 
-router.post('/foundCity/:unitId', (req, res, next) => {
+function foundCityPost(req, res, next) {
   let unitId = req.params.unitId;
   getData(req, res, next, (data) => {
     const unit = data.unitRef[unitId];
@@ -27,7 +26,7 @@ router.post('/foundCity/:unitId', (req, res, next) => {
 
     deleteSettler(unit);
   });
-});
+}
 
 function getFoundCityError(data, unit) {
   if (unit == null) {
@@ -182,5 +181,3 @@ async function deleteSettler(unit) {
 async function asyncUpdateTile(tile, tileData) {
   await Tile.update(tile, tileData, () => { });
 }
-
-module.exports = router;

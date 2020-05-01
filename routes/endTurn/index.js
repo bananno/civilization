@@ -1,15 +1,14 @@
 const {
-  express,
   getData,
 } = require('../import');
-
-const router = express.Router();
 
 const updateUnits = require('./updateUnits');
 const updateCities = require('./updateCities');
 const updatePlayer = require('./updatePlayer');
 
-router.post('/endTurn', (req, res, next) => {
+module.exports = endTurnPost;
+
+function endTurnPost(req, res, next) {
   getData(req, res, next, (data) => {
     if (!allCitiesHaveProject(data)) {
       console.log('All cities must have a project to end turn.');
@@ -24,7 +23,7 @@ router.post('/endTurn', (req, res, next) => {
     endTurn(data);
     res.redirect('/');
   });
-});
+}
 
 async function endTurn(data) {
   await updateGame(data);
@@ -67,5 +66,3 @@ function playerNeedsResearch(data) {
     && data.currentPlayer.production.science > 0
     && data.technologyList.filter(tech => tech.isAvailable).length > 0;
 }
-
-module.exports = router;

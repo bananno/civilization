@@ -1,19 +1,18 @@
 const {
-  express,
   Game,
   getData,
   getVisibleTilesFunction,
   helpers,
 } = require('./import');
 
-const router = express.Router();
-
-router.get('/', getHomePage);
-router.get('/newGame', newGameGet);
-router.get('/loadGame', loadGameGet);
-router.get('/loadGame/:gameId', loadGamePost);
-router.get('/exitGame', exitGame);
-router.post('/zoom', zoom);
+module.exports = {
+  getHomePage,
+  newGameGet,
+  loadGameGet,
+  loadGamePost,
+  exitGame,
+  zoom,
+};
 
 const zoomLimit = [1, 3];
 
@@ -104,5 +103,3 @@ function zoom(req, res, next) {
     });
   });
 }
-
-module.exports = router;

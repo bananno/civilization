@@ -1,16 +1,16 @@
 const {
-  express,
   Unit,
   Tile,
   getData,
   getVisibleTilesFunction,
 } = require('../import');
 
-const router = express.Router();
 const getMoveUnitError = require('./getMoveUnitError');
 const getMovesUsed = require('./getMovesUsed');
 
-router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
+module.exports = moveUnit;
+
+function moveUnit(req, res, next){
   const unitId = req.params.unitId;
   const newRow = parseInt(req.params.row);
   const newCol = parseInt(req.params.col);
@@ -75,6 +75,4 @@ router.post('/moveUnit/:unitId/:row/:col', (req, res, next) => {
       updateTile(0);
     });
   });
-});
-
-module.exports = router;
+}
