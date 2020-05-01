@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const TileSchema = new Schema({
+const TileSchema = new mongoose.Schema({
   game: {
     type: Schema.Types.ObjectId,
     ref: 'Game',
@@ -77,5 +77,4 @@ TileSchema.methods.getTotalProduction = function() {
   }, 0);
 };
 
-const Tile = mongoose.model('Tile', TileSchema);
-module.exports = Tile;
+mongoose.model('Tile', TileSchema);

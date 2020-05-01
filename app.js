@@ -16,6 +16,8 @@ mongoose.connect('mongodb://localhost/civilization', {
 
 const db = mongoose.connection;
 
+require('./models');
+
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));

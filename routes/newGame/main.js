@@ -1,16 +1,18 @@
-const express = require('express');
+const {
+  express,
+  Game,
+  Player,
+  Tile,
+  Unit,
+  createUnit,
+  helpers,
+  getVisibleTilesFunction,
+} = require('../import');
+
 const router = express.Router();
 
-const Game = require('../../models/game');
-const Player = require('../../models/player');
-const Tile = require('../../models/tile');
-const Unit = require('../../models/unit');
-
-const createUnit = require('../createUnit');
 const createMap = require('./createMap');
 const chooseUnitLocations = require('./chooseUnitLocations');
-const helpers = require('../helpers');
-const getVisibleTilesFunction = require('../support/getVisibleTiles');
 
 router.post('/newGame', newGame);
 

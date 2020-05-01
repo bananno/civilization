@@ -1,9 +1,12 @@
-const express = require('express');
+const {
+  express,
+  Unit,
+  Tile,
+  getData,
+  getVisibleTilesFunction,
+} = require('../import');
+
 const router = express.Router();
-const Unit = require('../../models/unit');
-const Tile = require('../../models/tile');
-const getData = require('../getData');
-const getVisibleTilesFunction = require('../support/getVisibleTiles');
 const getMoveUnitError = require('./getMoveUnitError');
 const getMovesUsed = require('./getMovesUsed');
 

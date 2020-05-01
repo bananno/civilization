@@ -1,5 +1,4 @@
-
-const unitList = [
+module.exports = [
   {
     name: 'settler',
     moves: 2,
@@ -25,5 +24,3 @@ const unitList = [
     technologies: ['sailing'],
   },
 ];
-
-module.exports = unitList;

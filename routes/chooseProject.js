@@ -1,6 +1,9 @@
-const express = require('express');
+const {
+  express,
+  getData,
+} = require('./import');
+
 const router = express.Router();
-const getData = require('./getData');
 
 router.post('/automateProjects/:cityId', (req, res, next) => {
   let cityId = req.params.cityId;

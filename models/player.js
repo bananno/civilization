@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var PlayerSchema = new mongoose.Schema({
+const PlayerSchema = new mongoose.Schema({
   game: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Game',
@@ -29,5 +29,4 @@ var PlayerSchema = new mongoose.Schema({
   researchProgress: [],
 });
 
-var Player = mongoose.model('Player', PlayerSchema);
-module.exports = Player;
+mongoose.model('Player', PlayerSchema);

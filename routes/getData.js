@@ -1,9 +1,4 @@
-const Game = require('../models/game');
-const Player = require('../models/player');
-const Tile = require('../models/tile');
-const City = require('../models/city');
-const Unit = require('../models/unit');
-
+const {Game, Player, Tile, City, Unit} = require('../models');
 const helpers = require('./helpers');
 const buildingList = require('../models/buildingList');
 const unitList = require('../models/unitList');

@@ -1,5 +1,4 @@
-
-const buildingList = [
+module.exports = [
   {
     name: 'palace',
     laborCost: 0,
@@ -49,5 +48,3 @@ const buildingList = [
     technologies: ['bronze working'],
   },
 ];
-
-module.exports = buildingList;

@@ -1,6 +1,10 @@
-const express = require('express');
+const {
+  express,
+  getData,
+} = require('../import');
+
 const router = express.Router();
-const getData = require('../getData');
+
 const updateUnits = require('./updateUnits');
 const updateCities = require('./updateCities');
 const updatePlayer = require('./updatePlayer');

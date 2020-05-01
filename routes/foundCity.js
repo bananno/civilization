@@ -1,10 +1,12 @@
-const express = require('express');
+const {
+  express,
+  City,
+  Tile,
+  Unit,
+  getData,
+} = require('./import');
+
 const router = express.Router();
-const getData = require('./getData');
-const Tile = require('../models/tile');
-const Unit = require('../models/unit');
-const City = require('../models/city');
-const workTile = require('./support/workTile');
 
 router.post('/foundCity/:unitId', (req, res, next) => {
   let unitId = req.params.unitId;

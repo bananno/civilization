@@ -1,7 +1,10 @@
-const express = require('express');
+const {
+  express,
+  getData,
+  workTile,
+} = require('./import');
+
 const router = express.Router();
-const getData = require('./getData');
-const workTile = require('./support/workTile');
 
 router.post('/workTile/:cityId/:tileId', (req, res, next) => {
   const cityId = req.params.cityId;

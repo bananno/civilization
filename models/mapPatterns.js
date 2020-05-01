@@ -1,7 +1,7 @@
+const mapPatterns = {};
+module.exports = mapPatterns;
 
-const mapPatterns = {
-  land: [],
-};
+mapPatterns.land = [];
 
 mapPatterns.land.push([
   [ 0, 0, 1, 0, 0, 0 ],
@@ -54,5 +54,3 @@ const largeIsland = [
 mapPatterns.land.push(largeIsland);
 mapPatterns.land.push(largeIsland);
 mapPatterns.land.push(largeIsland);
-
-module.exports = mapPatterns;

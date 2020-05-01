@@ -1,9 +1,12 @@
-const express = require('express');
+const {
+  express,
+  Game,
+  getData,
+  getVisibleTilesFunction,
+  helpers,
+} = require('./import');
+
 const router = express.Router();
-const Game = require('../models/game');
-const getData = require('./getData');
-const helpers = require('./helpers');
-const getVisibleTilesFunction = require('./support/getVisibleTiles');
 
 router.get('/', getHomePage);
 router.get('/newGame', newGameGet);

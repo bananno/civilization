@@ -1,5 +1,4 @@
-
-const technologyList = [
+module.exports = [
   {
     name: 'agriculture',
     scienceCost: 20,
@@ -31,5 +30,3 @@ const technologyList = [
     blocked: [],
   },
 ];
-
-module.exports = technologyList;

@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var UnitSchema = new mongoose.Schema({
+const UnitSchema = new mongoose.Schema({
   game: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Game',
@@ -33,5 +33,4 @@ var UnitSchema = new mongoose.Schema({
   },
 });
 
-var Unit = mongoose.model('Unit', UnitSchema);
-module.exports = Unit;
+mongoose.model('Unit', UnitSchema);

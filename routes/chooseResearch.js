@@ -1,4 +1,7 @@
-const express = require('express');
+const {
+  express,
+} = require('./import');
+
 const router = express.Router();
 const getData = require('./getData');
 const chooseAutoResearch = require('./support/chooseAutoResearch');

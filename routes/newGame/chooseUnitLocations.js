@@ -1,4 +1,6 @@
-const helpers = require('../helpers');
+const {
+  helpers,
+} = require('../import');
 
 function chooseUnitLocations(tiles, numPlayers) {
   const numCols = tiles[0].length;

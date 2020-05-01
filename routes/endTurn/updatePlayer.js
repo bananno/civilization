@@ -1,4 +1,6 @@
-const chooseAutoResearch = require('../support/chooseAutoResearch');
+const {
+  chooseAutoResearch,
+} = require('../import');
 
 /*
 Update player production progress:

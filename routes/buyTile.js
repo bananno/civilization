@@ -1,7 +1,10 @@
-const express = require('express');
+const {
+  express,
+  getData,
+  claimTile,
+} = require('./import');
+
 const router = express.Router();
-const getData = require('./getData');
-const claimTile = require('./support/claimTile');
 
 router.post('/buyTile/:cityId/:tileId', (req, res, next) => {
   const cityId = req.params.cityId;

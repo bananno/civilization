@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var GameSchema = new mongoose.Schema({
+const GameSchema = new mongoose.Schema({
   name: {
     type: String,
     unique: true,
@@ -23,5 +23,4 @@ var GameSchema = new mongoose.Schema({
   },
 });
 
-var Game = mongoose.model('Game', GameSchema);
-module.exports = Game;
+mongoose.model('Game', GameSchema);
