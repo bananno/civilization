@@ -1,7 +1,6 @@
 process.env.NODE_ENV = 'test';
 const expect = require('chai').expect;
-const Game = require('../models/game');
-const Tile = require('../models/tile');
+const {Game, Tile} = require('../models');
 
 const game = new Game({
   name: 'test game',

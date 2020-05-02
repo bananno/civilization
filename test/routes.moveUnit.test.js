@@ -4,14 +4,8 @@ const expect = require('chai').expect;
 const sinon = require('sinon');
 const request = require('supertest');
 const express = require('express');
-
-const router = require('../routes/moveUnit/main');
-
-const Game = require('../models/game');
-const Player = require('../models/player');
-const Tile = require('../models/tile');
-const City = require('../models/city');
-const Unit = require('../models/unit');
+const router = require('../routes');
+const {City, Game, Player, Tile, Unit} = require('../models');
 
 const mockGame = new Game({
   mapSize: [10, 20],

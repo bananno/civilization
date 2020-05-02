@@ -3,6 +3,7 @@ const {
   Tile,
   Unit,
   getData,
+  workTile,
 } = require('./import');
 
 module.exports = foundCityPost;

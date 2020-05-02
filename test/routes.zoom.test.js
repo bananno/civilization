@@ -5,9 +5,9 @@ const sinon = require('sinon');
 const supertest = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser')
+const router = require('../routes');
+const {Game} = require('../models');
 
-const router = require('../routes/game');
-const Game = require('../models/game');
 const zoomLimit = [1, 3];
 
 const mockGame = new Game({
