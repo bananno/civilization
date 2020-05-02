@@ -22,7 +22,7 @@ helpers.findUnit = (units, id) => {
 };
 
 helpers.findTile = (tiles, row, column) => {
-  if (row.constructor == Array) {
+  if (Array.isArray(row)) {
     [row, column] = row;
   }
   return tiles.filter(tile => {
@@ -39,11 +39,11 @@ helpers.booleanByPercentage = (percentage) => {
 };
 
 function getAdjacentDirection(numCols, fromRow, fromCol, toRow, toCol) {
-  if (fromRow.constructor == Array) {
+  if (Array.isArray(fromRow)) {
     [toRow, toCol] = [fromCol, toRow];
     [fromRow, fromCol] = fromRow;
   }
-  if (toRow.constructor == Array) {
+  if (Array.isArray(toRow)) {
     [toRow, toCol] = toRow;
   }
 
@@ -263,7 +263,7 @@ helpers.makeHelperFunctions = (data) => {
   };
 
   newHelpers.findTile = (row, col) => {
-    if (row.constructor == Array) {
+    if (Array.isArray(row)) {
       [row, col] = row;
       return data.tileRef[row] ? data.tileRef[row][col] : null;
     }
@@ -274,7 +274,7 @@ helpers.makeHelperFunctions = (data) => {
   };
 
   newHelpers.forEachAdjacentTile = (row, col, callback) => {
-    if (row.constructor == Array) {
+    if (Array.isArray(row)) {
       callback = col;
       [row, col] = row;
     }
