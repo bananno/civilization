@@ -9,6 +9,7 @@ const workTile = require('./workTile');
 const endTurn = require('./endTurn');
 const newGame = require('./newGame');
 const moveUnit = require('./moveUnit');
+const playerRoutes = require('./player');
 const projectRoutes = require('./chooseProject');
 const chooseResearch = require('./chooseResearch');
 const unitOrders = require('./unitOrders');
@@ -32,3 +33,9 @@ router.get('/chooseProject/:cityId/:project/:index', projectRoutes.chooseProject
 router.get('/chooseResearch/:index', chooseResearch);
 router.post('/unitOrders/:orders/:unitId', unitOrders);
 router.post('/deleteUnit/:unitId', deleteUnit);
+
+// API
+router.get('/games', gameRoutes.getAllGames);
+router.get('/game/:id', gameRoutes.getOneGame);
+router.get('/player/:id', playerRoutes.getOnePlayer);
+router.get('/player/:id/units', playerRoutes.getPlayerUnits);

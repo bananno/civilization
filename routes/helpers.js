@@ -267,7 +267,8 @@ helpers.makeHelperFunctions = (data) => {
       [row, col] = row;
       return data.tileRef[row] ? data.tileRef[row][col] : null;
     }
-    if (col) {
+    // Change to "col !== undefined"?
+    if (col || col === 0) {
       return data.tileRef[row] ? data.tileRef[row][col] : null;
     }
     return data.tileRef[row];

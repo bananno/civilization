@@ -3,9 +3,12 @@ const {
   getData,
   getVisibleTilesFunction,
   helpers,
+  Player,
 } = require('./import');
 
 module.exports = {
+  getAllGames,
+  getOneGame,
   getHomePage,
   newGameGet,
   loadGameGet,
@@ -15,6 +18,36 @@ module.exports = {
 };
 
 const zoomLimit = [1, 3];
+
+async function getAllGames(req, res) {
+  const games = await Game.find();
+  res.send(games);
+}
+
+// GET http://localhost:1776/game/:id
+// GET http://localhost:1776/game/:id?players=true
+function getOneGame(req, res) {
+  Game.findById(req.params.id, async (error, game) => {
+    if (error) {
+      return res.send(error);
+    }
+    if (!game) {
+      return res.status(404).send(null);
+    }
+    const result = {
+      id: game._id,
+      mapSize: game.mapSize,
+      name: game.name,
+      nextPlayer: game.nextPlayer,
+      turn: game.turn,
+      zoom: game.zoom,
+    };
+    if (req.query.players) {
+      result.players = await Player.find({game});
+    }
+    res.send(result);
+  });
+}
 
 function getHomePage(req, res, next) {
   getData(req, res, next, (data) => {
