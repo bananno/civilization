@@ -9,3 +9,5 @@ modelList.forEach(modelName => {
   require('./' + modelName.toLowerCase());
   models[modelName] = mongoose.model(modelName);
 });
+
+models.Session = require('./session'); // not a real model

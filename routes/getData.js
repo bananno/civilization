@@ -1,4 +1,4 @@
-const {Game, Player, Tile, City, Unit} = require('../models');
+const {City, Game, Player, Session, Tile, Unit} = require('../models');
 const helpers = require('./helpers');
 const buildingList = require('../models/buildingList');
 const unitList = require('../models/unitList');
@@ -120,7 +120,7 @@ function getData(req, res, next, callback) {
 }
 
 function collectFromDatabase(req, res, next, callback) {
-  const gameId = req.session ? req.session.gameId : null;
+  const gameId = Session.getCurrentGameId(req);
   Game.findById(gameId, (error, game) => {
     if (error) {
       return next(error);

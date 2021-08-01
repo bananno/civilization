@@ -14,8 +14,7 @@ module.exports = newGame;
 
 async function newGame(req, res, next) {
   const game = await Game.createFromForm(req.body);
-
-  req.session.gameId = game._id;
+  Session.setCurrentGameId(req, game._id);
 
   const numPlayers = 2;
 

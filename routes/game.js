@@ -4,6 +4,7 @@ const {
   getVisibleTilesFunction,
   helpers,
   Player,
+  Session,
 } = require('./import');
 
 module.exports = {
@@ -75,7 +76,7 @@ function loadGameGet(req, res, next) {
 }
 
 function loadGamePost(req, res, next) {
-  req.session.gameId = req.params.gameId;
+  Session.setCurrentGameId(req, gameId);
   res.redirect('/');
 }
 
@@ -90,20 +91,13 @@ function newGameGet(req, res, next) {
   });
 }
 
-function exitGame(req, res, next) {
-  if (req.session) {
-    req.session.destroy((error) => {
-      if (error) {
-        next(error);
-      } else {
-        res.redirect('/loadGame');
-      }
-    });
-  }
+async function exitGame(req, res, next) {
+  await Session.clearCurrentGameId(req);
+  res.redirect('/loadGame');
 }
 
 function zoom(req, res, next) {
-  const gameId = req.session ? req.session.gameId : null;
+  const gameId = Session.getCurrentGameId(req);
 
   let direction = parseInt(req.body.direction);
 
