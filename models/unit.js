@@ -34,6 +34,10 @@ const UnitSchema = new mongoose.Schema({
   },
 });
 
+UnitSchema.statics.belongsToActiveUser = function(unit) {
+  return unit.belongsToActiveUser();
+}
+
 UnitSchema.statics.createNew = async function(unitData) {
   let unitTemplate;
 
@@ -50,6 +54,16 @@ UnitSchema.statics.createNew = async function(unitData) {
   unitData.movesRemaining = unitData.movesRemaining || unitTemplate.moves;
 
   return await mongoose.model('Unit').create(unitData);
+};
+
+UnitSchema.methods.belongsToActiveUser = async function() {
+  if (!this.game.name) {
+    this.game = await mongoose.model('Game').findById(this.game);
+  }
+  if (!this.game.players) {
+    this.game.players = await mongoose.model('Player').find({game: this.game});
+  }
+  return this.game.players[this.game.nextPlayer] === this.player;
 };
 
 mongoose.model('Unit', UnitSchema);

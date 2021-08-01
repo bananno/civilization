@@ -5,12 +5,9 @@ const sinon = require('sinon');
 const request = require('supertest');
 const express = require('express');
 const router = require('../routes');
-const {Game, Player, Unit} = require('../models');
+const {Game, Player, Session, Unit} = require('../models');
 
-const mockGame = new Game({
-  mapSize: [10, 20],
-  nextPlayer: 0,
-});
+const mockGame = new Game();
 
 const mockPlayer1 = new Player({game: mockGame._id});
 const mockPlayer2 = new Player({game: mockGame._id});
@@ -23,7 +20,7 @@ const mockUnit = new Unit({
 });
 const mockUnitId = `${mockUnit._id}`;
 
-const app = express()
+const app = express();
 app.use('/', router);
 
 app.use(function(err, req, res, next) {
@@ -33,68 +30,146 @@ app.use(function(err, req, res, next) {
   });
 });
 
+let res;
+
+function it_triesToFindUnitByIdAndActiveGame() {
+  it('tries to find the unit by id and active game', () => {
+    sinon.assert.calledWith(Unit.findOne, {_id: mockUnitId, game: mockGame._id});
+  });
+}
+
+function it_triesToDeleteTheUnit() {
+  it('tries to delete the unit', () => {
+    sinon.assert.calledWith(Unit.deleteOne, {_id: mockUnitId});
+  });
+}
+
+function it_doesNotTryToDeleteTheUnit() {
+  it('does not try to delete the unit', () => {
+    sinon.assert.notCalled(Unit.deleteOne);
+  });
+}
+
 describe('Unit', () => {
   beforeEach(() => {
+    sinon.stub(Unit, 'belongsToActiveUser');
     sinon.stub(Unit, 'deleteOne');
-    sinon.stub(Unit, 'findById');
+    sinon.stub(Unit, 'findOne');
+
+    Unit.belongsToActiveUser.returns(true);
   });
 
   afterEach(() => {
+    Unit.belongsToActiveUser.restore();
     Unit.deleteOne.restore();
-    Unit.findById.restore();
+    Unit.findOne.restore();
   });
 
-  describe('delete', () => {
-    describe('when the query throws an error', () => {
-      beforeEach(() => {
-        Unit.findById.yields('fake error message', null);
+  describe('DELETE', () => {
+    describe('when there is no active game', () => {
+      beforeEach(async () => {
+        Session.getCurrentGameId = () => undefined;
+        res = await request(app).delete(`/unit/${mockUnitId}`);
       });
-      it('fails with 500 and sends the error message', async () => {
-        const res = await request(app).delete(`/unit/${mockUnitId}`);
-        sinon.assert.calledWith(Unit.findById, mockUnitId);
-        expect(res.statusCode).to.equal(500);
-        expect(res.text).to.equal('fake error message');
+      it('does not bother to try to find the unit', () => {
+        sinon.assert.notCalled(Unit.findOne);
       });
-    });
-
-    describe('when the unit does not exist', () => {
-      beforeEach(() => {
-        Unit.findById.yields(null, null);
-      });
-      it('fails with 404 and sends null', async () => {
-        const res = await request(app).delete(`/unit/${mockUnitId}`);
-        sinon.assert.calledWith(Unit.findById, mockUnitId);
-        expect(res.statusCode).to.equal(404);
+      it_doesNotTryToDeleteTheUnit();
+      it('fails with 401 unauthorized', () => {
+        expect(res.statusCode).to.equal(401);
         expect(res.text).to.equal('');
       });
     });
 
-    describe('when the unit exists', () => {
-      describe('and delete fails', () => {
-        beforeEach(() => {
-          Unit.findById.yields(null, mockUnit);
-          Unit.deleteOne.yields('fake deletion error');
+    describe('when there is an active game', () => {
+      beforeEach(() => {
+        Session.getCurrentGameId = () => mockGame._id;
+      });
+
+      describe('when the query throws an error', () => {
+        beforeEach(async () => {
+          Unit.findOne.yields('fake error message', null);
+          res = await request(app).delete(`/unit/${mockUnitId}`);
         });
-        it('fails with 500 and sends the error message', async () => {
-          const res = await request(app).delete(`/unit/${mockUnitId}`);
-          sinon.assert.calledWith(Unit.findById, mockUnitId);
-          sinon.assert.calledWith(Unit.deleteOne, {_id: mockUnitId});
+        it_triesToFindUnitByIdAndActiveGame();
+        it_doesNotTryToDeleteTheUnit();
+        it('fails with 500 and sends the error message', () => {
           expect(res.statusCode).to.equal(500);
-          expect(res.text).to.equal('fake deletion error');
+          expect(res.text).to.equal('fake error message');
         });
       });
 
-      describe('and delete succeeds', () => {
-        beforeEach(() => {
-          Unit.findById.yields(null, mockUnit);
-          Unit.deleteOne.yields(null, null);
+      describe('when the unit is not found', () => {
+        beforeEach(async () => {
+          Unit.findOne.yields(null, null);
+          res = await request(app).delete(`/unit/${mockUnitId}`);
         });
-        it('deletes the unit', async () => {
-          const res = await request(app).delete(`/unit/${mockUnitId}`);
-          sinon.assert.calledWith(Unit.findById, mockUnitId);
-          sinon.assert.calledWith(Unit.deleteOne, {_id: mockUnitId});
-          expect(res.statusCode).to.equal(200);
+        it_triesToFindUnitByIdAndActiveGame();
+        it_doesNotTryToDeleteTheUnit();
+        it('fails with 404 not found', () => {
+          expect(res.statusCode).to.equal(404);
           expect(res.text).to.equal('');
+        });
+      });
+
+      describe('when the unit is found', () => {
+        beforeEach(() => {
+          Unit.findOne.yields(null, mockUnit);
+        });
+
+        describe('but the unit does not belong to the active player', () => {
+          beforeEach(async () => {
+            Unit.belongsToActiveUser.returns(false);
+            res = await request(app).delete(`/unit/${mockUnitId}`);
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_doesNotTryToDeleteTheUnit();
+          it('fails with 401 unauthorized', () => {
+            expect(res.statusCode).to.equal(401);
+            expect(res.text).to.equal('');
+          });
+        });
+
+        describe('but the unit does not have any moves remaining', () => {
+          beforeEach(async () => {
+            mockUnit.movesRemaining = 0;
+            res = await request(app).delete(`/unit/${mockUnitId}`);
+          });
+          afterEach(() => {
+            mockUnit.movesRemaining = 2;
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_doesNotTryToDeleteTheUnit();
+          it('fails with 401 unauthorized', () => {
+            expect(res.statusCode).to.equal(401);
+            expect(res.text).to.equal('');
+          });
+        });
+
+        describe('and delete fails', () => {
+          beforeEach(async () => {
+            Unit.deleteOne.yields('fake deletion error');
+            res = await request(app).delete(`/unit/${mockUnitId}`);
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_triesToDeleteTheUnit();
+          it('fails with 500 and sends the error message', () => {
+            expect(res.statusCode).to.equal(500);
+            expect(res.text).to.equal('fake deletion error');
+          });
+        });
+
+        describe('and delete succeeds', () => {
+          beforeEach(async () => {
+            Unit.deleteOne.yields(null, null);
+            res = await request(app).delete(`/unit/${mockUnitId}`);
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_triesToDeleteTheUnit();
+          it('succeeds with 200', () => {
+            expect(res.statusCode).to.equal(200);
+            expect(res.text).to.equal('');
+          });
         });
       });
     });
