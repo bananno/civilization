@@ -21,7 +21,7 @@ function unitOrders(req, res, next) {
     unitData.automate = false;
 
     if (orders == 'skipTurn') {
-      unitData.orders = 'skip turn';
+      // moved to /orders/skip
     } else if (orders == 'sleep') {
       unitData.orders = 'sleep';
     } else if (orders == 'automate' && unit.templateName == 'worker') {

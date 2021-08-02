@@ -6,6 +6,7 @@ const request = require('supertest');
 const express = require('express');
 const router = require('../routes');
 const {Game, Player, Session, Unit} = require('../models');
+const UNIT_ORDERS = require('../models/unitOrders');
 
 const mockGame = new Game();
 
@@ -43,18 +44,34 @@ function it_triesToDeleteTheUnit() {
     sinon.assert.calledWith(Unit.deleteOne, {_id: mockUnitId});
   });
 }
-
 function it_doesNotTryToDeleteTheUnit() {
   it('does not try to delete the unit', () => {
     sinon.assert.notCalled(Unit.deleteOne);
   });
 }
 
-describe('Unit', () => {
+function it_triesToUpdateTheUnit(updateObj) {
+  it('tries to update the unit', () => {
+    sinon.assert.calledWith(Unit.updateOne, {_id: mockUnitId}, updateObj, sinon.match.func);
+  });
+}
+function it_doesNotTryToUpdateTheUnit() {
+  it('does not try to update the unit', () => {
+    sinon.assert.notCalled(Unit.updateOne);
+  });
+}
+
+function expectCodeAndText(code, text) {
+  expect(res.statusCode).to.equal(code);
+  expect(res.text).to.equal(text);
+}
+
+describe('Unit Routes', () => {
   beforeEach(() => {
     sinon.stub(Unit, 'belongsToActiveUser');
     sinon.stub(Unit, 'deleteOne');
     sinon.stub(Unit, 'findOne');
+    sinon.stub(Unit, 'updateOne');
 
     Unit.belongsToActiveUser.returns(true);
   });
@@ -63,9 +80,10 @@ describe('Unit', () => {
     Unit.belongsToActiveUser.restore();
     Unit.deleteOne.restore();
     Unit.findOne.restore();
+    Unit.updateOne.restore();
   });
 
-  describe('DELETE', () => {
+  describe('delete', () => {
     describe('when there is no active game', () => {
       beforeEach(async () => {
         Session.getCurrentGameId = () => undefined;
@@ -169,6 +187,128 @@ describe('Unit', () => {
           it('succeeds with 200', () => {
             expect(res.statusCode).to.equal(200);
             expect(res.text).to.equal('');
+          });
+        });
+      });
+    });
+  });
+
+  describe('post orders/skip', () => {
+    const makeRequest = async () => {
+      res = await request(app).post(`/unit/${mockUnitId}/orders/skip`);
+    };
+
+    describe('when there is no active game', () => {
+      beforeEach(async () => {
+        Session.getCurrentGameId = () => undefined;
+        await makeRequest();
+      });
+      it('does not bother to try to find the unit', () => {
+        sinon.assert.notCalled(Unit.findOne);
+      });
+      it_doesNotTryToUpdateTheUnit();
+      it('fails with 401 unauthorized', () => {
+        expectCodeAndText(401, 'no active game');
+      });
+    });
+
+    describe('when there is an active game', () => {
+      beforeEach(() => {
+        Session.getCurrentGameId = () => mockGame._id;
+      });
+
+      describe('when the query throws an error', () => {
+        beforeEach(async () => {
+          Unit.findOne.yields('fake error message', null);
+          await makeRequest();
+        });
+        it_triesToFindUnitByIdAndActiveGame();
+        it_doesNotTryToUpdateTheUnit();
+        it('fails with 500 and sends the error message', () => {
+          expectCodeAndText(500, 'fake error message');
+        });
+      });
+
+      describe('when the unit is not found', () => {
+        beforeEach(async () => {
+          Unit.findOne.yields(null, null);
+          await makeRequest();
+        });
+        it_triesToFindUnitByIdAndActiveGame();
+        it_doesNotTryToUpdateTheUnit();
+        it('fails with 404 not found', () => {
+          expectCodeAndText(404, 'unit not found');
+        });
+      });
+
+      describe('when the unit is found', () => {
+        beforeEach(() => {
+          Unit.findOne.yields(null, mockUnit);
+        });
+
+        describe('but the unit does not belong to the active player', () => {
+          beforeEach(async () => {
+            Unit.belongsToActiveUser.returns(false);
+            await makeRequest();
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_doesNotTryToUpdateTheUnit();
+          it('fails with 401 unauthorized', () => {
+            expectCodeAndText(401, 'belongs to wrong user');
+          });
+        });
+
+        describe('but the unit does not have any moves remaining', () => {
+          beforeEach(async () => {
+            mockUnit.movesRemaining = 0;
+            await makeRequest();
+          });
+          afterEach(() => {
+            mockUnit.movesRemaining = 2;
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_doesNotTryToUpdateTheUnit();
+          it('succeeds with 200', () => {
+            expectCodeAndText(200, 'unit already out of moves');
+          });
+        });
+
+        describe('but the unit is already set to skip turn', () => {
+          beforeEach(async () => {
+            mockUnit.orders = UNIT_ORDERS.SKIP_TURN;
+            await makeRequest();
+          });
+          afterEach(() => {
+            mockUnit.orders = undefined;
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_doesNotTryToUpdateTheUnit();
+          it('succeeds with 200', () => {
+            expectCodeAndText(200, 'unit already set to skip turn');
+          });
+        });
+
+        describe('and the update fails', () => {
+          beforeEach(async () => {
+            Unit.updateOne.yields('fake update error');
+            await makeRequest();
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_triesToUpdateTheUnit({orders: UNIT_ORDERS.SKIP_TURN});
+          it('fails with 500 and sends the error message', () => {
+            expectCodeAndText(500, 'fake update error');
+          });
+        });
+
+        describe('and the update succeeds', () => {
+          beforeEach(async () => {
+            Unit.updateOne.yields(null, null);
+            await makeRequest();
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_triesToUpdateTheUnit({orders: UNIT_ORDERS.SKIP_TURN});
+          it('succeeds with 200', () => {
+            expectCodeAndText(200, '');
           });
         });
       });

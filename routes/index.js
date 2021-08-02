@@ -40,3 +40,4 @@ router.get('/game/:id', gameRoutes.getOneGame);
 router.get('/player/:id', playerRoutes.getOnePlayer);
 router.get('/player/:id/units', playerRoutes.getPlayerUnits);
 router.delete('/unit/:id', unitRoutes.deleteOneUnit);
+router.post('/unit/:id/orders/skip', unitRoutes.skipTurn);

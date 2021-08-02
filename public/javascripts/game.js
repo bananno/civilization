@@ -106,13 +106,19 @@ function deactivateAll() {
 
   $('.view-city').hide();
   $('.view-unit').hide();
-  $('form.move-unit').hide();
   $('form.work-tile').hide();
   $('form.buy-tile').hide();
+
+  hideUnitMovementArrows();
 
   activeUnitOrCityId = null;
 
   closeAllMenus();
+}
+
+function hideUnitMovementArrows() {
+  $('form.move-unit').hide();
+  $('.map-cell').removeClass('active');
 }
 
 function setActiveCity(id) {
@@ -305,21 +311,38 @@ function toggleNextAction() {
 }
 
 function deleteUnit(unitId, row, col) {
-  if (!confirm('Delete this unit?')) {
-    return;
+  if (confirm('Delete this unit?')) {
+    makeRequest('delete', `/unit/${unitId}`, onSuccess);
   }
 
-  $.ajax({
-    type: 'delete',
-    url: `/unit/${unitId}`,
-    error: promptPageReload,
-    success: () => {
-      deactivateAll();
-      $(`[unit-id="${unitId}"]`).remove();
-      toggleNextAction();
-      removeClickableClassIfTileIsEmpty(row, col, {ignoreId: unitId});
-    },
-  });
+  function onSuccess() {
+    deactivateAll();
+    $(`[unit-id="${unitId}"]`).remove();
+    toggleNextAction();
+    removeClickableClassIfTileIsEmpty(row, col, {ignoreId: unitId});
+  }
+}
+
+function orderUnitSkipTurn(unitId, row, col) {
+  makeRequest('post', `/unit/${unitId}/orders/skip`, onSuccess);
+
+  function onSuccess() {
+    const $rosterBox = $(`.unit-roster[unit-id="${unitId}"]`);
+    $rosterBox.addClass('done');
+    $rosterBox.find('.show-current-orders').text('skip turn');
+    $rosterBox.find('.show-needs-orders').remove();
+
+    const $infoBox = $(`.view-unit.info-box[unit-id="${unitId}"]`);
+    $infoBox.find('.show-current-orders').text('skip turn');
+    $infoBox.hide();
+
+    hideUnitMovementArrows();
+    toggleNextAction();
+  }
+}
+
+function makeRequest(type, url, success) {
+  $.ajax({type, url, error: promptPageReload, success});
 }
 
 function promptPageReload(err) {

@@ -24,22 +24,23 @@
 %>
 
 <div class="<%= className %>" unit-id="<%= unit._id %>">
-    <%= unit.templateName %>
+  <%= unit.templateName %>
+  <br/>
+  <%= unit.movesRemaining %> moves remaining
+  <% if (unit.orders) { %>
     <br/>
-    <%= unit.movesRemaining %> moves remaining
-    <% if (unit.orders) { %>
-        <br/>
-        <%= unit.orders %>
-        <% if (projectTurns) { %>
-            (<%= projectTurns %>)
-        <% } %>
-        <% if (unit.automate) { %>
-            <br/> automate
-        <% } %>
-    <% } else if (unit.automate) { %>
-        <br/> automate
-    <% } else if (unit.movesRemaining) { %>
-        <br/>
-        <span class="red">needs orders</span>
+    <span class="show-current-orders"><%= unit.orders %></span>
+    <% if (projectTurns) { %>
+      (<%= projectTurns %>)
     <% } %>
+    <% if (unit.automate) { %>
+      <br/> automate
+    <% } %>
+  <% } else if (unit.automate) { %>
+    <br/> automate
+  <% } else if (unit.movesRemaining) { %>
+    <br/>
+    <span class="show-current-orders"></span>
+    <span class="show-needs-orders red">needs orders</span>
+  <% } %>
 </div>

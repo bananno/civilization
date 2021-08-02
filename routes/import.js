@@ -39,3 +39,5 @@ supportFiles.forEach(filename => {
 modelHelpers.forEach(filename => {
   module.exports[filename] = require('../models/' + filename);
 });
+
+module.exports.UNIT_ORDERS = require('../models/unitOrders');

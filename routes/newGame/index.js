@@ -5,6 +5,7 @@ const {
   Unit,
   helpers,
   getVisibleTilesFunction,
+  Session,
 } = require('../import');
 
 const createMap = require('./createMap');
