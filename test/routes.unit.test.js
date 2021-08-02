@@ -77,7 +77,7 @@ describe('Unit', () => {
       it_doesNotTryToDeleteTheUnit();
       it('fails with 401 unauthorized', () => {
         expect(res.statusCode).to.equal(401);
-        expect(res.text).to.equal('');
+        expect(res.text).to.equal('no active game');
       });
     });
 
@@ -108,7 +108,7 @@ describe('Unit', () => {
         it_doesNotTryToDeleteTheUnit();
         it('fails with 404 not found', () => {
           expect(res.statusCode).to.equal(404);
-          expect(res.text).to.equal('');
+          expect(res.text).to.equal('unit not found');
         });
       });
 
@@ -126,7 +126,7 @@ describe('Unit', () => {
           it_doesNotTryToDeleteTheUnit();
           it('fails with 401 unauthorized', () => {
             expect(res.statusCode).to.equal(401);
-            expect(res.text).to.equal('');
+            expect(res.text).to.equal('belongs to wrong user');
           });
         });
 
@@ -142,7 +142,7 @@ describe('Unit', () => {
           it_doesNotTryToDeleteTheUnit();
           it('fails with 401 unauthorized', () => {
             expect(res.statusCode).to.equal(401);
-            expect(res.text).to.equal('');
+            expect(res.text).to.equal('unit has no moves remaining');
           });
         });
 

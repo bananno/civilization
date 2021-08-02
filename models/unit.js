@@ -63,7 +63,7 @@ UnitSchema.methods.belongsToActiveUser = async function() {
   if (!this.game.players) {
     this.game.players = await mongoose.model('Player').find({game: this.game});
   }
-  return this.game.players[this.game.nextPlayer] === this.player;
+  return `${this.game.players[this.game.nextPlayer]._id}` === `${this.player._id}`;
 };
 
 mongoose.model('Unit', UnitSchema);

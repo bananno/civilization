@@ -310,19 +310,33 @@ function deleteUnit(unitId, row, col) {
   }
 
   $.ajax({
-    type: 'POST',
-    url: '/deleteUnit/' + unitId,
+    type: 'delete',
+    url: `/unit/${unitId}`,
+    error: promptPageReload,
     success: () => {
       deactivateAll();
-      $('[unit-id="' + unitId + '"]').remove();
+      $(`[unit-id="${unitId}"]`).remove();
       toggleNextAction();
-      const tile = tiles[row][col];
-      tile.unitsCities = tile.unitsCities.filter(id => {
-        return id != unitId;
-      });
-      if (tile.unitsCities.length == 0) {
-        $('.map-cell[row="' + row + '"][column="' + col + '"]').removeClass('clickable');
-      }
+      removeClickableClassIfTileIsEmpty(row, col, {ignoreId: unitId});
     },
   });
+}
+
+function promptPageReload(err) {
+  console.log('error', err);
+  if (confirm('There was an error. Refresh the page?')) {
+    location.reload();
+  }
+}
+
+function removeClickableClassIfTileIsEmpty(row, col, options = {}) {
+  const tile = tiles[row][col];
+  console.log('tile', tile);
+  tile.unitsCities = tile.unitsCities.filter(id => {
+    // shouldn't the unit already be deleted? might not need this filter
+    return id != options.ignoreId;
+  });
+  if (tile.unitsCities.length == 0) {
+    $(`.map-cell[row="${row}"][column="${col}"]`).removeClass('clickable');
+  }
 }
