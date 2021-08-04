@@ -341,6 +341,25 @@ function orderUnitSkipTurn(unitId, row, col) {
   }
 }
 
+function orderUnitSleep(unitId, row, col) {
+  makeRequest('post', `/unit/${unitId}/orders/sleep`, onSuccess);
+
+  function onSuccess() {
+    const $rosterBox = $(`.unit-roster[unit-id="${unitId}"]`);
+    $rosterBox.addClass('done');
+    $rosterBox.find('.show-current-orders').text('sleep');
+    $rosterBox.find('.show-needs-orders').remove();
+
+    const $infoBox = $(`.view-unit.info-box[unit-id="${unitId}"]`);
+    $infoBox.find('.show-current-orders').text('sleep');
+    $infoBox.find('.give-orders-button-sleep').attr('disabled', 'disabled');
+    $infoBox.hide();
+
+    hideUnitMovementArrows();
+    toggleNextAction();
+  }
+}
+
 function makeRequest(type, url, success) {
   $.ajax({type, url, error: promptPageReload, success});
 }

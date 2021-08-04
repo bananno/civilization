@@ -314,4 +314,127 @@ describe('Unit Routes', () => {
       });
     });
   });
+
+  describe('post orders/sleep', () => {
+    const makeRequest = async () => {
+      res = await request(app).post(`/unit/${mockUnitId}/orders/sleep`);
+    };
+
+    describe('when there is no active game', () => {
+      beforeEach(async () => {
+        Session.getCurrentGameId = () => undefined;
+        await makeRequest();
+      });
+      it('does not bother to try to find the unit', () => {
+        sinon.assert.notCalled(Unit.findOne);
+      });
+      it_doesNotTryToUpdateTheUnit();
+      it('fails with 401 unauthorized', () => {
+        expectCodeAndText(401, 'no active game');
+      });
+    });
+
+    describe('when there is an active game', () => {
+      beforeEach(() => {
+        Session.getCurrentGameId = () => mockGame._id;
+      });
+
+      describe('when the query throws an error', () => {
+        beforeEach(async () => {
+          Unit.findOne.yields('fake error message', null);
+          await makeRequest();
+        });
+        it_triesToFindUnitByIdAndActiveGame();
+        it_doesNotTryToUpdateTheUnit();
+        it('fails with 500 and sends the error message', () => {
+          expectCodeAndText(500, 'fake error message');
+        });
+      });
+
+      describe('when the unit is not found', () => {
+        beforeEach(async () => {
+          Unit.findOne.yields(null, null);
+          await makeRequest();
+        });
+        it_triesToFindUnitByIdAndActiveGame();
+        it_doesNotTryToUpdateTheUnit();
+        it('fails with 404 not found', () => {
+          expectCodeAndText(404, 'unit not found');
+        });
+      });
+
+      describe('when the unit is found', () => {
+        beforeEach(() => {
+          Unit.findOne.yields(null, mockUnit);
+        });
+
+        describe('but the unit does not belong to the active player', () => {
+          beforeEach(async () => {
+            Unit.belongsToActiveUser.returns(false);
+            await makeRequest();
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_doesNotTryToUpdateTheUnit();
+          it('fails with 401 unauthorized', () => {
+            expectCodeAndText(401, 'belongs to wrong user');
+          });
+        });
+
+        describe('but the unit does not have any moves remaining', () => {
+          beforeEach(async () => {
+            mockUnit.movesRemaining = 0;
+            Unit.updateOne.yields(null, null);
+            await makeRequest();
+          });
+          afterEach(() => {
+            mockUnit.movesRemaining = 2;
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_triesToUpdateTheUnit({orders: UNIT_ORDERS.SLEEP});
+          it('succeeds with 200', () => {
+            expectCodeAndText(200, '');
+          });
+        });
+
+        describe('but the unit is already sleeping', () => {
+          beforeEach(async () => {
+            mockUnit.orders = UNIT_ORDERS.SLEEP;
+            await makeRequest();
+          });
+          afterEach(() => {
+            mockUnit.orders = undefined;
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_doesNotTryToUpdateTheUnit();
+          it('succeeds with 200', () => {
+            expectCodeAndText(200, 'unit already sleeping');
+          });
+        });
+
+        describe('and the update fails', () => {
+          beforeEach(async () => {
+            Unit.updateOne.yields('fake update error');
+            await makeRequest();
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_triesToUpdateTheUnit({orders: UNIT_ORDERS.SLEEP});
+          it('fails with 500 and sends the error message', () => {
+            expectCodeAndText(500, 'fake update error');
+          });
+        });
+
+        describe('and the update succeeds', () => {
+          beforeEach(async () => {
+            Unit.updateOne.yields(null, null);
+            await makeRequest();
+          });
+          it_triesToFindUnitByIdAndActiveGame();
+          it_triesToUpdateTheUnit({orders: UNIT_ORDERS.SLEEP});
+          it('succeeds with 200', () => {
+            expectCodeAndText(200, '');
+          });
+        });
+      });
+    });
+  });
 });

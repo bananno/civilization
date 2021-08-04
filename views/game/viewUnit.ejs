@@ -74,11 +74,6 @@
             path: '/unitOrders/wake/' + unit._id,
             text: 'wake',
         });
-    } else {
-        actions.push({
-            path: '/unitOrders/sleep/' + unit._id,
-            text: 'sleep',
-        });
     }
 %>
 
@@ -119,13 +114,18 @@
             </form>
         <% }); %>
 
+    <br>
+    <button
+      class="give-orders-button-sleep"
+      <%= unit.orders === 'sleep' ? 'disabled="disabled"' : '' %>
+      onClick="orderUnitSleep('<%= unit._id %>', <%= unit.location.join(',') %>)"
+    >sleep</button>
+
     <% if (movesRemaining) { %>
       <button onClick="orderUnitSkipTurn('<%= unit._id %>', <%= unit.location.join(',') %>)">skip turn</button>
-      <br>
       <button onClick="deleteUnit('<%= unit._id %>', <%= unit.location.join(',') %>)">delete</button>
     <% } else { %>
       <button disabled="disabled">skip turn</button>
-      <br>
       <button disabled="disabled">delete</button>
     <% } %>
   </div>

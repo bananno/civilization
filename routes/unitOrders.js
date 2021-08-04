@@ -23,7 +23,7 @@ function unitOrders(req, res, next) {
     if (orders == 'skipTurn') {
       // moved to /orders/skip
     } else if (orders == 'sleep') {
-      unitData.orders = 'sleep';
+      // moved to /orders/sleep
     } else if (orders == 'automate' && unit.templateName == 'worker') {
       unitData.orders = null;
       unitData.automate = true;
