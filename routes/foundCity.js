@@ -21,11 +21,10 @@ function foundCityPost(req, res, next) {
       return next(error);
     }
 
-    foundCity(data, unit.player, unit.location, () => {
-      res.redirect(302, '/');
+    foundCity(data, unit.player, unit.location, async () => {
+      await deleteSettler(unit);
+      res.status(200).send();
     });
-
-    deleteSettler(unit);
   });
 }
 

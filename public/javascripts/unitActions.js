@@ -29,6 +29,15 @@ async function loadUnitActionButtons(unitId) {
     text: 'delete unit',
   });
 
+  if (unitStatusInfo.templateName === 'settler') {
+    $infoBoxButtonArea.append('<hr>');
+    addButton({
+      isDisabled: unitStatusInfo.movesRemaining === 0 || !unitStatusInfo.canFoundCity,
+      onClick: orderUnitFoundCity,
+      text: 'found city',
+    });
+  }
+
   function addButton(action) {
     const $button = $(action.isDisabled ? '<button disabled="disabled">' : '<button>')
       .addClass(action.class)
@@ -63,6 +72,10 @@ function orderUnitCancelOrders(unit) {
       rosterBoxOrderDescription: '',
     });
   }
+}
+
+function orderUnitFoundCity(unit) {
+  makeRequest('post', `/foundCity/${unit.id}`, refreshThePage);
 }
 
 function orderUnitSkipTurn(unit) {

@@ -75,8 +75,8 @@ function loadGameGet(req, res, next) {
   });
 }
 
-function loadGamePost(req, res, next) {
-  Session.setCurrentGameId(req, gameId);
+function loadGamePost(req, res) {
+  Session.setCurrentGameId(req, req.params.gameId);
   res.redirect('/');
 }
 

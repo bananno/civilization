@@ -318,8 +318,12 @@ function makeRequest(type, url, success) {
 function promptPageReload(err) {
   console.log('error', err);
   if (confirm('There was an error. Refresh the page?')) {
-    location.reload();
+    refreshThePage();
   }
+}
+
+function refreshThePage() {
+  location.reload();
 }
 
 function removeClickableClassIfTileIsEmpty(row, col, options = {}) {

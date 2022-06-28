@@ -1,6 +1,7 @@
 const {
   Player,
   Session,
+  Tile,
   Unit,
   UNIT_ORDERS,
 } = require('./import');
@@ -31,7 +32,7 @@ async function getStatus(req, res) {
       return res.status(401).send('belongs to wrong user');
     }
 
-    res.send({
+    const unitData = {
       automate: unit.automate,
       id: unit._id,
       location: unit.location,
@@ -39,7 +40,15 @@ async function getStatus(req, res) {
       movesRemaining: unit.movesRemaining,
       orders: unit.orders,
       templateName: unit.templateName,
-    });
+    };
+
+    if (unitData.templateName === 'settler') {
+      const tile = await Tile.findOne({game: currentGameId, location: unit.location});
+      unitData.canFoundCity = tile.improvement !== 'city' &&
+        (!tile.player || `${tile.player}` === `${unit.player}`);
+    }
+
+    res.send(unitData);
   } catch (err) {
     return res.status(500).send({...err});
   }

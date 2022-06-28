@@ -18,11 +18,6 @@
     const actions = [];
 
     if (unitType == 'settler') {
-        actions.push({
-            path: '/foundCity/' + unit._id,
-            disabled: noMoves || inRivalTerritory || inCity,
-            text: 'found city',
-        });
     } else if (unitType == 'worker') {
         actions.push({
             path: '/unitOrders/automate/' + unit._id,
