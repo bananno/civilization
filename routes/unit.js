@@ -9,11 +9,7 @@ const {
 module.exports = {
   deleteOneUnit,
   getStatus,
-  orders: {
-    cancel: cancelOrders,
-    skip: orderToSkipTurn,
-    sleep: orderToSleep,
-  },
+  postGiveOrders,
 };
 
 async function getStatus(req, res) {
@@ -54,34 +50,6 @@ async function getStatus(req, res) {
   }
 }
 
-async function cancelOrders(req, res) {
-  const currentGameId = Session.getCurrentGameId(req);
-  if (!currentGameId) {
-    return res.status(401).send('no active game');
-  }
-  Unit.findOne({_id: req.params.id, game: currentGameId}, async (error, unit) => {
-    if (error) {
-      return res.status(500).send(error);
-    }
-    if (!unit) {
-      return res.status(404).send('unit not found');
-    }
-    if (!unit.orders) {
-      return res.send('unit already has no orders');
-    }
-    const belongsToActiveUser = await Unit.belongsToActiveUser(unit);
-    if (!belongsToActiveUser) {
-      return res.status(401).send('belongs to wrong user');
-    }
-    Unit.updateOne({_id: req.params.id}, {orders: null}, error => {
-      if (error) {
-        return res.status(500).send(error);
-      }
-      res.send('');
-    });
-  });
-}
-
 async function deleteOneUnit(req, res) {
   const currentGameId = Session.getCurrentGameId(req);
   if (!currentGameId) {
@@ -110,61 +78,67 @@ async function deleteOneUnit(req, res) {
   });
 }
 
-async function orderToSkipTurn(req, res) {
+async function postGiveOrders(req, res) {
   const currentGameId = Session.getCurrentGameId(req);
   if (!currentGameId) {
     return res.status(401).send('no active game');
   }
-  Unit.findOne({_id: req.params.id, game: currentGameId}, async (error, unit) => {
-    if (error) {
-      return res.status(500).send(error);
-    }
-    if (!unit) {
-      return res.status(404).send('unit not found');
-    }
-    if (unit.movesRemaining === 0) {
-      return res.send('unit already out of moves');
-    }
-    if (unit.orders === UNIT_ORDERS.SKIP_TURN) {
-      return res.send('unit already set to skip turn');
-    }
-    const belongsToActiveUser = await Unit.belongsToActiveUser(unit);
-    if (!belongsToActiveUser) {
-      return res.status(401).send('belongs to wrong user');
-    }
-    Unit.updateOne({_id: req.params.id}, {orders: UNIT_ORDERS.SKIP_TURN}, error => {
-      if (error) {
-        return res.status(500).send(error);
-      }
-      res.send('');
-    });
-  });
+
+  const [unit, unitErrorCode, unitErrorInfo] = await getUnitIfValid(req.params.id, currentGameId);
+  if (!unit) {
+    return res.status(unitErrorCode).send(unitErrorInfo);
+  }
+
+  const action = req.params.action;
+
+  const actionMap = {
+    cancel: null,
+    skip: UNIT_ORDERS.SKIP_TURN,
+    sleep: UNIT_ORDERS.SLEEP,
+  };
+
+  const newOrdersValue = actionMap[action];
+
+  // soft requirements (no error)
+  if ((action === 'cancel' && !unit.orders) || newOrdersValue === unit.orders) {
+    return res.send('unit orders already updated');
+  }
+  if (action === 'skip' && unit.movesRemaining === 0) {
+    return res.send('unit already out of moves');
+  }
+
+  const errorOnUpdate = await updateUnitOrders(unit, newOrdersValue);
+
+  if (errorOnUpdate) {
+    res.status(500).send(errorOnUpdate);
+  } else {
+    res.send('');
+  }
 }
 
-async function orderToSleep(req, res) {
-  const currentGameId = Session.getCurrentGameId(req);
-  if (!currentGameId) {
-    return res.status(401).send('no active game');
-  }
-  Unit.findOne({_id: req.params.id, game: currentGameId}, async (error, unit) => {
-    if (error) {
-      return res.status(500).send(error);
-    }
+// HELPERS
+
+async function getUnitIfValid(unitId, gameId) {
+  try {
+    const unit = await Unit.findOne({_id: unitId, game: gameId});
     if (!unit) {
-      return res.status(404).send('unit not found');
-    }
-    if (unit.orders === UNIT_ORDERS.SLEEP) {
-      return res.send('unit already sleeping');
+      return [null, 404, 'unit not found'];
     }
     const belongsToActiveUser = await Unit.belongsToActiveUser(unit);
     if (!belongsToActiveUser) {
-      return res.status(401).send('belongs to wrong user');
+      return [null, 401, 'belongs to wrong user'];
     }
-    Unit.updateOne({_id: req.params.id}, {orders: UNIT_ORDERS.SLEEP}, error => {
-      if (error) {
-        return res.status(500).send(error);
-      }
-      res.send('');
-    });
-  });
+    return [unit];
+  } catch (error) {
+    return [null, 500, {...error}];
+  }
+}
+
+async function updateUnitOrders(unit, newOrdersValue) {
+  try {
+    await Unit.updateOne({_id: unit._id}, {orders: newOrdersValue});
+    return null;
+  } catch (error) {
+    return {...error};
+  }
 }
