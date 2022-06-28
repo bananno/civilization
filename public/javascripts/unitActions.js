@@ -12,6 +12,28 @@ function deleteUnit(unitId, row, col) {
   }
 }
 
+function orderUnitCancelOrders(unitId, row, col) {
+  makeRequest('post', `/unit/${unitId}/orders/cancel`, onSuccess);
+
+  function onSuccess() {
+    const $rosterBox = $(`.unit-roster[unit-id="${unitId}"]`);
+    $rosterBox.addClass('done');
+    $rosterBox.find('.show-current-orders').text('skip turn');
+    $rosterBox.find('.show-needs-orders').remove();
+
+    const $infoBox = $(`.view-unit.info-box[unit-id="${unitId}"]`);
+    $infoBox.find('.show-current-orders').text('skip turn');
+    $infoBox.find('.unit-action-button-skip').attr('disabled', 'disabled');
+    $infoBox.hide();
+
+    hideUnitMovementArrows();
+    toggleNextAction();
+
+    // need to recreate the unit action buttons; currently they are server-side-render
+    location.reload();
+  }
+}
+
 function orderUnitSkipTurn(unitId, row, col) {
   makeRequest('post', `/unit/${unitId}/orders/skip`, onSuccess);
 
@@ -28,6 +50,9 @@ function orderUnitSkipTurn(unitId, row, col) {
 
     hideUnitMovementArrows();
     toggleNextAction();
+
+    // need to recreate the unit action buttons; currently they are server-side-render
+    location.reload();
   }
 }
 
@@ -47,5 +72,8 @@ function orderUnitSleep(unitId, row, col) {
 
     hideUnitMovementArrows();
     toggleNextAction();
+
+    // need to recreate the unit action buttons; currently they are server-side-render
+    location.reload();
   }
 }

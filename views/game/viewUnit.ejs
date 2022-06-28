@@ -1,6 +1,6 @@
 <%
     const unitType = unit.templateName;
-    const movesRemaining = unit.movesRemaining > 0;
+    const unitHasMovesRemaining = unit.movesRemaining > 0;
     const noMoves = unit.movesRemaining == 0;
     const tile = findTile(unit.location);
     const inForest = tile.terrain.forest;
@@ -75,6 +75,38 @@
             text: 'wake',
         });
     }
+
+  const actionArgs = `'${unit._id}', ${unit.location.join(',')}`;
+  const newActions = [];
+
+  newActions.push({
+    class: 'unit-action-button-cancel',
+    isDisabled: !unit.orders,
+    methodName: 'orderUnitCancelOrders',
+    text: 'cancel orders',
+  });
+
+  newActions.push({
+    class: 'unit-action-button-sleep',
+    isDisabled: unit.orders === 'sleep',
+    methodName: 'orderUnitSleep',
+    text: 'sleep',
+  });
+
+  newActions.push({
+    class: 'unit-action-button-skip',
+    isDisabled: !unitHasMovesRemaining || unit.orders === 'skip turn',
+    methodName: 'orderUnitSkipTurn',
+    text: 'skip turn',
+  });
+
+  newActions.push({
+    class: 'unit-action-button-delete',
+    isDisabled: !unitHasMovesRemaining,
+    methodName: 'deleteUnit',
+    text: 'delete unit',
+  });
+
 %>
 
 <div class="view-unit info-box" unit-id="<%= unit._id %>">
@@ -115,18 +147,14 @@
         <% }); %>
 
     <br>
-    <button
-      class="give-orders-button-sleep"
-      <%= unit.orders === 'sleep' ? 'disabled="disabled"' : '' %>
-      onClick="orderUnitSleep('<%= unit._id %>', <%= unit.location.join(',') %>)"
-    >sleep</button>
 
-    <% if (movesRemaining) { %>
-      <button onClick="orderUnitSkipTurn('<%= unit._id %>', <%= unit.location.join(',') %>)">skip turn</button>
-      <button onClick="deleteUnit('<%= unit._id %>', <%= unit.location.join(',') %>)">delete</button>
-    <% } else { %>
-      <button disabled="disabled">skip turn</button>
-      <button disabled="disabled">delete</button>
-    <% } %>
+    <% newActions.forEach(action => { %>
+      <button
+        class="<%= action.class %>"
+        <%= action.isDisabled ? 'disabled="disabled"' : '' %>
+        onClick="<%= action.methodName %>(<%= actionArgs %>)"
+      ><%= action.text %></button>
+    <% }); %>
+
   </div>
 </div>
