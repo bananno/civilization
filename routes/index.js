@@ -40,5 +40,7 @@ router.get('/game/:id', gameRoutes.getOneGame);
 router.get('/player/:id', playerRoutes.getOnePlayer);
 router.get('/player/:id/units', playerRoutes.getPlayerUnits);
 router.delete('/unit/:id', unitRoutes.deleteOneUnit);
+router.get('/unit/:id/status', unitRoutes.getStatus);
+router.post('/unit/:id/orders/cancel', unitRoutes.orders.cancel);
 router.post('/unit/:id/orders/skip', unitRoutes.orders.skip);
 router.post('/unit/:id/orders/sleep', unitRoutes.orders.sleep);

@@ -311,9 +311,10 @@ function toggleNextAction() {
 }
 
 function makeRequest(type, url, success) {
-  $.ajax({type, url, error: promptPageReload, success});
+  return $.ajax({type, url, error: promptPageReload, success});
 }
 
+// Add later: don't prompt for refresh unless the page initially loaded successfully
 function promptPageReload(err) {
   console.log('error', err);
   if (confirm('There was an error. Refresh the page?')) {

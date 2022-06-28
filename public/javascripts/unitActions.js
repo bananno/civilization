@@ -1,79 +1,115 @@
 
-function deleteUnit(unitId, row, col) {
+async function loadUnitActionButtons(unitId) {
+  const unitStatusInfo = await makeRequest('get', `/unit/${unitId}/status`);
+
+  const $infoBoxButtonArea = $(`.view-unit.info-box[unit-id="${unitId}"] .action-buttons`);
+  $infoBoxButtonArea.html('');
+
+  addButton({
+    isDisabled: !unitStatusInfo.orders,
+    onClick: orderUnitCancelOrders,
+    text: 'cancel orders',
+  });
+
+  addButton({
+    isDisabled: unitStatusInfo.orders === 'sleep',
+    onClick: orderUnitSleep,
+    text: 'sleep',
+  });
+
+  addButton({
+    isDisabled: unitStatusInfo.movesRemaining === 0 || unitStatusInfo.orders === 'skip turn',
+    onClick: orderUnitSkipTurn,
+    text: 'skip turn',
+  });
+
+  addButton({
+    isDisabled: unitStatusInfo.movesRemaining === 0,
+    onClick: deleteUnit,
+    text: 'delete unit',
+  });
+
+  function addButton(action) {
+    const $button = $(action.isDisabled ? '<button disabled="disabled">' : '<button>')
+      .addClass(action.class)
+      .click(() => action.onClick(unitStatusInfo))
+      .text(action.text);
+
+    $infoBoxButtonArea.append($button);
+  }
+}
+
+function deleteUnit(unit) {
   if (confirm('Delete this unit?')) {
-    makeRequest('delete', `/unit/${unitId}`, onSuccess);
+    makeRequest('delete', `/unit/${unit.id}`, onSuccess);
   }
 
   function onSuccess() {
     deactivateAll();
-    $(`[unit-id="${unitId}"]`).remove();
+    $(`[unit-id="${unit.id}"]`).remove();
     toggleNextAction();
-    removeClickableClassIfTileIsEmpty(row, col, {ignoreId: unitId});
+    removeClickableClassIfTileIsEmpty(unit.location[0], unit.location[1], {ignoreId: unit.id});
   }
 }
 
-function orderUnitCancelOrders(unitId, row, col) {
-  makeRequest('post', `/unit/${unitId}/orders/cancel`, onSuccess);
+function orderUnitCancelOrders(unit) {
+  makeRequest('post', `/unit/${unit.id}/orders/cancel`, onSuccess);
 
   function onSuccess() {
-    const $rosterBox = $(`.unit-roster[unit-id="${unitId}"]`);
-    $rosterBox.addClass('done');
-    $rosterBox.find('.show-current-orders').text('skip turn');
-    $rosterBox.find('.show-needs-orders').remove();
-
-    const $infoBox = $(`.view-unit.info-box[unit-id="${unitId}"]`);
-    $infoBox.find('.show-current-orders').text('skip turn');
-    $infoBox.find('.unit-action-button-skip').attr('disabled', 'disabled');
-    $infoBox.hide();
-
-    hideUnitMovementArrows();
-    toggleNextAction();
-
-    // need to recreate the unit action buttons; currently they are server-side-render
-    location.reload();
+    updateUnitInfo({
+      unitId: unit.id,
+      showDoneInUnitRoster: unit.movesRemaining === 0,
+      closeAndGoToNextAction: false,
+      rosterBoxOrderDescription: '',
+    });
   }
 }
 
-function orderUnitSkipTurn(unitId, row, col) {
-  makeRequest('post', `/unit/${unitId}/orders/skip`, onSuccess);
+function orderUnitSkipTurn(unit) {
+  makeRequest('post', `/unit/${unit.id}/orders/skip`, onSuccess);
 
   function onSuccess() {
-    const $rosterBox = $(`.unit-roster[unit-id="${unitId}"]`);
-    $rosterBox.addClass('done');
-    $rosterBox.find('.show-current-orders').text('skip turn');
-    $rosterBox.find('.show-needs-orders').remove();
-
-    const $infoBox = $(`.view-unit.info-box[unit-id="${unitId}"]`);
-    $infoBox.find('.show-current-orders').text('skip turn');
-    $infoBox.find('.unit-action-button-skip').attr('disabled', 'disabled');
-    $infoBox.hide();
-
-    hideUnitMovementArrows();
-    toggleNextAction();
-
-    // need to recreate the unit action buttons; currently they are server-side-render
-    location.reload();
+    updateUnitInfo({
+      unitId: unit.id,
+      showDoneInUnitRoster: true,
+      closeAndGoToNextAction: true,
+      rosterBoxOrderDescription: 'skip turn',
+    });
   }
 }
 
-function orderUnitSleep(unitId, row, col) {
-  makeRequest('post', `/unit/${unitId}/orders/sleep`, onSuccess);
+function orderUnitSleep(unit) {
+  makeRequest('post', `/unit/${unit.id}/orders/sleep`, onSuccess);
 
   function onSuccess() {
-    const $rosterBox = $(`.unit-roster[unit-id="${unitId}"]`);
+    updateUnitInfo({
+      unitId: unit.id,
+      showDoneInUnitRoster: true,
+      closeAndGoToNextAction: true,
+      rosterBoxOrderDescription: 'sleep',
+    });
+  }
+}
+
+function updateUnitInfo({unitId, ...options}) {
+  const $rosterBox = $(`.unit-roster[unit-id="${unitId}"]`);
+  $rosterBox.find('.show-current-orders').text(options.rosterBoxOrderDescription);
+
+  const $infoBox = $(`.view-unit.info-box[unit-id="${unitId}"]`);
+
+  if (options.showDoneInUnitRoster) {
     $rosterBox.addClass('done');
-    $rosterBox.find('.show-current-orders').text('sleep');
-    $rosterBox.find('.show-needs-orders').remove();
+    $rosterBox.find('.show-needs-orders').hide();
+  } else {
+    $rosterBox.removeClass('done');
+    $rosterBox.find('.show-needs-orders').show();
+  }
 
-    const $infoBox = $(`.view-unit.info-box[unit-id="${unitId}"]`);
-    $infoBox.find('.show-current-orders').text('sleep');
-    $infoBox.find('.unit-action-button-sleep').attr('disabled', 'disabled');
+  if (options.closeAndGoToNextAction) {
     $infoBox.hide();
-
     hideUnitMovementArrows();
     toggleNextAction();
-
-    // need to recreate the unit action buttons; currently they are server-side-render
-    location.reload();
   }
+
+  loadUnitActionButtons(unitId);
 }

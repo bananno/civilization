@@ -77,36 +77,6 @@
     }
 
   const actionArgs = `'${unit._id}', ${unit.location.join(',')}`;
-  const newActions = [];
-
-  newActions.push({
-    class: 'unit-action-button-cancel',
-    isDisabled: !unit.orders,
-    methodName: 'orderUnitCancelOrders',
-    text: 'cancel orders',
-  });
-
-  newActions.push({
-    class: 'unit-action-button-sleep',
-    isDisabled: unit.orders === 'sleep',
-    methodName: 'orderUnitSleep',
-    text: 'sleep',
-  });
-
-  newActions.push({
-    class: 'unit-action-button-skip',
-    isDisabled: !unitHasMovesRemaining || unit.orders === 'skip turn',
-    methodName: 'orderUnitSkipTurn',
-    text: 'skip turn',
-  });
-
-  newActions.push({
-    class: 'unit-action-button-delete',
-    isDisabled: !unitHasMovesRemaining,
-    methodName: 'deleteUnit',
-    text: 'delete unit',
-  });
-
 %>
 
 <div class="view-unit info-box" unit-id="<%= unit._id %>">
@@ -124,8 +94,10 @@
     <span class="show-current-orders"><%= unit.orders || 'NONE' %></span>
   </div>
 
-    <div>
-        <b>actions:</b>
+  <div>
+    <b>actions:</b>
+    <div class="action-buttons"></div>
+    <hr>
 
         <% actions.forEach(action => { %>
             <%
@@ -145,16 +117,9 @@
                 <% } %>
             </form>
         <% }); %>
-
-    <br>
-
-    <% newActions.forEach(action => { %>
-      <button
-        class="<%= action.class %>"
-        <%= action.isDisabled ? 'disabled="disabled"' : '' %>
-        onClick="<%= action.methodName %>(<%= actionArgs %>)"
-      ><%= action.text %></button>
-    <% }); %>
-
   </div>
 </div>
+
+<script>
+  loadUnitActionButtons('<%= unit._id %>');
+</script>
