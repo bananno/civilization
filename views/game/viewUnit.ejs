@@ -1,57 +1,3 @@
-<%
-    const unitType = unit.templateName;
-    const unitHasMovesRemaining = unit.movesRemaining > 0;
-    const noMoves = unit.movesRemaining == 0;
-    const tile = findTile(unit.location);
-    const inForest = tile.terrain.forest;
-    const onHill = tile.terrain.hill;
-    const inOwnTerritory = tile.player && '' + tile.player == '' + turnPlayerId;
-    const inRivalTerritory = tile.player && '' + tile.player != '' + turnPlayerId;
-    const inCity = tile.improvement == 'city';
-
-    const playerHasTech = (techName) => {
-        return currentPlayer.technologies.filter(techIndex => {
-            return technologyList[techIndex].name == techName;
-        }).length > 0;
-    };
-
-    const actions = [];
-
-    if (unitType == 'settler') {
-    } else if (unitType == 'worker') {
-        actions.push({
-            path: '/unitOrders/buildRoad/' + unit._id,
-            hidden: unit.orders == 'build road' || tile.road,
-            text: 'build road',
-        });
-        actions.push({
-            path: '/unitOrders/buildFarm/' + unit._id,
-            hidden: inCity || unit.orders == 'build farm' || tile.improvement == 'farm',
-            disabled: inForest || !inOwnTerritory || !playerHasTech('agriculture') || tile.improvement,
-            text: 'build farm',
-        });
-        actions.push({
-            path: '/unitOrders/buildMine/' + unit._id,
-            hidden: inCity || unit.orders == 'build mine' || tile.improvement == 'mine' || !onHill,
-            disabled: inForest || !inOwnTerritory || !playerHasTech('mining') || tile.improvement,
-            text: 'build mine',
-        });
-        actions.push({
-            path: '/unitOrders/chopForest/' + unit._id,
-            hidden: !inForest || unit.orders == 'chop forest',
-            disabled: inRivalTerritory || !playerHasTech('bronze working'),
-            text: 'chop forest',
-        });
-        if (tile.improvement && !inCity) {
-            actions.push({
-                path: '/unitOrders/removeImprovement/' + unit._id,
-                disabled: !inOwnTerritory,
-                text: 'remove ' + tile.improvement,
-            });
-        }
-    }
-%>
-
 <div class="view-unit info-box" unit-id="<%= unit._id %>">
   <div class="close">X</div>
   <div>
@@ -66,30 +12,9 @@
     <b>orders:</b>
     <span class="show-current-orders"><%= unit.orders || 'NONE' %></span>
   </div>
-
   <div>
     <b>actions:</b>
     <div class="action-buttons"></div>
-    <hr>
-
-        <% actions.forEach(action => { %>
-            <%
-                if (action.hidden) {
-                    return;
-                }
-            %>
-            <% if (action.class) { %>
-                <form action="<%= action.path %>" method="post" class="<%= action.class %>">
-            <% } else { %>
-                <form action="<%= action.path %>" method="post">
-            <% } %>
-                <% if (action.disabled) { %>
-                    <button disabled="disabled"><%= action.text %></button>
-                <% } else { %>
-                    <button type="submit"><%= action.text %></button>
-                <% } %>
-            </form>
-        <% }); %>
   </div>
 </div>
 

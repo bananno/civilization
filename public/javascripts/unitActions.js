@@ -1,33 +1,34 @@
 
+// Fetch info about the given unit's status and available actions.
+// Build the html for the action buttons in the info box.
 async function loadUnitActionButtons(unitId) {
   const unitStatusInfo = await makeRequest('get', `/unit/${unitId}/status`);
 
   const $infoBoxButtonArea = $(`.view-unit.info-box[unit-id="${unitId}"] .action-buttons`);
   $infoBoxButtonArea.html('');
 
-  addButton({
-    isDisabled: !unitStatusInfo.orders && !unitStatusInfo.automate,
-    onClick: orderUnitCancelOrders,
-    text: 'cancel orders',
-  });
-
-  addButton({
-    isDisabled: unitStatusInfo.orders === 'sleep',
-    onClick: orderUnitSleep,
-    text: 'sleep',
-  });
-
-  addButton({
-    isDisabled: unitStatusInfo.movesRemaining === 0 || unitStatusInfo.orders === 'skip turn',
-    onClick: orderUnitSkipTurn,
-    text: 'skip turn',
-  });
-
-  addButton({
-    isDisabled: unitStatusInfo.movesRemaining === 0,
-    onClick: deleteUnit,
-    text: 'delete unit',
-  });
+  addButtons([
+    {
+      isDisabled: !unitStatusInfo.orders && !unitStatusInfo.automate,
+      onClick: orderUnitCancelOrders,
+      text: 'cancel orders',
+    },
+    {
+      isDisabled: unitStatusInfo.orders === 'sleep',
+      onClick: orderUnitSleep,
+      text: 'sleep',
+    },
+    {
+      isDisabled: unitStatusInfo.movesRemaining === 0 || unitStatusInfo.orders === 'skip turn',
+      onClick: orderUnitSkipTurn,
+      text: 'skip turn',
+    },
+    {
+      isDisabled: unitStatusInfo.movesRemaining === 0,
+      onClick: deleteUnit,
+      text: 'delete unit',
+    },
+  ]);
 
   if (unitStatusInfo.templateName === 'settler') {
     $infoBoxButtonArea.append('<hr>');
@@ -38,18 +39,48 @@ async function loadUnitActionButtons(unitId) {
     });
   } else if (unitStatusInfo.templateName === 'worker') {
     $infoBoxButtonArea.append('<hr>');
-    addButton({
-      isDisabled: unitStatusInfo.automate,
-      onClick: orderUnitAction,
-      pathName: 'automate',
-      text: 'automate',
-    });
+    addButtons([
+      {
+        isDisabled: unitStatusInfo.automate,
+        onClick: orderUnitAction,
+        pathName: 'automate',
+        text: 'automate',
+      },
+      {
+        isDisabled: !unitStatusInfo.canBuildFarm,
+        onClick: orderUnitAction,
+        pathName: 'buildFarm',
+        text: 'build farm',
+      },
+      {
+        isDisabled: !unitStatusInfo.canBuildMine,
+        onClick: orderUnitAction,
+        pathName: 'buildMine',
+        text: 'build mine',
+      },
+      {
+        isDisabled: !unitStatusInfo.canBuildRoad,
+        onClick: orderUnitAction,
+        pathName: 'buildRoad',
+        text: 'build road',
+      },
+      {
+        isDisabled: !unitStatusInfo.canRemoveImprovement,
+        onClick: orderUnitAction,
+        pathName: 'removeImprovement',
+        text: 'remove improvement',
+      },
+    ]);
+  }
+
+  function addButtons(actions) {
+    actions.forEach(addButton);
   }
 
   function addButton(action) {
     const $button = $(action.isDisabled ? '<button disabled="disabled">' : '<button>')
       .addClass(action.class)
-      .click(() => action.onClick(unitStatusInfo, action.pathName))
+      .click(() => action.onClick(unitStatusInfo, action))
       .text(action.text);
 
     $infoBoxButtonArea.append($button);
@@ -70,14 +101,14 @@ function deleteUnit(unit) {
 }
 
 function orderUnitAction(unit, action) {
-  makeRequest('post', `/unit/${unit.id}/orders/${action}`, onSuccess);
+  makeRequest('post', `/unit/${unit.id}/orders/${action.pathName}`, onSuccess);
 
   function onSuccess() {
     updateUnitInfo({
       unitId: unit.id,
       showDoneInUnitRoster: true,
       closeAndGoToNextAction: true,
-      rosterBoxOrderDescription: action,
+      rosterBoxOrderDescription: action.text,
     });
   }
 }

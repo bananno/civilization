@@ -14,7 +14,12 @@ module.exports = {
 
 const unitOrdersActionMap = {
   automate: {automate: true, value: null, workerOnly: true},
+  buildFarm: {value: UNIT_ORDERS.BUILD_FARM, workerOnly: true},
+  buildMine: {value: UNIT_ORDERS.BUILD_MINE, workerOnly: true},
+  buildRoad: {value: UNIT_ORDERS.BUILD_ROAD, workerOnly: true},
+  chopForest: {value: UNIT_ORDERS.CHOP_FOREST, workerOnly: true},
   cancel: {value: null},
+  removeImprovement: {value: UNIT_ORDERS.REMOVE_IMPROVEMENT, workerOnly: true},
   skip: {value: UNIT_ORDERS.SKIP_TURN},
   sleep: {value: UNIT_ORDERS.SLEEP},
 };
@@ -24,7 +29,7 @@ async function getStatus(req, res) {
   let unit;
 
   try {
-    const unit = await Unit.findOne({_id: req.params.id, game: currentGameId});
+    const unit = await Unit.findOne({_id: req.params.id, game: currentGameId}).populate('player');
 
     if (!unit) {
       return res.status(404).send('unit not found');
@@ -35,6 +40,8 @@ async function getStatus(req, res) {
       return res.status(401).send('belongs to wrong user');
     }
 
+    const tile = await Tile.findOne({game: currentGameId, location: unit.location});
+
     const unitData = {
       automate: unit.automate,
       id: unit._id,
@@ -43,13 +50,8 @@ async function getStatus(req, res) {
       movesRemaining: unit.movesRemaining,
       orders: unit.orders,
       templateName: unit.templateName,
+      ...getAdditionalAvailableActions(unit, tile),
     };
-
-    if (unitData.templateName === 'settler') {
-      const tile = await Tile.findOne({game: currentGameId, location: unit.location});
-      unitData.canFoundCity = tile.improvement !== 'city' &&
-        (!tile.player || `${tile.player}` === `${unit.player}`);
-    }
 
     res.send(unitData);
   } catch (err) {
@@ -100,6 +102,9 @@ async function postGiveOrders(req, res) {
 
   const newOrdersInfo = unitOrdersActionMap[action];
 
+  if (!newOrdersInfo) {
+    return res.status(403).send('invalid action name');
+  }
   if (newOrdersInfo.workerOnly && unit.templateName !== 'worker') {
     return res.status(403).send('wrong unit type');
   }
@@ -114,6 +119,42 @@ async function postGiveOrders(req, res) {
 }
 
 // HELPERS
+
+function getAdditionalAvailableActions(unit, tile) {
+  const inUnclaimedTerritory = !tile.player;
+  const inOwnTerritory = tile.player && `${tile.player._id}` === `${unit.player._id}`;
+  const inRivalTerritory = tile.player && `${tile.player._id}` !== `${unit.player._id}`;
+  const inCity = tile.improvement === 'city';
+  const inForest = tile.terrain.forest;
+  const onHill = tile.terrain.hill;
+
+  if (unit.templateName === 'settler') {
+    return {
+      canFoundCity: !inCity && !inRivalTerritory,
+    };
+  }
+
+  if (unit.templateName === 'worker') {
+    const canBuildImprovement = !tile.improvement && inOwnTerritory && !inForest;
+    return {
+      canBuildFarm: canBuildImprovement && !onHill &&
+        unit.player.hasTechnology('agriculture') &&
+        unit.orders !== UNIT_ORDERS.BUILD_FARM,
+      canBuildMine: canBuildImprovement && onHill &&
+        unit.player.hasTechnology('mining') &&
+        unit.orders !== UNIT_ORDERS.BUILD_MINE,
+      canBuildRoad: !tile.road &&
+        unit.orders !== UNIT_ORDERS.BUILD_ROAD,
+      canChopForest: inForest && !inRivalTerritory &&
+        unit.player.hasTechnology('bronze working') &&
+        unit.orders !== UNIT_ORDERS.CHOP_FOREST,
+      canRemoveImprovement: tile.improvement && !inCity && !inRivalTerritory &&
+        unit.orders !== UNIT_ORDERS.REMOVE_IMPROVEMENT,
+    };
+  }
+
+  return {};
+}
 
 async function getUnitIfValid(unitId, gameId) {
   try {

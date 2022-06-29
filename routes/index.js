@@ -14,7 +14,6 @@ const newGame = require('./newGame');
 const moveUnit = require('./moveUnit');
 const projectRoutes = require('./chooseProject');
 const chooseResearch = require('./chooseResearch');
-const unitOrders = require('./unitOrders');
 
 router.get('/', gameRoutes.getHomePage);
 router.get('/newGame', gameRoutes.newGameGet);
@@ -31,7 +30,6 @@ router.post('/moveUnit/:unitId/:row/:col', moveUnit);
 router.post('/automateProjects/:cityId', projectRoutes.automateProjects);
 router.get('/chooseProject/:cityId/:project/:index', projectRoutes.chooseProject);
 router.get('/chooseResearch/:index', chooseResearch);
-router.post('/unitOrders/:orders/:unitId', unitOrders);
 
 // API
 router.post('/foundCity/:unitId', foundCity);

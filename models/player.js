@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const technologyList = require('./technologyList');
 
 const PlayerSchema = new mongoose.Schema({
   game: {
@@ -28,5 +29,11 @@ const PlayerSchema = new mongoose.Schema({
   researchCurrent: Number,
   researchProgress: [],
 });
+
+PlayerSchema.methods.hasTechnology = function(technologyName) {
+  return this.technologies.some(techIndex => {
+    return technologyList[techIndex].name === technologyName;
+  });
+};
 
 mongoose.model('Player', PlayerSchema);
