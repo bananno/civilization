@@ -45,4 +45,10 @@ const CitySchema = new mongoose.Schema({
   },
 });
 
+CitySchema.methods.getNumUnemployedCitizens = async function() {
+  const workedTiles = await mongoose.model('Tile').find({worked: this});
+  // population+1 because the city itself is worked for free.
+  return (this.population + 1) - workedTiles.length;
+};
+
 mongoose.model('City', CitySchema);

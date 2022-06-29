@@ -209,7 +209,7 @@ div#map {
 .map-shift {
   width: 20px; }
 
-form.work-tile {
+.work-tile {
   width: 25px;
   height: 30px;
   background-size: 25.5px;
@@ -239,7 +239,7 @@ div#map.map-zoom-2 .tile-stack {
 div#map.map-zoom-2 .map-shift {
   width: 45px; }
 
-div#map.map-zoom-2 form.work-tile {
+div#map.map-zoom-2 .work-tile {
   width: 50px;
   height: 60px;
   background-size: 51px;
@@ -269,7 +269,7 @@ div#map.map-zoom-3 .tile-stack {
 div#map.map-zoom-3 .map-shift {
   width: 70px; }
 
-div#map.map-zoom-3 form.work-tile {
+div#map.map-zoom-3 .work-tile {
   width: 75px;
   height: 90px;
   background-size: 76px;
@@ -387,7 +387,7 @@ form.move-unit.up-left {
   transform: rotate(-125deg); }
 
 /* CITY TILE FORMS */
-form.work-tile,
+.work-tile,
 form.buy-tile {
   display: none;
   position: absolute;
@@ -400,14 +400,14 @@ form.buy-tile {
   color: white;
   font-weight: bold; }
 
-form.work-tile.working-true,
-form.work-tile.working-false:hover {
+.work-tile.working-true,
+.work-tile.working-false:hover {
   background-image: url(/images/worktile-true.png); }
 
-form.work-tile.working-false {
+.work-tile.working-false {
   background-image: url(/images/worktile-false.png); }
 
-form.work-tile.working-disabled {
+.work-tile.working-disabled {
   background-image: url(/images/worktile-disabled.png); }
 
 form.buy-tile.is-false {

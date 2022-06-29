@@ -23,7 +23,6 @@ router.get('/exitGame', gameRoutes.exitGame);
 router.post('/zoom', gameRoutes.zoom);
 
 router.post('/buyTile/:cityId/:tileId', buyTile);
-router.post('/workTile/:cityId/:tileId', workTile);
 router.post('/endTurn', endTurn);
 router.post('/newGame', newGame);
 router.post('/moveUnit/:unitId/:row/:col', moveUnit);
@@ -33,6 +32,7 @@ router.get('/chooseResearch/:index', chooseResearch);
 
 // API
 router.post('/foundCity/:unitId', foundCity);
+router.post('/workTile/:cityId/:tileId', workTile);
 router.get('/games', gameRoutes.getAllGames);
 router.get('/game/:id', gameRoutes.getOneGame);
 router.get('/player/:id', playerRoutes.getOnePlayer);

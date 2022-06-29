@@ -106,7 +106,7 @@ function deactivateAll() {
 
   $('.view-city').hide();
   $('.view-unit').hide();
-  $('form.work-tile').hide();
+  $('.work-tile').hide();
   $('form.buy-tile').hide();
 
   hideUnitMovementArrows();
@@ -126,7 +126,7 @@ function setActiveCity(id) {
 
   activeUnitOrCityId = id;
 
-  $('form.work-tile[city-id="' + id + '"]').show();
+  $(`.work-tile[city-id="${id}"]`).show();
   $('form.buy-tile[city-id="' + id + '"]').show();
   $('.view-city[city-id="' + id + '"]').show();
 
@@ -223,11 +223,47 @@ function clickMapCell(row, column) {
 
   if (activeUnitOrCityId) {
     if (units[activeUnitOrCityId]) {
-      setActiveUnit(activeUnitOrCityId);
+      // Don't select a unit if a city is currently selected
+      if ($('.view-city:visible').length === 0) {
+        setActiveUnit(activeUnitOrCityId);
+      }
     } else {
       setActiveCity(activeUnitOrCityId);
     }
   }
+}
+
+async function clickCityWorkTile(target) {
+  const $tile = $(target);
+  const canToggle = !$tile.hasClass('working-disabled');
+  const isActive = $tile.hasClass('working-true');
+
+  if (canToggle) {
+    const cityId = $tile.attr('city-id');
+    const tileId = $tile.attr('tile-id');
+
+    const url = `/workTile/${cityId}/${tileId}`;
+
+    const newValue = !isActive;
+
+    try {
+      await makeRequest('POST', url);
+
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+
+  // console.log({
+  //   target,
+  //   $tile,
+  //   cityId: $tile.attr('city-id'),
+  //   tileId: $tile.attr('tile-id'),
+  //   class: $tile.attr('class'),
+  //   canToggle: !$tile.hasClass('working-disabled'),
+  //   isActive: $tile.hasClass('working-true'),
+  //   isAvailable: $tile.hasClass('working-false'),
+  // });
 }
 
 function hoverMapCell(row, column) {

@@ -28,7 +28,7 @@ $hexBackgroundSize3: 152px;
   width: 20px;
 }
 
-form.work-tile {
+.work-tile {
   width: $hexWidth1/2;
   height: $hexHeight1/2;
   background-size: $hexBackgroundSize1/2;
@@ -66,7 +66,7 @@ div#map.map-zoom-2 {
     width: 45px;
   }
 
-  form.work-tile {
+  .work-tile {
     width: $hexWidth2/2;
     height: $hexHeight2/2;
     background-size: $hexBackgroundSize2/2;
@@ -105,7 +105,7 @@ div#map.map-zoom-3 {
     width: 70px;
   }
 
-  form.work-tile {
+  .work-tile {
     width: $hexWidth3/2;
     height: $hexHeight3/2;
     background-size: $hexBackgroundSize3/2;

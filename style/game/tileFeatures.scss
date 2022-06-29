@@ -133,7 +133,7 @@ form.move-unit.up-left {
 
 /* CITY TILE FORMS */
 
-form.work-tile,
+.work-tile,
 form.buy-tile {
   display: none;
   position: absolute;
@@ -148,16 +148,16 @@ form.buy-tile {
   font-weight: bold;
 }
 
-form.work-tile.working-true,
-form.work-tile.working-false:hover {
+.work-tile.working-true,
+.work-tile.working-false:hover {
   background-image: url(/images/worktile-true.png);
 }
 
-form.work-tile.working-false {
+.work-tile.working-false {
   background-image: url(/images/worktile-false.png);
 }
 
-form.work-tile.working-disabled {
+.work-tile.working-disabled {
   background-image: url(/images/worktile-disabled.png);
 }
 

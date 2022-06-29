@@ -125,16 +125,14 @@
         <% }); %>
     <% } %>
 
-    <% cell.workTiles.forEach(workTile => { %>
-        <form action="<%= workTile.path %>" method="post"
-            class="work-tile working-<%= workTile.working %>"
-            city-id="<%= workTile.cityId %>"
-            <% if (workTile.working != 'disabled') { %>
-                onClick="$(this).submit()"
-            <% } %>
-            >
-        </form>
-    <% }); %>
+  <% cell.workTiles.forEach(workTile => { %>
+    <div
+      class="work-tile working-<%= workTile.working %>"
+      city-id="<%= workTile.cityId %>"
+      tile-id="<%= workTile.tileId %>"
+      onClick="clickCityWorkTile(this)">
+    </div>
+  <% }); %>
 
     <% cell.buyTiles.forEach(buyTile => { %>
         <% const affordable = currentPlayer.storage.gold >= buyTile.price; %>
