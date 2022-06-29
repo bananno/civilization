@@ -6,7 +6,7 @@ async function loadUnitActionButtons(unitId) {
   $infoBoxButtonArea.html('');
 
   addButton({
-    isDisabled: !unitStatusInfo.orders,
+    isDisabled: !unitStatusInfo.orders && !unitStatusInfo.automate,
     onClick: orderUnitCancelOrders,
     text: 'cancel orders',
   });
@@ -36,12 +36,20 @@ async function loadUnitActionButtons(unitId) {
       onClick: orderUnitFoundCity,
       text: 'found city',
     });
+  } else if (unitStatusInfo.templateName === 'worker') {
+    $infoBoxButtonArea.append('<hr>');
+    addButton({
+      isDisabled: unitStatusInfo.automate,
+      onClick: orderUnitAction,
+      pathName: 'automate',
+      text: 'automate',
+    });
   }
 
   function addButton(action) {
     const $button = $(action.isDisabled ? '<button disabled="disabled">' : '<button>')
       .addClass(action.class)
-      .click(() => action.onClick(unitStatusInfo))
+      .click(() => action.onClick(unitStatusInfo, action.pathName))
       .text(action.text);
 
     $infoBoxButtonArea.append($button);
@@ -58,6 +66,19 @@ function deleteUnit(unit) {
     $(`[unit-id="${unit.id}"]`).remove();
     toggleNextAction();
     removeClickableClassIfTileIsEmpty(unit.location[0], unit.location[1], {ignoreId: unit.id});
+  }
+}
+
+function orderUnitAction(unit, action) {
+  makeRequest('post', `/unit/${unit.id}/orders/${action}`, onSuccess);
+
+  function onSuccess() {
+    updateUnitInfo({
+      unitId: unit.id,
+      showDoneInUnitRoster: true,
+      closeAndGoToNextAction: true,
+      rosterBoxOrderDescription: action,
+    });
   }
 }
 

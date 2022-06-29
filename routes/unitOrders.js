@@ -25,8 +25,7 @@ function unitOrders(req, res, next) {
     } else if (orders == 'sleep') {
       // moved to /orders/sleep
     } else if (orders == 'automate' && unit.templateName == 'worker') {
-      unitData.orders = null;
-      unitData.automate = true;
+      // moved to /orders/automate
     } else if (orders == 'wake' || orders == 'cancel') {
       unitData.orders = null;
     } else if (orders == 'buildFarm' || orders == 'buildMine' || orders == 'buildRoad'

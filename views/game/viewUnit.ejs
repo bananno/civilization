@@ -20,11 +20,6 @@
     if (unitType == 'settler') {
     } else if (unitType == 'worker') {
         actions.push({
-            path: '/unitOrders/automate/' + unit._id,
-            hidden: unit.automate,
-            text: 'automate',
-        });
-        actions.push({
             path: '/unitOrders/buildRoad/' + unit._id,
             hidden: unit.orders == 'build road' || tile.road,
             text: 'build road',
@@ -55,23 +50,6 @@
             });
         }
     }
-
-    if (unit.orders || unit.automate) {
-        actions.push({
-            path: '/unitOrders/cancel/' + unit._id,
-            hidden: unit.orders == 'sleep' || unit.orders == 'skip turn',
-            text: 'cancel',
-        });
-    }
-
-    if (unit.orders == 'sleep') {
-        actions.push({
-            path: '/unitOrders/wake/' + unit._id,
-            text: 'wake',
-        });
-    }
-
-  const actionArgs = `'${unit._id}', ${unit.location.join(',')}`;
 %>
 
 <div class="view-unit info-box" unit-id="<%= unit._id %>">

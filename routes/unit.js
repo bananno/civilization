@@ -12,6 +12,13 @@ module.exports = {
   postGiveOrders,
 };
 
+const unitOrdersActionMap = {
+  automate: {automate: true, value: null, workerOnly: true},
+  cancel: {value: null},
+  skip: {value: UNIT_ORDERS.SKIP_TURN},
+  sleep: {value: UNIT_ORDERS.SLEEP},
+};
+
 async function getStatus(req, res) {
   const currentGameId = Session.getCurrentGameId(req);
   let unit;
@@ -91,23 +98,13 @@ async function postGiveOrders(req, res) {
 
   const action = req.params.action;
 
-  const actionMap = {
-    cancel: null,
-    skip: UNIT_ORDERS.SKIP_TURN,
-    sleep: UNIT_ORDERS.SLEEP,
-  };
+  const newOrdersInfo = unitOrdersActionMap[action];
 
-  const newOrdersValue = actionMap[action];
-
-  // soft requirements (no error)
-  if ((action === 'cancel' && !unit.orders) || newOrdersValue === unit.orders) {
-    return res.send('unit orders already updated');
-  }
-  if (action === 'skip' && unit.movesRemaining === 0) {
-    return res.send('unit already out of moves');
+  if (newOrdersInfo.workerOnly && unit.templateName !== 'worker') {
+    return res.status(403).send('wrong unit type');
   }
 
-  const errorOnUpdate = await updateUnitOrders(unit, newOrdersValue);
+  const errorOnUpdate = await updateUnitOrders(unit, newOrdersInfo.value, newOrdersInfo.automate);
 
   if (errorOnUpdate) {
     res.status(500).send(errorOnUpdate);
@@ -134,9 +131,13 @@ async function getUnitIfValid(unitId, gameId) {
   }
 }
 
-async function updateUnitOrders(unit, newOrdersValue) {
+async function updateUnitOrders(unit, newOrdersValue, automate) {
+  const updates = {
+    orders: newOrdersValue || null,
+    automate: automate || false,
+  };
   try {
-    await Unit.updateOne({_id: unit._id}, {orders: newOrdersValue});
+    await Unit.updateOne({_id: unit._id}, updates);
     return null;
   } catch (error) {
     return {...error};
