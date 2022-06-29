@@ -10,22 +10,32 @@ module.exports = postWorkTile;
 async function postWorkTile(req, res) {
   const {cityId, tileId} = req.params;
 
-  const {errorCode, errorInfo, city, tile} = await getCityAndTileIfValid(req);
+  const {errorCode, errorInfo, city, tile, numUnemployedCitizens} = await getCityAndTileIfValid(req);
 
   if (errorCode) {
     return res.status(errorCode).send(errorInfo);
   }
 
+  const updates = {};
+  const responseData = {};
+
+  if (tile.worked) {
+    updates.worked = null;
+    responseData.cityHasUnemployment = (numUnemployedCitizens + 1) > 0;
+  } else {
+    updates.worked = city._id;
+    responseData.cityHasUnemployment = (numUnemployedCitizens - 1) > 0;
+  }
+
   try {
-    await Tile.updateOne({_id: tile._id}, {worked: tile.worked ? null : city._id});
+    await Tile.updateOne({_id: tile._id}, updates);
+    res.status(200).send(responseData);
   } catch (error) {
     return res.status(500).send({...error});
   }
-
-  res.status(200).send();
 }
 
-// Get the city and tile for the request.
+// Get the city and tile, plus any other info needed for the request.
 // - The city and tile must both belong to the same player, which must be the
 //     current active player in the current session game.
 // - The tile must not be worked by another city.
@@ -50,6 +60,8 @@ async function getCityAndTileIfValid(req) {
       return {errorCode: 404, errorInfo: 'city or tile not found'};
     }
 
+    const numUnemployedCitizens = await city.getNumUnemployedCitizens();
+
     if (tile.worked) {
       if (`${tile.worked}` !== cityId) {
         return {errorCode: 409, errorInfo: 'tile is worked by another city'};
@@ -59,13 +71,12 @@ async function getCityAndTileIfValid(req) {
       if (tile.getTotalProduction() === 0) {
         return {errorCode: 409, errorInfo: 'tile has no production value'};
       }
-      const numUnemployedCitizens = await city.getNumUnemployedCitizens();
       if (numUnemployedCitizens === 0) {
         return {errorCode: 409, errorInfo: 'city has no unemployed citizens'};
       }
     }
 
-    return {city, tile};
+    return {city, tile, numUnemployedCitizens};
   } catch (error) {
     return {errorCode: 500, errorInfo: error};
   }

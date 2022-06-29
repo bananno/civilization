@@ -237,33 +237,35 @@ async function clickCityWorkTile(target) {
   const $tile = $(target);
   const canToggle = !$tile.hasClass('working-disabled');
   const isActive = $tile.hasClass('working-true');
+  const cityId = $tile.attr('city-id');
+  const tileId = $tile.attr('tile-id');
 
   if (canToggle) {
-    const cityId = $tile.attr('city-id');
-    const tileId = $tile.attr('tile-id');
-
     const url = `/workTile/${cityId}/${tileId}`;
-
     const newValue = !isActive;
-
     try {
-      await makeRequest('POST', url);
-
+      const response = await makeRequest('POST', url);
+      toggleWorkedTile(response);
     } catch (error) {
       console.log('error', error);
     }
   }
 
-  // console.log({
-  //   target,
-  //   $tile,
-  //   cityId: $tile.attr('city-id'),
-  //   tileId: $tile.attr('tile-id'),
-  //   class: $tile.attr('class'),
-  //   canToggle: !$tile.hasClass('working-disabled'),
-  //   isActive: $tile.hasClass('working-true'),
-  //   isAvailable: $tile.hasClass('working-false'),
-  // });
+  function toggleWorkedTile(response) {
+    if (isActive) {
+      $tile.addClass('working-false').removeClass('working-true');
+    } else {
+      $tile.addClass('working-true').removeClass('working-false');
+    }
+
+    if (response.cityHasUnemployment) {
+      $(`.work-tile.working-disabled[city-id="${cityId}"]`)
+        .addClass('working-false').removeClass('working-disabled');
+    } else {
+      $(`.work-tile.working-false[city-id="${cityId}"]`)
+        .addClass('working-disabled').removeClass('working-false');
+    }
+  }
 }
 
 function hoverMapCell(row, column) {
