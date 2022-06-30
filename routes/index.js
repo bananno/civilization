@@ -37,6 +37,7 @@ router.get('/games', gameRoutes.getAllGames);
 router.get('/game/:id', gameRoutes.getOneGame);
 router.get('/player/:id', playerRoutes.getOnePlayer);
 router.get('/player/:id/units', playerRoutes.getPlayerUnits);
+router.get('/empireProduction', playerRoutes.getEmpireProduction);
 router.delete('/unit/:id', unitRoutes.deleteOneUnit);
 router.get('/unit/:id/status', unitRoutes.getStatus);
 router.post('/unit/:id/orders/:action', unitRoutes.postGiveOrders);

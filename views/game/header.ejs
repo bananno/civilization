@@ -13,32 +13,19 @@
     };
 %>
 
-<div>
-    <div class="header-image">
-        <img src="/images/science.png" class="production-icon">
-    </div>
-
-    <div class="header-text header-science">
-        <%= (production.science < 0 ? '-' : '+') + production.science %>
-    </div>
-
-    <div class="header-image">
-        <img src="/images/gold.png" class="production-icon">
-    </div>
-
-    <div class="header-text header-money">
-        <%= storage.gold %>
-        (<%= (production.gold < 0 ? '-' : '+') + production.gold %>)
-    </div>
-
-    <div class="header-image">
-        <img src="/images/culture.png" class="production-icon">
-    </div>
-
-    <div class="header-text header-culture">
-        <%= storage.culture %>
-        (<%= (production.culture < 0 ? '-' : '+') + production.culture %>)
-    </div>
+<div class="header-production-summary">
+  <div class="header-image">
+    <img src="/images/science.png" class="production-icon">
+  </div>
+  <div class="header-text header-science"></div>
+  <div class="header-image">
+    <img src="/images/gold.png" class="production-icon">
+  </div>
+  <div class="header-text header-money"></div>
+  <div class="header-image">
+    <img src="/images/culture.png" class="production-icon">
+  </div>
+  <div class="header-text header-culture"></div>
 </div>
 
 <div>

@@ -29,6 +29,7 @@ function setup() {
 
   goToNextAction(false);
 
+  loadHeaderProductionSummary();
   showZoomOptions();
   toggleNextAction();
 }
@@ -246,6 +247,7 @@ async function clickCityWorkTile(target) {
     try {
       const response = await makeRequest('POST', url);
       toggleWorkedTile(response);
+      loadHeaderProductionSummary();
     } catch (error) {
       console.log('error', error);
     }
@@ -374,4 +376,16 @@ function removeClickableClassIfTileIsEmpty(row, col, options = {}) {
   if (tile.unitsCities.length == 0) {
     $(`.map-cell[row="${row}"][column="${col}"]`).removeClass('clickable');
   }
+}
+
+async function loadHeaderProductionSummary() {
+  const response = await makeRequest('GET', '/empireProduction');
+  const text = {
+    science: `+${response.science.income}`,
+    gold: `${response.gold.storage} (${response.gold.income < 0 ? '-' : '+'}${response.gold.income})`,
+    culture: `${response.culture.storage} (+${response.culture.income})`,
+  };
+  $('.header-production-summary .header-science').text(text.science);
+  $('.header-production-summary .header-money').text(text.gold);
+  $('.header-production-summary .header-culture').text(text.culture);
 }
